@@ -40,8 +40,8 @@
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                     </div>
                     <!--logo start-->
-                    <i class="fa fa-bullhorn"></i>
-                    <a href="" class="logo bold">F O D A 2025<span> </span></a>
+           
+                    <a href="" class="logo bold">F O D A 2025<span>          <i class="fa fa-bullhorn"></i></span></a>
                     <!--logo end-->
                 </div>
                     <!--  notification start -->
