@@ -36,14 +36,14 @@
             <header class="header white-bg">
                 <div class="col-md-4 logo_bac">
                     <div class="nav notify-row" id="top_menu">
-                        </div>
                         <!--logo start-->
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                         <div class="sidebar-toggle-box">
-                        
-                        <a href="" class="logo bold">F O D A 2025
-                        <i class="fa fa-bullhorn"></i><span></span></a>
-                        <!--logo end-->
+                            
+                            <a href="" class="logo bold">F O D A 2025
+                                <i class="fa fa-bullhorn"></i><span></span></a>
+                                <!--logo end-->
+                            </div>
                 </div>
                     <!--  notification start -->
                     <ul class="nav top-menu">
