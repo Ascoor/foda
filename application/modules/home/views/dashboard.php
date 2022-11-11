@@ -56,13 +56,13 @@
                             <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
                     </div>
                     <!--logo start-->
-                    <div class="col-md-2 logo_bac">
-                        
-                        <div class="sidebar-toggle-box">
-                            <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
-                            <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
+                    
+                    <div class="sidebar-toggle-box">
+                        <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
+                    </div>
+                        <div class="col-md-2 logo_bac">
+                        <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
                             <!--logo end-->
-                        </div>
                         </div>
                 </div>
             </header>
