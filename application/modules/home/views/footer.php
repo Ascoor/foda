@@ -20,7 +20,7 @@
 <script type="text/javascript" src="common/assets/data-tables/DT_bootstrap.js"></script>
 <script src="common/js/respond.min.js" ></script>
 <script type="text/javascript" src="common/assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="common/assets/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="bootstrap-datetimepicker.de.js" charset="UTF-8"></script>
 
 
 <script type="text/javascript" src="common/assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
