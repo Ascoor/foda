@@ -36,8 +36,8 @@
         <section id="container" class="">
             <!--header start-->
             <header class="header white-bg">
-                <div class="col-md-2 logo_bac">
-                    <div class="sidebar-toggle-box">
+                <!-- <div class="col-md-2 logo_bac">
+                    <div class="sidebar-toggle-box"> -->
                         <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
                     </div>
                     <!--logo start-->
