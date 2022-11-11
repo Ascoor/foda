@@ -38,7 +38,8 @@
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                         <!--logo start-->
-                        <a href="" class="logo bold">F O D A <i class="fa fa-bullhorn"></i><span> </span></a>
+                        <i class="fa fa-bullhorn">
+                        <a href="" class="logo bold">F O D A </i><span> </span></a>
                     </div>
                     <!--logo end-->
                 </div>
