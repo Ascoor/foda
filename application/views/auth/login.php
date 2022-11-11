@@ -18,10 +18,10 @@
         <link href="common/css/style.css" rel="stylesheet">
         <link href="common/css/style-responsive.css" rel="stylesheet" />
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
-        <!--[if lt IE 9]>
+        [if lt IE 9]>
         <script src="js/html5shiv.js"></script>
         <script src="js/respond.min.js"></script>
-        <![endif]-->
+        <![endif]
     </head>
     <body class="login-body">
         <div class="container">
