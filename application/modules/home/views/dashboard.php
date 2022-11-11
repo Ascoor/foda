@@ -38,10 +38,7 @@
 
             <!--header start-->
             <header class="header white-bg">
-                <div class="nav notify-row" id="top_menu">
-                    <!--  notification start -->
-                    <ul class="nav top-menu">
-                        </ul>
+             
                     </div>
                     <div class="top-nav ">
                     <?php
@@ -57,6 +54,10 @@
                             <a href="profile" class="allright"> <i class=" fa fa-suitcase"></i> Profile</a>
                             <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
                     </div>
+                    <div class="nav notify-row" id="top_menu">
+                    <!--  notification start -->
+                    <ul class="nav top-menu">
+                        </ul>
                     <!--logo start-->
                     <div class="col-md-2 logo_bac">
                         <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
