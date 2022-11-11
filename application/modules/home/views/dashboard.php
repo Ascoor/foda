@@ -38,7 +38,7 @@
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                         <!--logo start-->
-                        <a href="" class="logo bold">F O D A 2025 <i class="fa fa-bullhorn"></i><span> </span></a>
+                        <a href="" class="logo bold"><i class="fa fa-bullhorn">F O D A 2025 </i><span> </span></a>
                         <!--logo end-->
                     </div>
                     </div>
