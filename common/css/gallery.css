@@ -7,7 +7,7 @@
 	width: 33%;
 	margin: 0;
 	padding: 5px;
-	text-align: left;
+	text-align: right;
 	position: relative;
 }
 
@@ -25,7 +25,7 @@
 .grid figcaption {
 	position: absolute;
 	top: 0;
-	left: 0;
+	right: 0;
 	padding: 10px;
 	background: #2c3f52;
 	color: #FF6C60;
@@ -72,10 +72,10 @@
 .no-touch .cs-style-1 figure:hover figcaption,
 .cs-style-1 figure.cs-hover figcaption {
 	opacity: 1;
-	-webkit-transform: translate(15px, 15px);
-	-moz-transform: translate(15px, 15px);
-	-ms-transform: translate(15px, 15px);
-	transform: translate(15px, 15px);
+	-webkit-transform: translate(-15px, 15px);
+	-moz-transform: translate(-15px, 15px);
+	-ms-transform: translate(-15px, 15px);
+	transform: translate(-15px, 15px);
 }
 
 .cs-style-1 figcaption h3 {
@@ -115,7 +115,7 @@
 
 .cs-style-2 figcaption a {
 	position: absolute;
-	right: 20px;
+	left: 20px;
 	top: 30px;
 }
 
@@ -168,7 +168,7 @@
 .cs-style-3 figcaption a {
 	position: absolute;
 	bottom: 20px;
-	right: 20px;
+	left: 20px;
 }
 
 /* Caption Style 4 */
@@ -176,9 +176,9 @@
 	-webkit-perspective: 1700px;
 	-moz-perspective: 1700px;
 	perspective: 1700px;
-	-webkit-perspective-origin: 0 50%;
-	-moz-perspective-origin: 0 50%;
-	perspective-origin: 0 50%;
+	-webkit-perspective-origin: 100% 50%;
+	-moz-perspective-origin: 100% 50%;
+	perspective-origin: 100% 50%;
 }
 
 .cs-style-4 figure {
@@ -199,10 +199,10 @@
 
 .no-touch .cs-style-4 figure:hover img,
 .cs-style-4 figure.cs-hover img {
-	-webkit-transform: translateX(25%);
-	-moz-transform: translateX(25%);
-	-ms-transform: translateX(25%);
-	transform: translateX(25%);
+	-webkit-transform: translateX(-25%);
+	-moz-transform: translateX(-25%);
+	-ms-transform: translateX(-25%);
+	transform: translateX(-25%);
 }
 
 .cs-style-4 figcaption {
@@ -212,12 +212,12 @@
 	-webkit-backface-visibility: hidden;
 	-moz-backface-visibility: hidden;
 	backface-visibility: hidden;
-	-webkit-transform-origin: 0 0;
-	-moz-transform-origin: 0 0;
-	transform-origin: 0 0;
-	-webkit-transform: rotateY(-90deg);
-	-moz-transform: rotateY(-90deg);
-	transform: rotateY(-90deg);
+	-webkit-transform-origin: 100% 0;
+	-moz-transform-origin: 100% 0;
+	transform-origin: 100% 0;
+	-webkit-transform: rotateY(90deg);
+	-moz-transform: rotateY(90deg);
+	transform: rotateY(90deg);
 	-webkit-transition: -webkit-transform 0.4s, opacity 0.1s 0.3s;
 	-moz-transition: -moz-transform 0.4s, opacity 0.1s 0.3s;
 	transition: transform 0.4s, opacity 0.1s 0.3s;
@@ -237,7 +237,7 @@
 .cs-style-4 figcaption a {
 	position: absolute;
 	bottom: 20px;
-	right: 20px;
+	left: 20px;
 }
 
 /* Caption Style 5 */
@@ -284,7 +284,7 @@
 .cs-style-5 figure a {
 	position: absolute;
 	bottom: 20px;
-	right: 20px;
+	left: 20px;
 }
 
 /* Caption Style 6 */
@@ -315,7 +315,7 @@
 .cs-style-6 figcaption a {
 	position: absolute;
 	bottom: 20px;
-	right: 20px;
+	left: 20px;
 }
 
 /* Caption Style 7 */
@@ -366,7 +366,7 @@
 .cs-style-7 figcaption a {
 	position: absolute;
 	bottom: 20px;
-	right: 20px;
+	left: 20px;
 }
 
 .no-touch .cs-style-7 figure:hover figcaption h3,
