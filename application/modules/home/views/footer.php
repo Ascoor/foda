@@ -30,9 +30,9 @@
 
 <script src="common/js/jquery.cookie.js"></script> -->
 
-<!--common script for all pages--> 
+<!-- common script for all pages 
 <script src="common/js/common-scripts.js"></script>
-<script class="include" type="text/javascript" src="common/js/jquery.dcjqaccordion.2.7.js"></script>
+<script class="include" type="text/javascript" src="common/js/jquery.dcjqaccordion.2.7.js"></script> -->
 
 <!--script for this page only-->
 <script src="common/js/editable-table.js"></script>
