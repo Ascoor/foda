@@ -34,6 +34,8 @@
     
     <body>
         <section id="container" class="">
+        <nav class="navbar navbar-default">
+
             <!--header start-->
             <header class="header white-bg">
                 <div class="nav notify-row" id="top_menu">
