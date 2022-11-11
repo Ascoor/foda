@@ -66,7 +66,7 @@ $db['default']['stricton'] = FALSE;
 
 
 /* End of file database.php */
-/* Location: ./application/config/database.php */  echo '<pre>';
+/* Location: ./application/config/database.php   echo '<pre>';
 //   print_r($db['default']);
 //   echo '</pre>';
 
