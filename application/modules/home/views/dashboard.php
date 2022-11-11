@@ -56,14 +56,14 @@
                     </div>
                     <ul class="nav top-menu">
                         </ul>
-                    </div>
-                    <!--logo start-->
-                    <div class="col-md-2 logo_bac">
-                        <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
+                        <!--logo start-->
+                        <div class="col-md-2 logo_bac">
+                            <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
                             <!--logo end-->
                         </div>
-                    <div class="sidebar-toggle-box">
-                        <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
+                        <div class="sidebar-toggle-box">
+                            <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
+                        </div>
                     </div>
              
             </header>
