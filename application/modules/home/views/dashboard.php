@@ -39,10 +39,10 @@
                         </div>
                         <!--logo start-->
                         
-                        <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                         <a href="" class="logo bold">F O D A 2025</a>
                         <i class="fa fa-bullhorn"></i><span></span>
                         <!--logo end-->
+                        <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                         <div class="sidebar-toggle-box">
                 </div>
                     <!--  notification start -->
