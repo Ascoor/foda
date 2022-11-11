@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
     <head>
         <base href="<?php echo base_url(); ?>">
         <meta charset="utf-8">

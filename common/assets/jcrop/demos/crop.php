@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
 // If not a POST request, display page below:
 
 ?><!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
   <title>Live Cropping Demo</title>
   <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
