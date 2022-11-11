@@ -14,7 +14,7 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<!-- <script src="common/js/jquery.scrollTo.min.js"></script>
+<script src="common/js/jquery.scrollTo.min.js"></script>
 <script src="common/js/jquery.nicescroll.js" type="text/javascript"></script>
 <script type="text/javascript" src="common/assets/data-tables/jquery.dataTables.js"></script>
 <script type="text/javascript" src="common/assets/data-tables/DT_bootstrap.js"></script>
@@ -28,11 +28,11 @@
 
 <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
 
-<script src="common/js/jquery.cookie.js"></script> -->
+<script src="common/js/jquery.cookie.js"></script>
 
-<!-- common script for all pages 
+<!--common script for all pages--> 
 <script src="common/js/common-scripts.js"></script>
-<script class="include" type="text/javascript" src="common/js/jquery.dcjqaccordion.2.7.js"></script> -->
+<script class="include" type="text/javascript" src="common/js/jquery.dcjqaccordion.2.7.js"></script>
 
 <!--script for this page only-->
 <script src="common/js/editable-table.js"></script>
