@@ -24,11 +24,11 @@
 
 
 <script type="text/javascript" src="common/assets/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-<script src="common/js/advanced-form-components.js"></script> -->
+<script src="common/js/advanced-form-components.js"></script>
 
 <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
 
-<script src="common/js/jquery.cookie.js"></script>
+<script src="common/js/jquery.cookie.js"></script> -->
 
 <!--common script for all pages--> 
 <script src="common/js/common-scripts.js"></script>
