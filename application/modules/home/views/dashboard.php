@@ -57,7 +57,7 @@
               
              
                 <div class="sidebar-toggle-box">
-                        <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
+                        <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                     </div>
                     <!--logo start-->
                     <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
