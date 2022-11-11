@@ -33,8 +33,8 @@
     <body>
         <section id="container" class="">
             <!--header start-->
+            <div class="col-md-2 logo_bac">
             <header class="header white-bg">
-                <div class="col-md-2 logo_bac">
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                     </div>
