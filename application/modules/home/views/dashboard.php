@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
     <head>
         <base href="<?php echo base_url(); ?>">
         <meta charset="utf-8">
@@ -10,7 +10,9 @@
         <link rel="shortcut icon" href="uploads/favicon.png">
         <title><?php echo $this->router->fetch_class(); ?> | Election Campaign Management System</title>
         <!-- Bootstrap core CSS -->
-        <link href="common/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
         <link href="common/css/bootstrap-reset.css" rel="stylesheet">
         <!--external css-->
         <link href="common/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
@@ -35,13 +37,7 @@
             <!--header start-->
             <header class="header white-bg">
                 <div class="col-md-2 logo_bac">
-                    <div class="sidebar-toggle-box">
-                        <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
-                    </div>
-                    <!--logo start-->
-                    <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
-                    <!--logo end-->
-                </div>
+              
                 <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
                     <ul class="nav top-menu">
@@ -61,6 +57,14 @@
                         <a href="profile" class="allright"> <i class=" fa fa-suitcase"></i> Profile</a>
                         <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
                     </div>
+                    
+                </div>
+                <div class="sidebar-toggle-box">
+                        <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
+                    </div>
+                    <!--logo start-->
+                    <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
+                    <!--logo end-->
                 </div>
             </header>
             <!--header end-->
