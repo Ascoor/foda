@@ -12,7 +12,7 @@
 <!-- js placed at the end of the document so the pages load faster -->
 <script src="common/js/jquery.js"></script>
 <script src="common/js/jquery-1.8.3.min.js"></script>
-<script src="common/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 <script src="common/js/jquery.scrollTo.min.js"></script>
 <script src="common/js/jquery.nicescroll.js" type="text/javascript"></script>
 <script type="text/javascript" src="common/assets/data-tables/jquery.dataTables.js"></script>
