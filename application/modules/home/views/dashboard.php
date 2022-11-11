@@ -39,7 +39,7 @@
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                         <!--logo start-->
                         <i class="fa fa-bullhorn">
-                        <a href="" class="logo bold">F O D A </i><span> </span></a>
+                        <a href="" class="logo bold">F O D A </a></i><span> </span>
                     </div>
                     <!--logo end-->
                 </div>
