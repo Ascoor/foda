@@ -56,7 +56,7 @@
                         ?>
                         <div class="flashmessage pull-left"><i class="fa fa-check"></i> <?php echo $message; ?></div>
                     <?php } ?> 
-                    <ul class="nav pull-right top-menu">
+                    <ul class="nav pull-left top-menu">
                     </ul>
                     <div class=" col-md-3 pull-right padding_allright">
                         <a href="settings" class="allright"> <i class="fa fa-cog"></i> Settings</a>
