@@ -24,10 +24,10 @@
         <link href="common/css/invoice-print.css" rel="stylesheet" media="print">
         <link rel="stylesheet" type="text/css" href="common/assets/jquery-multi-select/css/multi-select.css">
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
-        [if lt IE 9]>
+        <!--[if lt IE 9]>
           <script src="js/html5shiv.js"></script>
           <script src="js/respond.min.js"></script>
-        <![endif]
+        <![endif]-->
     </head>
 
     <body>
