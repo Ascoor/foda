@@ -34,17 +34,15 @@
         <section id="container" class="">
             <!--header start-->
             <header class="header white-bg">
-                <div class="col-md-4 logo_bac">
-                    <div class="nav notify-row" id="top_menu">
-                        <!--logo start-->
+                <div class="col-md-2 logo_bac">
+                    <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
-                        <div class="sidebar-toggle-box">
-                            
-                            <a href="" class="logo bold">F O D A 2025
-                                <i class="fa fa-bullhorn"></i><span></span></a>
-                                <!--logo end-->
-                            </div>
+                    </div>
+                    <!--logo start-->
+                    <a href="" class="logo bold">F O D A <i class="fa fa-bullhorn"></i><span> </span></a>
+                    <!--logo end-->
                 </div>
+                <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
                     <ul class="nav top-menu">
                     </ul>
