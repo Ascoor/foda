@@ -55,15 +55,15 @@
                             <a href="profile" class="allright"> <i class=" fa fa-suitcase"></i> Profile</a>
                             <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
                     </div>
-                </div>
-                <!--logo start-->
-                <div class="col-md-2 logo_bac">
-                    <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
-                    <!--logo end-->
-                </div>
-                
-                <div class="sidebar-toggle-box">
-                    <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
+                    <!--logo start-->
+                    <div class="col-md-2 logo_bac">
+                        <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
+                        <!--logo end-->
+                    </div>
+                    
+                    <div class="sidebar-toggle-box">
+                        <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
+                    </div>
                 </div>
             </header>
             <!--header end-->
