@@ -35,9 +35,10 @@
     <body>
         <section id="container" class="">
             <!--header start-->
-            <div class="nav notify-row" id="top_menu">
-                <!--  notification start -->
-                <ul class="nav top-menu">
+            <header class="header white-bg">
+                  <div class="nav notify-row" id="top_menu">
+                    <!--  notification start -->
+                    <ul class="nav top-menu">
                     </ul>
                 </div>
                 <div class="top-nav ">
@@ -46,16 +47,15 @@
                     if (!empty($message)) {
                         ?>
                         <div class="flashmessage pull-right"><i class="fa fa-check"></i> <?php echo $message; ?></div>
-                        <?php } ?> 
-                        <ul class="nav pull-left top-menu">
-                            </ul>
-                            <div class=" col-md-3 pull-left padding_allright">
-                                <a href="settings" class="allright"> <i class="fa fa-cog"></i> Settings</a>
+                    <?php } ?> 
+                    <ul class="nav pull-left top-menu">
+                    </ul>
+                    <div class=" col-md-3 pull-left padding_allright">
+                        <a href="settings" class="allright"> <i class="fa fa-cog"></i> Settings</a>
                         <a href="profile" class="allright"> <i class=" fa fa-suitcase"></i> Profile</a>
                         <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
                     </div>
                 </div>
-                <header class="header white-bg">
                 <div class="col-md-2 logo_bac">
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
