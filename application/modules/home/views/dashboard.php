@@ -54,7 +54,7 @@
                     $message = $this->session->flashdata('feedback');
                     if (!empty($message)) {
                         ?>
-                        <div class="flashmessage pull-left"><i class="fa fa-check"></i> <?php echo $message; ?></div>
+                        <div class="flashmessage pull-right"><i class="fa fa-check"></i> <?php echo $message; ?></div>
                     <?php } ?> 
                     <ul class="nav pull-left top-menu">
                     </ul>
