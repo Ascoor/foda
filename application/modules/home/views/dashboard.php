@@ -33,15 +33,14 @@
     <body>
         <section id="container" class="">
             <!--header start-->
-            <div class="col-md-2 logo_bac">
             <header class="header white-bg">
+                <div class="col-md-2 logo_bac">
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
+                        <!--logo start-->
+                        <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
+                        <!--logo end-->
                     </div>
-                    <!--logo start-->
-                    <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
-                    <!--logo end-->
-                </div>
                 <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
                     <ul class="nav top-menu">
