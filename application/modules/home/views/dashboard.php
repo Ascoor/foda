@@ -58,7 +58,7 @@
                     <?php } ?> 
                     <ul class="nav pull-left top-menu">
                     </ul>
-                    <div class=" col-md-3 pull-right padding_allright">
+                    <div class=" col-md-3 pull-left padding_allright">
                         <a href="settings" class="allright"> <i class="fa fa-cog"></i> Settings</a>
                         <a href="profile" class="allright"> <i class=" fa fa-suitcase"></i> Profile</a>
                         <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
