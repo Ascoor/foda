@@ -38,9 +38,9 @@
                     <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
                 </div>
                 <!--logo start-->
+                <div class="sidebar-toggle-box">
                 <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
                 <!--logo end-->
-                <div class="sidebar-toggle-box">
                 </div>
                 <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
