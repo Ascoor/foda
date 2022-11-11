@@ -37,10 +37,9 @@
                 <div class="col-md-2 logo_bac">
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="right" class="fa fa-bars tooltips"></div>
-                        <!--logo start-->
-                        <i class="fa fa-bullhorn">
-                      /i><span>   <a href="" class="logo bold">F O D A </a><</span>
                     </div>
+                    <!--logo start-->
+                    <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
                     <!--logo end-->
                 </div>
                 <div class="nav notify-row" id="top_menu">
