@@ -31,12 +31,13 @@
           <script src="js/respond.min.js"></script>
         <![endif]-->
     </head>
-
+    
     <body>
         <section id="container" class="">
             <!--header start-->
             <header class="header white-bg">
-                  <div class="nav notify-row" id="top_menu">
+                <div class="col-md-2 logo_bac">
+                <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
                     <ul class="nav top-menu">
                     </ul>
@@ -56,7 +57,6 @@
                         <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
                     </div>
                 </div>
-                <div class="col-md-2 logo_bac">
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
                     </div>
