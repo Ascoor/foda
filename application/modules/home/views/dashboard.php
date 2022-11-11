@@ -57,7 +57,7 @@
                     </div>
                     <!--logo start-->
                     
-                    <div class="col-md-2 logo_bac">
+                    <div class="col-md-12 logo_bac">
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
                     </div>
