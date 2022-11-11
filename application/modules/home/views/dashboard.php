@@ -39,9 +39,7 @@
           
                 <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
-                    <ul class="nav top-menu">
-                        </ul>
-                    </div>
+                    
                     <div class="top-nav ">
                     <?php
                     $message = $this->session->flashdata('feedback');
@@ -55,6 +53,9 @@
                             <a href="settings" class="allright"> <i class="fa fa-cog"></i> Settings</a>
                             <a href="profile" class="allright"> <i class=" fa fa-suitcase"></i> Profile</a>
                             <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
+                    </div>
+                    <ul class="nav top-menu">
+                        </ul>
                     </div>
                     <!--logo start-->
                     <div class="col-md-2 logo_bac">
