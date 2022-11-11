@@ -36,13 +36,7 @@
         <section id="container" class="">
             <!--header start-->
             <header class="header white-bg">
-                <div class="col-md-2 logo_bac">
               
-                <div class="nav notify-row" id="top_menu">
-                    <!--  notification start -->
-                    <ul class="nav top-menu">
-                    </ul>
-                </div>
                 <div class="top-nav ">
                     <?php
                     $message = $this->session->flashdata('feedback');
@@ -59,6 +53,9 @@
                     </div>
                     
                 </div>
+                <div class="col-md-2 logo_bac">
+              
+             
                 <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
                     </div>
@@ -66,6 +63,11 @@
                     <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
                     <!--logo end-->
                 </div>
+                <div class="nav notify-row" id="top_menu">
+                  <!--  notification start -->
+                  <ul class="nav top-menu">
+                  </ul>
+              </div>
             </header>
             <!--header end-->
             <!--sidebar start-->
