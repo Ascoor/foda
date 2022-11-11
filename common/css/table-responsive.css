@@ -23,21 +23,21 @@
 
     #flip-scroll th,
     #flip-scroll td { margin: 0; vertical-align: top; }
-    #flip-scroll th { text-align: left; }
+    #flip-scroll th { text-align: right; }
     #flip-scroll table { display: block; position: relative; width: 100%; }
-    #flip-scroll thead { display: block; float: left; }
+    #flip-scroll thead { display: block; float: right; }
     #flip-scroll tbody { display: block; width: auto; position: relative; overflow-x: auto; white-space: nowrap; }
     #flip-scroll thead tr { display: block; }
-    #flip-scroll th { display: block; text-align: right; }
+    #flip-scroll th { display: block; text-align: left; }
     #flip-scroll tbody tr { display: inline-block; vertical-align: top; }
-    #flip-scroll td { display: block; min-height: 1.25em; text-align: left; }
+    #flip-scroll td { display: block; min-height: 1.25em; text-align: right; }
 
 
     /* sort out borders */
 
-    #flip-scroll th { border-bottom: 0; border-left: 0; }
-    #flip-scroll td { border-left: 0; border-right: 0; border-bottom: 0; }
-    #flip-scroll tbody tr { border-left: 1px solid #babcbf; }
+    #flip-scroll th { border-bottom: 0; border-right: 0; }
+    #flip-scroll td { border-right: 0; border-left: 0; border-bottom: 0; }
+    #flip-scroll tbody tr { border-right: 1px solid #babcbf; }
     #flip-scroll th:last-child,
     #flip-scroll td:last-child { border-bottom: 1px solid #babcbf; }
 }
@@ -59,7 +59,7 @@
     #no-more-tables thead tr {
         position: absolute;
         top: -9999px;
-        left: -9999px;
+        right: -9999px;
     }
 
     #no-more-tables tr { border: 1px solid #ccc; }
@@ -69,9 +69,9 @@
         border: none;
         border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%;
+        padding-right: 50%;
         white-space: normal;
-        text-align:left;
+        text-align:right;
     }
 
     #no-more-tables td:before {
@@ -79,11 +79,11 @@
         position: absolute;
         /* Top/left values mimic padding */
         top: 6px;
-        left: 6px;
+        right: 6px;
         width: 45%;
-        padding-right: 10px;
+        padding-left: 10px;
         white-space: nowrap;
-        text-align:left;
+        text-align:right;
         font-weight: bold;
     }
 

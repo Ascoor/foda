@@ -52,15 +52,15 @@
     }
     /**/
     .chat-room .right-side .user-head {
-        float: left;
+        float: right;
         width: 100%;
     }
 
     .chat-room .mid-side footer {
         position: relative;
-        float: left;
+        float: right;
         width: 100%;
-        border-right: 0;
+        border-left: 0;
     }
 
     .chat-txt {
@@ -113,7 +113,7 @@
         height:35px;
         line-height:35px;
         padding: 0 10px;
-        text-align: left;
+        text-align: right;
     }
     #sidebar > ul > li > a i{
         /*display: none !important;*/
@@ -123,7 +123,7 @@
         display: none !important;
     }
     #sidebar ul > li > a .arrow, #sidebar > ul > li > a .arrow.open {
-        margin-right: 10px;
+        margin-left: 10px;
         margin-top: 15px;
     }
 
@@ -155,13 +155,13 @@
 
     #sidebar .btn-navbar .arrow {
         position: absolute;
-        right: 35px;
+        left: 35px;
         width: 0;
         height: 0;
         top:48px;
         border-bottom: 15px solid #282e36;
-        border-left: 15px solid transparent;
         border-right: 15px solid transparent;
+        border-left: 15px solid transparent;
     }
 
 
@@ -188,7 +188,7 @@
 
     /* full calendar fix */
     .fc-header-right {
-        left:25px;
+        right:25px;
         position: absolute;
     }
 
@@ -213,7 +213,7 @@
 
     .fc-button {
         border: none !important;
-        margin-right: 2px;
+        margin-left: 2px;
     }
 
     .fc-view {
@@ -224,7 +224,7 @@
         margin: 0px !important;
         padding: 2px !important;
         border: none !important;
-        margin-right: 2px !important;
+        margin-left: 2px !important;
         background-color: #fafafa !important;
         background-image: -moz-linear-gradient(top, #fafafa, #efefef) !important;
         background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fafafa), to(#efefef)) !important;
@@ -279,7 +279,7 @@
 
     .timeline-desk .album a {
         margin-bottom: 5px;
-        margin-right: 4px;
+        margin-left: 4px;
     }
 
     .stepy-titles li {
@@ -303,20 +303,20 @@
     }
 
     .full-width .navbar-toggle {
-        float: left;
+        float: right;
         margin-top: 12px;
     }
 
     .horizontal-menu {
-        float: left;
-        margin-left:0px;
+        float: right;
+        margin-right:0px;
         width: 70%;
         margin-top: 10px;
     }
 
     .top-nav {
         position: absolute;
-        right: 10px;
+        left: 10px;
         top: 0px;
     }
 
@@ -362,14 +362,14 @@
     }
 
     #top_menu .nav > li, ul.top-menu > li {
-        float: right;
+        float: left;
     }
     .hidden-phone {
         display: none !important;
     }
 
     .dataTables_filter {
-        float: left;
+        float: right;
     }
 
     .dataTables_info {
@@ -382,7 +382,7 @@
 
     .mail-option .inbox-pagination {
         margin-top: 10px;
-        float: left;
+        float: right;
     }
 
     .chart-position {
@@ -397,19 +397,19 @@
     }
 
     .full-width .navbar-toggle {
-        float: left;
+        float: right;
         margin-top: 12px;
     }
 
     .horizontal-menu {
-        float: left;
-        margin-left:0px;
+        float: right;
+        margin-right:0px;
         width: 100%;
     }
 
     .top-nav {
         position: absolute;
-        right: 10px;
+        left: 10px;
         top: 0px;
     }
 
@@ -466,14 +466,14 @@
     /**/
     .chat-room .right-side .user-head {
         width: 100%;
-        float: left;
+        float: right;
     }
 
     .chat-room .mid-side footer {
         position: relative;
-        float: left;
+        float: right;
         width: 100%;
-        border-right: 0;
+        border-left: 0;
     }
 
     .chat-txt {
@@ -508,7 +508,7 @@
     }
 
     #top_menu .nav > li, ul.top-menu > li {
-        float: right;
+        float: left;
     }
 
     .hidden-phone {
@@ -516,7 +516,7 @@
     }
 
     .dataTables_filter {
-        float: left;
+        float: right;
     }
 
     .dataTables_info {
@@ -529,7 +529,7 @@
 
     .mail-option .inbox-pagination {
         margin-top: 10px;
-        float: left;
+        float: right;
     }
 
     .chart-position {

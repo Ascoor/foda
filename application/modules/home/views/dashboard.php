@@ -74,7 +74,7 @@
                         <li>
                             <a href="">
                                 <i class="fa fa-dashboard"></i>
-                                <span>Dashboard</span>
+                                <span>{{ Dashboard }}</span>
                             </a>
                         </li>
                         <?php if ($this->ion_auth->in_group('admin')) { ?>
