@@ -36,10 +36,7 @@
         <section id="container" class="">
             <!--header start-->
             <header class="header white-bg">
-            <div class="col-md-2 logo_bac">
-                        <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
-                            <!--logo end-->
-                        </div>
+          
                 <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
                     <ul class="nav top-menu">
@@ -60,12 +57,14 @@
                             <a href="auth/logout" class="allright"> <i class="fa fa-key"></i> Log Out</a>
                     </div>
                     <!--logo start-->
-                    
+                    <div class="col-md-2 logo_bac">
+                        <a href="" class="logo bold">ECMS <i class="fa fa-bullhorn"></i><span> </span></a>
+                            <!--logo end-->
+                        </div>
                     <div class="sidebar-toggle-box">
                         <div data-original-title="Toggle Navigation" data-placement="left" class="fa fa-bars tooltips"></div>
                     </div>
              
-                </div>
             </header>
             <!--header end-->
             <!--sidebar start-->
