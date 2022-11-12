@@ -14,7 +14,7 @@ a:hover {
 }
 
 .panel-heading {
-    background: #5a9599;
+    background: #124e8a;
     font-size: 21px;
     border-color: #eff2f7;
     font-weight: 500;
@@ -486,8 +486,8 @@ ul {
 .logo_bac{
     margin: 0px !important;
     padding: 0px;
-    padding-left: 20px;
-    background: #345678;
+    padding-right: 25px;
+    background: #124e8a;
     padding-bottom: 15px;
 }
 

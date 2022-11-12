@@ -4,12 +4,12 @@ Website: http://codearistos.com/
 */
 
 /* Import fonts */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic);
+@import url(https://fonts.googleapis.com/css2?family=Cairo&display=swap);
 
 body {
     color: #000;
     background: #f1f2f7;
-    font-family: 'Open Sans', sans-serif;
+    font-family: Amiri,serif;
     padding: 0px !important;
     margin: 0px !important;
     font-size:13px;
@@ -341,7 +341,7 @@ ul.sidebar-menu li a.active i {
 }
 
 .white-bg {
-    background: #55778F;
+    background: #124e8a;
     border-bottom: 0px solid #f1f2f7;
     padding-right: 0px;
 }
@@ -349,7 +349,7 @@ ul.sidebar-menu li a.active i {
 .wrapper {
     display: inline-block;
     margin-top: 60px;
-    padding: 15px;
+    padding: 40px;
     width: 100%;
 }
 
@@ -705,8 +705,8 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 /*--sidebar toggle---*/
 
 .sidebar-toggle-box {
-    float: right;
-    padding-left: 15px;
+    float: left;
+    padding-right: 15px;
     margin-top: 20px;
 }
 
