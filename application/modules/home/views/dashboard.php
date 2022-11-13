@@ -8,7 +8,7 @@
         <meta name="author" content="Rizvi">
         <meta name="keyword" content="Php, Election, Voting, Election Management, Software, Php, CodeIgniter, Ecms, Election Campaign">
         <link rel="shortcut icon" href="uploads/favicon.png">
-        <title><?php echo $this->router->fetch_class(); ?> | Election Campaign Management System</title>
+        <title><?php echo $this->router->fetch_class(); ?> نظام إدارة الحملات الإنتخابية</title>
         <!-- Bootstrap core CSS -->
         <link href="common/css/bootstrap.min.css" rel="stylesheet">
         <link href="common/css/bootstrap-reset.css" rel="stylesheet">   
@@ -79,7 +79,7 @@
                             <li>
                                 <a href="area">
                                     <i class="fa fa-home"></i>
-                                    <span>قائمة المناطق</span>
+                                    <span>قائمة اللجان</span>
                                 </a>
                             </li>
                             <li>

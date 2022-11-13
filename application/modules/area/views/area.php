@@ -5,7 +5,7 @@
         <!-- page start-->
         <section class="panel">
             <header class="panel-heading">
-                <i class="fa fa-home"></i> Area 
+                <i class="fa fa-home"></i> اللجان 
             </header>
             <div class="panel-body">
                 <div class="adv-table editable-table ">
@@ -13,19 +13,19 @@
                         <a data-toggle="modal" href="#myModal">
                             <div class="btn-group">
                                 <button id="" class="btn green">
-                                    <i class="fa fa-plus-circle"></i> Add Area 
+                                    <i class="fa fa-plus-circle"></i>  إضافة لجنة 
                                 </button>
                             </div>
                         </a>
-                        <button class="export" onclick="javascript:window.print();">Print</button>  
+                        <button class="export" onclick="javascript:window.print();">طباعة</button>  
                     </div>
                     <div class="space15"></div>
                     <table class="table table-striped table-hover table-bordered" id="editable-sample">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Options</th>
+                                <th>الإسم</th>
+                                <th>الوصف</th>
+                                <th>تحكم</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,16 +55,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Add Area</h4>
+                <h4 class="modal-title"><i class="fa fa-plus-circle"></i>  إضافة لجنة</h4>
             </div> 
             <div class="modal-body">
                 <form role="form" action="area/addNew" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Name</label>
+                        <label for="exampleInputEmail1">الأسم</label>
                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='' placeholder="">
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">Description</label>
+                        <label class="control-label col-md-3">الوصف</label>
                         <div class="col-md-9">
                             <textarea class="ckeditor form-control" name="description" value="<?php
                             if (!empty($area->description)) {
@@ -75,7 +75,7 @@
                     </div>
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-info submit_button">حفظ</button>
                     </section>
                 </form>
             </div>
@@ -90,16 +90,16 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-edit"></i> Edit Area</h4>
+                <h4 class="modal-title"><i class="fa fa-edit"></i> تعديل</h4>
             </div>
             <div class="modal-body">
                 <form role="form" id="areaEditForm" action="area/addNew" method="post" enctype="multipart/form-data">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Name</label>
+                        <label for="exampleInputEmail1">الإسم</label>
                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='' placeholder="">
                     </div>
                     <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">Description</label>
+                        <label class="control-label col-md-3">الوصف</label>
                         <div class="col-md-9">
                             <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10"></textarea>
                         </div>
@@ -108,7 +108,7 @@
                     <input type="hidden" name="p_id" value=''>
 
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-info submit_button">حفظ</button>
                     </section>
                 </form>
             </div>
