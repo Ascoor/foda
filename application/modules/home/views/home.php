@@ -10,13 +10,13 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Voter
+                            الناخبين
                         </div>
                         <div class="value">
                             <h1 class="">
                                 <?php echo $this->db->count_all('voter'); ?>
                             </h1>
-                            <p>Voter</p>
+                            <p>الناخبين</p>
                         </div>
                     </section>
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
@@ -29,13 +29,13 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Volunteer
+                            الوكلاء
                         </div>
                         <div class="value"> 
                             <h1 class="">
                                 <?php echo $this->db->count_all('volunteer'); ?>
                             </h1>
-                            <p>Volunteer</p>
+                            <p>الوكلاء</p>
                         </div>
                     </section>
                     <?php if (!$this->ion_auth->in_group('admin')) { ?>
@@ -48,7 +48,7 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Event
+                            الحدث
                         </div>
                         <div class="value">
                             <h1 class="">
@@ -63,7 +63,7 @@
                                 echo $i;
                                 ?>
                             </h1>
-                            <p>Upcoming Events</p>
+                            <p>إجمالي الأحداث</p>
                         </div>
                     </section>
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
@@ -77,13 +77,13 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Areas
+                            اللجان والمناطق
                         </div>
                         <div class="value">
                             <h1 class="">
                                 <?php echo $this->db->count_all('area'); ?>
                             </h1>
-                            <p>Areas</p>
+                            <p>المناطق</p>
                         </div>
                     </section>
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
@@ -102,11 +102,11 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Bulk SMS
+                            الرسائل النصية
                         </div>
                         <div class="value">
                             <h1> <i class="fa fa-location-arrow"></i> </h1>
-                            <p> Send SMS To Voter/Volunteer</p>
+                            <p>إرسال رسائل للوكلاء أو الناخبين</p>
                         </div>
                     </section>
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
@@ -119,11 +119,11 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Analysis
+                            التقييم
                         </div>
                         <div class="value">
                             <h1> <i class="fa fa-archive"></i> </h1>
-                            <p>Campaign Analysys</p>
+                            <p>تقييم الحملة</p>
                         </div>
                     </section>
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
@@ -136,11 +136,11 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Expense
+                            التكاليف
                         </div>
                         <div class="value">
                             <h1> <i class="fa fa-money"></i> </h1>
-                            <p>Expense report</p>
+                            <p>تقرير التكاليف</p>
                         </div>
                     </section>
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
@@ -153,11 +153,11 @@
                     <?php } ?>
                     <section class="panel">
                         <div class="dash-heading">
-                            Settings
+                            الإعدادات
                         </div>
                         <div class="value">
                             <h1> <i class="fa fa-gears"></i> </h1>
-                            <p>Settings</p>
+                            <p>الإعدادات</p>
                         </div>
                     </section>
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
