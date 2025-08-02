@@ -1,16 +1,17 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
-  LayoutDashboard, 
-  Megaphone, 
-  Users, 
-  BarChart3, 
-  Settings, 
+  LayoutDashboard,
+  Megaphone,
+  Users,
+  BarChart3,
+  Settings,
   ChevronDown,
   Target,
   Calendar,
   FileText,
-  Database
+  Database,
+  Wallet
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -78,6 +79,12 @@ const menuItems: MenuItem[] = [
       { key: 'analytics.reports', path: '/analytics/reports', icon: FileText },
       { key: 'analytics.data', path: '/analytics/data', icon: Database },
     ]
+  },
+  {
+    key: 'finance',
+    icon: Wallet,
+    path: '/finance',
+    badge: null,
   },
   {
     key: 'settings',

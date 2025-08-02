@@ -17,6 +17,7 @@ import TeamMembers from "./pages/TeamMembers";
 import { Analytics } from "./pages/Analytics";
 import { Settings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import { Finance } from "./pages/Finance";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ const App = () => (
                 <Route path="/teams/*" element={<Teams />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />
+                <Route path="/finance" element={<Finance />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
 
