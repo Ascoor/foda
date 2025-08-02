@@ -10,7 +10,7 @@ use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\V1\SmsController;
-use App\Http\Controllers\Api\V1\SnwController;
+use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\VolunteerController;
 use App\Http\Controllers\Api\V1\VoterController;
@@ -41,7 +41,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('profiles', ProfileController::class);
         Route::apiResource('settings', SettingsController::class);
         Route::apiResource('sms', SmsController::class);
-        Route::apiResource('snws', SnwController::class);
+        Route::get('swots/report', [SwotController::class, 'report']);
+        Route::apiResource('swots', SwotController::class);
         Route::apiResource('teams', TeamController::class);
         Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
         Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);

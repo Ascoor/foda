@@ -23,8 +23,10 @@ class DatabaseSeeder extends Seeder
             HomeSeeder::class,
             ProfileSeeder::class,
             SettingsSeeder::class,
-            SmsSeeder::class,
-            SnwSeeder::class,
+            SmsSeeder::class, 
+            SwotSeeder::class,
+            TeamSeeder::class, 
+            SnwSeeder::class, 
             VolunteerSeeder::class,
             VoterSeeder::class,
         ]);
