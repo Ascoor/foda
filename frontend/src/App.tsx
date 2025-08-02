@@ -19,8 +19,9 @@ import { Analytics } from "./pages/Analytics";
 import { Settings } from "./pages/Settings"; 
 import NotFound from "./pages/NotFound";
 import { Finance } from "./pages/Finance";
-import Profile from "./pages/Profile"; 
+import Profile from "./pages/Profile";
 import Area from "./pages/Area";
+import Sms from "./pages/Sms";
   
 
 const queryClient = new QueryClient();
@@ -57,6 +58,8 @@ const App = () => (
                 <Route path="/areas" element={<Area />} />
  
                 <Route path="/events" element={<Event />} />
+
+                <Route path="/sms" element={<Sms />} />
  
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />

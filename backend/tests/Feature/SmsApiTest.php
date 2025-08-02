@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\Sms;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -13,6 +15,7 @@ class SmsApiTest extends TestCase
 
     public function test_store_sends_sms()
     {
+        Http::fake();
         Sanctum::actingAs(User::factory()->create());
 
         $payload = [
@@ -67,5 +70,34 @@ class SmsApiTest extends TestCase
         $response = $this->getJson("/api/v1/sms/{$sms->id}");
 
         $response->assertForbidden();
+    }
+
+    public function test_update_resend_sms()
+    {
+        Http::fake();
+        $user = User::factory()->create();
+        $sms = Sms::factory()->for($user)->create(['status' => 'pending', 'sent_at' => null]);
+        Sanctum::actingAs($user);
+
+        $response = $this->putJson("/api/v1/sms/{$sms->id}", [
+            'message' => $sms->message,
+            'recipient' => $sms->recipient,
+            'resend' => true,
+        ]);
+
+        $response->assertOk()->assertJsonPath('data.status', 'sent');
+        $this->assertNotNull($sms->fresh()->sent_at);
+    }
+
+    public function test_destroy_sms()
+    {
+        $user = User::factory()->create();
+        $sms = Sms::factory()->for($user)->create();
+        Sanctum::actingAs($user);
+
+        $response = $this->deleteJson("/api/v1/sms/{$sms->id}");
+
+        $response->assertNoContent();
+        $this->assertDatabaseMissing('sms', ['id' => $sms->id]);
     }
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { 
+import {
   LayoutDashboard,
   Megaphone,
   Users,
@@ -10,10 +10,10 @@ import {
   Target,
   Calendar,
   FileText,
-  Database, 
-  Wallet
- 
-  MapPin 
+  Database,
+  Wallet,
+  MapPin,
+  MessageSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -59,7 +59,7 @@ const menuItems: MenuItem[] = [
       { key: 'campaigns.create', path: '/campaigns/create', icon: Target },
       { key: 'campaigns.schedule', path: '/campaigns/schedule', icon: Calendar },
       { key: 'campaigns.reports', path: '/campaigns/reports', icon: FileText },
-    ]
+    ],
   },
   {
     key: 'teams',
@@ -69,16 +69,24 @@ const menuItems: MenuItem[] = [
     children: [
       { key: 'teams.members', path: '/teams/members', icon: Users },
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
-    ]
+    ],
   },
-  { 
+  {
     key: 'areas',
     icon: MapPin,
     path: '/areas',
- 
+    badge: null,
+  },
+  {
     key: 'events',
     icon: Calendar,
-    path: '/events', 
+    path: '/events',
+    badge: null,
+  },
+  {
+    key: 'sms',
+    icon: MessageSquare,
+    path: '/sms',
     badge: null,
   },
   {
@@ -90,7 +98,7 @@ const menuItems: MenuItem[] = [
       { key: 'analytics.performance', path: '/analytics/performance', icon: BarChart3 },
       { key: 'analytics.reports', path: '/analytics/reports', icon: FileText },
       { key: 'analytics.data', path: '/analytics/data', icon: Database },
-    ]
+    ],
   },
   {
     key: 'finance',

@@ -24,7 +24,7 @@ const translations = {
      'nav.areas': 'المناطق',
  
     'nav.events': 'الفعاليات',
- 
+    'nav.sms': 'الرسائل',
     'nav.analytics': 'التحليلات',
     'nav.finance': 'المالية',
     'nav.settings': 'الإعدادات',
@@ -99,8 +99,17 @@ const translations = {
     'events.area': 'المنطقة',
     'events.team': 'الفريق',
     'events.description': 'الوصف',
- 
- 
+
+
+    // SMS
+    'sms.title': 'إدارة الرسائل',
+    'sms.send': 'إرسال رسالة',
+    'sms.message': 'الرسالة',
+    'sms.recipient': 'المستلم',
+    'sms.status': 'الحالة',
+    'sms.confirm_delete': 'هل أنت متأكد من الحذف؟',
+
+    
     // Analytics & Reports
     'analytics.title': 'التحليلات والتقارير',
     'analytics.performance': 'تحليل الأداء',
@@ -146,8 +155,9 @@ const translations = {
     'nav.dashboard': 'Dashboard',
     'nav.campaigns': 'Campaigns',
     'nav.teams': 'Teams', 
-    'nav.areas': 'Areas', 
-    'nav.events': 'Events', 
+    'nav.areas': 'Areas',
+    'nav.events': 'Events',
+    'nav.sms': 'SMS',
     'nav.analytics': 'Analytics',
     'nav.finance': 'Finance',
     'nav.settings': 'Settings',
@@ -223,7 +233,16 @@ const translations = {
     'events.area': 'Area',
     'events.team': 'Team',
     'events.description': 'Description',
-  
+
+
+    // SMS
+    'sms.title': 'SMS Management',
+    'sms.send': 'Send SMS',
+    'sms.message': 'Message',
+    'sms.recipient': 'Recipient',
+    'sms.status': 'Status',
+    'sms.confirm_delete': 'Are you sure you want to delete?',
+
     // Analytics & Reports
     'analytics.title': 'Analytics & Reports',
     'analytics.performance': 'Performance Analysis',
