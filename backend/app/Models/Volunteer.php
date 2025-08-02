@@ -10,7 +10,7 @@ class Volunteer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'team_id'];
+    protected $fillable = ['name', 'email', 'phone', 'team_id'];
 
     public function team(): BelongsTo
     {
