@@ -16,7 +16,7 @@ import { Teams } from "./pages/Teams";
 import TeamMembers from "./pages/TeamMembers";
 import { Event } from "./pages/Event";
 import { Analytics } from "./pages/Analytics";
-import { Settings } from "./pages/Settings"; 
+import Settings  from "./pages/Settings"; 
 import NotFound from "./pages/NotFound";
 import { Finance } from "./pages/Finance";
 import Profile from "./pages/Profile";
@@ -28,6 +28,7 @@ import Swot from "./pages/Swot";
 import Volunteers from "./pages/Volunteers";
 
 import Voters from "./pages/Voters"; 
+import SmsPage from "./pages/Sms";
  
  
 
@@ -66,7 +67,7 @@ const App = () => (
   
                 <Route path="/events" element={<Event />} />
 
-                <Route path="/sms" element={<Sms />} />
+                <Route path="/sms" element={<SmsPage />} />
  
  
                 <Route path="/swots" element={<Swot />} />
