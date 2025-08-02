@@ -29,6 +29,11 @@ class Team extends Model
         return $this->hasMany(Volunteer::class);
     }
 
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
     public function swots(): MorphMany
     {
         return $this->morphMany(Swot::class, 'entity');
