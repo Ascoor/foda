@@ -19,12 +19,14 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Define permissions and assign to roles
         $permissions = [
-            'manage users' => [$admin],
+            'manage users'      => [$admin],
             'manage volunteers' => [$admin, $supervisor],
+            'manage settings'   => [$admin],
         ];
 
         foreach ($permissions as $perm => $roles) {
-            Permission::firstOrCreate(['name' => $perm])->syncRoles($roles);
+            $permission = Permission::firstOrCreate(['name' => $perm]);
+            $permission->syncRoles($roles);
         }
 
         // Seed default users
