@@ -21,6 +21,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $permissions = [
             'manage users',
             'manage volunteers',
+            'manage settings',
         ];
 
         foreach ($permissions as $perm) {
