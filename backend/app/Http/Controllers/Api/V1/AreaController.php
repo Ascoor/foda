@@ -19,7 +19,9 @@ class AreaController extends Controller
     {
         $area = Area::create($request->validated());
 
-        return new AreaResource($area);
+        return (new AreaResource($area))
+            ->response()
+            ->setStatusCode(201);
     }
 
     public function show(Area $area)

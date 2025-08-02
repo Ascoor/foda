@@ -18,6 +18,7 @@ import { Event } from "./pages/Event";
 import { Analytics } from "./pages/Analytics";
 import { Settings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Area from "./pages/Area";
 
 const queryClient = new QueryClient();
 
@@ -49,7 +50,11 @@ const App = () => (
                 <Route path="/teams" element={<Teams />} />
                 <Route path="/teams/members" element={<TeamMembers />} />
                 <Route path="/teams/*" element={<Teams />} />
+ 
+                <Route path="/areas" element={<Area />} />
+ 
                 <Route path="/events" element={<Event />} />
+ 
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />
                 <Route path="/settings" element={<Settings />} />
