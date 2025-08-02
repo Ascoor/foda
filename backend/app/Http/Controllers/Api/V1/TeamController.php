@@ -14,7 +14,7 @@ class TeamController extends Controller
 {
     public function index()
     {
-        $teams = Team::with(['area', 'supervisor'])->withCount('volunteers')->get();
+        $teams = Team::with(['area', 'supervisor', 'volunteers'])->withCount('volunteers')->get();
 
         return TeamResource::collection($teams);
     }
@@ -23,7 +23,7 @@ class TeamController extends Controller
     {
         $team = Team::create($request->validated());
 
-        $team->load(['area', 'supervisor'])->loadCount('volunteers');
+        $team->load(['area', 'supervisor', 'volunteers'])->loadCount('volunteers');
 
         return (new TeamResource($team))
             ->response()
@@ -32,7 +32,7 @@ class TeamController extends Controller
 
     public function show(Team $team)
     {
-        $team->load(['area', 'supervisor'])->loadCount('volunteers');
+        $team->load(['area', 'supervisor', 'volunteers'])->loadCount('volunteers');
 
         return new TeamResource($team);
     }
@@ -41,7 +41,7 @@ class TeamController extends Controller
     {
         $team->update($request->validated());
 
-        $team->load(['area', 'supervisor'])->loadCount('volunteers');
+        $team->load(['area', 'supervisor', 'volunteers'])->loadCount('volunteers');
 
         return new TeamResource($team);
     }
