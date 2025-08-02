@@ -11,9 +11,17 @@ import {
   Calendar,
   FileText,
   Database,
-  Wallet,
+  Wallet, 
   MapPin,
-  MessageSquare
+  MessageSquare,
+  
+  ClipboardList,
+ 
+ 
+  UserPlus,
+
+  Vote,
+  
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -69,8 +77,20 @@ const menuItems: MenuItem[] = [
     children: [
       { key: 'teams.members', path: '/teams/members', icon: Users },
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
+ 
     ],
   },
+ 
+    ]
+  },  
+  {
+    key: 'volunteers',
+    icon: UserPlus,
+    path: '/volunteers',
+    badge: null,
+  },
+ 
+ 
   {
     key: 'areas',
     icon: MapPin,
@@ -84,11 +104,22 @@ const menuItems: MenuItem[] = [
     badge: null,
   },
   {
-    key: 'sms',
-    icon: MessageSquare,
-    path: '/sms',
+ 
+    key: 'swots',
+    icon: ClipboardList,
+    path: '/swots',
+ 
     badge: null,
   },
+  {
+    key: 'swots',
+    icon: FileText,
+    path: '/swots',
+ 
+    badge: null,
+  },
+
+  { key: 'voters', icon: Vote, path: '/voters', badge: null },
   {
     key: 'analytics',
     icon: BarChart3,
@@ -100,18 +131,8 @@ const menuItems: MenuItem[] = [
       { key: 'analytics.data', path: '/analytics/data', icon: Database },
     ],
   },
-  {
-    key: 'finance',
-    icon: Wallet,
-    path: '/finance',
-    badge: null,
-  },
-  {
-    key: 'settings',
-    icon: Settings,
-    path: '/settings',
-    badge: null,
-  },
+  { key: 'finance', icon: Wallet, path: '/finance', badge: null },
+  { key: 'settings', icon: Settings, path: '/settings', badge: null },
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
