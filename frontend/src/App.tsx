@@ -14,10 +14,14 @@ import { Campaigns } from "./pages/Campaigns";
 import { CampaignReports } from "./pages/CampaignReports";
 import { Teams } from "./pages/Teams";
 import TeamMembers from "./pages/TeamMembers";
+import { Event } from "./pages/Event";
 import { Analytics } from "./pages/Analytics";
-import { Settings } from "./pages/Settings";
+import { Settings } from "./pages/Settings"; 
 import NotFound from "./pages/NotFound";
 import { Finance } from "./pages/Finance";
+import Profile from "./pages/Profile"; 
+import Area from "./pages/Area";
+  
 
 const queryClient = new QueryClient();
 
@@ -49,10 +53,16 @@ const App = () => (
                 <Route path="/teams" element={<Teams />} />
                 <Route path="/teams/members" element={<TeamMembers />} />
                 <Route path="/teams/*" element={<Teams />} />
+ 
+                <Route path="/areas" element={<Area />} />
+ 
+                <Route path="/events" element={<Event />} />
+ 
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />
                 <Route path="/finance" element={<Finance />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/profile" element={<Profile />} />
               </Route>
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
