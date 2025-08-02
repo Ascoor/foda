@@ -12,7 +12,7 @@ class SwotSeeder extends Seeder
     {
         $user = User::first() ?? User::factory()->create();
 
-        Swot::create([
+        Swot::factory()->create([
             'entity_type' => 'area',
             'entity_id' => 1,
             'strengths' => 'Strong community engagement',
@@ -22,7 +22,7 @@ class SwotSeeder extends Seeder
             'created_by' => $user->id,
         ]);
 
-        Swot::create([
+        Swot::factory()->create([
             'entity_type' => 'team',
             'entity_id' => 1,
             'strengths' => 'فريق ذو خبرة',
@@ -32,7 +32,7 @@ class SwotSeeder extends Seeder
             'created_by' => $user->id,
         ]);
 
-        Swot::create([
+        Swot::factory()->create([
             'entity_type' => 'volunteer',
             'entity_id' => 1,
             'strengths' => 'Motivated and dedicated',
