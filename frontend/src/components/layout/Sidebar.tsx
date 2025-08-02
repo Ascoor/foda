@@ -13,7 +13,10 @@ import {
   Database,
   Wallet,
   MapPin,
+  UserPlus,
+
   Vote,
+
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -71,9 +74,27 @@ const menuItems: MenuItem[] = [
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
     ]
   },
+  
+  {
+    key: 'volunteers',
+    icon: UserPlus,
+    path: '/volunteers',
+    badge: null,
+  },
+  {
+    key: 'areas',
+    icon: MapPin,
+    path: '/areas',
+    badge: null,
+  },
+  {
+    key: 'events',
+    icon: Calendar,
+    path: '/events',
+    badge: null,
+  },
+
   { key: 'voters', icon: Vote, path: '/voters', badge: null },
-  { key: 'areas', icon: MapPin, path: '/areas', badge: null },
-  { key: 'events', icon: Calendar, path: '/events', badge: null },
   {
     key: 'analytics',
     icon: BarChart3,
