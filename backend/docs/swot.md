@@ -1,5 +1,9 @@
 # SWOT API
 
+SWOT (Strengths, Weaknesses, Opportunities, Threats) analyses can be attached to
+areas, teams or volunteers. The following endpoints provide CRUD operations and a
+simple reporting endpoint.
+
 ## Endpoints
 
 ### List SWOTs
@@ -30,7 +34,35 @@
 
 ### Aggregated Report
 - `GET /api/v1/swots/report?entity_type=team&entity_ids[]=1&entity_ids[]=2`
+ 
+- Query parameters:
+  - `entity_type` (required): `area`, `team` or `volunteer`
+  - `entity_ids[]` (optional): limit results to these entity IDs
+- Example response:
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "entity_type": "team",
+      "entity_id": 1,
+      "strengths": "Strong leadership",
+      "weaknesses": "Limited budget",
+      "opportunities": "Training",
+      "threats": "Competition",
+      "created_by": 1,
+      "created_at": "2024-08-02T00:00:00.000000Z",
+      "updated_at": "2024-08-02T00:00:00.000000Z"
+    }
+  ]
+}
+```
+=======
+- Query params:
+  - `entity_type` (**required**) – one of `area`, `team`, `volunteer`
+  - `entity_ids[]` (**optional**) – array of IDs to filter
 - Returns SWOT entries filtered by type and optional IDs.
+ 
 
 ## Relations
 - SWOTs attach to `area`, `team`, and `volunteer` models via a polymorphic relation.

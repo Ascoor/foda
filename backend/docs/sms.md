@@ -1,5 +1,18 @@
 # SMS API
 
+The application integrates with [Twilio](https://www.twilio.com/) for sending
+SMS messages. Configure the following environment variables to enable delivery:
+
+```
+TWILIO_SID=your_account_sid
+TWILIO_TOKEN=your_auth_token
+TWILIO_FROM=1555123456
+```
+
+If credentials are not provided, messages will be marked as failed. A rate
+limit can be enforced via the `SMS_RATE_LIMIT` setting which limits the number
+of messages sent per minute.
+
 ## List Messages
 `GET /api/v1/sms?status=`
 

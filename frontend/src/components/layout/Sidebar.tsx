@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { 
+import {
   LayoutDashboard,
   Megaphone,
   Users,
@@ -9,11 +9,18 @@ import {
   ChevronDown,
   Target,
   Calendar,
-  FileText,
-  Database, 
-  Wallet,
- 
-  MapPin 
+  FileText,   
+  Database,
+  Wallet, 
+  MapPin,
+  MessageSquare,
+
+  ClipboardList,
+
+  UserPlus,
+
+  Vote,
+  
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -59,7 +66,7 @@ const menuItems: MenuItem[] = [
       { key: 'campaigns.create', path: '/campaigns/create', icon: Target },
       { key: 'campaigns.schedule', path: '/campaigns/schedule', icon: Calendar },
       { key: 'campaigns.reports', path: '/campaigns/reports', icon: FileText },
-    ]
+    ],
   },
   {
     key: 'teams',
@@ -69,12 +76,31 @@ const menuItems: MenuItem[] = [
     children: [
       { key: 'teams.members', path: '/teams/members', icon: Users },
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
-    ]
+ 
+    ],
+  }, 
+  {
+    key: 'messages',
+    icon: MessageSquare,
+    path: '/messages',
+    badge: null,
+  },  
+  {
+    key: 'contacts',
+    icon: UserPlus,
+    path: '/contacts',
+    badge: null,
   },
   {
-    key: 'locations',
+    key: 'contacts',
+    icon: UserPlus,
+    path: '/contacts',
+    badge: null,
+  },
+  {
+    key: 'areas',
     icon: MapPin,
-    path: '/locations',
+    path: '/areas', 
     badge: null,
   },
   {
@@ -84,12 +110,12 @@ const menuItems: MenuItem[] = [
     badge: null,
   },
   {
-    key: 'swot',
-    icon: BarChart3,
-    path: '/swot',
+  key: 'tasks',
+    icon: ClipboardList,
+    path: '/tasks',
     badge: null,
   },
-    
+  { key: 'voters', icon: Vote, path: '/voters', badge: null },
   {
     key: 'analytics',
     icon: BarChart3,
@@ -99,20 +125,10 @@ const menuItems: MenuItem[] = [
       { key: 'analytics.performance', path: '/analytics/performance', icon: BarChart3 },
       { key: 'analytics.reports', path: '/analytics/reports', icon: FileText },
       { key: 'analytics.data', path: '/analytics/data', icon: Database },
-    ]
+    ],
   },
-  {
-    key: 'finance',
-    icon: Wallet,
-    path: '/finance',
-    badge: null,
-  },
-  {
-    key: 'settings',
-    icon: Settings,
-    path: '/settings',
-    badge: null,
-  },
+  { key: 'finance', icon: Wallet, path: '/finance', badge: null },
+  { key: 'settings', icon: Settings, path: '/settings', badge: null },
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {

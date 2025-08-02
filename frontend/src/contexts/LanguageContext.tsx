@@ -19,12 +19,21 @@ const translations = {
     'app.title': 'فودا',
     'app.subtitle': 'نظام إدارة الحملات المتطور',
     'nav.dashboard': 'لوحة التحكم',
-    'nav.campaigns': 'الحملات',
-    'nav.teams': 'الفرق',
-     'nav.areas': 'المناطق',
- 
+    'nav.campaigns': 'الحملات', 
     'nav.events': 'الفعاليات',
+    'nav.sms': 'الرسائل',
  
+    'nav.swots': 'تحليل SWOT',
+ 
+    'nav.teams': 'الفرق', 
+     'nav.areas': 'المناطق', 
+    
+    'nav.volunteers': 'المتطوعون',
+     
+        
+    'nav.voters': 'الناخبون', 
+    'nav.events': 'الفعاليات', 
+  
     'nav.analytics': 'التحليلات',
     'nav.finance': 'المالية',
     'nav.settings': 'الإعدادات',
@@ -76,8 +85,18 @@ const translations = {
     'teams.members': 'الأعضاء',
     'teams.add_member': 'إضافة عضو',
     'teams.roles': 'الأدوار والصلاحيات',
- 
- 
+
+    // Volunteers
+    'volunteers.title': 'إدارة المتطوعين',
+    'volunteers.create': 'إضافة متطوع',
+    'volunteers.edit': 'تعديل المتطوع',
+    'volunteers.delete': 'حذف المتطوع',
+    'volunteers.name': 'الاسم',
+    'volunteers.email': 'البريد الإلكتروني',
+    'volunteers.phone': 'الهاتف',
+    'volunteers.team': 'الفريق',
+    'volunteers.confirm_delete': 'هل أنت متأكد من الحذف؟',
+
     // Areas
     'areas.title': 'إدارة المناطق',
     'areas.create': 'إنشاء منطقة جديدة',
@@ -86,7 +105,24 @@ const translations = {
     'areas.description': 'الوصف',
     'areas.x': 'س',
     'areas.y': 'ص',
-    'areas.confirm_delete': 'هل أنت متأكد من الحذف؟', 
+    'areas.confirm_delete': 'هل أنت متأكد من الحذف؟',
+    // Voters
+    'voters.title': 'إدارة الناخبين',
+    'voters.create': 'إضافة ناخب',
+    'voters.edit': 'تعديل الناخب',
+    'voters.name': 'الاسم',
+    'voters.email': 'البريد الإلكتروني',
+    'voters.phone': 'الهاتف',
+    'voters.area': 'المنطقة',
+    'voters.address': 'العنوان',
+    'voters.sex': 'الجنس',
+    'voters.male': 'ذكر',
+    'voters.female': 'أنثى',
+    'voters.birthdate': 'تاريخ الميلاد',
+    'voters.voter_id': 'رقم الناخب',
+    'voters.import': 'استيراد',
+    'voters.export': 'تصدير',
+    'voters.confirm_delete': 'هل أنت متأكد من حذف الناخب؟',
     // Events
     'events.title': 'إدارة الفعاليات',
     'events.create': 'إنشاء فعالية',
@@ -100,6 +136,30 @@ const translations = {
     'events.team': 'الفريق',
     'events.description': 'الوصف',
  
+
+    // SMS
+    'sms.title': 'إدارة الرسائل',
+    'sms.send': 'إرسال رسالة',
+    'sms.message': 'الرسالة',
+    'sms.recipient': 'المستلم',
+    'sms.status': 'الحالة',
+    'sms.confirm_delete': 'هل أنت متأكد من الحذف؟',
+
+     
+    // Swots
+    'swots.title': 'تحليل SWOT',
+    'swots.create': 'إضافة تحليل',
+    'swots.edit': 'تعديل التحليل',
+    'swots.entity_type': 'نوع الكيان',
+    'swots.entity_id': 'معرّف الكيان',
+    'swots.strengths': 'نقاط القوة',
+    'swots.weaknesses': 'نقاط الضعف',
+    'swots.opportunities': 'الفرص',
+    'swots.threats': 'التهديدات',
+    'swots.report': 'تقرير SWOT',
+    'swots.generate_report': 'توليد التقرير',
+    'swots.entity_ids': 'معرفات الكيانات',
+    'swots.confirm_delete': 'هل أنت متأكد من الحذف؟',
  
     // Analytics & Reports
     'analytics.title': 'التحليلات والتقارير',
@@ -122,7 +182,32 @@ const translations = {
     'finance.income': 'إيراد',
     'finance.expense': 'مصروف',
     'finance.no_records': 'لا توجد سجلات مالية',
+
+ 
+    'settings.title': 'إدارة الإعدادات',
+    'settings.create': 'إنشاء إعداد',
+    'settings.edit': 'تعديل الإعداد',
+    'settings.key': 'المفتاح',
+    'settings.value': 'القيمة',
+    'settings.type': 'النوع',
+    'settings.description': 'الوصف',
+    'settings.confirm_delete': 'هل أنت متأكد من الحذف؟',
+ 
+    // Swots
+    'swots.title': 'تحليل SWOT',
+    'swots.create': 'إنشاء تحليل',
+    'swots.edit': 'تعديل التحليل',
+    'swots.entity_type': 'نوع الجهة',
+    'swots.entity_id': 'معرّف الجهة',
+    'swots.strengths': 'نقاط القوة',
+    'swots.weaknesses': 'نقاط الضعف',
+    'swots.opportunities': 'الفرص',
+    'swots.threats': 'التهديدات',
+    'swots.report': 'تقرير',
+    'swots.entity_ids': 'معرّفات الجهات',
+    'swots.confirm_delete': 'هل أنت متأكد من الحذف؟',
     
+ 
     // Common
     'common.save': 'حفظ',
     'common.cancel': 'إلغاء',
@@ -144,10 +229,24 @@ const translations = {
     'app.title': 'Foda',
     'app.subtitle': 'Advanced Campaign Management System',
     'nav.dashboard': 'Dashboard',
-    'nav.campaigns': 'Campaigns',
+ 
+    'nav.campaigns': 'Campaigns', 
     'nav.teams': 'Teams', 
-    'nav.areas': 'Areas', 
+    'nav.areas': 'Areas',
     'nav.events': 'Events', 
+    'nav.sms': 'SMS',
+ 
+    'nav.swots': 'SWOTs',
+ 
+    'nav.teams': 'Teams',
+
+    'nav.volunteers': 'Volunteers',
+ 
+    'nav.voters': 'Voters',
+    'nav.areas': 'Areas',
+    'nav.events': 'Events',
+ 
+  
     'nav.analytics': 'Analytics',
     'nav.finance': 'Finance',
     'nav.settings': 'Settings',
@@ -199,6 +298,18 @@ const translations = {
     'teams.members': 'Team Members',
     'teams.add_member': 'Add Member',
     'teams.roles': 'Roles & Permissions',
+
+    // Volunteers
+    'volunteers.title': 'Volunteer Management',
+    'volunteers.create': 'Add Volunteer',
+    'volunteers.edit': 'Edit Volunteer',
+    'volunteers.delete': 'Delete Volunteer',
+    'volunteers.name': 'Name',
+    'volunteers.email': 'Email',
+    'volunteers.phone': 'Phone',
+    'volunteers.team': 'Team',
+    'volunteers.confirm_delete': 'Are you sure you want to delete?',
+
  
  
     // Areas
@@ -210,7 +321,25 @@ const translations = {
     'areas.x': 'X',
     'areas.y': 'Y',
     'areas.confirm_delete': 'Are you sure you want to delete?',
-     
+
+    // Voters
+    'voters.title': 'Voter Management',
+    'voters.create': 'Create Voter',
+    'voters.edit': 'Edit Voter',
+    'voters.name': 'Name',
+    'voters.email': 'Email',
+    'voters.phone': 'Phone',
+    'voters.area': 'Area',
+    'voters.address': 'Address',
+    'voters.sex': 'Sex',
+    'voters.male': 'Male',
+    'voters.female': 'Female',
+    'voters.birthdate': 'Birthdate',
+    'voters.voter_id': 'Voter ID',
+    'voters.import': 'Import',
+    'voters.export': 'Export',
+    'voters.confirm_delete': 'Are you sure you want to delete?',
+
     // Events
     'events.title': 'Event Management',
     'events.create': 'Create Event',
@@ -223,7 +352,30 @@ const translations = {
     'events.area': 'Area',
     'events.team': 'Team',
     'events.description': 'Description',
-  
+ 
+
+    // SMS
+    'sms.title': 'SMS Management',
+    'sms.send': 'Send SMS',
+    'sms.message': 'Message',
+    'sms.recipient': 'Recipient',
+    'sms.status': 'Status',
+    'sms.confirm_delete': 'Are you sure you want to delete?',  
+    // Swots
+    'swots.title': 'SWOT Analysis',
+    'swots.create': 'Add SWOT',
+    'swots.edit': 'Edit SWOT',
+    'swots.entity_type': 'Entity Type',
+    'swots.entity_id': 'Entity ID',
+    'swots.strengths': 'Strengths',
+    'swots.weaknesses': 'Weaknesses',
+    'swots.opportunities': 'Opportunities',
+    'swots.threats': 'Threats',
+    'swots.report': 'SWOT Report',
+    'swots.generate_report': 'Generate Report',
+    'swots.entity_ids': 'Entity IDs',
+    'swots.confirm_delete': 'Are you sure you want to delete?', 
+
     // Analytics & Reports
     'analytics.title': 'Analytics & Reports',
     'analytics.performance': 'Performance Analysis',
@@ -245,8 +397,32 @@ const translations = {
     'finance.income': 'Income',
     'finance.expense': 'Expense',
     'finance.no_records': 'No finance records',
-    
-    // Common
+ 
+    // Settings
+    'settings.title': 'Settings Management',
+    'settings.create': 'Create Setting',
+    'settings.edit': 'Edit Setting',
+    'settings.key': 'Key',
+    'settings.value': 'Value',
+    'settings.type': 'Type',
+    'settings.description': 'Description',
+    'settings.confirm_delete': 'Are you sure you want to delete?',
+
+ 
+    // Swots
+    'swots.title': 'SWOT Analysis',
+    'swots.create': 'Create SWOT',
+    'swots.edit': 'Edit SWOT',
+    'swots.entity_type': 'Entity Type',
+    'swots.entity_id': 'Entity ID',
+    'swots.strengths': 'Strengths',
+    'swots.weaknesses': 'Weaknesses',
+    'swots.opportunities': 'Opportunities',
+    'swots.threats': 'Threats',
+    'swots.report': 'Report',
+    'swots.entity_ids': 'Entity IDs',
+    'swots.confirm_delete': 'Are you sure you want to delete?',
+         // Common
     'common.save': 'Save',
     'common.cancel': 'Cancel',
     'common.delete': 'Delete',
