@@ -26,21 +26,24 @@ use App\Http\Controllers\Api\V1\VoterController;
 |
 */
 
-Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+Route::prefix('v1')->group(function () {
+    Route::post('login', [AuthController::class, 'login']);
 
-    Route::apiResource('areas', AreaController::class);
-    Route::apiResource('auths', AuthController::class);
-    Route::apiResource('events', EventController::class);
-    Route::apiResource('finances', FinanceController::class);
-    Route::apiResource('homes', HomeController::class);
-    Route::apiResource('profiles', ProfileController::class);
-    Route::apiResource('settings', SettingsController::class);
-    Route::apiResource('sms', SmsController::class);
-    Route::apiResource('snws', SnwController::class);
-    Route::apiResource('teams', TeamController::class);
-    Route::apiResource('volunteers', VolunteerController::class);
-    Route::apiResource('voters', VoterController::class);
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('profile', [AuthController::class, 'profile']);
+
+        Route::apiResource('areas', AreaController::class);
+        Route::apiResource('events', EventController::class);
+        Route::apiResource('finances', FinanceController::class);
+        Route::apiResource('homes', HomeController::class);
+        Route::apiResource('profiles', ProfileController::class);
+        Route::apiResource('settings', SettingsController::class);
+        Route::apiResource('sms', SmsController::class);
+        Route::apiResource('snws', SnwController::class);
+        Route::apiResource('teams', TeamController::class);
+        Route::apiResource('volunteers', VolunteerController::class);
+        Route::apiResource('voters', VoterController::class);
+    });
 });
+

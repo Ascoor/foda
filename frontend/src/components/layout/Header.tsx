@@ -14,6 +14,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { logout } from '@/lib/auth';
+import { useNavigate } from 'react-router-dom';
 
 interface HeaderProps {
   onSidebarToggle: () => void;
@@ -23,9 +25,15 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onSidebarToggle, isSidebarOpen }) => {
   const { theme, toggleTheme } = useTheme();
   const { language, setLanguage, direction, t } = useLanguage();
+  const navigate = useNavigate();
 
   const handleLanguageSwitch = () => {
     setLanguage(language === 'ar' ? 'en' : 'ar');
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
   };
 
   return (
@@ -150,7 +158,10 @@ export const Header: React.FC<HeaderProps> = ({ onSidebarToggle, isSidebarOpen }
               {t('nav.settings')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className={`${language === 'ar' ? 'font-arabic' : ''} transition-glow hover:bg-destructive hover:text-destructive-foreground`}>
+            <DropdownMenuItem
+              onClick={handleLogout}
+              className={`${language === 'ar' ? 'font-arabic' : ''} transition-glow hover:bg-destructive hover:text-destructive-foreground`}
+            >
               <LogOut className={`h-4 w-4 ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`} />
               {t('nav.logout')}
             </DropdownMenuItem>
