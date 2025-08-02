@@ -30,6 +30,9 @@
 
 ### Aggregated Report
 - `GET /api/v1/swots/report?entity_type=team&entity_ids[]=1&entity_ids[]=2`
+- Query params:
+  - `entity_type` (**required**) – one of `area`, `team`, `volunteer`
+  - `entity_ids[]` (**optional**) – array of IDs to filter
 - Returns SWOT entries filtered by type and optional IDs.
 
 ## Relations

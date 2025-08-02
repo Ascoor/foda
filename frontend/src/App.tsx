@@ -19,8 +19,9 @@ import { Analytics } from "./pages/Analytics";
 import { Settings } from "./pages/Settings"; 
 import NotFound from "./pages/NotFound";
 import { Finance } from "./pages/Finance";
-import Profile from "./pages/Profile"; 
+import Profile from "./pages/Profile";
 import Area from "./pages/Area";
+import Swot from "./pages/Swot";
   
 
 const queryClient = new QueryClient();
@@ -55,6 +56,7 @@ const App = () => (
                 <Route path="/teams/*" element={<Teams />} />
  
                 <Route path="/areas" element={<Area />} />
+                <Route path="/swots" element={<Swot />} />
  
                 <Route path="/events" element={<Event />} />
  
