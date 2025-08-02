@@ -42,6 +42,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('sms', SmsController::class);
         Route::apiResource('snws', SnwController::class);
         Route::apiResource('teams', TeamController::class);
+        Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
+        Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
         Route::apiResource('volunteers', VolunteerController::class);
         Route::apiResource('voters', VoterController::class);
     });

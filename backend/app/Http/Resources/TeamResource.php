@@ -8,6 +8,20 @@ class TeamResource extends JsonResource
 {
     public function toArray($request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'area' => [
+                'id' => $this->area->id ?? null,
+                'name' => $this->area->name ?? null,
+            ],
+            'supervisor' => [
+                'id' => $this->supervisor->id ?? null,
+                'name' => $this->supervisor->name ?? null,
+            ],
+            'volunteers_count' => $this->volunteers_count ?? $this->volunteers()->count(),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 }

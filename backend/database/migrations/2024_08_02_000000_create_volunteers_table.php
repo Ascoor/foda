@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::create('volunteers', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 100);
+            $table->foreignId('team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->timestamps();
         });
     }
