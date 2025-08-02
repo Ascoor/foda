@@ -44,7 +44,7 @@ const menuItems: MenuItem[] = [
   {
     key: 'dashboard',
     icon: LayoutDashboard,
-    path: '/',
+    path: '/dashboard',
     badge: null,
   },
   {
