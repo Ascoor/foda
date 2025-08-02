@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Search, UserPlus, MoreHorizontal, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { fetchTeams } from '@/lib/teams';
 
 interface TeamMember {
   id: string;
@@ -44,88 +45,33 @@ interface Team {
   lead: string;
 }
 
-const teams: Team[] = [
-  {
-    id: '1',
-    name: 'فريق التسويق',
-    description: 'فريق متخصص في التسويق الرقمي والحملات الإعلانية',
-    lead: 'أحمد محمد',
-    members: [
-      {
-        id: '1',
-        name: 'أحمد محمد',
-        role: 'مدير التسويق',
-        email: 'ahmed@fahsan.com',
-        phone: '+966501234567',
-        location: 'الرياض',
-        initials: 'أم',
-        status: 'active',
-        joinDate: '2023-01-15'
-      },
-      {
-        id: '2',
-        name: 'فاطمة أحمد',
-        role: 'أخصائي وسائل التواصل',
-        email: 'fatima@fahsan.com',
-        phone: '+966507654321',
-        location: 'جدة',
-        initials: 'فأ',
-        status: 'active',
-        joinDate: '2023-03-20'
-      },
-      {
-        id: '3',
-        name: 'محمد علي',
-        role: 'مصمم جرافيك',
-        email: 'mohammed@fahsan.com',
-        location: 'الدمام',
-        initials: 'مع',
-        status: 'active',
-        joinDate: '2023-05-10'
-      }
-    ]
-  },
-  {
-    id: '2',
-    name: 'فريق المنتجات',
-    description: 'فريق تطوير وإدارة المنتجات الرقمية',
-    lead: 'سارة خالد',
-    members: [
-      {
-        id: '4',
-        name: 'سارة خالد',
-        role: 'مدير المنتجات',
-        email: 'sara@fahsan.com',
-        phone: '+966509876543',
-        location: 'الرياض',
-        initials: 'سخ',
-        status: 'active',
-        joinDate: '2023-02-01'
-      },
-      {
-        id: '5',
-        name: 'خالد عبدالله',
-        role: 'مطور واجهات',
-        email: 'khalid@fahsan.com',
-        location: 'جدة',
-        initials: 'خع',
-        status: 'active',
-        joinDate: '2023-04-15'
-      }
-    ]
-  }
-];
-
 export const Teams: React.FC = () => {
   const { language, direction, t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+  const [teams, setTeams] = useState<Team[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTeams()
+      .then((data) => setTeams(data.data ?? data))
+      .catch((error) => console.error(error))
+      .finally(() => setLoading(false));
+  }, []);
 
   const filteredTeams = teams.filter(team =>
     team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     team.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <div className="p-6">
+        {language === 'ar' ? 'جارٍ التحميل...' : 'Loading...'}
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 p-6">
