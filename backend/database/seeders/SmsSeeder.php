@@ -9,6 +9,6 @@ class SmsSeeder extends Seeder
 {
     public function run(): void
     {
-        Sms::create();
+        Sms::factory()->count(10)->create();
     }
 }
