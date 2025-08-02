@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             ProfileSeeder::class,
             SettingsSeeder::class,
             SmsSeeder::class,
-            SnwSeeder::class,
+            SwotSeeder::class,
             TeamSeeder::class,
             VolunteerSeeder::class,
             VoterSeeder::class,
