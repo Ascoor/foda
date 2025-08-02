@@ -43,6 +43,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('snws', SnwController::class);
         Route::apiResource('teams', TeamController::class);
         Route::apiResource('volunteers', VolunteerController::class);
+        Route::post('voters/import', [VoterController::class, 'import']);
+        Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
     });
 });
