@@ -12,8 +12,9 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('description', 1000);
-            $table->string('x', 10)->nullable();
-            $table->string('y', 10)->nullable();
+$table->decimal('x', 12, 8);
+$table->decimal('y', 12, 8);
+
             $table->timestamps();
         });
     }

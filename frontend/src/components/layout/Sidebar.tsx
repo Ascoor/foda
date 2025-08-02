@@ -11,7 +11,7 @@ import {
   Calendar,
   FileText,
   Database, 
-  Wallet
+  Wallet,
  
   MapPin 
 } from 'lucide-react';
@@ -71,16 +71,25 @@ const menuItems: MenuItem[] = [
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
     ]
   },
-  { 
-    key: 'areas',
+  {
+    key: 'locations',
     icon: MapPin,
-    path: '/areas',
- 
-    key: 'events',
-    icon: Calendar,
-    path: '/events', 
+    path: '/locations',
     badge: null,
   },
+  {
+    key: 'events',
+    icon: Calendar,
+    path: '/events',
+    badge: null,
+  },
+  {
+    key: 'swot',
+    icon: BarChart3,
+    path: '/swot',
+    badge: null,
+  },
+    
   {
     key: 'analytics',
     icon: BarChart3,
@@ -107,9 +116,9 @@ const menuItems: MenuItem[] = [
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
-  const location = useLocation();
-  const { direction, language, t } = useLanguage();
-  const [openItems, setOpenItems] = React.useState<string[]>(['campaigns']);
+ const location = useLocation();
+const { direction, language, t } = useLanguage();
+const [openItems, setOpenItems] = React.useState<string[]>(['campaigns']);
 
   const toggleItem = (key: string) => {
     setOpenItems(prev => 
