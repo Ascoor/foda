@@ -18,9 +18,7 @@ class TeamSeeder extends Seeder
                 'area_id' => $area->id,
                 'supervisor_id' => $supervisors->random()->id,
             ]);
-        }); 
-        Team::create(['name' => 'الفريق الأول']);
-        Team::create(['name' => 'Team Alpha']);
+        });
  
     }
 }

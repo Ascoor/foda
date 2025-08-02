@@ -71,5 +71,74 @@ class TeamApiTest extends TestCase
         $response->assertNoContent();
         $this->assertDatabaseMissing('teams', ['id' => $team->id]);
     }
+
+    public function test_index_shows_teams_with_volunteers()
+    {
+        Sanctum::actingAs(User::factory()->create());
+        $area = Area::factory()->create();
+        $supervisor = User::factory()->create();
+        $team = Team::create([
+            'name' => 'Team C',
+            'area_id' => $area->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+        Volunteer::create(['name' => 'Vol X', 'team_id' => $team->id]);
+
+        $response = $this->getJson('/api/v1/teams');
+
+        $response->assertOk()->assertJsonPath('data.0.volunteers.0.name', 'Vol X');
+    }
+
+    public function test_show_returns_team_with_volunteers()
+    {
+        Sanctum::actingAs(User::factory()->create());
+        $area = Area::factory()->create();
+        $supervisor = User::factory()->create();
+        $team = Team::create([
+            'name' => 'Team D',
+            'area_id' => $area->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+        $volunteer = Volunteer::create(['name' => 'Vol Y', 'team_id' => $team->id]);
+
+        $response = $this->getJson("/api/v1/teams/{$team->id}");
+
+        $response->assertOk()->assertJsonPath('data.volunteers.0.id', $volunteer->id);
+    }
+
+    public function test_update_modifies_team()
+    {
+        Sanctum::actingAs(User::factory()->create());
+        $area = Area::factory()->create();
+        $supervisor = User::factory()->create();
+        $team = Team::create([
+            'name' => 'Old',
+            'area_id' => $area->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+
+        $response = $this->putJson("/api/v1/teams/{$team->id}", ['name' => 'New']);
+
+        $response->assertOk()->assertJsonPath('data.name', 'New');
+        $this->assertDatabaseHas('teams', ['id' => $team->id, 'name' => 'New']);
+    }
+
+    public function test_remove_volunteer_from_team()
+    {
+        Sanctum::actingAs(User::factory()->create());
+        $area = Area::factory()->create();
+        $supervisor = User::factory()->create();
+        $team = Team::create([
+            'name' => 'Team E',
+            'area_id' => $area->id,
+            'supervisor_id' => $supervisor->id,
+        ]);
+        $volunteer = Volunteer::create(['name' => 'Vol Z', 'team_id' => $team->id]);
+
+        $response = $this->deleteJson("/api/v1/teams/{$team->id}/volunteers/{$volunteer->id}");
+
+        $response->assertNoContent();
+        $this->assertDatabaseHas('volunteers', ['id' => $volunteer->id, 'team_id' => null]);
+    }
 }
 
