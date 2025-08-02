@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
             SettingSeeder::class,
             SmsSeeder::class, 
             SwotSeeder::class,
-            TeamSeeder::class,  
             VolunteerSeeder::class,
             VoterSeeder::class,
         ]);

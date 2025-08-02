@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Area extends Model
@@ -15,5 +16,20 @@ class Area extends Model
     public function swots(): MorphMany
     {
         return $this->morphMany(Swot::class, 'entity');
+    }
+
+    public function teams(): HasMany
+    {
+        return $this->hasMany(Team::class);
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function voters(): HasMany
+    {
+        return $this->hasMany(Voter::class);
     }
 }

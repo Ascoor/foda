@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Sms::class);
     }
+
+    public function teams(): HasMany
+    {
+        return $this->hasMany(Team::class, 'supervisor_id');
+    }
 }

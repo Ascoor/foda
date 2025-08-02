@@ -33,9 +33,4 @@ class Event extends Model
     {
         return $this->belongsTo(Team::class);
     }
-
-    public function volunteers()
-    {
-        return $this->hasMany(Volunteer::class);
-    }
 }
