@@ -171,6 +171,16 @@ const translations = {
     'finance.expense': 'مصروف',
     'finance.no_records': 'لا توجد سجلات مالية',
 
+ 
+    'settings.title': 'إدارة الإعدادات',
+    'settings.create': 'إنشاء إعداد',
+    'settings.edit': 'تعديل الإعداد',
+    'settings.key': 'المفتاح',
+    'settings.value': 'القيمة',
+    'settings.type': 'النوع',
+    'settings.description': 'الوصف',
+    'settings.confirm_delete': 'هل أنت متأكد من الحذف؟',
+ 
     // Swots
     'swots.title': 'تحليل SWOT',
     'swots.create': 'إنشاء تحليل',
@@ -185,6 +195,7 @@ const translations = {
     'swots.entity_ids': 'معرّفات الجهات',
     'swots.confirm_delete': 'هل أنت متأكد من الحذف؟',
     
+ 
     // Common
     'common.save': 'حفظ',
     'common.cancel': 'إلغاء',
@@ -364,7 +375,18 @@ const translations = {
     'finance.income': 'Income',
     'finance.expense': 'Expense',
     'finance.no_records': 'No finance records',
+ 
+    // Settings
+    'settings.title': 'Settings Management',
+    'settings.create': 'Create Setting',
+    'settings.edit': 'Edit Setting',
+    'settings.key': 'Key',
+    'settings.value': 'Value',
+    'settings.type': 'Type',
+    'settings.description': 'Description',
+    'settings.confirm_delete': 'Are you sure you want to delete?',
 
+ 
     // Swots
     'swots.title': 'SWOT Analysis',
     'swots.create': 'Create SWOT',
@@ -378,8 +400,7 @@ const translations = {
     'swots.report': 'Report',
     'swots.entity_ids': 'Entity IDs',
     'swots.confirm_delete': 'Are you sure you want to delete?',
-    
-    // Common
+         // Common
     'common.save': 'Save',
     'common.cancel': 'Cancel',
     'common.delete': 'Delete',
