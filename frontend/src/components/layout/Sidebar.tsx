@@ -26,7 +26,21 @@ interface SidebarProps {
   onClose: () => void;
 }
 
-const menuItems = [
+interface MenuChild {
+  key: string;
+  path: string;
+  icon: React.ElementType;
+}
+
+interface MenuItem {
+  key: string;
+  icon: React.ElementType;
+  path: string;
+  badge: number | null;
+  children?: MenuChild[];
+}
+
+const menuItems: MenuItem[] = [
   {
     key: 'dashboard',
     icon: LayoutDashboard,
@@ -91,10 +105,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     return location.pathname.startsWith(path);
   };
 
-  const isParentActive = (item: any) => {
+  const isParentActive = (item: MenuItem) => {
     if (isActiveRoute(item.path)) return true;
     if (item.children) {
-      return item.children.some((child: any) => isActiveRoute(child.path));
+      return item.children.some((child) => isActiveRoute(child.path));
     }
     return false;
   };
@@ -202,20 +216,23 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     <>
       {/* Mobile Overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
           onClick={onClose}
         />
       )}
-      
+
       {/* Sidebar */}
-      <aside className={`
+      <aside
+        className={`
         fixed top-16 ${direction === 'rtl' ? 'right-0' : 'left-0'} h-[calc(100vh-4rem)] w-64 z-50
         glass-sidebar transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : direction === 'rtl' ? 'translate-x-full' : '-translate-x-full'}
-        lg:relative lg:top-0 lg:h-screen lg:translate-x-0
+        lg:top-16 lg:h-[calc(100vh-4rem)]
+        ${isOpen ? 'lg:translate-x-0' : direction === 'rtl' ? 'lg:translate-x-full' : 'lg:-translate-x-full'}
         flex flex-col
-      `}>
+      `}
+      >
         <SidebarContent />
       </aside>
     </>
