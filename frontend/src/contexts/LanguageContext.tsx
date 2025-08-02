@@ -122,7 +122,17 @@ const translations = {
     'finance.income': 'إيراد',
     'finance.expense': 'مصروف',
     'finance.no_records': 'لا توجد سجلات مالية',
-    
+
+    // Settings
+    'settings.title': 'إدارة الإعدادات',
+    'settings.create': 'إنشاء إعداد',
+    'settings.edit': 'تعديل الإعداد',
+    'settings.key': 'المفتاح',
+    'settings.value': 'القيمة',
+    'settings.type': 'النوع',
+    'settings.description': 'الوصف',
+    'settings.confirm_delete': 'هل أنت متأكد من الحذف؟',
+
     // Common
     'common.save': 'حفظ',
     'common.cancel': 'إلغاء',
@@ -245,7 +255,17 @@ const translations = {
     'finance.income': 'Income',
     'finance.expense': 'Expense',
     'finance.no_records': 'No finance records',
-    
+
+    // Settings
+    'settings.title': 'Settings Management',
+    'settings.create': 'Create Setting',
+    'settings.edit': 'Edit Setting',
+    'settings.key': 'Key',
+    'settings.value': 'Value',
+    'settings.type': 'Type',
+    'settings.description': 'Description',
+    'settings.confirm_delete': 'Are you sure you want to delete?',
+
     // Common
     'common.save': 'Save',
     'common.cancel': 'Cancel',

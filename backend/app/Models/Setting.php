@@ -15,4 +15,18 @@ class Setting extends Model
         'description',
         'type',
     ];
+
+    public function getValueAttribute($value)
+    {
+        return match ($this->type) {
+            'integer' => (int) $value,
+            'boolean' => (bool) $value,
+            default => $value,
+        };
+    }
+
+    public function setValueAttribute($value)
+    {
+        $this->attributes['value'] = (string) $value;
+    }
 }
