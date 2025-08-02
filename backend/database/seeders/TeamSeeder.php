@@ -10,7 +10,7 @@ use Illuminate\Database\Seeder;
 class TeamSeeder extends Seeder
 {
     public function run(): void
-    {
+    { 
         $supervisors = User::all();
 
         Area::all()->each(function ($area) use ($supervisors) {
@@ -18,6 +18,9 @@ class TeamSeeder extends Seeder
                 'area_id' => $area->id,
                 'supervisor_id' => $supervisors->random()->id,
             ]);
-        });
+        }); 
+        Team::create(['name' => 'الفريق الأول']);
+        Team::create(['name' => 'Team Alpha']);
+ 
     }
 }

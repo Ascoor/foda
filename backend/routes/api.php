@@ -34,6 +34,7 @@ Route::prefix('v1')->group(function () {
         Route::get('profile', [AuthController::class, 'profile']);
 
         Route::apiResource('areas', AreaController::class);
+        Route::get('events/upcoming', [EventController::class, 'upcoming']);
         Route::apiResource('events', EventController::class);
         Route::apiResource('finances', FinanceController::class);
         Route::apiResource('homes', HomeController::class);

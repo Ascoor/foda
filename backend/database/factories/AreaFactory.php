@@ -1,22 +1,26 @@
 <?php
 
 namespace Database\Factories;
-
+ 
 use App\Models\Area;
 use Illuminate\Database\Eloquent\Factories\Factory;
+  
 
+/** @extends Factory<\App\Models\Area> */
 class AreaFactory extends Factory
 {
-    protected $model = Area::class;
+    protected $model = \App\Models\Area::class;
+ 
 
     public function definition(): array
     {
         return [
-            'name' => $this->faker->unique()->word(),
+ 
+            'name' => $this->faker->city(),
+ 
             'description' => $this->faker->sentence(),
             'x' => null,
             'y' => null,
         ];
     }
-}
-
+}  
