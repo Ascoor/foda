@@ -20,16 +20,16 @@ const translations = {
     'app.subtitle': 'نظام إدارة الحملات المتطور',
     'nav.dashboard': 'لوحة التحكم',
     'nav.campaigns': 'الحملات',
-    'nav.teams': 'الفرق',
+    'nav.teams': 'الفرق', 
+     'nav.areas': 'المناطق', 
     
     'nav.volunteers': 'المتطوعون',
      
         
-    'nav.voters': 'الناخبون',
-    'nav.areas': 'المناطق',
-    
+    'nav.voters': 'الناخبون', 
     'nav.events': 'الفعاليات',
- 
+    'nav.swots': 'تحليل SWOT',
+
     'nav.analytics': 'التحليلات',
     'nav.finance': 'المالية',
     'nav.settings': 'الإعدادات',
@@ -154,6 +154,20 @@ const translations = {
     'finance.income': 'إيراد',
     'finance.expense': 'مصروف',
     'finance.no_records': 'لا توجد سجلات مالية',
+
+    // Swots
+    'swots.title': 'تحليل SWOT',
+    'swots.create': 'إنشاء تحليل',
+    'swots.edit': 'تعديل التحليل',
+    'swots.entity_type': 'نوع الجهة',
+    'swots.entity_id': 'معرّف الجهة',
+    'swots.strengths': 'نقاط القوة',
+    'swots.weaknesses': 'نقاط الضعف',
+    'swots.opportunities': 'الفرص',
+    'swots.threats': 'التهديدات',
+    'swots.report': 'تقرير',
+    'swots.entity_ids': 'معرّفات الجهات',
+    'swots.confirm_delete': 'هل أنت متأكد من الحذف؟',
     
     // Common
     'common.save': 'حفظ',
@@ -176,7 +190,12 @@ const translations = {
     'app.title': 'Foda',
     'app.subtitle': 'Advanced Campaign Management System',
     'nav.dashboard': 'Dashboard',
-    'nav.campaigns': 'Campaigns',
+    'nav.campaigns': 'Campaigns', 
+    'nav.teams': 'Teams', 
+    'nav.areas': 'Areas',
+    'nav.events': 'Events',
+    'nav.swots': 'SWOTs',
+ 
     'nav.teams': 'Teams',
 
     'nav.volunteers': 'Volunteers',
@@ -184,6 +203,7 @@ const translations = {
     'nav.voters': 'Voters',
     'nav.areas': 'Areas',
     'nav.events': 'Events',
+ 
     'nav.analytics': 'Analytics',
     'nav.finance': 'Finance',
     'nav.settings': 'Settings',
@@ -311,6 +331,20 @@ const translations = {
     'finance.income': 'Income',
     'finance.expense': 'Expense',
     'finance.no_records': 'No finance records',
+
+    // Swots
+    'swots.title': 'SWOT Analysis',
+    'swots.create': 'Create SWOT',
+    'swots.edit': 'Edit SWOT',
+    'swots.entity_type': 'Entity Type',
+    'swots.entity_id': 'Entity ID',
+    'swots.strengths': 'Strengths',
+    'swots.weaknesses': 'Weaknesses',
+    'swots.opportunities': 'Opportunities',
+    'swots.threats': 'Threats',
+    'swots.report': 'Report',
+    'swots.entity_ids': 'Entity IDs',
+    'swots.confirm_delete': 'Are you sure you want to delete?',
     
     // Common
     'common.save': 'Save',
