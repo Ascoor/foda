@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 import { Finance } from "./pages/Finance";
 import Profile from "./pages/Profile"; 
 import Area from "./pages/Area";
+import Voters from "./pages/Voters";
   
 
 const queryClient = new QueryClient();
@@ -55,6 +56,7 @@ const App = () => (
                 <Route path="/teams/*" element={<Teams />} />
  
                 <Route path="/areas" element={<Area />} />
+                <Route path="/voters" element={<Voters />} />
  
                 <Route path="/events" element={<Event />} />
  
