@@ -83,7 +83,7 @@ Send immediately:
 POST /api/v1/sms
 {
     "message": "Hello world",
-    "recipient_phone": "+15551234567"
+    "recipient": "+15551234567"
 }
 ```
 
@@ -93,7 +93,7 @@ Schedule for later:
 POST /api/v1/sms
 {
     "message": "Reminder",
-    "recipient_phone": "+15551234567",
+    "recipient": "+15551234567",
     "scheduled_for": "2024-08-03T10:00:00Z"
 }
 ```

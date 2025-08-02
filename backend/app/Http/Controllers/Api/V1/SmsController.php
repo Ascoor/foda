@@ -7,21 +7,33 @@ use App\Http\Requests\StoreSmsRequest;
 use App\Http\Resources\SmsResource;
 use App\Models\Sms;
 use App\Services\SmsService;
+use Illuminate\Http\Request;
 
 class SmsController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        return SmsResource::collection(Sms::latest()->paginate());
+        $this->authorizeResource(Sms::class, 'sms');
+    }
+
+    public function index(Request $request)
+    {
+        $query = Sms::where('user_id', $request->user()->id);
+
+        if ($status = $request->query('status')) {
+            $query->where('status', $status);
+        }
+
+        return SmsResource::collection($query->latest()->paginate());
     }
 
     public function store(StoreSmsRequest $request, SmsService $service)
     {
         $data = $request->validated();
         $sms = Sms::create([
-            'user_id' => $request->user()->id ?? null,
+            'user_id' => $request->user()->id,
             'message' => $data['message'],
-            'recipient_phone' => $data['recipient_phone'],
+            'recipient' => $data['recipient'],
             'status' => isset($data['scheduled_for']) ? 'scheduled' : 'pending',
             'scheduled_for' => $data['scheduled_for'] ?? null,
         ]);
