@@ -6,7 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+ 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fetchSwots, createSwot, updateSwot, deleteSwot, fetchSwotReport, SwotPayload } from '@/lib/swots';
 
@@ -35,7 +35,7 @@ const SwotPage: React.FC = () => {
     opportunities: '',
     threats: '',
   });
-
+ 
   const [reportParams, setReportParams] = useState({ entity_type: 'area', entity_ids: '' });
   const [reportData, setReportData] = useState<Swot[]>([]);
 
@@ -98,8 +98,11 @@ const SwotPage: React.FC = () => {
     try {
       const ids = reportParams.entity_ids
         .split(',')
-        .map((s) => parseInt(s.trim()))
-        .filter((n) => !isNaN(n));
+ 
+        .map(id => id.trim())
+        .filter(Boolean)
+        .map(id => Number(id));
+ 
       const res = await fetchSwotReport(reportParams.entity_type, ids);
       setReportData(res.data ?? res);
     } catch (e: unknown) {
@@ -134,42 +137,29 @@ const SwotPage: React.FC = () => {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_type')}</Label>
-                <Select value={form.entity_type} onValueChange={(v) => setForm({ ...form, entity_type: v })}>
-                  <SelectTrigger className="glass w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="area">{t('nav.areas')}</SelectItem>
-                    <SelectItem value="team">{t('nav.teams')}</SelectItem>
-                    <SelectItem value="volunteer">{t('dashboard.volunteers')}</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_type')}</Label> 
+                <Input className="glass" value={form.entity_type} onChange={e => setForm({ ...form, entity_type: e.target.value })} />
               </div>
               <div>
                 <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_id')}</Label>
-                <Input
-                  type="number"
-                  className="glass"
-                  value={form.entity_id}
-                  onChange={(e) => setForm({ ...form, entity_id: Number(e.target.value) })}
-                />
+                <Input className="glass" type="number" value={form.entity_id} onChange={e => setForm({ ...form, entity_id: Number(e.target.value) })} />
               </div>
               <div>
                 <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.strengths')}</Label>
-                <Textarea className="glass" value={form.strengths} onChange={(e) => setForm({ ...form, strengths: e.target.value })} />
+                <Textarea className="glass" value={form.strengths} onChange={e => setForm({ ...form, strengths: e.target.value })} />
               </div>
               <div>
                 <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.weaknesses')}</Label>
-                <Textarea className="glass" value={form.weaknesses} onChange={(e) => setForm({ ...form, weaknesses: e.target.value })} />
+                <Textarea className="glass" value={form.weaknesses} onChange={e => setForm({ ...form, weaknesses: e.target.value })} />
               </div>
               <div>
                 <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.opportunities')}</Label>
-                <Textarea className="glass" value={form.opportunities} onChange={(e) => setForm({ ...form, opportunities: e.target.value })} />
+                <Textarea className="glass" value={form.opportunities} onChange={e => setForm({ ...form, opportunities: e.target.value })} />
               </div>
               <div>
                 <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.threats')}</Label>
-                <Textarea className="glass" value={form.threats} onChange={(e) => setForm({ ...form, threats: e.target.value })} />
+                <Textarea className="glass" value={form.threats} onChange={e => setForm({ ...form, threats: e.target.value })} />
+ 
               </div>
             </div>
             <DialogFooter>
@@ -183,7 +173,48 @@ const SwotPage: React.FC = () => {
           </DialogContent>
         </Dialog>
       </div>
-
+ 
+      <div className="space-y-4">
+        <h2 className={`text-xl font-semibold ${language === 'ar' ? 'font-arabic-heading' : ''}`}>{t('swots.report')}</h2>
+        <div className={`flex gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+          <div>
+            <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_type')}</Label>
+            <Input className="glass" value={reportParams.entity_type} onChange={e => setReportParams({ ...reportParams, entity_type: e.target.value })} />
+          </div>
+          <div>
+            <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_ids')}</Label>
+            <Input className="glass" value={reportParams.entity_ids} onChange={e => setReportParams({ ...reportParams, entity_ids: e.target.value })} placeholder="1,2,3" />
+          </div>
+          <div className="flex items-end">
+            <Button onClick={generateReport} className="transition-glow hover:neon-glow-orange">
+              {t('swots.report')}
+            </Button>
+          </div>
+        </div>
+        {reportData.length > 0 && (
+          <Table>
+            <TableHeader>
+              <TableRow className={direction === 'rtl' ? 'text-right' : ''}>
+                <TableHead>{t('swots.entity_type')}</TableHead>
+                <TableHead>{t('swots.entity_id')}</TableHead>
+                <TableHead>{t('swots.strengths')}</TableHead>
+                <TableHead>{t('swots.weaknesses')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {reportData.map(r => (
+                <TableRow key={r.id} className={direction === 'rtl' ? 'text-right' : ''}>
+                  <TableCell>{r.entity_type}</TableCell>
+                  <TableCell>{r.entity_id}</TableCell>
+                  <TableCell>{r.strengths}</TableCell>
+                  <TableCell>{r.weaknesses}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div>
+ 
       <Table>
         <TableHeader>
           <TableRow className={direction === 'rtl' ? 'text-right' : ''}>
@@ -197,7 +228,9 @@ const SwotPage: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {swots.map((swot) => (
+ 
+          {swots.map(swot => (
+ 
             <TableRow key={swot.id} className={direction === 'rtl' ? 'text-right' : ''}>
               <TableCell>{swot.entity_type}</TableCell>
               <TableCell>{swot.entity_id}</TableCell>
@@ -218,7 +251,7 @@ const SwotPage: React.FC = () => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> 
 
       <div className="space-y-4">
         <h2 className={`text-2xl font-bold ${language === 'ar' ? 'font-arabic-heading' : ''}`}>{t('swots.report')}</h2>
@@ -275,9 +308,10 @@ const SwotPage: React.FC = () => {
             </TableBody>
           </Table>
         )}
-      </div>
+      </div> 
     </div>
   );
 };
 
 export default SwotPage;
+ 

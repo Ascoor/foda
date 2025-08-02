@@ -41,9 +41,11 @@ export async function deleteSwot(id: number) {
   });
 }
 
-export async function fetchSwotReport(entity_type: string, entity_ids: number[]) {
+ 
+export async function fetchSwotReport(entityType: string, entityIds: number[] = []) {
   const token = getToken();
-  const params = new URLSearchParams({ entity_type });
-  entity_ids.forEach(id => params.append('entity_ids[]', String(id)));
+  const params = new URLSearchParams({ entity_type: entityType });
+  entityIds.forEach(id => params.append('entity_ids[]', id.toString()));
   return apiFetch(`/api/v1/swots/report?${params.toString()}`, { token });
 }
+ 
