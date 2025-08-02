@@ -9,6 +9,7 @@ class TeamSeeder extends Seeder
 {
     public function run(): void
     {
-        Team::create();
+        Team::create(['name' => 'الفريق الأول']);
+        Team::create(['name' => 'Team Alpha']);
     }
 }
