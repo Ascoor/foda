@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class AuthApiTest extends TestCase
@@ -37,10 +38,12 @@ class AuthApiTest extends TestCase
 
     public function test_register_creates_user(): void
     {
+        $adminRole = Role::create(['name' => 'admin']);
+        $newRole = Role::create(['name' => 'volunteer']);
         $admin = User::factory()->create([
             'password' => Hash::make('password'),
         ]);
-        $admin->assignRole('admin');
+        $admin->assignRole($adminRole);
         $token = $admin->createToken('api-token')->plainTextToken;
 
         $response = $this->withHeader('Authorization', 'Bearer '.$token)
@@ -48,7 +51,7 @@ class AuthApiTest extends TestCase
                 'name' => 'New User',
                 'email' => 'new@example.com',
                 'password' => 'password123',
-                'role_id' => 1,
+                'role_id' => $newRole->id,
             ]);
 
         $response->assertStatus(201)->assertJsonPath('data.user.email', 'new@example.com');
@@ -69,5 +72,27 @@ class AuthApiTest extends TestCase
     public function test_profile_requires_authentication(): void
     {
         $this->getJson('/api/v1/profile')->assertStatus(401);
+
+    }
+
+    public function test_register_requires_admin_role(): void
+    {
+        $adminRole = Role::create(['name' => 'admin']);
+        $userRole = Role::create(['name' => 'volunteer']);
+
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+        ]);
+        $user->assignRole($userRole);
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        $this->withHeader('Authorization', 'Bearer '.$token)
+            ->postJson('/api/v1/register', [
+                'name' => 'Another User',
+                'email' => 'another@example.com',
+                'password' => 'password123',
+                'role_id' => $userRole->id,
+            ])
+            ->assertStatus(403);
     }
 }

@@ -17,18 +17,18 @@ class RolesAndPermissionsSeeder extends Seeder
         $supervisor = Role::firstOrCreate(['name' => 'supervisor']);
         $volunteer = Role::firstOrCreate(['name' => 'volunteer']);
 
-        // Define permissions
+        // Define permissions and assign to roles
         $permissions = [
-            'manage users',
-            'manage volunteers',
+            'manage users' => [$admin],
+            'manage volunteers' => [$admin, $supervisor],
         ];
 
-        foreach ($permissions as $perm) {
-            Permission::firstOrCreate(['name' => $perm])->syncRoles([$admin]);
+        foreach ($permissions as $perm => $roles) {
+            Permission::firstOrCreate(['name' => $perm])->syncRoles($roles);
         }
 
-        // Create default admin user
-        $user = User::firstOrCreate(
+        // Seed default users
+        $adminUser = User::firstOrCreate(
             ['email' => 'admin@example.com'],
             [
                 'name' => 'Admin',
@@ -36,8 +36,26 @@ class RolesAndPermissionsSeeder extends Seeder
                 'status' => 'active',
             ]
         );
+        $adminUser->assignRole($admin);
 
-        $user->assignRole($admin);
-        $user->syncPermissions($permissions);
+        $supervisorUser = User::firstOrCreate(
+            ['email' => 'supervisor@example.com'],
+            [
+                'name' => 'Supervisor',
+                'password' => Hash::make('password'),
+                'status' => 'active',
+            ]
+        );
+        $supervisorUser->assignRole($supervisor);
+
+        $volunteerUser = User::firstOrCreate(
+            ['email' => 'volunteer@example.com'],
+            [
+                'name' => 'Volunteer',
+                'password' => Hash::make('password'),
+                'status' => 'active',
+            ]
+        );
+        $volunteerUser->assignRole($volunteer);
     }
 }
