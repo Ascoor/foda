@@ -132,4 +132,29 @@ class SwotApiTest extends TestCase
         $this->assertDatabaseHas('swots', ['entity_type' => 'team', 'entity_id' => $team->id]);
         $this->assertDatabaseHas('swots', ['entity_type' => 'volunteer', 'entity_id' => $volunteer->id]);
     }
+
+    public function test_report_filters_by_entity_type_and_ids()
+    {
+        $this->authenticate();
+
+        $area1 = Area::create(['name' => 'Area1', 'description' => 'D1']);
+        $area2 = Area::create(['name' => 'Area2', 'description' => 'D2']);
+
+        Swot::factory()->create([
+            'entity_type' => 'area',
+            'entity_id' => $area1->id,
+        ]);
+        Swot::factory()->create([
+            'entity_type' => 'area',
+            'entity_id' => $area2->id,
+        ]);
+        Swot::factory()->create([
+            'entity_type' => 'team',
+            'entity_id' => 1,
+        ]);
+
+        $response = $this->getJson('/api/v1/swots/report?entity_type=area&entity_ids[]=' . $area1->id);
+
+        $response->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.entity_id', $area1->id);
+    }
 }
