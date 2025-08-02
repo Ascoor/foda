@@ -8,7 +8,7 @@ interface MainLayoutProps {
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => window.innerWidth >= 1024);
   const { direction } = useLanguage();
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
