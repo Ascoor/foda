@@ -18,4 +18,4 @@ Response fields:
 ## Heatmap
 `GET /api/v1/home/heatmap`
 
-Returns list of area coordinates `{ "lat": x, "lng": y }` for map visualisations.
+Returns list of area coordinates as floats `{ "lat": number, "lng": number }` for map visualisations.

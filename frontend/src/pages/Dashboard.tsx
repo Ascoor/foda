@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
 import { RecentActivity } from '@/components/dashboard/RecentActivity';
+import { HeatmapCard } from '@/components/dashboard/HeatmapCard';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export const Dashboard: React.FC = () => {
@@ -87,21 +88,7 @@ export const Dashboard: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="glass transition-glow hover:neon-glow-orange">
-          <CardHeader>
-            <CardTitle className={language === 'ar' ? 'font-arabic-heading' : ''}>
-              {language === 'ar' ? 'نشاط الفريق' : 'Team Activity'}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-64 flex items-center justify-center text-muted-foreground">
-              <div className={`text-center ${language === 'ar' ? 'font-arabic' : ''}`}>
-                <div className="text-4xl mb-2">👥</div>
-                {language === 'ar' ? 'إحصائيات الفريق قريباً' : 'Team stats coming soon'}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <HeatmapCard />
       </div>
     </div>
   );

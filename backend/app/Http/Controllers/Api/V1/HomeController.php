@@ -26,7 +26,7 @@ class HomeController extends Controller
             $query->whereDate('created_at', '<=', $request->date('to'));
         }
 
-        $registrations = $query
+        $registrations = (clone $query)
             ->selectRaw('DATE_FORMAT(created_at, "%Y-%m") as month, COUNT(*) as count')
             ->groupBy('month')
             ->orderBy('month')
@@ -50,10 +50,13 @@ class HomeController extends Controller
 
     public function heatmap(): JsonResponse
     {
-        $points = Area::select('x as lat', 'y as lng')
-            ->whereNotNull('x')
+        $points = Area::whereNotNull('x')
             ->whereNotNull('y')
-            ->get();
+            ->get()
+            ->map(fn ($area) => [
+                'lat' => (float) $area->x,
+                'lng' => (float) $area->y,
+            ]);
 
         return response()->json(['data' => $points]);
     }
