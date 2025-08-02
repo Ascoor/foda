@@ -28,7 +28,7 @@ interface Member {
   id: string | number;
   name: string;
   email: string;
-  role: string;
+  roles: string[];
 }
 
 export const TeamMembers: React.FC = () => {
@@ -53,10 +53,11 @@ export const TeamMembers: React.FC = () => {
   });
 
   const members: Member[] = (data?.data ?? data ?? []) as Member[];
-  const filteredMembers = members.filter(
-    (m) =>
-      m.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      m.email.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredMembers = members.filter((m) =>
+    [m.name, m.email, ...(m.roles ?? [])]
+      .join(' ')
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
   );
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -142,7 +143,7 @@ export const TeamMembers: React.FC = () => {
             <TableRow className={direction === 'rtl' ? 'flex-row-reverse' : ''}>
               <TableHead>{language === 'ar' ? 'الاسم' : 'Name'}</TableHead>
               <TableHead>{language === 'ar' ? 'البريد الإلكتروني' : 'Email'}</TableHead>
-              <TableHead>{language === 'ar' ? 'الدور' : 'Role'}</TableHead>
+              <TableHead>{language === 'ar' ? 'الأدوار' : 'Roles'}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -150,7 +151,7 @@ export const TeamMembers: React.FC = () => {
               <TableRow key={member.id} className={direction === 'rtl' ? 'flex-row-reverse' : ''}>
                 <TableCell>{member.name}</TableCell>
                 <TableCell>{member.email}</TableCell>
-                <TableCell>{member.role}</TableCell>
+                <TableCell>{member.roles?.join(', ')}</TableCell>
               </TableRow>
             ))}
           </TableBody>
