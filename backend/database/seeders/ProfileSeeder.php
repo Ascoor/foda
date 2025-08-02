@@ -9,6 +9,6 @@ class ProfileSeeder extends Seeder
 {
     public function run(): void
     {
-        Profile::create();
+        Profile::factory()->create();
     }
 }

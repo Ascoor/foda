@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { User, Globe, Palette, Bell, Shield, Database, Mail, Phone } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,10 +9,56 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import { fetchProfile, updateProfile, Profile as ProfileType } from '@/lib/profile';
 
 export const Settings: React.FC = () => {
   const { language, direction, t, setLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+
+  const [profile, setProfile] = useState<ProfileType | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await fetchProfile();
+        setProfile(data);
+      } catch (e: unknown) {
+        setError((e as Error).message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!profile) return;
+    try {
+      setSaving(true);
+      const updated = await updateProfile(profile.id, profile);
+      setProfile(updated);
+    } catch (e: unknown) {
+      setError((e as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) {
+    return <div className="p-6">{language === 'ar' ? 'جار التحميل...' : 'Loading...'}</div>;
+  }
+
+  if (error) {
+    return <div className="p-6 text-red-500">{error}</div>;
+  }
 
   return (
     <div className="space-y-6 p-6">
@@ -36,60 +82,91 @@ export const Settings: React.FC = () => {
                 {language === 'ar' ? 'الملف الشخصي' : 'Profile Information'}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className={`flex items-center gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-                <Avatar className="h-20 w-20">
-                  <AvatarImage src="/avatars/01.png" />
-                  <AvatarFallback className="bg-primary/10 text-primary text-lg">
-                    {language === 'ar' ? 'م' : 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="space-y-2">
-                  <Button variant="outline" className="transition-glow hover:neon-glow-orange">
-                    <span className={language === 'ar' ? 'font-arabic' : ''}>
-                      {language === 'ar' ? 'تغيير الصورة' : 'Change Photo'}
-                    </span>
-                  </Button>
-                  <p className={`text-sm text-muted-foreground ${language === 'ar' ? 'font-arabic' : ''}`}>
-                    {language === 'ar' ? 'JPG أو PNG بحد أقصى 2 ميجابايت' : 'JPG or PNG, max 2MB'}
-                  </p>
+            <CardContent>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className={`flex items-center gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+                  <Avatar className="h-20 w-20">
+                    <AvatarImage src={profile?.avatar || '/avatars/01.png'} />
+                    <AvatarFallback className="bg-primary/10 text-primary text-lg">
+                      {language === 'ar' ? 'م' : 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="space-y-2">
+                    <Button type="button" variant="outline" className="transition-glow hover:neon-glow-orange">
+                      <span className={language === 'ar' ? 'font-arabic' : ''}>
+                        {language === 'ar' ? 'تغيير الصورة' : 'Change Photo'}
+                      </span>
+                    </Button>
+                    <p className={`text-sm text-muted-foreground ${language === 'ar' ? 'font-arabic' : ''}`}>
+                      {language === 'ar' ? 'JPG أو PNG بحد أقصى 2 ميجابايت' : 'JPG or PNG, max 2MB'}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <Label className={language === 'ar' ? 'font-arabic' : ''}>
+                      {language === 'ar' ? 'الاسم الأول' : 'First Name'}
+                    </Label>
+                    <Input
+                      className="glass"
+                      name="first_name"
+                      value={profile?.first_name || ''}
+                      onChange={handleChange}
+                      placeholder={language === 'ar' ? 'أحمد' : 'Ahmed'}
+                    />
+                  </div>
+                  <div>
+                    <Label className={language === 'ar' ? 'font-arabic' : ''}>
+                      {language === 'ar' ? 'الاسم الأخير' : 'Last Name'}
+                    </Label>
+                    <Input
+                      className="glass"
+                      name="last_name"
+                      value={profile?.last_name || ''}
+                      onChange={handleChange}
+                      placeholder={language === 'ar' ? 'محمد' : 'Mohammed'}
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <Label className={language === 'ar' ? 'font-arabic' : ''}>
-                    {language === 'ar' ? 'الاسم الأول' : 'First Name'}
+                    {language === 'ar' ? 'البريد الإلكتروني' : 'Email Address'}
                   </Label>
-                  <Input className="glass" placeholder={language === 'ar' ? 'أحمد' : 'Ahmed'} />
+                  <Input
+                    className="glass"
+                    type="email"
+                    name="email"
+                    value={profile?.email || ''}
+                    onChange={handleChange}
+                    placeholder="ahmed@fahsan.com"
+                  />
                 </div>
+
                 <div>
                   <Label className={language === 'ar' ? 'font-arabic' : ''}>
-                    {language === 'ar' ? 'الاسم الأخير' : 'Last Name'}
+                    {language === 'ar' ? 'رقم الهاتف' : 'Phone Number'}
                   </Label>
-                  <Input className="glass" placeholder={language === 'ar' ? 'محمد' : 'Mohammed'} />
+                  <Input
+                    className="glass"
+                    name="phone"
+                    value={profile?.phone || ''}
+                    onChange={handleChange}
+                    placeholder="+966 50 123 4567"
+                  />
                 </div>
-              </div>
 
-              <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>
-                  {language === 'ar' ? 'البريد الإلكتروني' : 'Email Address'}
-                </Label>
-                <Input className="glass" type="email" placeholder="ahmed@fahsan.com" />
-              </div>
-
-              <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>
-                  {language === 'ar' ? 'رقم الهاتف' : 'Phone Number'}
-                </Label>
-                <Input className="glass" placeholder="+966 50 123 4567" />
-              </div>
-
-              <Button className="transition-glow hover:neon-glow-blue">
-                <span className={language === 'ar' ? 'font-arabic' : ''}>
-                  {t('common.save')}
-                </span>
-              </Button>
+                <Button type="submit" disabled={saving} className="transition-glow hover:neon-glow-blue">
+                  <span className={language === 'ar' ? 'font-arabic' : ''}>
+                    {saving
+                      ? language === 'ar'
+                        ? 'جار الحفظ...'
+                        : 'Saving...'
+                      : t('common.save')}
+                  </span>
+                </Button>
+              </form>
             </CardContent>
           </Card>
 
