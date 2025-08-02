@@ -10,6 +10,10 @@ return new class extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 100);
+            $table->string('description', 1000);
+            $table->string('x', 10)->nullable();
+            $table->string('y', 10)->nullable();
             $table->timestamps();
         });
     }
