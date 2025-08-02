@@ -11,15 +11,17 @@ import {
   Calendar,
   FileText,
   Database,
-  Wallet,
-  MapPin, 
+  Wallet, 
+  MapPin,
+  MessageSquare,
+  
   ClipboardList,
  
  
   UserPlus,
 
   Vote,
- 
+  
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -65,7 +67,7 @@ const menuItems: MenuItem[] = [
       { key: 'campaigns.create', path: '/campaigns/create', icon: Target },
       { key: 'campaigns.schedule', path: '/campaigns/schedule', icon: Calendar },
       { key: 'campaigns.reports', path: '/campaigns/reports', icon: FileText },
-    ]
+    ],
   },
   {
     key: 'teams',
@@ -75,6 +77,10 @@ const menuItems: MenuItem[] = [
     children: [
       { key: 'teams.members', path: '/teams/members', icon: Users },
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
+ 
+    ],
+  },
+ 
     ]
   },  
   {
@@ -83,6 +89,7 @@ const menuItems: MenuItem[] = [
     path: '/volunteers',
     badge: null,
   },
+ 
  
   {
     key: 'areas',
@@ -97,9 +104,11 @@ const menuItems: MenuItem[] = [
     badge: null,
   },
   {
+ 
     key: 'swots',
     icon: ClipboardList,
     path: '/swots',
+ 
     badge: null,
   },
   {
@@ -120,7 +129,7 @@ const menuItems: MenuItem[] = [
       { key: 'analytics.performance', path: '/analytics/performance', icon: BarChart3 },
       { key: 'analytics.reports', path: '/analytics/reports', icon: FileText },
       { key: 'analytics.data', path: '/analytics/data', icon: Database },
-    ]
+    ],
   },
   { key: 'finance', icon: Wallet, path: '/finance', badge: null },
   { key: 'settings', icon: Settings, path: '/settings', badge: null },

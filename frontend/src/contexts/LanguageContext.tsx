@@ -19,7 +19,9 @@ const translations = {
     'app.title': 'فودا',
     'app.subtitle': 'نظام إدارة الحملات المتطور',
     'nav.dashboard': 'لوحة التحكم',
-    'nav.campaigns': 'الحملات',
+    'nav.campaigns': 'الحملات', 
+    'nav.events': 'الفعاليات',
+    'nav.sms': 'الرسائل',
  
     'nav.swots': 'تحليل SWOT',
  
@@ -31,7 +33,7 @@ const translations = {
         
     'nav.voters': 'الناخبون', 
     'nav.events': 'الفعاليات', 
- 
+  
     'nav.analytics': 'التحليلات',
     'nav.finance': 'المالية',
     'nav.settings': 'الإعدادات',
@@ -133,7 +135,17 @@ const translations = {
     'events.area': 'المنطقة',
     'events.team': 'الفريق',
     'events.description': 'الوصف',
+ 
 
+    // SMS
+    'sms.title': 'إدارة الرسائل',
+    'sms.send': 'إرسال رسالة',
+    'sms.message': 'الرسالة',
+    'sms.recipient': 'المستلم',
+    'sms.status': 'الحالة',
+    'sms.confirm_delete': 'هل أنت متأكد من الحذف؟',
+
+     
     // Swots
     'swots.title': 'تحليل SWOT',
     'swots.create': 'إضافة تحليل',
@@ -148,7 +160,7 @@ const translations = {
     'swots.generate_report': 'توليد التقرير',
     'swots.entity_ids': 'معرفات الكيانات',
     'swots.confirm_delete': 'هل أنت متأكد من الحذف؟',
-
+ 
     // Analytics & Reports
     'analytics.title': 'التحليلات والتقارير',
     'analytics.performance': 'تحليل الأداء',
@@ -221,7 +233,9 @@ const translations = {
     'nav.campaigns': 'Campaigns', 
     'nav.teams': 'Teams', 
     'nav.areas': 'Areas',
-    'nav.events': 'Events',
+    'nav.events': 'Events', 
+    'nav.sms': 'SMS',
+ 
     'nav.swots': 'SWOTs',
  
     'nav.teams': 'Teams',
@@ -232,7 +246,7 @@ const translations = {
     'nav.areas': 'Areas',
     'nav.events': 'Events',
  
- 
+  
     'nav.analytics': 'Analytics',
     'nav.finance': 'Finance',
     'nav.settings': 'Settings',
@@ -338,7 +352,15 @@ const translations = {
     'events.area': 'Area',
     'events.team': 'Team',
     'events.description': 'Description',
+ 
 
+    // SMS
+    'sms.title': 'SMS Management',
+    'sms.send': 'Send SMS',
+    'sms.message': 'Message',
+    'sms.recipient': 'Recipient',
+    'sms.status': 'Status',
+    'sms.confirm_delete': 'Are you sure you want to delete?',  
     // Swots
     'swots.title': 'SWOT Analysis',
     'swots.create': 'Add SWOT',
@@ -352,7 +374,7 @@ const translations = {
     'swots.report': 'SWOT Report',
     'swots.generate_report': 'Generate Report',
     'swots.entity_ids': 'Entity IDs',
-    'swots.confirm_delete': 'Are you sure you want to delete?',
+    'swots.confirm_delete': 'Are you sure you want to delete?', 
 
     // Analytics & Reports
     'analytics.title': 'Analytics & Reports',
