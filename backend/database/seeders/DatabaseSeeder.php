@@ -17,6 +17,16 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AuthSeeder::class,
             AreaSeeder::class,
+            EventSeeder::class,
+            FinanceSeeder::class,
+            HomeSeeder::class,
+            ProfileSeeder::class,
+            SettingsSeeder::class,
+            SmsSeeder::class,
+            SnwSeeder::class,
+            TeamSeeder::class,
+            VolunteerSeeder::class,
+            VoterSeeder::class,
         ]);
     }
 }
