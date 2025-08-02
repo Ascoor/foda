@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
+use App\Http\Controllers\Api\V1\MemberController;
 use App\Http\Controllers\Api\V1\VolunteerController;
 use App\Http\Controllers\Api\V1\VoterController;
 
@@ -50,6 +51,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('teams', TeamController::class);
         Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
         Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
+        Route::apiResource('members', MemberController::class)->only(['index', 'store']);
         Route::apiResource('volunteers', VolunteerController::class);
         Route::post('voters/import', [VoterController::class, 'import']);
         Route::get('voters/export', [VoterController::class, 'export']);
