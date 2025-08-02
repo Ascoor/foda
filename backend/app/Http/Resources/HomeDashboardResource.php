@@ -4,10 +4,10 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class HomeResource extends JsonResource
+class HomeDashboardResource extends JsonResource
 {
     public function toArray($request): array
     {
-        return parent::toArray($request);
+        return $this->resource;
     }
 }

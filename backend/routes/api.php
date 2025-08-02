@@ -37,7 +37,8 @@ Route::prefix('v1')->group(function () {
         Route::get('events/upcoming', [EventController::class, 'upcoming']);
         Route::apiResource('events', EventController::class);
         Route::apiResource('finances', FinanceController::class);
-        Route::apiResource('homes', HomeController::class);
+        Route::get('home', [HomeController::class, 'index']);
+        Route::get('home/heatmap', [HomeController::class, 'heatmap']);
         Route::apiResource('profiles', ProfileController::class);
         Route::apiResource('settings', SettingsController::class);
         Route::apiResource('sms', SmsController::class);
