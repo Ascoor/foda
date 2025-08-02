@@ -62,3 +62,38 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## SMS API
+
+Endpoints for managing and sending SMS messages are available under the `/api/v1/sms` prefix.
+
+| Method | Endpoint            | Description                |
+|--------|---------------------|----------------------------|
+| GET    | `/api/v1/sms`       | List sent or scheduled SMS |
+| POST   | `/api/v1/sms`       | Send or schedule a message |
+| GET    | `/api/v1/sms/{id}`  | Show a single message      |
+| PUT    | `/api/v1/sms/{id}`  | Update or resend           |
+| DELETE | `/api/v1/sms/{id}`  | Remove a message           |
+
+### Examples
+
+Send immediately:
+
+```json
+POST /api/v1/sms
+{
+    "message": "Hello world",
+    "recipient_phone": "+15551234567"
+}
+```
+
+Schedule for later:
+
+```json
+POST /api/v1/sms
+{
+    "message": "Reminder",
+    "recipient_phone": "+15551234567",
+    "scheduled_for": "2024-08-03T10:00:00Z"
+}
+```

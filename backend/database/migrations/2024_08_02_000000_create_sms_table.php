@@ -10,6 +10,12 @@ return new class extends Migration
     {
         Schema::create('sms', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->text('message');
+            $table->string('recipient_phone');
+            $table->string('status')->default('pending');
+            $table->timestamp('sent_at')->nullable();
+            $table->timestamp('scheduled_for')->nullable();
             $table->timestamps();
         });
     }
