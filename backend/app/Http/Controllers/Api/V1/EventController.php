@@ -26,6 +26,7 @@ class EventController extends Controller
     public function index(Request $request)
     {
         $events = Event::with(['area', 'team'])
+            ->withCount('volunteers')
             ->when($request->filled('date'), fn($q) => $q->whereDate('date', $request->date))
             ->when($request->filled('area_id'), fn($q) => $q->where('area_id', $request->area_id))
             ->when($request->filled('team_id'), fn($q) => $q->where('team_id', $request->team_id))
@@ -79,7 +80,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        $event->load(['area', 'team']);
+        $event->load(['area', 'team', 'volunteers'])->loadCount('volunteers');
         return new EventResource($event);
     }
 
@@ -139,6 +140,7 @@ class EventController extends Controller
     public function upcoming(Request $request)
     {
         $events = Event::with(['area', 'team'])
+            ->withCount('volunteers')
             ->whereDate('date', '>=', now()->toDateString())
             ->orderBy('date');
 

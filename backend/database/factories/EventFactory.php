@@ -16,10 +16,10 @@ class EventFactory extends Factory
         return [
             'event_id' => $this->faker->unique()->uuid(),
             'name' => $this->faker->sentence(3),
-            'description' => $this->faker->sentence(),
+            'description' => $this->faker->paragraph(),
             'organiser' => $this->faker->name(),
             'location' => $this->faker->city(),
-            'date' => $this->faker->date(),
+            'date' => $this->faker->dateTimeBetween('+1 week', '+1 year'),
             'area_id' => Area::factory(),
             'team_id' => Team::factory(),
         ];

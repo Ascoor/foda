@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('event_id')->unique();
             $table->string('name');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('organiser');
             $table->string('location');
             $table->date('date');

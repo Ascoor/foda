@@ -16,10 +16,16 @@ class EventResource extends JsonResource
             'organiser' => $this->organiser,
             'location' => $this->location,
             'date' => $this->date ? $this->date->toDateString() : null,
-            'area_id' => $this->area_id,
-            'area_name' => $this->area->name ?? null,
-            'team_id' => $this->team_id,
-            'team_name' => $this->team->name ?? null,
+            'area' => [
+                'id' => $this->area->id ?? null,
+                'name' => $this->area->name ?? null,
+            ],
+            'team' => [
+                'id' => $this->team->id ?? null,
+                'name' => $this->team->name ?? null,
+            ],
+            'volunteers_count' => $this->volunteers_count ?? 0,
+            'volunteers' => VolunteerResource::collection($this->whenLoaded('volunteers')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
