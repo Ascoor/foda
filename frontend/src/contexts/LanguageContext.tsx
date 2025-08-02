@@ -21,6 +21,7 @@ const translations = {
     'nav.dashboard': 'لوحة التحكم',
     'nav.campaigns': 'الحملات',
     'nav.teams': 'الفرق',
+    'nav.areas': 'المناطق',
     'nav.analytics': 'التحليلات',
     'nav.settings': 'الإعدادات',
     'nav.profile': 'الملف الشخصي',
@@ -56,6 +57,16 @@ const translations = {
     'teams.members': 'الأعضاء',
     'teams.add_member': 'إضافة عضو',
     'teams.roles': 'الأدوار والصلاحيات',
+
+    // Areas
+    'areas.title': 'إدارة المناطق',
+    'areas.create': 'إنشاء منطقة جديدة',
+    'areas.edit': 'تعديل المنطقة',
+    'areas.name': 'الاسم',
+    'areas.description': 'الوصف',
+    'areas.x': 'س',
+    'areas.y': 'ص',
+    'areas.confirm_delete': 'هل أنت متأكد من الحذف؟',
     
     // Analytics & Reports
     'analytics.title': 'التحليلات والتقارير',
@@ -87,6 +98,7 @@ const translations = {
     'nav.dashboard': 'Dashboard',
     'nav.campaigns': 'Campaigns',
     'nav.teams': 'Teams',
+    'nav.areas': 'Areas',
     'nav.analytics': 'Analytics',
     'nav.settings': 'Settings',
     'nav.profile': 'Profile',
@@ -122,6 +134,16 @@ const translations = {
     'teams.members': 'Team Members',
     'teams.add_member': 'Add Member',
     'teams.roles': 'Roles & Permissions',
+
+    // Areas
+    'areas.title': 'Area Management',
+    'areas.create': 'Create New Area',
+    'areas.edit': 'Edit Area',
+    'areas.name': 'Name',
+    'areas.description': 'Description',
+    'areas.x': 'X',
+    'areas.y': 'Y',
+    'areas.confirm_delete': 'Are you sure you want to delete?',
     
     // Analytics & Reports
     'analytics.title': 'Analytics & Reports',

@@ -10,7 +10,8 @@ import {
   Target,
   Calendar,
   FileText,
-  Database
+  Database,
+  MapPin
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -67,6 +68,12 @@ const menuItems: MenuItem[] = [
       { key: 'teams.members', path: '/teams/members', icon: Users },
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
     ]
+  },
+  {
+    key: 'areas',
+    icon: MapPin,
+    path: '/areas',
+    badge: null,
   },
   {
     key: 'analytics',
