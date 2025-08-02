@@ -21,8 +21,9 @@ const translations = {
     'nav.dashboard': 'لوحة التحكم',
     'nav.campaigns': 'الحملات',
     'nav.teams': 'الفرق',
+    'nav.volunteers': 'المتطوعون',
      'nav.areas': 'المناطق',
- 
+
     'nav.events': 'الفعاليات',
  
     'nav.analytics': 'التحليلات',
@@ -76,8 +77,18 @@ const translations = {
     'teams.members': 'الأعضاء',
     'teams.add_member': 'إضافة عضو',
     'teams.roles': 'الأدوار والصلاحيات',
- 
- 
+
+    // Volunteers
+    'volunteers.title': 'إدارة المتطوعين',
+    'volunteers.create': 'إضافة متطوع',
+    'volunteers.edit': 'تعديل المتطوع',
+    'volunteers.delete': 'حذف المتطوع',
+    'volunteers.name': 'الاسم',
+    'volunteers.email': 'البريد الإلكتروني',
+    'volunteers.phone': 'الهاتف',
+    'volunteers.team': 'الفريق',
+    'volunteers.confirm_delete': 'هل أنت متأكد من الحذف؟',
+
     // Areas
     'areas.title': 'إدارة المناطق',
     'areas.create': 'إنشاء منطقة جديدة',
@@ -145,9 +156,10 @@ const translations = {
     'app.subtitle': 'Advanced Campaign Management System',
     'nav.dashboard': 'Dashboard',
     'nav.campaigns': 'Campaigns',
-    'nav.teams': 'Teams', 
-    'nav.areas': 'Areas', 
-    'nav.events': 'Events', 
+    'nav.teams': 'Teams',
+    'nav.volunteers': 'Volunteers',
+    'nav.areas': 'Areas',
+    'nav.events': 'Events',
     'nav.analytics': 'Analytics',
     'nav.finance': 'Finance',
     'nav.settings': 'Settings',
@@ -199,6 +211,18 @@ const translations = {
     'teams.members': 'Team Members',
     'teams.add_member': 'Add Member',
     'teams.roles': 'Roles & Permissions',
+
+    // Volunteers
+    'volunteers.title': 'Volunteer Management',
+    'volunteers.create': 'Add Volunteer',
+    'volunteers.edit': 'Edit Volunteer',
+    'volunteers.delete': 'Delete Volunteer',
+    'volunteers.name': 'Name',
+    'volunteers.email': 'Email',
+    'volunteers.phone': 'Phone',
+    'volunteers.team': 'Team',
+    'volunteers.confirm_delete': 'Are you sure you want to delete?',
+
  
  
     // Areas

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { 
+import {
   LayoutDashboard,
   Megaphone,
   Users,
@@ -10,10 +10,10 @@ import {
   Target,
   Calendar,
   FileText,
-  Database, 
-  Wallet
- 
-  MapPin 
+  Database,
+  Wallet,
+  MapPin,
+  UserPlus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -71,14 +71,22 @@ const menuItems: MenuItem[] = [
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
     ]
   },
-  { 
+  {
+    key: 'volunteers',
+    icon: UserPlus,
+    path: '/volunteers',
+    badge: null,
+  },
+  {
     key: 'areas',
     icon: MapPin,
     path: '/areas',
- 
+    badge: null,
+  },
+  {
     key: 'events',
     icon: Calendar,
-    path: '/events', 
+    path: '/events',
     badge: null,
   },
   {
