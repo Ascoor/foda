@@ -69,4 +69,30 @@ class HomeApiTest extends TestCase
 
         $response->assertJsonCount(2, 'data.registrations');
     }
+
+    public function test_heatmap_returns_area_coordinates()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        Area::create([
+            'name' => 'Area 1',
+            'description' => 'Desc',
+            'x' => '10',
+            'y' => '20',
+        ]);
+
+        $response = $this->getJson('/api/v1/home/heatmap');
+
+        $response->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJsonPath('data.0.lat', '10')
+            ->assertJsonPath('data.0.lng', '20');
+    }
+
+    public function test_home_endpoints_require_authentication()
+    {
+        $this->getJson('/api/v1/home')->assertUnauthorized();
+        $this->getJson('/api/v1/home/heatmap')->assertUnauthorized();
+    }
 }
