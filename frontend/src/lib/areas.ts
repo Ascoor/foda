@@ -1,17 +1,17 @@
 import { apiFetch } from './api';
 import { getToken } from './auth';
-
+ 
 export interface AreaPayload {
   name: string;
   description: string;
   x?: string;
   y?: string;
 }
-
+ 
 export async function fetchAreas() {
   const token = getToken();
   return apiFetch('/api/v1/areas', { token });
-}
+} 
 
 export async function createArea(payload: AreaPayload) {
   const token = getToken();
@@ -37,4 +37,4 @@ export async function deleteArea(id: number) {
     method: 'DELETE',
     token,
   });
-}
+}  

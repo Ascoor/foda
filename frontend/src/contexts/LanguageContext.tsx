@@ -21,7 +21,10 @@ const translations = {
     'nav.dashboard': 'لوحة التحكم',
     'nav.campaigns': 'الحملات',
     'nav.teams': 'الفرق',
-    'nav.areas': 'المناطق',
+     'nav.areas': 'المناطق',
+ 
+    'nav.events': 'الفعاليات',
+ 
     'nav.analytics': 'التحليلات',
     'nav.settings': 'الإعدادات',
     'nav.profile': 'الملف الشخصي',
@@ -57,7 +60,7 @@ const translations = {
     'teams.members': 'الأعضاء',
     'teams.add_member': 'إضافة عضو',
     'teams.roles': 'الأدوار والصلاحيات',
-
+ 
     // Areas
     'areas.title': 'إدارة المناطق',
     'areas.create': 'إنشاء منطقة جديدة',
@@ -66,8 +69,20 @@ const translations = {
     'areas.description': 'الوصف',
     'areas.x': 'س',
     'areas.y': 'ص',
-    'areas.confirm_delete': 'هل أنت متأكد من الحذف؟',
-    
+    'areas.confirm_delete': 'هل أنت متأكد من الحذف؟', 
+    // Events
+    'events.title': 'إدارة الفعاليات',
+    'events.create': 'إنشاء فعالية',
+    'events.edit': 'تعديل الفعالية',
+    'events.delete': 'حذف الفعالية',
+    'events.name': 'اسم الفعالية',
+    'events.organiser': 'المنظم',
+    'events.location': 'الموقع',
+    'events.date': 'التاريخ',
+    'events.area': 'المنطقة',
+    'events.team': 'الفريق',
+    'events.description': 'الوصف',
+ 
     // Analytics & Reports
     'analytics.title': 'التحليلات والتقارير',
     'analytics.performance': 'تحليل الأداء',
@@ -90,6 +105,7 @@ const translations = {
     'common.error': 'حدث خطأ',
     'common.view': 'عرض',
     'common.details': 'التفاصيل',
+    'common.actions': 'الإجراءات',
   },
   en: {
     // Header & Navigation
@@ -97,8 +113,9 @@ const translations = {
     'app.subtitle': 'Advanced Campaign Management System',
     'nav.dashboard': 'Dashboard',
     'nav.campaigns': 'Campaigns',
-    'nav.teams': 'Teams',
-    'nav.areas': 'Areas',
+    'nav.teams': 'Teams', 
+    'nav.areas': 'Areas', 
+    'nav.events': 'Events', 
     'nav.analytics': 'Analytics',
     'nav.settings': 'Settings',
     'nav.profile': 'Profile',
@@ -134,7 +151,7 @@ const translations = {
     'teams.members': 'Team Members',
     'teams.add_member': 'Add Member',
     'teams.roles': 'Roles & Permissions',
-
+ 
     // Areas
     'areas.title': 'Area Management',
     'areas.create': 'Create New Area',
@@ -144,7 +161,20 @@ const translations = {
     'areas.x': 'X',
     'areas.y': 'Y',
     'areas.confirm_delete': 'Are you sure you want to delete?',
-    
+     
+    // Events
+    'events.title': 'Event Management',
+    'events.create': 'Create Event',
+    'events.edit': 'Edit Event',
+    'events.delete': 'Delete Event',
+    'events.name': 'Event Name',
+    'events.organiser': 'Organiser',
+    'events.location': 'Location',
+    'events.date': 'Date',
+    'events.area': 'Area',
+    'events.team': 'Team',
+    'events.description': 'Description',
+ 
     // Analytics & Reports
     'analytics.title': 'Analytics & Reports',
     'analytics.performance': 'Performance Analysis',
@@ -167,6 +197,7 @@ const translations = {
     'common.error': 'Error',
     'common.view': 'View',
     'common.details': 'Details',
+    'common.actions': 'Actions',
   }
 };
 

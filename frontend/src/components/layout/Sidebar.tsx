@@ -69,10 +69,14 @@ const menuItems: MenuItem[] = [
       { key: 'teams.roles', path: '/teams/roles', icon: Settings },
     ]
   },
-  {
+  { 
     key: 'areas',
     icon: MapPin,
     path: '/areas',
+ 
+    key: 'events',
+    icon: Calendar,
+    path: '/events', 
     badge: null,
   },
   {
