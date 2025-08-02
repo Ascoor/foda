@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\FinanceController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\ProfileController;
-use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
@@ -42,7 +42,8 @@ Route::prefix('v1')->group(function () {
         Route::get('home', [HomeController::class, 'index']);
         Route::get('home/heatmap', [HomeController::class, 'heatmap']);
         Route::apiResource('profiles', ProfileController::class);
-        Route::apiResource('settings', SettingsController::class);
+        Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
+        Route::apiResource('settings', SettingController::class);
         Route::apiResource('sms', SmsController::class);
         Route::get('swots/report', [SwotController::class, 'report']);
         Route::apiResource('swots', SwotController::class);

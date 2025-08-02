@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Http\Resources\VolunteerResource;
 
 class TeamResource extends JsonResource
 {
@@ -19,6 +20,7 @@ class TeamResource extends JsonResource
                 'id' => $this->supervisor->id ?? null,
                 'name' => $this->supervisor->name ?? null,
             ],
+            'volunteers' => VolunteerResource::collection($this->whenLoaded('volunteers')),
             'volunteers_count' => $this->volunteers_count ?? $this->volunteers()->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

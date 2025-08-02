@@ -12,6 +12,12 @@ class FinanceRequest extends FormRequest
     }
     public function rules(): array
     {
-        return [];
+        return [
+            'amount' => ['required', 'numeric'],
+            'type' => ['required', 'string'],
+            'date' => ['required', 'date'],
+            'description' => ['nullable', 'string'],
+            'reference_id' => ['nullable', 'integer'],
+        ];
     }
 }

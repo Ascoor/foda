@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Finance extends Model
 {
-    protected $guarded=[];
+    protected $fillable = [
+        'amount',
+        'type',
+        'date',
+        'description',
+        'reference_id',
+    ];
+
+    protected $casts = [
+        'date' => 'date',
+        'amount' => 'decimal:2',
+    ];
 }

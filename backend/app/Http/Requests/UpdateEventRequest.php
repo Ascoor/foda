@@ -19,7 +19,7 @@ class UpdateEventRequest extends FormRequest
             'description' => ['sometimes', 'nullable', 'string'],
             'organiser' => ['sometimes', 'required', 'string', 'max:255'],
             'location' => ['sometimes', 'required', 'string', 'max:255'],
-            'date' => ['sometimes', 'required', 'date'],
+            'date' => ['sometimes', 'required', 'date', 'after_or_equal:today'],
             'area_id' => ['sometimes', 'required', 'exists:areas,id'],
             'team_id' => ['sometimes', 'required', 'exists:teams,id'],
         ];

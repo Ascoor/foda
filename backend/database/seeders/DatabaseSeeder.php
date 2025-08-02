@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             FinanceSeeder::class,
             HomeSeeder::class,
             ProfileSeeder::class,
-            SettingsSeeder::class,
+            SettingSeeder::class,
             SmsSeeder::class, 
             SwotSeeder::class,
             TeamSeeder::class, 
