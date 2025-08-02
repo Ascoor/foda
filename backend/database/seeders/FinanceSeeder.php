@@ -9,6 +9,6 @@ class FinanceSeeder extends Seeder
 {
     public function run(): void
     {
-        Finance::create();
+        Finance::factory()->count(10)->create();
     }
 }

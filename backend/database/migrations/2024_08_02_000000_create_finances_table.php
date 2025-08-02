@@ -10,6 +10,11 @@ return new class extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->id();
+            $table->decimal('amount', 15, 2);
+            $table->string('type');
+            $table->date('date');
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('reference_id')->nullable();
             $table->timestamps();
         });
     }
