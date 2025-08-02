@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories; 
  
 use App\Models\Area;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -14,13 +14,13 @@ class AreaFactory extends Factory
 
     public function definition(): array
     {
-        return [
- 
+        return [ 
             'name' => $this->faker->city(),
- 
             'description' => $this->faker->sentence(),
-            'x' => null,
-            'y' => null,
+            'x' => $this->faker->latitude(),
+            'y' => $this->faker->longitude(),
         ];
     }
-}  
+ 
+ 
+}   

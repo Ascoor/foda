@@ -9,6 +9,10 @@ class VoterSeeder extends Seeder
 {
     public function run(): void
     {
-        Voter::create();
+        $names = ['أحمد علي', 'John Doe', 'فاطمة', 'Jane Smith'];
+
+        foreach ($names as $name) {
+            Voter::factory()->create(['name' => $name]);
+        }
     }
 }

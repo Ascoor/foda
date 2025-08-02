@@ -46,6 +46,8 @@ Route::prefix('v1')->group(function () {
         Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
         Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
         Route::apiResource('volunteers', VolunteerController::class);
+        Route::post('voters/import', [VoterController::class, 'import']);
+        Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
     });
 });
