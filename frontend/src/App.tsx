@@ -17,6 +17,7 @@ import TeamMembers from "./pages/TeamMembers";
 import { Analytics } from "./pages/Analytics";
 import { Settings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/profile" element={<Profile />} />
               </Route>
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
