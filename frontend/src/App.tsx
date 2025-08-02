@@ -16,12 +16,12 @@ import { Teams } from "./pages/Teams";
 import TeamMembers from "./pages/TeamMembers";
 import { Event } from "./pages/Event";
 import { Analytics } from "./pages/Analytics";
-import { Settings } from "./pages/Settings";
-import NotFound from "./pages/NotFound"; 
-import Profile from "./pages/Profile";
- 
+import { Settings } from "./pages/Settings"; 
+import NotFound from "./pages/NotFound";
+import { Finance } from "./pages/Finance";
+import Profile from "./pages/Profile"; 
 import Area from "./pages/Area";
- 
+  
 
 const queryClient = new QueryClient();
 
@@ -60,6 +60,7 @@ const App = () => (
  
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />
+                <Route path="/finance" element={<Finance />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>

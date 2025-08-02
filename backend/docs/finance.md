@@ -11,7 +11,7 @@ Optional query:
 
 Fields:
 - `amount` (number, required)
-- `type` (string, required)
+- `type` (string, required, `income` or `expense`)
 - `date` (YYYY-MM-DD, required)
 - `description` (string, optional)
 - `reference_id` (integer, optional)

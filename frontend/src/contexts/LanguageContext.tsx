@@ -26,6 +26,7 @@ const translations = {
     'nav.events': 'الفعاليات',
  
     'nav.analytics': 'التحليلات',
+    'nav.finance': 'المالية',
     'nav.settings': 'الإعدادات',
     'nav.profile': 'الملف الشخصي',
     'nav.logout': 'تسجيل الخروج',
@@ -76,6 +77,7 @@ const translations = {
     'teams.add_member': 'إضافة عضو',
     'teams.roles': 'الأدوار والصلاحيات',
  
+ 
     // Areas
     'areas.title': 'إدارة المناطق',
     'areas.create': 'إنشاء منطقة جديدة',
@@ -98,6 +100,7 @@ const translations = {
     'events.team': 'الفريق',
     'events.description': 'الوصف',
  
+ 
     // Analytics & Reports
     'analytics.title': 'التحليلات والتقارير',
     'analytics.performance': 'تحليل الأداء',
@@ -105,6 +108,20 @@ const translations = {
     'analytics.data': 'إدارة البيانات',
     'campaigns.reports': 'تقارير الحملات',
     'campaigns.schedule': 'جدولة الحملات',
+
+    // Finance
+    'finance.title': 'إدارة المالية',
+    'finance.add': 'إضافة سجل مالي',
+    'finance.edit': 'تعديل السجل المالي',
+    'finance.delete': 'حذف السجل',
+    'finance.amount': 'المبلغ',
+    'finance.type': 'النوع',
+    'finance.date': 'التاريخ',
+    'finance.description': 'الوصف',
+    'finance.reference': 'المعرف المرجعي',
+    'finance.income': 'إيراد',
+    'finance.expense': 'مصروف',
+    'finance.no_records': 'لا توجد سجلات مالية',
     
     // Common
     'common.save': 'حفظ',
@@ -132,6 +149,7 @@ const translations = {
     'nav.areas': 'Areas', 
     'nav.events': 'Events', 
     'nav.analytics': 'Analytics',
+    'nav.finance': 'Finance',
     'nav.settings': 'Settings',
     'nav.profile': 'Profile',
     'nav.logout': 'Logout',
@@ -182,6 +200,7 @@ const translations = {
     'teams.add_member': 'Add Member',
     'teams.roles': 'Roles & Permissions',
  
+ 
     // Areas
     'areas.title': 'Area Management',
     'areas.create': 'Create New Area',
@@ -204,7 +223,7 @@ const translations = {
     'events.area': 'Area',
     'events.team': 'Team',
     'events.description': 'Description',
- 
+  
     // Analytics & Reports
     'analytics.title': 'Analytics & Reports',
     'analytics.performance': 'Performance Analysis',
@@ -212,6 +231,20 @@ const translations = {
     'analytics.data': 'Data Management',
     'campaigns.reports': 'Campaign Reports',
     'campaigns.schedule': 'Campaign Scheduling',
+
+    // Finance
+    'finance.title': 'Finance Management',
+    'finance.add': 'Add Finance',
+    'finance.edit': 'Edit Finance',
+    'finance.delete': 'Delete Finance',
+    'finance.amount': 'Amount',
+    'finance.type': 'Type',
+    'finance.date': 'Date',
+    'finance.description': 'Description',
+    'finance.reference': 'Reference ID',
+    'finance.income': 'Income',
+    'finance.expense': 'Expense',
+    'finance.no_records': 'No finance records',
     
     // Common
     'common.save': 'Save',
