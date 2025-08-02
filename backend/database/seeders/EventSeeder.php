@@ -16,6 +16,7 @@ class EventSeeder extends Seeder
 
         Event::factory()->create([
             'name' => 'لقاء تعريفي',
+            'description' => 'فعالية تعريفية للمتطوعين الجدد',
             'organiser' => 'منظم 1',
             'location' => 'الرياض',
             'date' => now()->addDays(5),
@@ -25,6 +26,7 @@ class EventSeeder extends Seeder
 
         Event::factory()->create([
             'name' => 'Kickoff Meeting',
+            'description' => 'Kickoff for the upcoming campaign',
             'organiser' => 'Organizer 1',
             'location' => 'New York',
             'date' => now()->addDays(10),

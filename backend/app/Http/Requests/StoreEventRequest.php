@@ -19,7 +19,7 @@ class StoreEventRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'organiser' => ['required', 'string', 'max:255'],
             'location' => ['required', 'string', 'max:255'],
-            'date' => ['required', 'date'],
+            'date' => ['required', 'date', 'after_or_equal:today'],
             'area_id' => ['required', 'exists:areas,id'],
             'team_id' => ['required', 'exists:teams,id'],
         ];

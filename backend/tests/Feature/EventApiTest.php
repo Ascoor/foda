@@ -36,7 +36,7 @@ class EventApiTest extends TestCase
             'name' => 'Event1',
             'organiser' => 'Org1',
             'location' => 'Loc1',
-            'date' => '2024-01-01',
+            'date' => now()->addDays(1)->toDateString(),
             'area_id' => $area->id,
             'team_id' => $team->id,
         ]);
@@ -45,12 +45,12 @@ class EventApiTest extends TestCase
             'name' => 'Event2',
             'organiser' => 'Org2',
             'location' => 'Loc2',
-            'date' => '2024-02-01',
+            'date' => now()->addDays(10)->toDateString(),
             'area_id' => $area->id,
             'team_id' => $team->id,
         ]);
 
-        $response = $this->getJson('/api/v1/events?date=2024-01-01');
+        $response = $this->getJson('/api/v1/events?date=' . now()->addDays(1)->toDateString());
 
         $response->assertOk()->assertJsonCount(1, 'data');
     }
@@ -64,7 +64,7 @@ class EventApiTest extends TestCase
             'name' => 'My Event',
             'organiser' => 'Org',
             'location' => 'Loc',
-            'date' => '2024-01-01',
+            'date' => now()->addDays(1)->toDateString(),
             'area_id' => $area->id,
             'team_id' => $team->id,
         ];
@@ -73,6 +73,25 @@ class EventApiTest extends TestCase
 
         $response->assertCreated()->assertJsonPath('data.name', 'My Event');
         $this->assertDatabaseHas('events', ['name' => 'My Event']);
+    }
+
+    public function test_cannot_create_event_in_past()
+    {
+        Sanctum::actingAs(User::factory()->create());
+        [$area, $team] = $this->prepareDependencies();
+
+        $payload = [
+            'name' => 'Old Event',
+            'organiser' => 'Org',
+            'location' => 'Loc',
+            'date' => now()->subDay()->toDateString(),
+            'area_id' => $area->id,
+            'team_id' => $team->id,
+        ];
+
+        $response = $this->postJson('/api/v1/events', $payload);
+
+        $response->assertStatus(422)->assertJsonValidationErrors('date');
     }
 
     public function test_show_returns_event()
@@ -85,7 +104,7 @@ class EventApiTest extends TestCase
             'name' => 'Event1',
             'organiser' => 'Org1',
             'location' => 'Loc1',
-            'date' => '2024-01-01',
+            'date' => now()->addDays(1)->toDateString(),
             'area_id' => $area->id,
             'team_id' => $team->id,
         ]);
@@ -105,7 +124,7 @@ class EventApiTest extends TestCase
             'name' => 'Event1',
             'organiser' => 'Org1',
             'location' => 'Loc1',
-            'date' => '2024-01-01',
+            'date' => now()->addDays(1)->toDateString(),
             'area_id' => $area->id,
             'team_id' => $team->id,
         ]);
@@ -130,7 +149,7 @@ class EventApiTest extends TestCase
             'name' => 'Event1',
             'organiser' => 'Org1',
             'location' => 'Loc1',
-            'date' => '2024-01-01',
+            'date' => now()->addDays(1)->toDateString(),
             'area_id' => $area->id,
             'team_id' => $team->id,
         ]);
