@@ -6,6 +6,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Label } from '@/components/ui/label';
+ 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fetchSwots, createSwot, updateSwot, deleteSwot, fetchSwotReport, SwotPayload } from '@/lib/swots';
 
@@ -34,6 +35,7 @@ const SwotPage: React.FC = () => {
     opportunities: '',
     threats: '',
   });
+ 
   const [reportParams, setReportParams] = useState({ entity_type: 'area', entity_ids: '' });
   const [reportData, setReportData] = useState<Swot[]>([]);
 
@@ -96,9 +98,11 @@ const SwotPage: React.FC = () => {
     try {
       const ids = reportParams.entity_ids
         .split(',')
+ 
         .map(id => id.trim())
         .filter(Boolean)
         .map(id => Number(id));
+ 
       const res = await fetchSwotReport(reportParams.entity_type, ids);
       setReportData(res.data ?? res);
     } catch (e: unknown) {
@@ -133,7 +137,7 @@ const SwotPage: React.FC = () => {
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_type')}</Label>
+                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_type')}</Label> 
                 <Input className="glass" value={form.entity_type} onChange={e => setForm({ ...form, entity_type: e.target.value })} />
               </div>
               <div>
@@ -155,6 +159,7 @@ const SwotPage: React.FC = () => {
               <div>
                 <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.threats')}</Label>
                 <Textarea className="glass" value={form.threats} onChange={e => setForm({ ...form, threats: e.target.value })} />
+ 
               </div>
             </div>
             <DialogFooter>
@@ -168,7 +173,7 @@ const SwotPage: React.FC = () => {
           </DialogContent>
         </Dialog>
       </div>
-
+ 
       <div className="space-y-4">
         <h2 className={`text-xl font-semibold ${language === 'ar' ? 'font-arabic-heading' : ''}`}>{t('swots.report')}</h2>
         <div className={`flex gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
@@ -209,7 +214,7 @@ const SwotPage: React.FC = () => {
           </Table>
         )}
       </div>
-
+ 
       <Table>
         <TableHeader>
           <TableRow className={direction === 'rtl' ? 'text-right' : ''}>
@@ -223,7 +228,9 @@ const SwotPage: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
+ 
           {swots.map(swot => (
+ 
             <TableRow key={swot.id} className={direction === 'rtl' ? 'text-right' : ''}>
               <TableCell>{swot.entity_type}</TableCell>
               <TableCell>{swot.entity_id}</TableCell>
@@ -244,10 +251,67 @@ const SwotPage: React.FC = () => {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
+      </Table> 
+
+      <div className="space-y-4">
+        <h2 className={`text-2xl font-bold ${language === 'ar' ? 'font-arabic-heading' : ''}`}>{t('swots.report')}</h2>
+        <div className={`flex gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+          <div>
+            <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_type')}</Label>
+            <Select value={reportParams.entity_type} onValueChange={(v) => setReportParams({ ...reportParams, entity_type: v })}>
+              <SelectTrigger className="w-48 glass">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="area">{t('nav.areas')}</SelectItem>
+                <SelectItem value="team">{t('nav.teams')}</SelectItem>
+                <SelectItem value="volunteer">{t('dashboard.volunteers')}</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="flex-1">
+            <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_ids')}</Label>
+            <Input
+              className="glass"
+              value={reportParams.entity_ids}
+              onChange={(e) => setReportParams({ ...reportParams, entity_ids: e.target.value })}
+              placeholder="1,2,3"
+            />
+          </div>
+          <div className="flex items-end">
+            <Button onClick={generateReport} className="transition-glow hover:neon-glow-orange">
+              <span className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.generate_report')}</span>
+            </Button>
+          </div>
+        </div>
+        {reportData.length > 0 && (
+          <Table>
+            <TableHeader>
+              <TableRow className={direction === 'rtl' ? 'text-right' : ''}>
+                <TableHead>{t('swots.entity_id')}</TableHead>
+                <TableHead>{t('swots.strengths')}</TableHead>
+                <TableHead>{t('swots.weaknesses')}</TableHead>
+                <TableHead>{t('swots.opportunities')}</TableHead>
+                <TableHead>{t('swots.threats')}</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {reportData.map((r) => (
+                <TableRow key={r.id} className={direction === 'rtl' ? 'text-right' : ''}>
+                  <TableCell>{r.entity_id}</TableCell>
+                  <TableCell>{r.strengths}</TableCell>
+                  <TableCell>{r.weaknesses}</TableCell>
+                  <TableCell>{r.opportunities}</TableCell>
+                  <TableCell>{r.threats}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div> 
     </div>
   );
 };
 
 export default SwotPage;
-
+ 

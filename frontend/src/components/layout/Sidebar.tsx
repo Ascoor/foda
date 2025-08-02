@@ -12,7 +12,9 @@ import {
   FileText,
   Database,
   Wallet,
-  MapPin,
+  MapPin, 
+  ClipboardList,
+ 
  
   UserPlus,
 
@@ -91,7 +93,13 @@ const menuItems: MenuItem[] = [
   {
     key: 'events',
     icon: Calendar,
-    path: '/events', 
+    path: '/events',
+    badge: null,
+  },
+  {
+    key: 'swots',
+    icon: ClipboardList,
+    path: '/swots',
     badge: null,
   },
   {

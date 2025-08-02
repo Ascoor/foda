@@ -105,8 +105,13 @@ class SwotApiTest extends TestCase
     public function test_can_attach_to_team_and_volunteer()
     {
         $this->authenticate();
-        $team = Team::create();
-        $volunteer = Volunteer::create();
+        $area = Area::create(['name' => 'A', 'description' => 'D']);
+        $team = Team::create([
+            'name' => 'Team 1',
+            'area_id' => $area->id,
+            'supervisor_id' => User::factory()->create()->id,
+        ]);
+        $volunteer = Volunteer::create(['name' => 'Vol 1']);
 
         $payloadTeam = [
             'entity_type' => 'team',

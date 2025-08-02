@@ -20,6 +20,9 @@ const translations = {
     'app.subtitle': 'نظام إدارة الحملات المتطور',
     'nav.dashboard': 'لوحة التحكم',
     'nav.campaigns': 'الحملات',
+ 
+    'nav.swots': 'تحليل SWOT',
+ 
     'nav.teams': 'الفرق', 
      'nav.areas': 'المناطق', 
     
@@ -27,9 +30,8 @@ const translations = {
      
         
     'nav.voters': 'الناخبون', 
-    'nav.events': 'الفعاليات',
-    'nav.swots': 'تحليل SWOT',
-
+    'nav.events': 'الفعاليات', 
+ 
     'nav.analytics': 'التحليلات',
     'nav.finance': 'المالية',
     'nav.settings': 'الإعدادات',
@@ -131,8 +133,22 @@ const translations = {
     'events.area': 'المنطقة',
     'events.team': 'الفريق',
     'events.description': 'الوصف',
- 
- 
+
+    // Swots
+    'swots.title': 'تحليل SWOT',
+    'swots.create': 'إضافة تحليل',
+    'swots.edit': 'تعديل التحليل',
+    'swots.entity_type': 'نوع الكيان',
+    'swots.entity_id': 'معرّف الكيان',
+    'swots.strengths': 'نقاط القوة',
+    'swots.weaknesses': 'نقاط الضعف',
+    'swots.opportunities': 'الفرص',
+    'swots.threats': 'التهديدات',
+    'swots.report': 'تقرير SWOT',
+    'swots.generate_report': 'توليد التقرير',
+    'swots.entity_ids': 'معرفات الكيانات',
+    'swots.confirm_delete': 'هل أنت متأكد من الحذف؟',
+
     // Analytics & Reports
     'analytics.title': 'التحليلات والتقارير',
     'analytics.performance': 'تحليل الأداء',
@@ -190,6 +206,7 @@ const translations = {
     'app.title': 'Foda',
     'app.subtitle': 'Advanced Campaign Management System',
     'nav.dashboard': 'Dashboard',
+ 
     'nav.campaigns': 'Campaigns', 
     'nav.teams': 'Teams', 
     'nav.areas': 'Areas',
@@ -203,6 +220,7 @@ const translations = {
     'nav.voters': 'Voters',
     'nav.areas': 'Areas',
     'nav.events': 'Events',
+ 
  
     'nav.analytics': 'Analytics',
     'nav.finance': 'Finance',
@@ -309,7 +327,22 @@ const translations = {
     'events.area': 'Area',
     'events.team': 'Team',
     'events.description': 'Description',
-  
+
+    // Swots
+    'swots.title': 'SWOT Analysis',
+    'swots.create': 'Add SWOT',
+    'swots.edit': 'Edit SWOT',
+    'swots.entity_type': 'Entity Type',
+    'swots.entity_id': 'Entity ID',
+    'swots.strengths': 'Strengths',
+    'swots.weaknesses': 'Weaknesses',
+    'swots.opportunities': 'Opportunities',
+    'swots.threats': 'Threats',
+    'swots.report': 'SWOT Report',
+    'swots.generate_report': 'Generate Report',
+    'swots.entity_ids': 'Entity IDs',
+    'swots.confirm_delete': 'Are you sure you want to delete?',
+
     // Analytics & Reports
     'analytics.title': 'Analytics & Reports',
     'analytics.performance': 'Performance Analysis',
