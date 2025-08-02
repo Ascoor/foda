@@ -22,6 +22,8 @@ import { Finance } from "./pages/Finance";
 import Profile from "./pages/Profile";
 import Area from "./pages/Area";
 import Volunteers from "./pages/Volunteers";
+
+import Voters from "./pages/Voters";
   
 
 const queryClient = new QueryClient();
@@ -56,9 +58,11 @@ const App = () => (
                 <Route path="/teams/*" element={<Teams />} />
 
                 <Route path="/areas" element={<Area />} />
+                 <Route path="/volunteers" element={<Volunteers />} />
 
-                <Route path="/volunteers" element={<Volunteers />} />
 
+                <Route path="/voters" element={<Voters />} />
+ 
                 <Route path="/events" element={<Event />} />
  
                 <Route path="/analytics" element={<Analytics />} />

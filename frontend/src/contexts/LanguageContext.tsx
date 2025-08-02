@@ -21,9 +21,13 @@ const translations = {
     'nav.dashboard': 'لوحة التحكم',
     'nav.campaigns': 'الحملات',
     'nav.teams': 'الفرق',
+    
     'nav.volunteers': 'المتطوعون',
-     'nav.areas': 'المناطق',
-
+     
+        
+    'nav.voters': 'الناخبون',
+    'nav.areas': 'المناطق',
+    
     'nav.events': 'الفعاليات',
  
     'nav.analytics': 'التحليلات',
@@ -97,7 +101,24 @@ const translations = {
     'areas.description': 'الوصف',
     'areas.x': 'س',
     'areas.y': 'ص',
-    'areas.confirm_delete': 'هل أنت متأكد من الحذف؟', 
+    'areas.confirm_delete': 'هل أنت متأكد من الحذف؟',
+    // Voters
+    'voters.title': 'إدارة الناخبين',
+    'voters.create': 'إضافة ناخب',
+    'voters.edit': 'تعديل الناخب',
+    'voters.name': 'الاسم',
+    'voters.email': 'البريد الإلكتروني',
+    'voters.phone': 'الهاتف',
+    'voters.area': 'المنطقة',
+    'voters.address': 'العنوان',
+    'voters.sex': 'الجنس',
+    'voters.male': 'ذكر',
+    'voters.female': 'أنثى',
+    'voters.birthdate': 'تاريخ الميلاد',
+    'voters.voter_id': 'رقم الناخب',
+    'voters.import': 'استيراد',
+    'voters.export': 'تصدير',
+    'voters.confirm_delete': 'هل أنت متأكد من حذف الناخب؟',
     // Events
     'events.title': 'إدارة الفعاليات',
     'events.create': 'إنشاء فعالية',
@@ -157,7 +178,10 @@ const translations = {
     'nav.dashboard': 'Dashboard',
     'nav.campaigns': 'Campaigns',
     'nav.teams': 'Teams',
+
     'nav.volunteers': 'Volunteers',
+ 
+    'nav.voters': 'Voters',
     'nav.areas': 'Areas',
     'nav.events': 'Events',
     'nav.analytics': 'Analytics',
@@ -234,7 +258,25 @@ const translations = {
     'areas.x': 'X',
     'areas.y': 'Y',
     'areas.confirm_delete': 'Are you sure you want to delete?',
-     
+
+    // Voters
+    'voters.title': 'Voter Management',
+    'voters.create': 'Create Voter',
+    'voters.edit': 'Edit Voter',
+    'voters.name': 'Name',
+    'voters.email': 'Email',
+    'voters.phone': 'Phone',
+    'voters.area': 'Area',
+    'voters.address': 'Address',
+    'voters.sex': 'Sex',
+    'voters.male': 'Male',
+    'voters.female': 'Female',
+    'voters.birthdate': 'Birthdate',
+    'voters.voter_id': 'Voter ID',
+    'voters.import': 'Import',
+    'voters.export': 'Export',
+    'voters.confirm_delete': 'Are you sure you want to delete?',
+
     // Events
     'events.title': 'Event Management',
     'events.create': 'Create Event',
