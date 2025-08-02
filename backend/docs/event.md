@@ -3,7 +3,10 @@
 ## List Events
 `GET /api/v1/events`
 
-Query params: `date`, `area_id`, `team_id`
+Optional query parameters:
+- `date` (YYYY-MM-DD)
+- `area_id`
+- `team_id`
 
 ## Show Event
 `GET /api/v1/events/{id}`
@@ -23,3 +26,5 @@ Optional fields: `description`, `event_id`
 
 ## Upcoming Events
 `GET /api/v1/events/upcoming`
+
+Returns events with a date on or after today.

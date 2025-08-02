@@ -69,6 +69,12 @@ const menuItems: MenuItem[] = [
     ]
   },
   {
+    key: 'events',
+    icon: Calendar,
+    path: '/events',
+    badge: null,
+  },
+  {
     key: 'analytics',
     icon: BarChart3,
     path: '/analytics',
