@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->text('message');
-            $table->string('recipient_phone');
+            $table->string('recipient');
             $table->string('status')->default('pending');
             $table->timestamp('sent_at')->nullable();
             $table->timestamp('scheduled_for')->nullable();

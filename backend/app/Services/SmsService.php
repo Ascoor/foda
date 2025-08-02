@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Sms;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 class SmsService
 {
@@ -26,6 +27,8 @@ class SmsService
             'status' => 'sent',
             'sent_at' => Carbon::now(),
         ]);
+
+        Log::info('sms.sent', $sms->toArray());
 
         return $sms;
     }

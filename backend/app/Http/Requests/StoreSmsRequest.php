@@ -14,7 +14,7 @@ class StoreSmsRequest extends FormRequest
     {
         return [
             'message' => ['required', 'string'],
-            'recipient_phone' => ['required', 'string'],
+            'recipient' => ['required', 'string'],
             'scheduled_for' => ['nullable', 'date'],
         ];
     }

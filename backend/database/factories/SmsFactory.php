@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Sms;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SmsFactory extends Factory
@@ -11,11 +12,15 @@ class SmsFactory extends Factory
 
     public function definition(): array
     {
+        $status = $this->faker->randomElement(['pending', 'sent', 'failed']);
+
         return [
+            'user_id' => User::factory(),
             'message' => $this->faker->sentence,
-            'recipient_phone' => $this->faker->e164PhoneNumber,
-            'status' => 'sent',
-            'sent_at' => now(),
+            'recipient' => $this->faker->e164PhoneNumber,
+            'status' => $status,
+            'sent_at' => $status === 'sent' ? now() : null,
+            'scheduled_for' => $status === 'pending' ? now()->addHour() : null,
         ];
     }
 }
