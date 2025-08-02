@@ -13,6 +13,7 @@ import { Dashboard } from "./pages/Dashboard";
 import { Campaigns } from "./pages/Campaigns";
 import { CampaignReports } from "./pages/CampaignReports";
 import { Teams } from "./pages/Teams";
+import TeamMembers from "./pages/TeamMembers";
 import { Analytics } from "./pages/Analytics";
 import { Settings } from "./pages/Settings";
 import NotFound from "./pages/NotFound";
@@ -45,6 +46,7 @@ const App = () => (
                 <Route path="/campaigns/reports" element={<CampaignReports />} />
                 <Route path="/campaigns/*" element={<Campaigns />} />
                 <Route path="/teams" element={<Teams />} />
+                <Route path="/teams/members" element={<TeamMembers />} />
                 <Route path="/teams/*" element={<Teams />} />
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />
