@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ onSidebarToggle, isSidebarOpen }
           variant="ghost"
           size="icon"
           onClick={onSidebarToggle}
-          className="lg:hidden transition-glow hover:neon-glow-blue"
+          className="transition-glow hover:neon-glow-blue"
         >
           {isSidebarOpen ? (
             <X className={`h-5 w-5 ${direction === 'rtl' ? 'rtl-flip' : ''}`} />
