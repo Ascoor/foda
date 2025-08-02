@@ -75,6 +75,39 @@ class AuthApiTest extends TestCase
 
     }
 
+    public function test_profile_returns_user_data(): void
+    {
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+        ]);
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        $this->withHeader('Authorization', 'Bearer '.$token)
+            ->getJson('/api/v1/profile')
+            ->assertStatus(200)
+            ->assertJsonPath('data.email', $user->email);
+    }
+
+    public function test_update_profile_changes_user(): void
+    {
+        $user = User::factory()->create([
+            'password' => Hash::make('password'),
+        ]);
+        $token = $user->createToken('api-token')->plainTextToken;
+
+        $this->withHeader('Authorization', 'Bearer '.$token)
+            ->putJson('/api/v1/profile', [
+                'name' => 'Updated Name',
+                'email' => 'updated@example.com',
+                'password' => 'newpassword',
+                'password_confirmation' => 'newpassword',
+            ])
+            ->assertStatus(200)
+            ->assertJsonPath('data.email', 'updated@example.com');
+
+        $this->assertTrue(Hash::check('newpassword', $user->fresh()->password));
+    }
+
     public function test_register_requires_admin_role(): void
     {
         $adminRole = Role::create(['name' => 'admin']);

@@ -29,6 +29,19 @@ const translations = {
     'nav.settings': 'الإعدادات',
     'nav.profile': 'الملف الشخصي',
     'nav.logout': 'تسجيل الخروج',
+
+    // Auth
+    'auth.login': 'تسجيل الدخول',
+    'auth.register': 'تسجيل',
+    'auth.name': 'الاسم',
+    'auth.email': 'البريد الإلكتروني',
+    'auth.password': 'كلمة المرور',
+    'auth.role': 'معرّف الدور',
+    'auth.have_account': 'لديك حساب؟ تسجيل الدخول',
+    'auth.no_account': 'ليس لديك حساب؟ سجل',
+    'profile.title': 'الملف الشخصي',
+    'profile.update': 'تحديث الملف',
+    'profile.password_confirmation': 'تأكيد كلمة المرور',
     
     // Theme & Language
     'theme.light': 'الوضع النهاري',
@@ -120,6 +133,19 @@ const translations = {
     'nav.settings': 'Settings',
     'nav.profile': 'Profile',
     'nav.logout': 'Logout',
+
+    // Auth
+    'auth.login': 'Login',
+    'auth.register': 'Register',
+    'auth.name': 'Name',
+    'auth.email': 'Email',
+    'auth.password': 'Password',
+    'auth.role': 'Role ID',
+    'auth.have_account': 'Have an account? Login',
+    'auth.no_account': "Don't have an account? Register",
+    'profile.title': 'Profile',
+    'profile.update': 'Update Profile',
+    'profile.password_confirmation': 'Confirm Password',
     
     // Theme & Language
     'theme.light': 'Light Mode',
