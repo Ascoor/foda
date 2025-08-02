@@ -37,10 +37,12 @@ const translations = {
     // Dashboard
     'dashboard.welcome': 'مرحباً بك في فودا',
     'dashboard.subtitle': 'إدارة حملاتك بكفاءة',
-    'dashboard.total_campaigns': 'إجمالي الحملات',
-    'dashboard.active_campaigns': 'الحملات النشطة',
-    'dashboard.team_members': 'أعضاء الفريق',
-    'dashboard.completion_rate': 'معدل الإنجاز',
+    'dashboard.areas': 'المناطق',
+    'dashboard.volunteers': 'المتطوعون',
+    'dashboard.voters': 'الناخبون',
+    'dashboard.teams': 'الفرق',
+    'dashboard.events': 'الفعاليات',
+    'dashboard.heatmap_points': 'نقاط الخريطة الحرارية',
     
     // Campaigns
     'campaigns.title': 'إدارة الحملات',
@@ -118,10 +120,12 @@ const translations = {
     // Dashboard
     'dashboard.welcome': 'Welcome to Foda',
     'dashboard.subtitle': 'Manage your campaigns efficiently',
-    'dashboard.total_campaigns': 'Total Campaigns',
-    'dashboard.active_campaigns': 'Active Campaigns',
-    'dashboard.team_members': 'Team Members',
-    'dashboard.completion_rate': 'Completion Rate',
+    'dashboard.areas': 'Areas',
+    'dashboard.volunteers': 'Volunteers',
+    'dashboard.voters': 'Voters',
+    'dashboard.teams': 'Teams',
+    'dashboard.events': 'Events',
+    'dashboard.heatmap_points': 'Heatmap Points',
     
     // Campaigns
     'campaigns.title': 'Campaign Management',
