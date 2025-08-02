@@ -30,6 +30,11 @@
 
 ### Aggregated Report
 - `GET /api/v1/swots/report?entity_type=team&entity_ids[]=1&entity_ids[]=2`
+- Returns SWOT entries filtered by type and optional IDs.
+
+## Relations
+- SWOTs attach to `area`, `team`, and `volunteer` models via a polymorphic relation.
+- Each model exposes a `swots()` relation to access linked analyses.
 
 ## Notes
 - `entity_type` accepts `area`, `team`, or `volunteer`.

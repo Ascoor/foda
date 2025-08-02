@@ -12,6 +12,9 @@ class HomeRequest extends FormRequest
     }
     public function rules(): array
     {
-        return [];
+        return [
+            'from' => ['nullable', 'date'],
+            'to' => ['nullable', 'date', 'after_or_equal:from'],
+        ];
     }
 }
