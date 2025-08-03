@@ -37,8 +37,10 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
-        Route::get('profile', [AuthController::class, 'profile']);
-        Route::put('profile', [AuthController::class, 'updateProfile']);
+        Route::get('profile', [ProfileController::class, 'show']);
+        Route::put('profile', [ProfileController::class, 'update']);
+        Route::post('profile/avatar', [ProfileController::class, 'updateAvatar']);
+        Route::patch('profile/password', [ProfileController::class, 'updatePassword']);
 
         Route::apiResource('areas', AreaController::class);
         Route::get('events/upcoming', [EventController::class, 'upcoming']);
@@ -48,9 +50,11 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('expense-categories', ExpenseCategoryController::class);
         Route::get('home', [HomeController::class, 'index']);
         Route::get('home/heatmap', [HomeController::class, 'heatmap']);
-        Route::apiResource('profiles', ProfileController::class);
         Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
+        Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);
         Route::apiResource('settings', SettingController::class);
+        Route::get('sms/settings', [SmsController::class, 'settings']);
+        Route::put('sms/settings', [SmsController::class, 'updateSettings']);
         Route::apiResource('sms', SmsController::class);
         Route::get('swots/report', [SwotController::class, 'report']);
         Route::apiResource('swots', SwotController::class);

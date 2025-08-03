@@ -6,11 +6,14 @@ interface FetchOptions extends RequestInit {
 }
 
 export async function apiFetch(path: string, options: FetchOptions = {}) {
-  const { token, headers, ...rest } = options;
+  const { token, headers, body, ...rest } = options;
+  const contentType =
+    body instanceof FormData ? {} : { 'Content-Type': 'application/json' };
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
+    body,
     headers: {
-      'Content-Type': 'application/json',
+      ...contentType,
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },

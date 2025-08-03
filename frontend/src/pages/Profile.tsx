@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getProfile, updateProfile } from '@/lib/auth';
+import { fetchProfile, updateProfile, uploadAvatar, changePassword } from '@/lib/profile';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const Profile = () => {
@@ -14,7 +14,7 @@ const Profile = () => {
 
   useEffect(() => {
     (async () => {
-      const data = await getProfile();
+      const data = await fetchProfile();
       setForm((f) => ({ ...f, name: data.data.name, email: data.data.email }));
     })();
   }, []);
@@ -25,7 +25,11 @@ const Profile = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await updateProfile(form);
+    const { name, email, password, password_confirmation } = form;
+    await updateProfile({ name, email });
+    if (password) {
+      await changePassword({ password, password_confirmation });
+    }
     setMessage(t('common.success'));
     setForm({ ...form, password: '', password_confirmation: '' });
   };
@@ -65,6 +69,15 @@ const Profile = () => {
           onChange={handleChange}
           placeholder={t('profile.password_confirmation')}
           className="w-full p-2 border rounded"
+        />
+        <input
+          type="file"
+          onChange={async (e) => {
+            if (e.target.files?.[0]) {
+              await uploadAvatar(e.target.files[0]);
+              setMessage(t('common.success'));
+            }
+          }}
         />
         <button
           type="submit"
