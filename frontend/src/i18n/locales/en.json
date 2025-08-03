@@ -1,0 +1,188 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "actions": "Actions",
+    "name": "Name",
+    "type": "Type",
+    "status": "Status",
+    "date": "Date",
+    "created_at": "Created At",
+    "updated_at": "Updated At",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "elections": "Elections",
+    "geo_areas": "Geographic Areas",
+    "committees": "Committees",
+    "voters": "Voters",
+    "candidates": "Candidates",
+    "agents": "Agents",
+    "volunteers": "Volunteers",
+    "observations": "Observations",
+    "campaigns": "Campaigns",
+    "analytics": "Analytics",
+    "settings": "Settings"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to ElectionCircle",
+    "total_elections": "Total Elections",
+    "active_voters": "Active Voters",
+    "total_candidates": "Total Candidates",
+    "committees_count": "Committees Count",
+    "recent_activity": "Recent Activity",
+    "election_progress": "Election Progress",
+    "voter_turnout": "Voter Turnout"
+  },
+  "elections": {
+    "title": "Elections",
+    "add_election": "Add Election",
+    "election_name": "Election Name",
+    "election_type": "Election Type",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "description": "Description",
+    "status": {
+      "draft": "Draft",
+      "active": "Active",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "types": {
+      "presidential": "Presidential",
+      "parliamentary": "Parliamentary",
+      "local": "Local",
+      "referendum": "Referendum"
+    }
+  },
+  "geo_areas": {
+    "title": "Geographic Areas",
+    "add_area": "Add Area",
+    "area_name": "Area Name",
+    "parent_area": "Parent Area",
+    "area_type": "Area Type",
+    "total_voters": "Total Voters",
+    "total_committees": "Total Committees",
+    "types": {
+      "governorate": "Governorate",
+      "district": "District",
+      "city": "City",
+      "village": "Village"
+    }
+  },
+  "committees": {
+    "title": "Committees",
+    "add_committee": "Add Committee",
+    "committee_name": "Committee Name",
+    "committee_number": "Committee Number",
+    "address": "Address",
+    "area": "Area",
+    "election": "Election",
+    "capacity": "Capacity",
+    "assigned_voters": "Assigned Voters",
+    "types": {
+      "main": "Main",
+      "branch": "Branch"
+    }
+  },
+  "voters": {
+    "title": "Voters",
+    "add_voter": "Add Voter",
+    "voter_id": "Voter ID",
+    "full_name": "Full Name",
+    "national_id": "National ID",
+    "birth_date": "Birth Date",
+    "gender": "Gender",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "committee": "Committee",
+    "area": "Area",
+    "registered_date": "Registered Date",
+    "import_voters": "Import Voters",
+    "export_voters": "Export Voters",
+    "bulk_assign": "Bulk Assign",
+    "gender_options": {
+      "male": "Male",
+      "female": "Female"
+    }
+  },
+  "candidates": {
+    "title": "Candidates",
+    "add_candidate": "Add Candidate",
+    "candidate_name": "Candidate Name",
+    "party": "Party",
+    "bio": "Biography",
+    "campaign_slogan": "Campaign Slogan",
+    "election": "Election",
+    "candidate_number": "Candidate Number",
+    "assigned_agents": "Assigned Agents",
+    "types": {
+      "individual": "Individual",
+      "list": "List"
+    }
+  },
+  "agents": {
+    "title": "Agents",
+    "add_agent": "Add Agent",
+    "agent_name": "Agent Name",
+    "assigned_candidate": "Assigned Candidate",
+    "assigned_committee": "Assigned Committee",
+    "role": "Role",
+    "assignment_date": "Assignment Date",
+    "mobile": "Mobile Number"
+  },
+  "volunteers": {
+    "title": "Volunteers",
+    "add_volunteer": "Add Volunteer",
+    "volunteer_name": "Volunteer Name",
+    "assigned_area": "Assigned Area",
+    "skills": "Skills",
+    "availability": "Availability"
+  },
+  "observations": {
+    "title": "Observations",
+    "add_observation": "Add Observation",
+    "observer": "Observer",
+    "committee": "Committee",
+    "observation_type": "Observation Type",
+    "description": "Description",
+    "evidence_image": "Evidence Image",
+    "timestamp": "Timestamp",
+    "types": {
+      "violation": "Violation",
+      "note": "Note",
+      "complaint": "Complaint"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "profile": "Profile",
+    "system": "System",
+    "dark_mode": "Dark Mode",
+    "light_mode": "Light Mode"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "remember_me": "Remember Me"
+  }
+}

@@ -1,173 +1,102 @@
-import React from 'react';
-import { Bell, Sun, Moon, Search, User, Settings, LogOut, Menu, X, Rocket } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { Moon, Sun, Globe, User, Bell, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { useTheme } from '@/contexts/ThemeContext';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { logout } from '@/lib/auth';
-import { useNavigate } from 'react-router-dom';
 
-interface HeaderProps {
-  onSidebarToggle: () => void;
-  isSidebarOpen: boolean;
-}
-
-export const Header: React.FC<HeaderProps> = ({ onSidebarToggle, isSidebarOpen }) => {
+export const Header = () => {
+  const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-  const { language, setLanguage, direction, t } = useLanguage();
-  const navigate = useNavigate();
-
-  const handleLanguageSwitch = () => {
-    setLanguage(language === 'ar' ? 'en' : 'ar');
-  };
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/');
-  };
+  const { language, toggleLanguage, direction } = useLanguage();
 
   return (
-    <header className="glass-header h-16 flex items-center justify-between px-6 sticky top-0 z-50 transition-smooth">
-      <div className="flex items-center gap-4">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onSidebarToggle}
-          className="transition-glow hover:neon-glow-blue"
-        >
-          {isSidebarOpen ? (
-            <X className={`h-5 w-5 ${direction === 'rtl' ? 'rtl-flip' : ''}`} />
-          ) : (
-            <Menu className={`h-5 w-5 ${direction === 'rtl' ? 'rtl-flip' : ''}`} />
-          )}
-        </Button>
-        
-        <div className="flex items-center gap-3">
-          <Rocket className="h-8 w-8 text-primary transition-all duration-300 hover:scale-110" />
-          <div className="hidden sm:block">
-            <h1
-              className={`text-lg font-bold text-foreground transition-colors hover:text-primary ${
-                language === 'ar' ? 'font-arabic-heading' : ''
-              }`}
-            >
-              {t('app.title')}
-            </h1>
-            <p
-              className={`text-xs text-muted-foreground ${
-                language === 'ar' ? 'font-arabic' : ''
-              }`}
-            >
-              {t('app.subtitle')}
-            </p>
+    <motion.header
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="glass-card rounded-none border-x-0 border-t-0 sticky top-0 z-40"
+    >
+      <div className="flex items-center justify-between h-16 px-6">
+        {/* Search */}
+        <div className="flex items-center flex-1 max-w-md">
+          <div className="relative w-full">
+            <Search className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground ${direction === 'rtl' ? 'right-3' : 'left-3'}`} />
+            <Input
+              placeholder={t('common.search')}
+              className={`glass border-0 ${direction === 'rtl' ? 'pr-10' : 'pl-10'}`}
+            />
           </div>
         </div>
-      </div>
 
-      <div className="flex-1 max-w-md mx-4 hidden md:block">
-        <div className="relative">
-          <Search className={`absolute top-3 h-4 w-4 text-muted-foreground ${
-            direction === 'rtl' ? 'right-3' : 'left-3'
-          }`} />
-          <Input
-            placeholder={t('common.search')}
-            className={`glass ${direction === 'rtl' ? 'pr-9' : 'pl-9'} transition-glow focus:neon-glow-blue`}
-          />
-        </div>
-      </div>
-
-      <div className="flex items-center gap-3">
-        {/* Language Switcher */}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleLanguageSwitch}
-          className="transition-glow hover:neon-glow-orange"
-        >
-          <span className={`text-sm font-medium ${language === 'ar' ? 'font-arabic' : ''}`}>
-            {language === 'ar' ? 'EN' : 'ع'}
-          </span>
-        </Button>
-
-        {/* Theme Toggle */}
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleTheme}
-          className="transition-glow hover:neon-glow-blue"
-        >
-          {theme === 'light' ? (
-            <Moon className="h-4 w-4" />
-          ) : (
-            <Sun className="h-4 w-4" />
-          )}
-        </Button>
-
-        {/* Notifications */}
-        <div className="relative">
+        {/* Right Side Controls */}
+        <div className="flex items-center gap-2">
+          {/* Language Toggle */}
           <Button
             variant="ghost"
-            size="icon"
-            className="transition-glow hover:neon-glow-orange"
+            size="sm"
+            onClick={toggleLanguage}
+            className="glass-button"
+          >
+            <Globe className="h-4 w-4" />
+            <span className="ml-2 font-medium">
+              {language === 'ar' ? 'العربية' : 'English'}
+            </span>
+          </Button>
+
+          {/* Theme Toggle */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleTheme}
+            className="glass-button"
+          >
+            {theme === 'light' ? (
+              <Moon className="h-4 w-4" />
+            ) : (
+              <Sun className="h-4 w-4" />
+            )}
+          </Button>
+
+          {/* Notifications */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="glass-button relative"
           >
             <Bell className="h-4 w-4" />
+            <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full animate-pulse" />
           </Button>
-          <Badge 
-            variant="destructive" 
-            className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-          >
-            3
-          </Badge>
-        </div>
 
-        {/* User Menu */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 rounded-full p-0 transition-glow hover:neon-glow-blue">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src="/avatars/01.png" alt="User" />
-                <AvatarFallback className="bg-primary text-primary-foreground">
-                  {language === 'ar' ? 'م' : 'U'}
-                </AvatarFallback>
-              </Avatar>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent 
-            className={`glass w-56 ${direction === 'rtl' ? 'mr-4' : 'ml-4'}`} 
-            align={direction === 'rtl' ? 'start' : 'end'}
-          >
-            <DropdownMenuLabel className={language === 'ar' ? 'font-arabic' : ''}>
-              {t('nav.profile')}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className={`${language === 'ar' ? 'font-arabic' : ''} transition-glow hover:neon-glow-blue`}>
-              <User className={`h-4 w-4 ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`} />
-              {t('nav.profile')}
-            </DropdownMenuItem>
-            <DropdownMenuItem className={`${language === 'ar' ? 'font-arabic' : ''} transition-glow hover:neon-glow-orange`}>
-              <Settings className={`h-4 w-4 ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`} />
-              {t('nav.settings')}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={handleLogout}
-              className={`${language === 'ar' ? 'font-arabic' : ''} transition-glow hover:bg-destructive hover:text-destructive-foreground`}
-            >
-              <LogOut className={`h-4 w-4 ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`} />
-              {t('nav.logout')}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          {/* User Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="glass-button">
+                <User className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="glass-card border-white/20">
+              <DropdownMenuItem>
+                {t('settings.profile')}
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                {t('settings.title')}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="text-destructive">
+                {t('auth.logout')}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
-    </header>
+    </motion.header>
   );
 };

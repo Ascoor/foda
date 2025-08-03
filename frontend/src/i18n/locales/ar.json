@@ -1,0 +1,188 @@
+{
+  "common": {
+    "loading": "جاري التحميل...",
+    "save": "حفظ",
+    "cancel": "إلغاء",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "search": "بحث",
+    "filter": "تصفية",
+    "actions": "الإجراءات",
+    "name": "الاسم",
+    "type": "النوع",
+    "status": "الحالة",
+    "date": "التاريخ",
+    "created_at": "تاريخ الإنشاء",
+    "updated_at": "تاريخ التحديث",
+    "submit": "إرسال",
+    "back": "رجوع",
+    "next": "التالي",
+    "previous": "السابق",
+    "confirm": "تأكيد",
+    "yes": "نعم",
+    "no": "لا"
+  },
+  "navigation": {
+    "dashboard": "لوحة التحكم",
+    "elections": "الانتخابات",
+    "geo_areas": "المناطق الجغرافية",
+    "committees": "اللجان",
+    "voters": "الناخبون",
+    "candidates": "المرشحون",
+    "agents": "الوكلاء",
+    "volunteers": "المتطوعون",
+    "observations": "المراقبات",
+    "campaigns": "الحملات",
+    "analytics": "التحليلات",
+    "settings": "الإعدادات"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "welcome": "مرحباً بك في دائرة الانتخابات",
+    "total_elections": "إجمالي الانتخابات",
+    "active_voters": "الناخبون النشطون",
+    "total_candidates": "إجمالي المرشحين",
+    "committees_count": "عدد اللجان",
+    "recent_activity": "النشاط الأخير",
+    "election_progress": "تقدم الانتخابات",
+    "voter_turnout": "نسبة الإقبال"
+  },
+  "elections": {
+    "title": "الانتخابات",
+    "add_election": "إضافة انتخابات",
+    "election_name": "اسم الانتخابات",
+    "election_type": "نوع الانتخابات",
+    "start_date": "تاريخ البدء",
+    "end_date": "تاريخ الانتهاء",
+    "description": "الوصف",
+    "status": {
+      "draft": "مسودة",
+      "active": "نشط",
+      "completed": "مكتمل",
+      "cancelled": "ملغي"
+    },
+    "types": {
+      "presidential": "رئاسية",
+      "parliamentary": "برلمانية",
+      "local": "محلية",
+      "referendum": "استفتاء"
+    }
+  },
+  "geo_areas": {
+    "title": "المناطق الجغرافية",
+    "add_area": "إضافة منطقة",
+    "area_name": "اسم المنطقة",
+    "parent_area": "المنطقة الأساسية",
+    "area_type": "نوع المنطقة",
+    "total_voters": "إجمالي الناخبين",
+    "total_committees": "إجمالي اللجان",
+    "types": {
+      "governorate": "محافظة",
+      "district": "مركز",
+      "city": "مدينة",
+      "village": "قرية"
+    }
+  },
+  "committees": {
+    "title": "اللجان",
+    "add_committee": "إضافة لجنة",
+    "committee_name": "اسم اللجنة",
+    "committee_number": "رقم اللجنة",
+    "address": "العنوان",
+    "area": "المنطقة",
+    "election": "الانتخابات",
+    "capacity": "السعة",
+    "assigned_voters": "الناخبون المسجلون",
+    "types": {
+      "main": "رئيسية",
+      "branch": "فرعية"
+    }
+  },
+  "voters": {
+    "title": "الناخبون",
+    "add_voter": "إضافة ناخب",
+    "voter_id": "رقم الناخب",
+    "full_name": "الاسم الكامل",
+    "national_id": "رقم الهوية الوطنية",
+    "birth_date": "تاريخ الميلاد",
+    "gender": "الجنس",
+    "phone": "رقم الهاتف",
+    "email": "البريد الإلكتروني",
+    "address": "العنوان",
+    "committee": "اللجنة",
+    "area": "المنطقة",
+    "registered_date": "تاريخ التسجيل",
+    "import_voters": "استيراد الناخبين",
+    "export_voters": "تصدير الناخبين",
+    "bulk_assign": "تعيين جماعي",
+    "gender_options": {
+      "male": "ذكر",
+      "female": "أنثى"
+    }
+  },
+  "candidates": {
+    "title": "المرشحون",
+    "add_candidate": "إضافة مرشح",
+    "candidate_name": "اسم المرشح",
+    "party": "الحزب",
+    "bio": "السيرة الذاتية",
+    "campaign_slogan": "شعار الحملة",
+    "election": "الانتخابات",
+    "candidate_number": "رقم المرشح",
+    "assigned_agents": "الوكلاء المسندون",
+    "types": {
+      "individual": "فردي",
+      "list": "قائمة"
+    }
+  },
+  "agents": {
+    "title": "الوكلاء",
+    "add_agent": "إضافة وكيل",
+    "agent_name": "اسم الوكيل",
+    "assigned_candidate": "المرشح المسند",
+    "assigned_committee": "اللجنة المسندة",
+    "role": "الدور",
+    "assignment_date": "تاريخ التعيين",
+    "mobile": "رقم الهاتف المحمول"
+  },
+  "volunteers": {
+    "title": "المتطوعون",
+    "add_volunteer": "إضافة متطوع",
+    "volunteer_name": "اسم المتطوع",
+    "assigned_area": "المنطقة المسندة",
+    "skills": "المهارات",
+    "availability": "التوفر"
+  },
+  "observations": {
+    "title": "المراقبات",
+    "add_observation": "إضافة مراقبة",
+    "observer": "المراقب",
+    "committee": "اللجنة",
+    "observation_type": "نوع المراقبة",
+    "description": "الوصف",
+    "evidence_image": "صورة الدليل",
+    "timestamp": "وقت المراقبة",
+    "types": {
+      "violation": "مخالفة",
+      "note": "ملاحظة",
+      "complaint": "شكوى"
+    }
+  },
+  "settings": {
+    "title": "الإعدادات",
+    "language": "اللغة",
+    "theme": "السمة",
+    "profile": "الملف الشخصي",
+    "system": "النظام",
+    "dark_mode": "الوضع المظلم",
+    "light_mode": "الوضع المضيء"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "remember_me": "تذكرني"
+  }
+}
