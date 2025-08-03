@@ -10,6 +10,9 @@ import { Dashboard } from "@/modules/dashboard/Dashboard";
 import { ElectionsList } from "@/modules/elections/ElectionsList";
 import { GeoAreasList } from "@/modules/geo-areas/GeoAreasList";
 import { VotersList } from "@/modules/voters/VotersList";
+import { CandidatesList } from "@/modules/candidates/CandidatesList";
+import { AgentsList } from "@/modules/agents/AgentsList";
+import { VolunteersList } from "@/modules/volunteers/VolunteersList";
 import "@/i18n";
 
 const queryClient = new QueryClient();
@@ -29,9 +32,9 @@ const App = () => (
                 <Route path="/geo-areas" element={<GeoAreasList />} />
                 <Route path="/committees" element={<ComingSoon module="Committees" />} />
                 <Route path="/voters" element={<VotersList />} />
-                <Route path="/candidates" element={<ComingSoon module="Candidates" />} />
-                <Route path="/agents" element={<ComingSoon module="Agents" />} />
-                <Route path="/volunteers" element={<ComingSoon module="Volunteers" />} />
+                <Route path="/candidates" element={<CandidatesList />} />
+                <Route path="/agents" element={<AgentsList />} />
+                <Route path="/volunteers" element={<VolunteersList />} />
                 <Route path="/observations" element={<ComingSoon module="Observations" />} />
                 <Route path="/campaigns" element={<ComingSoon module="Campaigns" />} />
                 <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
