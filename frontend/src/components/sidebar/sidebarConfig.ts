@@ -6,6 +6,7 @@ export interface SidebarChild {
   label: string;
   path: string;
   icon: React.ElementType;
+  glow?: string;
 }
 
 export interface SidebarItem {
@@ -15,6 +16,7 @@ export interface SidebarItem {
   path?: string;
   badge?: number | null;
   color?: string;
+  glow?: string;
   children?: SidebarChild[];
 }
 
@@ -83,10 +85,11 @@ export const sidebarSections: SidebarSection[] = [
         label: 'nav.finance',
         icon: Wallet,
         color: 'text-green-600',
+        glow: 'neon-glow-green',
         children: [
-          { key: 'finance.overview', label: 'Finance', path: '/finance', icon: Wallet },
-          { key: 'finance.categories', label: 'Expense Categories', path: '/finance/categories', icon: Database },
-          { key: 'finance.report', label: 'Financial Report', path: '/finance/report', icon: FileText },
+          { key: 'finance.overview', label: 'Finance', path: '/finance', icon: Wallet, glow: 'neon-glow-green' },
+          { key: 'finance.categories', label: 'Expense Categories', path: '/finance/categories', icon: Database, glow: 'neon-glow-green' },
+          { key: 'finance.report', label: 'Financial Report', path: '/finance/report', icon: FileText, glow: 'neon-glow-green' },
         ],
       },
     ],

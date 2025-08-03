@@ -1,3 +1,9 @@
+/**
+ * ExpenseCategoriesPage
+ * Legacy: none
+ * Usage: manage expense categories (create, edit, delete).
+ * Test: run `npm run lint` and navigate to /finance/categories to verify CRUD flows.
+ */
 import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLanguage } from '@/contexts/LanguageContext';

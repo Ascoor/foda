@@ -1,12 +1,21 @@
-import React, { useState, useEffect, useCallback } from 'react';
+/**
+ * FinancePage
+ * Legacy: none
+ * Usage: manage finance transactions (create, edit, delete) with categories.
+ * Test: run `npm run lint` and navigate to /finance to verify CRUD flows.
+ */
+import React, { useState, useEffect } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import {
   fetchFinances,
   createFinance,
   updateFinance,
   deleteFinance,
+  fetchCategories,
   FinancePayload,
+  FinanceCategory,
 } from '@/lib/finances';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -38,6 +47,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 interface Finance extends FinancePayload {
   id: number;
+  category?: FinanceCategory;
 }
 
 const schema = z.object({
@@ -46,15 +56,26 @@ const schema = z.object({
   date: z.string().min(1),
   description: z.string().optional(),
   reference_id: z.number().optional(),
+  category_id: z.number(),
 });
 
-export const Finance: React.FC = () => {
+const FinancePage: React.FC = () => {
   const { language, direction, t } = useLanguage();
-  const [finances, setFinances] = useState<Finance[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Finance | null>(null);
+
+  const { data: financeData, isLoading, isError } = useQuery({
+    queryKey: ['finances'],
+    queryFn: fetchFinances,
+  });
+  const finances: Finance[] = financeData?.data ?? financeData ?? [];
+
+  const { data: categoryData } = useQuery({
+    queryKey: ['expense-categories'],
+    queryFn: fetchCategories,
+  });
+  const categories: FinanceCategory[] = categoryData?.data ?? categoryData ?? [];
 
   const {
     register,
@@ -65,40 +86,37 @@ export const Finance: React.FC = () => {
     formState: { errors },
   } = useForm<FinancePayload>({
     resolver: zodResolver(schema),
-    defaultValues: { type: 'income' },
+    defaultValues: { type: 'income', category_id: 0 },
   });
 
-  const loadData = useCallback(() => {
-    setLoading(true);
-    fetchFinances()
-      .then((data) => setFinances(data.data ?? data))
-      .catch(() => setError(t('common.error')))
-      .finally(() => setLoading(false));
-  }, [t]);
-
+  // ensure default category when categories loaded
   useEffect(() => {
-    loadData();
-  }, [loadData]);
+    if (categories.length > 0 && !watch('category_id')) {
+      setValue('category_id', categories[0].id);
+    }
+  }, [categories, setValue, watch]);
 
-  const onSubmit = handleSubmit(async (data) => {
-    try {
-      if (editing) {
-        await updateFinance(editing.id, data);
-      } else {
-        await createFinance(data);
-      }
+  const saveMutation = useMutation({
+    mutationFn: (data: FinancePayload) =>
+      editing ? updateFinance(editing.id, data) : createFinance(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['finances'] });
       setOpen(false);
       setEditing(null);
-      reset({ type: 'income' });
-      loadData();
-    } catch {
-      setError(t('common.error'));
-    }
+      reset({ type: 'income', category_id: categories[0]?.id ?? 0 });
+    },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id: number) => deleteFinance(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['finances'] }),
+  });
+
+  const onSubmit = handleSubmit((data) => saveMutation.mutate(data));
 
   const startCreate = () => {
     setEditing(null);
-    reset({ type: 'income' });
+    reset({ type: 'income', category_id: categories[0]?.id ?? 0 });
     setOpen(true);
   };
 
@@ -110,23 +128,23 @@ export const Finance: React.FC = () => {
       date: finance.date,
       description: finance.description ?? '',
       reference_id: finance.reference_id,
+      category_id: finance.category_id,
     });
     setOpen(true);
   };
 
-  const handleDelete = async (finance: Finance) => {
+  const handleDelete = (finance: Finance) => {
     if (confirm(t('finance.delete'))) {
-      await deleteFinance(finance.id);
-      loadData();
+      deleteMutation.mutate(finance.id);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div className="p-6">{t('common.loading')}</div>;
   }
 
-  if (error) {
-    return <div className="p-6 text-red-500">{error}</div>;
+  if (isError) {
+    return <div className="p-6 text-red-500">{t('common.error')}</div>;
   }
 
   return (
@@ -148,6 +166,7 @@ export const Finance: React.FC = () => {
               <TableHead>{t('finance.type')}</TableHead>
               <TableHead>{t('finance.date')}</TableHead>
               <TableHead>{t('finance.description')}</TableHead>
+              <TableHead>{t('finance.category')}</TableHead>
               <TableHead>{t('finance.reference')}</TableHead>
               <TableHead></TableHead>
             </TableRow>
@@ -159,6 +178,7 @@ export const Finance: React.FC = () => {
                 <TableCell>{t(`finance.${f.type}`)}</TableCell>
                 <TableCell>{f.date}</TableCell>
                 <TableCell>{f.description}</TableCell>
+                <TableCell>{f.category?.name}</TableCell>
                 <TableCell>{f.reference_id ?? ''}</TableCell>
                 <TableCell>
                   <div className={`flex gap-2 justify-end ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
@@ -193,10 +213,7 @@ export const Finance: React.FC = () => {
             </div>
             <div>
               <Label>{t('finance.type')}</Label>
-              <Select
-                value={watch('type')}
-                onValueChange={(v) => setValue('type', v)}
-              >
+              <Select value={watch('type')} onValueChange={(v: 'income' | 'expense') => setValue('type', v)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -221,6 +238,24 @@ export const Finance: React.FC = () => {
               <Input {...register('description')} />
             </div>
             <div>
+              <Label>{t('finance.category')}</Label>
+              <Select value={String(watch('category_id'))} onValueChange={(v) => setValue('category_id', Number(v))}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((c) => (
+                    <SelectItem key={c.id} value={String(c.id)}>
+                      {c.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.category_id && (
+                <p className="text-red-500 text-sm">{errors.category_id.message as string}</p>
+              )}
+            </div>
+            <div>
               <Label>{t('finance.reference')}</Label>
               <Input type="number" {...register('reference_id', { valueAsNumber: true })} />
             </div>
@@ -228,7 +263,9 @@ export const Finance: React.FC = () => {
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 {t('common.cancel')}
               </Button>
-              <Button type="submit">{t('common.save')}</Button>
+              <Button type="submit" disabled={saveMutation.isLoading}>
+                {t('common.save')}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -237,5 +274,4 @@ export const Finance: React.FC = () => {
   );
 };
 
-export default Finance;
-
+export default FinancePage;

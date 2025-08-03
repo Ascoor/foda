@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\AreaController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\FinanceController;
+use App\Http\Controllers\Api\V1\ExpenseCategoryController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SettingController;
@@ -42,7 +43,9 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('areas', AreaController::class);
         Route::get('events/upcoming', [EventController::class, 'upcoming']);
         Route::apiResource('events', EventController::class);
+        Route::get('finances/report', [FinanceController::class, 'report']);
         Route::apiResource('finances', FinanceController::class);
+        Route::apiResource('expense-categories', ExpenseCategoryController::class);
         Route::get('home', [HomeController::class, 'index']);
         Route::get('home/heatmap', [HomeController::class, 'heatmap']);
         Route::apiResource('profiles', ProfileController::class);

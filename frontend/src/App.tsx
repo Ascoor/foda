@@ -21,7 +21,7 @@ import EventDetails from "./pages/Event/EventDetails";
 import { Analytics } from "./pages/Analytics";
 import Settings  from "./pages/Settings"; 
 import NotFound from "./pages/NotFound";
-import { Finance } from "./pages/Finance";
+import Finance from "./pages/Finance";
 import Profile from "./pages/Profile";
  
  
@@ -33,8 +33,8 @@ import Volunteers from "./pages/Volunteers";
 import Voters from "./pages/Voters"; 
 import SmsPage from "./pages/Sms";
 import SmsSettings from "./pages/SmsSettings";
-import ExpenseCategories from "./pages/ExpenseCategories";
-import FinancialReport from "./pages/FinancialReport";
+import ExpenseCategories from "./pages/Finance/ExpenseCategories";
+import FinancialReport from "./pages/Finance/FinancialReport";
 import Permission from "./pages/Permission";
 import FooterPage from "./pages/Footer";
  

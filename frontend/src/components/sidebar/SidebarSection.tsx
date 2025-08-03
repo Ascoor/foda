@@ -39,6 +39,7 @@ export const SidebarSection: React.FC<SectionProps> = ({
         const isActive = isParentActive(item);
         const isOpen = openItems.includes(item.key);
         const iconColor = item.color ?? '';
+        const glow = item.glow;
 
         if (item.children) {
           return (
@@ -48,8 +49,8 @@ export const SidebarSection: React.FC<SectionProps> = ({
                   variant="ghost"
                   className={`w-full justify-between transition-glow ${
                     isActive
-                      ? 'bg-primary/10 text-primary neon-glow-blue'
-                      : 'hover:bg-muted/50 hover:neon-glow-orange'
+                      ? `bg-primary/10 text-primary ${glow ?? 'neon-glow-blue'}`
+                      : `hover:bg-muted/50 ${glow ? `hover:${glow}` : 'hover:neon-glow-orange'}`
                   } ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}
                 >
                   <div className={`flex items-center gap-3 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
@@ -72,19 +73,19 @@ export const SidebarSection: React.FC<SectionProps> = ({
                   const isChildActive = isActiveRoute(child.path);
 
                   return (
-                    <NavLink
-                      key={child.key}
-                      to={child.path}
-                      onClick={onClose}
-                      className={({ isActive: navIsActive }) =>
-                        `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-glow ${
-                          navIsActive || isChildActive
-                            ? 'bg-secondary/20 text-secondary neon-glow-orange'
-                            : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
-                        } ${direction === 'rtl' ? 'flex-row-reverse' : ''}`
-                      }
-                      data-active={isChildActive}
-                    >
+                  <NavLink
+                    key={child.key}
+                    to={child.path}
+                    onClick={onClose}
+                    className={({ isActive: navIsActive }) =>
+                      `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-glow ${
+                        navIsActive || isChildActive
+                          ? `bg-secondary/20 text-secondary ${child.glow ?? 'neon-glow-orange'}`
+                          : `text-muted-foreground hover:bg-muted/50 hover:text-foreground ${child.glow ? `hover:${child.glow}` : 'hover:neon-glow-orange'}`
+                      } ${direction === 'rtl' ? 'flex-row-reverse' : ''}`
+                    }
+                    data-active={isChildActive}
+                  >
                       <ChildIcon className="h-4 w-4" />
                       <span className={language === 'ar' ? 'font-arabic' : ''}>{t(child.label)}</span>
                     </NavLink>
@@ -103,8 +104,8 @@ export const SidebarSection: React.FC<SectionProps> = ({
             className={({ isActive: navIsActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-lg transition-glow ${
                 navIsActive || isActive
-                  ? 'bg-primary/10 text-primary neon-glow-blue'
-                  : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground hover:neon-glow-orange'
+                  ? `bg-primary/10 text-primary ${item.glow ?? 'neon-glow-blue'}`
+                  : `text-muted-foreground hover:bg-muted/50 hover:text-foreground ${item.glow ? `hover:${item.glow}` : 'hover:neon-glow-orange'}`
               } ${direction === 'rtl' ? 'flex-row-reverse' : ''}`
             }
             data-active={isActiveRoute(item.path || '')}

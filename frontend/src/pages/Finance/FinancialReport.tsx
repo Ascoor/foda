@@ -1,3 +1,9 @@
+/**
+ * FinancialReportPage
+ * Legacy: none
+ * Usage: view finance records filtered by date range.
+ * Test: run `npm run lint` and navigate to /finance/report to verify report generation.
+ */
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -12,6 +18,7 @@ interface ReportItem {
   type: string;
   amount: number;
   description?: string;
+  category?: { id: number; name: string };
 }
 
 const FinancialReport: React.FC = () => {
@@ -63,6 +70,7 @@ const FinancialReport: React.FC = () => {
               <TableHead>{t('finance.date')}</TableHead>
               <TableHead>{t('finance.type')}</TableHead>
               <TableHead>{t('finance.amount')}</TableHead>
+              <TableHead>{t('finance.category')}</TableHead>
               <TableHead>{t('finance.description')}</TableHead>
             </TableRow>
           </TableHeader>
@@ -72,6 +80,7 @@ const FinancialReport: React.FC = () => {
                 <TableCell>{r.date}</TableCell>
                 <TableCell>{t(`finance.${r.type}`)}</TableCell>
                 <TableCell>{r.amount}</TableCell>
+                <TableCell>{r.category?.name}</TableCell>
                 <TableCell>{r.description}</TableCell>
               </TableRow>
             ))}

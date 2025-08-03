@@ -182,6 +182,12 @@ const translations = {
     'finance.income': 'إيراد',
     'finance.expense': 'مصروف',
     'finance.no_records': 'لا توجد سجلات مالية',
+    'finance.category': 'الفئة',
+    'finance.categories': 'فئات المصروفات',
+    'finance.add_category': 'إضافة فئة',
+    'finance.edit_category': 'تعديل الفئة',
+    'finance.report': 'التقرير المالي',
+    'finance.generate_report': 'توليد التقرير',
 
  
     'settings.title': 'إدارة الإعدادات',
@@ -397,6 +403,12 @@ const translations = {
     'finance.income': 'Income',
     'finance.expense': 'Expense',
     'finance.no_records': 'No finance records',
+    'finance.category': 'Category',
+    'finance.categories': 'Expense Categories',
+    'finance.add_category': 'Add Category',
+    'finance.edit_category': 'Edit Category',
+    'finance.report': 'Financial Report',
+    'finance.generate_report': 'Generate Report',
  
     // Settings
     'settings.title': 'Settings Management',
