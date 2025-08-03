@@ -3,6 +3,13 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { fetchSms } from '@/lib/sms';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+interface SmsMessage {
+  id: string;
+  recipient: string;
+  message: string;
+  status: string;
+}
+
 const SmsHistory = () => {
   const { t, direction } = useLanguage();
   const { data, isLoading, error } = useQuery({ queryKey: ['sms-history'], queryFn: fetchSms });
@@ -10,7 +17,7 @@ const SmsHistory = () => {
   if (isLoading) return <div className="p-6">{t('common.loading')}</div>;
   if (error) return <div className="p-6 text-red-500">{(error as Error).message}</div>;
 
-  const messages = data?.data ?? data;
+  const messages: SmsMessage[] = (data?.data ?? data) as SmsMessage[];
 
   return (
     <div className="p-6">
@@ -24,7 +31,7 @@ const SmsHistory = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {messages?.map((m: any) => (
+          {messages?.map((m: SmsMessage) => (
             <TableRow key={m.id} className={direction === 'rtl' ? 'text-right' : ''}>
               <TableCell>{m.recipient}</TableCell>
               <TableCell>{m.message}</TableCell>
