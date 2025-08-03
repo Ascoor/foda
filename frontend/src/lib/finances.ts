@@ -40,3 +40,52 @@ export async function deleteFinance(id: number) {
   });
 }
 
+
+export interface FinanceCategory {
+  id: number;
+  name: string;
+}
+
+export interface FinanceCategoryPayload {
+  name: string;
+}
+
+export async function fetchCategories() {
+  const token = getToken();
+  return apiFetch('/api/v1/finances/categories', { token });
+}
+
+export async function createCategory(payload: FinanceCategoryPayload) {
+  const token = getToken();
+  return apiFetch('/api/v1/finances/categories', {
+    method: 'POST',
+    token,
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function updateCategory(id: number, payload: FinanceCategoryPayload) {
+  const token = getToken();
+  return apiFetch(`/api/v1/finances/categories/${id}`, {
+    method: 'PUT',
+    token,
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteCategory(id: number) {
+  const token = getToken();
+  return apiFetch(`/api/v1/finances/categories/${id}`, {
+    method: 'DELETE',
+    token,
+  });
+}
+
+export async function fetchFinancialReport(params: { from?: string; to?: string } = {}) {
+  const token = getToken();
+  const query = new URLSearchParams();
+  if (params.from) query.append('from', params.from);
+  if (params.to) query.append('to', params.to);
+  const q = query.toString();
+  return apiFetch(`/api/v1/finances/report${q ? `?${q}` : ''}`, { token });
+}

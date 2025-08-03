@@ -41,3 +41,22 @@ export async function deleteSms(id: number) {
     token,
   });
 }
+
+export interface SmsSettingsPayload {
+  api_key: string;
+  sender_id: string;
+}
+
+export async function fetchSmsSettings() {
+  const token = getToken();
+  return apiFetch('/api/v1/sms/settings', { token });
+}
+
+export async function updateSmsSettings(payload: SmsSettingsPayload) {
+  const token = getToken();
+  return apiFetch('/api/v1/sms/settings', {
+    method: 'PUT',
+    token,
+    body: JSON.stringify(payload),
+  });
+}

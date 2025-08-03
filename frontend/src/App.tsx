@@ -9,6 +9,8 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import { Dashboard } from "./pages/Dashboard";
 import { Campaigns } from "./pages/Campaigns";
 import { CampaignReports } from "./pages/CampaignReports";
@@ -29,6 +31,11 @@ import Volunteers from "./pages/Volunteers";
 
 import Voters from "./pages/Voters"; 
 import SmsPage from "./pages/Sms";
+import SmsSettings from "./pages/SmsSettings";
+import ExpenseCategories from "./pages/ExpenseCategories";
+import FinancialReport from "./pages/FinancialReport";
+import Permission from "./pages/Permission";
+import FooterPage from "./pages/Footer";
  
  
 
@@ -45,6 +52,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
               <Route
                 element={
@@ -68,11 +77,12 @@ const App = () => (
                 <Route path="/events" element={<Event />} />
 
                 <Route path="/sms" element={<SmsPage />} />
+                <Route path="/sms/settings" element={<SmsSettings />} />
  
  
                 <Route path="/swots" element={<Swot />} />
  
-                 <Route path="/volunteers" element={<Volunteers />} />
+                <Route path="/volunteers" element={<Volunteers />} />
 
 
                 <Route path="/voters" element={<Voters />} />
@@ -80,7 +90,11 @@ const App = () => (
                 <Route path="/analytics" element={<Analytics />} />
                 <Route path="/analytics/*" element={<Analytics />} />
                 <Route path="/finance" element={<Finance />} />
+                <Route path="/finance/categories" element={<ExpenseCategories />} />
+                <Route path="/finance/report" element={<FinancialReport />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/permissions" element={<Permission />} />
+                <Route path="/footer" element={<FooterPage />} />
                 <Route path="/profile" element={<Profile />} />
               </Route>
 

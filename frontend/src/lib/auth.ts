@@ -63,3 +63,22 @@ export function getToken() {
 export function isAuthenticated() {
   return !!getToken();
 }
+
+export async function requestPasswordReset(email: string) {
+  return apiFetch('/api/v1/forgot-password', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  });
+}
+
+export async function resetPassword(
+  token: string,
+  email: string,
+  password: string,
+  password_confirmation: string
+) {
+  return apiFetch('/api/v1/reset-password', {
+    method: 'POST',
+    body: JSON.stringify({ token, email, password, password_confirmation }),
+  });
+}
