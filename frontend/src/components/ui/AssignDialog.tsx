@@ -18,7 +18,7 @@ interface AssignDialogProps {
   onClose: () => void;
   title: string;
   onAssign: (selectedIds: string[]) => void;
-  items: Array<{
+  items?: Array<{
     id: string;
     name: string;
     role?: string;
@@ -32,7 +32,7 @@ export const AssignDialog = ({
   onClose,
   title,
   onAssign,
-  items,
+  items = [],
   multiSelect = false
 }: AssignDialogProps) => {
   const { t } = useTranslation();
