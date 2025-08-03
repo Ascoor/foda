@@ -95,6 +95,7 @@ export const sidebarSections: SidebarSection[] = [
   {
     title: 'Settings',
     items: [
+      // Settings module link
       { key: 'settings', label: 'nav.settings', icon: Settings, path: '/settings', color: 'text-gray-500' },
       { key: 'profile', label: 'nav.profile', icon: User, path: '/profile', color: 'text-gray-500' },
     ],

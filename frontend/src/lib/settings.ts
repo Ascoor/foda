@@ -1,45 +1,29 @@
 import { apiFetch } from './api';
 import { getToken } from './auth';
 
-export interface SettingPayload {
+export interface Setting {
   key: string;
-  value: string;
+  value: string | number | boolean;
   type: 'string' | 'integer' | 'boolean';
   description?: string;
 }
 
-export async function fetchSettings() {
+export async function fetchSettings(): Promise<Setting[]> {
   const token = getToken();
-  return apiFetch('/api/v1/settings', { token });
+  const res = await apiFetch('/api/v1/settings', { token });
+  return res.data ?? res;
 }
 
-export async function fetchSettingByKey(key: string) {
-  const token = getToken();
-  return apiFetch(`/api/v1/settings/key/${key}`, { token });
-}
-
-export async function createSetting(payload: SettingPayload) {
+export async function updateSettings(payload: Record<string, unknown>) {
   const token = getToken();
   return apiFetch('/api/v1/settings', {
-    method: 'POST',
-    token,
-    body: JSON.stringify(payload),
-  });
-}
-
-export async function updateSetting(id: number, payload: Partial<SettingPayload>) {
-  const token = getToken();
-  return apiFetch(`/api/v1/settings/${id}`, {
     method: 'PUT',
     token,
     body: JSON.stringify(payload),
   });
 }
 
-export async function deleteSetting(id: number) {
+export async function fetchSettingByKey(key: string) {
   const token = getToken();
-  return apiFetch(`/api/v1/settings/${id}`, {
-    method: 'DELETE',
-    token,
-  });
+  return apiFetch(`/api/v1/settings/key/${key}`, { token });
 }
