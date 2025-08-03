@@ -1,41 +1,49 @@
-import axios from 'axios';
+import api, { request } from '../../lib/api';
 import { Committee, CommitteeFormData, CommitteeFilters, GeoArea } from './types';
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
-});
-
 export const fetchCommittees = async (params: CommitteeFilters = {}) => {
-  const { data } = await api.get<{ data: Committee[]; total: number }>('/ec/committees', { params });
-  return data;
+  return request<{ data: Committee[]; total: number }>({
+    url: '/ec/committees',
+    method: 'get',
+    params,
+  }, { useCache: true });
 };
 
 export const fetchCommittee = async (id: string) => {
-  const { data } = await api.get<Committee>(`/ec/committees/${id}`);
-  return data;
+  return request<Committee>({ url: `/ec/committees/${id}`, method: 'get' }, { useCache: true });
 };
 
 export const createCommittee = async (payload: CommitteeFormData) => {
-  const { data } = await api.post<{ data: Committee }>('/ec/committees', payload);
+  const data = await request<{ data: Committee }>({
+    url: '/ec/committees',
+    method: 'post',
+    data: payload,
+  });
   return data.data;
 };
 
 export const updateCommittee = async (id: string, payload: CommitteeFormData) => {
-  const { data } = await api.put<{ data: Committee }>(`/ec/committees/${id}`, payload);
+  const data = await request<{ data: Committee }>({
+    url: `/ec/committees/${id}`,
+    method: 'put',
+    data: payload,
+  });
   return data.data;
 };
 
 export const deleteCommittee = async (id: string) => {
-  await api.delete(`/ec/committees/${id}`);
+  await request({ url: `/ec/committees/${id}`, method: 'delete' });
 };
 
 export const assignMembers = async (committeeId: string, memberIds: string[]) => {
-  await api.post(`/ec/committees/${committeeId}/members`, { member_ids: memberIds });
+  await request({
+    url: `/ec/committees/${committeeId}/members`,
+    method: 'post',
+    data: { member_ids: memberIds },
+  });
 };
 
 export const fetchGeoAreas = async () => {
-  const { data } = await api.get<{ data: GeoArea[] }>('/ec/geo-areas');
-  return data;
+  return request<{ data: GeoArea[] }>({ url: '/ec/geo-areas', method: 'get' }, { useCache: true });
 };
-
 export default api;
