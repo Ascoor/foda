@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Map, UserPlus, UserCheck, Users, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { apiFetch } from '@/lib/api';
 
 interface StatCardProps {
   title: string;
@@ -51,11 +52,7 @@ export const DashboardStats: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/v1/home')
-      .then((res) => {
-        if (!res.ok) throw new Error('error');
-        return res.json();
-      })
+    apiFetch('/api/v1/home')
       .then((data) => setStats(data.data))
       .catch(() => setError(t('common.error')))
       .finally(() => setLoading(false));
@@ -79,8 +76,8 @@ export const DashboardStats: React.FC = () => {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-      {statCards.map((stat, index) => (
-        <StatCard key={index} {...stat} />
+      {statCards.map((stat) => (
+        <StatCard key={stat.title} {...stat} />
       ))}
     </div>
   );

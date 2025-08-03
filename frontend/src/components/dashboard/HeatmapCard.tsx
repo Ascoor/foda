@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { apiFetch } from '@/lib/api';
 
 export const HeatmapCard: React.FC = () => {
   const { t, language } = useLanguage();
@@ -9,11 +10,7 @@ export const HeatmapCard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch('/api/v1/home/heatmap')
-      .then((res) => {
-        if (!res.ok) throw new Error('error');
-        return res.json();
-      })
+    apiFetch('/api/v1/home/heatmap')
       .then((data) => setPoints(data.data))
       .catch(() => setError(t('common.error')))
       .finally(() => setLoading(false));
