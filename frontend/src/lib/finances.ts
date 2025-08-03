@@ -7,6 +7,7 @@ export interface FinancePayload {
   date: string;
   description?: string;
   reference_id?: number;
+  category_id: number;
 }
 
 export async function fetchFinances() {
@@ -52,12 +53,12 @@ export interface FinanceCategoryPayload {
 
 export async function fetchCategories() {
   const token = getToken();
-  return apiFetch('/api/v1/finances/categories', { token });
+  return apiFetch('/api/v1/expense-categories', { token });
 }
 
 export async function createCategory(payload: FinanceCategoryPayload) {
   const token = getToken();
-  return apiFetch('/api/v1/finances/categories', {
+  return apiFetch('/api/v1/expense-categories', {
     method: 'POST',
     token,
     body: JSON.stringify(payload),
@@ -66,7 +67,7 @@ export async function createCategory(payload: FinanceCategoryPayload) {
 
 export async function updateCategory(id: number, payload: FinanceCategoryPayload) {
   const token = getToken();
-  return apiFetch(`/api/v1/finances/categories/${id}`, {
+  return apiFetch(`/api/v1/expense-categories/${id}`, {
     method: 'PUT',
     token,
     body: JSON.stringify(payload),
@@ -75,7 +76,7 @@ export async function updateCategory(id: number, payload: FinanceCategoryPayload
 
 export async function deleteCategory(id: number) {
   const token = getToken();
-  return apiFetch(`/api/v1/finances/categories/${id}`, {
+  return apiFetch(`/api/v1/expense-categories/${id}`, {
     method: 'DELETE',
     token,
   });

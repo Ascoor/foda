@@ -14,10 +14,16 @@ class Finance extends Model
         'date',
         'description',
         'reference_id',
+        'category_id',
     ];
 
     protected $casts = [
         'date' => 'date',
         'amount' => 'decimal:2',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(ExpenseCategory::class, 'category_id');
+    }
 }

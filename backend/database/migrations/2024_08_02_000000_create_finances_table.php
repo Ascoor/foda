@@ -15,6 +15,7 @@ return new class extends Migration
             $table->date('date');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('reference_id')->nullable();
+            $table->foreignId('category_id')->constrained('expense_categories');
             $table->timestamps();
         });
     }

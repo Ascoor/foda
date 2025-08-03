@@ -18,6 +18,7 @@ class FinanceRequest extends FormRequest
             'date' => ['required', 'date'],
             'description' => ['nullable', 'string'],
             'reference_id' => ['nullable', 'integer'],
+            'category_id' => ['required', 'exists:expense_categories,id'],
         ];
     }
 }
