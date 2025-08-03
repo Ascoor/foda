@@ -59,6 +59,7 @@
     "election_type": "Election Type",
     "start_date": "Start Date",
     "end_date": "End Date",
+    "search_placeholder": "Search elections...",
     "description": "Description",
     "status": {
       "draft": "Draft",
