@@ -193,7 +193,15 @@
     "profile": "Profile",
     "system": "System",
     "dark_mode": "Dark Mode",
-    "light_mode": "Light Mode"
+    "light_mode": "Light Mode",
+    "region": "Region",
+    "allow_registration": "Allow Registration"
+  },
+  "analytics": {
+    "title": "Analytics",
+    "kpi": "KPIs",
+    "heatmap": "Heatmap",
+    "funnel": "Funnel"
   },
   "auth": {
     "login": "Login",

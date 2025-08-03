@@ -16,8 +16,12 @@ import { VolunteersList } from "@/modules/volunteers/VolunteersList";
 
 import { CommitteesList } from "@/modules/committees/List";
 import { CommitteeDetails } from "@/modules/committees/Details";
+import { Analytics } from "@/modules/analytics/Analytics";
+import { Settings } from "@/modules/settings/Settings";
+
 import { ObservationsList } from "@/modules/observations/ObservationsList";
 import { CampaignsList } from "@/modules/campaigns/CampaignsList";
+
  
 import "@/i18n";
 
@@ -42,10 +46,12 @@ const App = () => (
                 <Route path="/candidates" element={<CandidatesList />} />
                 <Route path="/agents" element={<AgentsList />} />
                 <Route path="/volunteers" element={<VolunteersList />} />
+ 
                 <Route path="/observations" element={<ObservationsList />} />
                 <Route path="/campaigns" element={<CampaignsList />} />
                 <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
                 <Route path="/settings" element={<ComingSoon module="Settings" />} />
+ 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
