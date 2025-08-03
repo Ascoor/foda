@@ -12,6 +12,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { DataTableSkeleton, EmptyState } from '@/components/ui/DataTableSkeleton';
+import { safeArray } from '@/lib/utils';
 import {
   fetchElections,
   deleteElection,
@@ -33,7 +36,11 @@ export const ElectionsList = () => {
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState<Election | null>(null);
 
-  const { data, isLoading } = useQuery({
+  const {
+    data = { data: [], total: 0 },
+    isLoading,
+    error,
+  } = useQuery<{ data: Election[]; total: number }>({
     queryKey: ['elections', page, search, statusFilter],
     queryFn: () =>
       fetchElections({
@@ -45,14 +52,29 @@ export const ElectionsList = () => {
     keepPreviousData: true,
   });
 
-  const elections: Election[] = data?.data || [];
-  const total = data?.total || 0;
+  const elections = safeArray(data.data);
+  const total = data.total ?? 0;
   const totalPages = Math.ceil(total / 10) || 1;
 
   const deleteMut = useMutation({
     mutationFn: deleteElection,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['elections'] }),
   });
+
+  if (isLoading) return <DataTableSkeleton />;
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>{t('common.error') || 'Error'}</AlertTitle>
+        <AlertDescription>{(error as Error).message}</AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (elections.length === 0) {
+    return <EmptyState title={t('common.no_data')} />;
+  }
 
   return (
     <div className="space-y-4">
@@ -147,13 +169,6 @@ export const ElectionsList = () => {
                 </td>
               </tr>
             ))}
-            {elections.length === 0 && !isLoading && (
-              <tr>
-                <td colSpan={5} className="px-4 py-4 text-center text-muted-foreground">
-                  {t('common.no_data')}
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>

@@ -11,6 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { DataTableSkeleton, EmptyState } from '@/components/ui/DataTableSkeleton';
+import { safeArray } from '@/lib/utils';
 import { Voter, VoterFormData } from './types';
 import { fetchVoters, deleteVoter, createVoter, updateVoter } from './api';
 import { VoterForm } from './Form';
@@ -26,7 +29,11 @@ export const VotersList = () => {
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState<Voter | null>(null);
 
-  const { data, isLoading } = useQuery({
+  const {
+    data = { data: [], total: 0 },
+    isLoading,
+    error,
+  } = useQuery<{ data: Voter[]; total: number }>({
     queryKey: ['voters', page, search, genderFilter],
     queryFn: () =>
       fetchVoters({
@@ -38,14 +45,29 @@ export const VotersList = () => {
     keepPreviousData: true,
   });
 
-  const voters: Voter[] = data?.data || [];
-  const total = data?.total || 0;
+  const voters = safeArray(data.data);
+  const total = data.total ?? 0;
   const totalPages = Math.ceil(total / 10) || 1;
 
   const deleteMutation = useMutation({
     mutationFn: deleteVoter,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['voters'] }),
   });
+
+  if (isLoading) return <DataTableSkeleton />;
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>{t('common.error') || 'Error'}</AlertTitle>
+        <AlertDescription>{(error as Error).message}</AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (voters.length === 0) {
+    return <EmptyState title={t('common.no_data')} />;
+  }
 
   return (
     <div className="space-y-4">
@@ -131,13 +153,6 @@ export const VotersList = () => {
                 </td>
               </tr>
             ))}
-            {voters.length === 0 && !isLoading && (
-              <tr>
-                <td colSpan={5} className="px-4 py-4 text-center text-muted-foreground">
-                  {t('common.no_data')}
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
       </div>

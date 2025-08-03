@@ -4,9 +4,21 @@ import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 import { VotersList } from '../List';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+import { fetchVoters } from '../api';
 
 vi.mock('../api', () => ({
-  fetchVoters: vi.fn().mockResolvedValue({
+  fetchVoters: vi.fn(),
+  deleteVoter: vi.fn(),
+  createVoter: vi.fn(),
+  updateVoter: vi.fn(),
+}));
+
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+
+test('renders voters list', async () => {
+  vi.mocked(fetchVoters).mockResolvedValueOnce({
     data: [
       {
         id: '1',
@@ -17,13 +29,8 @@ vi.mock('../api', () => ({
       },
     ],
     total: 1,
-  }),
-  deleteVoter: vi.fn(),
-  createVoter: vi.fn(),
-  updateVoter: vi.fn(),
-}));
+  });
 
-test('renders voters list', async () => {
   const qc = new QueryClient();
   render(
     <QueryClientProvider client={qc}>
@@ -35,4 +42,21 @@ test('renders voters list', async () => {
     </QueryClientProvider>
   );
   await waitFor(() => expect(screen.getByText('Voter A')).toBeInTheDocument());
+});
+
+test('handles undefined data', async () => {
+  vi.mocked(fetchVoters).mockResolvedValueOnce({ data: undefined as any, total: 0 });
+
+  const qc = new QueryClient();
+  render(
+    <QueryClientProvider client={qc}>
+      <LanguageProvider>
+        <BrowserRouter>
+          <VotersList />
+        </BrowserRouter>
+      </LanguageProvider>
+    </QueryClientProvider>
+  );
+
+  await waitFor(() => expect(screen.getByText(/No data/i)).toBeInTheDocument());
 });
