@@ -21,7 +21,9 @@
     "previous": "السابق",
     "confirm": "تأكيد",
     "yes": "نعم",
-    "no": "لا"
+    "no": "لا",
+    "view": "عرض",
+    "no_data": "لا توجد بيانات"
   },
   "navigation": {
     "dashboard": "لوحة التحكم",
@@ -88,9 +90,13 @@
     "title": "اللجان",
     "add_committee": "إضافة لجنة",
     "committee_name": "اسم اللجنة",
+    "location": "الموقع",
+    "area": "المنطقة",
+    "export_csv": "تصدير CSV",
+    "search_placeholder": "ابحث في اللجان...",
+    "assign_members": "تعيين أعضاء",
     "committee_number": "رقم اللجنة",
     "address": "العنوان",
-    "area": "المنطقة",
     "election": "الانتخابات",
     "capacity": "السعة",
     "assigned_voters": "الناخبون المسجلون",
