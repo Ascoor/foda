@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
-import api from '@/lib/api';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import api, { setAuthToken } from '@/lib/api';
 
 // واجهة بيانات المستخدم البسيطة
 interface AuthContextType {
@@ -26,6 +26,11 @@ export const AuthProvider = ({ children }: Props) => {
   const [token, setToken] = useState<string | null>(() =>
     typeof window !== 'undefined' ? localStorage.getItem('token') : null
   );
+
+  // مزامنة التوكن مع خدمة الـAPI
+  useEffect(() => {
+    setAuthToken(token);
+  }, [token]);
 
   // تسجيل الدخول واستلام التوكن من الخادم
   const login = async (username: string, password: string) => {
