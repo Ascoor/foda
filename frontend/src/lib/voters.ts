@@ -12,9 +12,14 @@ export interface VoterPayload {
   voter_id: string;
 }
 
-export async function fetchVoters() {
+export async function fetchVoters(params?: { name?: string; area_id?: string | number; voter_id?: string }) {
   const token = getToken();
-  return apiFetch('/api/v1/voters', { token });
+  const query = new URLSearchParams();
+  if (params?.name) query.append('name', params.name);
+  if (params?.area_id) query.append('area_id', String(params.area_id));
+  if (params?.voter_id) query.append('voter_id', params.voter_id);
+  const url = query.toString() ? `/api/v1/voters?${query}` : '/api/v1/voters';
+  return apiFetch(url, { token });
 }
 
 export async function createVoter(payload: VoterPayload) {

@@ -8,9 +8,13 @@ export interface VolunteerPayload {
   team_id?: number | null;
 }
 
-export async function fetchVolunteers() {
+export async function fetchVolunteers(params?: { name?: string; team_id?: number | null }) {
   const token = getToken();
-  return apiFetch('/api/v1/volunteers', { token });
+  const query = new URLSearchParams();
+  if (params?.name) query.append('name', params.name);
+  if (params?.team_id) query.append('team_id', String(params.team_id));
+  const url = query.toString() ? `/api/v1/volunteers?${query}` : '/api/v1/volunteers';
+  return apiFetch(url, { token });
 }
 
 export async function createVolunteer(payload: VolunteerPayload) {

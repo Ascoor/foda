@@ -7,8 +7,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { fetchVoters, createVoter, updateVoter, deleteVoter, importVoters, exportVoters, VoterPayload } from '@/lib/voters';
+import { importVoters, exportVoters, VoterPayload } from '@/lib/voters';
 import { fetchAreas } from '@/lib/areas';
+import { useVoters } from '@/hooks/useVoters';
 
 interface Area {
   id: number;
@@ -29,28 +30,18 @@ interface Voter {
 
 const VotersPage: React.FC = () => {
   const { language, direction, t } = useLanguage();
-  const [voters, setVoters] = useState<Voter[]>([]);
   const [areas, setAreas] = useState<Area[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState({ name: '', voter_id: '' });
+  const voterQuery = useVoters(search);
+  const { data, isLoading, error, create, update, remove: removeMutation } = voterQuery;
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Voter | null>(null);
   const [form, setForm] = useState<VoterPayload>({ name: '', email: '', phone: '', area_id: '', address: '', sex: '', birthdate: '', voter_id: '' });
   const fileRef = useRef<HTMLInputElement>(null);
-
-  const load = () => {
-    setLoading(true);
-    Promise.all([fetchVoters(), fetchAreas()])
-      .then(([vRes, aRes]) => {
-        setVoters(vRes.data ?? vRes);
-        setAreas(aRes.data ?? aRes);
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setLoading(false));
-  };
+  const [localError, setLocalError] = useState<string | null>(null);
 
   useEffect(() => {
-    load();
+    fetchAreas().then((res) => setAreas(res.data ?? res));
   }, []);
 
   const openCreate = () => {
@@ -76,29 +67,27 @@ const VotersPage: React.FC = () => {
 
   const submit = async () => {
     if (!form.name || !form.area_id || !form.voter_id) {
-      setError(t('common.error'));
+      setLocalError(t('common.error'));
       return;
     }
     try {
       if (editing) {
-        await updateVoter(editing.id, form);
+        await update.mutateAsync({ id: editing.id, data: form });
       } else {
-        await createVoter(form);
+        await create.mutateAsync(form);
       }
       setDialogOpen(false);
-      load();
     } catch (e: unknown) {
-      setError((e as Error).message);
+      /* empty */
     }
   };
 
   const remove = async (id: number) => {
     if (!confirm(t('voters.confirm_delete'))) return;
     try {
-      await deleteVoter(id);
-      load();
+      await removeMutation.mutateAsync(id);
     } catch (e: unknown) {
-      setError((e as Error).message);
+      /* empty */
     }
   };
 
@@ -107,24 +96,25 @@ const VotersPage: React.FC = () => {
     if (!file) return;
     try {
       await importVoters(file);
-      load();
+      // refresh list
+      voterQuery.refetch();
     } catch (e: unknown) {
-      setError((e as Error).message);
+      /* empty */
     } finally {
       e.target.value = '';
     }
   };
 
   const handleExport = () => {
-    exportVoters().catch((e: unknown) => setError((e as Error).message));
+    exportVoters().catch((e: unknown) => setLocalError((e as Error).message));
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div className="p-6">{t('common.loading')}</div>;
   }
 
-  if (error) {
-    return <div className="p-6 text-red-500">{error}</div>;
+  if (error || localError) {
+    return <div className="p-6 text-red-500">{(error as Error)?.message || localError}</div>;
   }
 
   return (
@@ -141,6 +131,12 @@ const VotersPage: React.FC = () => {
             <span className={language === 'ar' ? 'font-arabic' : ''}>{t('voters.import')}</span>
           </Button>
           <input type="file" ref={fileRef} className="hidden" onChange={handleImport} />
+          <Input
+            placeholder={t('common.search')}
+            value={search.name}
+            onChange={(e) => setSearch({ ...search, name: e.target.value })}
+            className="w-48 glass"
+          />
           <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>
               <Button onClick={openCreate} className="transition-glow hover:neon-glow-orange">
@@ -208,7 +204,7 @@ const VotersPage: React.FC = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {voters.map((v) => (
+          {(data?.data ?? data ?? []).map((v: Voter) => (
             <TableRow key={v.id} className={direction === 'rtl' ? 'text-right' : ''}>
               <TableCell>{v.name}</TableCell>
               <TableCell>{v.voter_id}</TableCell>
