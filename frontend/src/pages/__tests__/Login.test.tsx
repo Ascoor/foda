@@ -7,8 +7,9 @@ import api from '@/lib/api';
 
 vi.mock('@/lib/api', () => ({
   default: {
-    post: vi.fn(() => Promise.resolve({ data: { token: 't' } }))
-  }
+    post: vi.fn(() => Promise.resolve({ data: { token: 't' } })),
+  },
+  setAuthToken: vi.fn(),
 }));
 
 test('renders login form and submits', async () => {

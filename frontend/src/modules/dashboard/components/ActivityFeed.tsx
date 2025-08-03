@@ -25,6 +25,9 @@ export const ActivityFeed = ({ activities }: ActivityFeedProps) => {
       </div>
 
       <div className="space-y-4">
+        {activities.length === 0 && (
+          <p className="text-sm text-muted-foreground">{t('common.no_data')}</p>
+        )}
         {activities.map((activity, index) => {
           const Icon = activity.icon;
           
@@ -36,14 +39,14 @@ export const ActivityFeed = ({ activities }: ActivityFeedProps) => {
               transition={{ delay: index * 0.1 }}
               className="flex items-start gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors group cursor-pointer"
             >
-              {/* Icon */}
+              {/* أيقونة */}
               <div className="flex-shrink-0">
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center group-hover:from-primary/30 group-hover:to-primary/20 transition-all">
                   <Icon className="h-5 w-5 text-primary" />
                 </div>
               </div>
 
-              {/* Content */}
+              {/* محتوى */}
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
                   {activity.title}
@@ -53,7 +56,7 @@ export const ActivityFeed = ({ activities }: ActivityFeedProps) => {
                 </p>
               </div>
 
-              {/* Pulse indicator */}
+              {/* مؤشر نبض */}
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
@@ -64,13 +67,13 @@ export const ActivityFeed = ({ activities }: ActivityFeedProps) => {
         })}
       </div>
 
-      {/* View All Button */}
+      {/* زر عرض الكل */}
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
         className="w-full mt-6 py-3 text-sm font-medium text-primary hover:text-primary-glow transition-colors border-t border-white/10 pt-4"
       >
-        View All Activities
+        {t('dashboard.view_all_activities')}
       </motion.button>
     </div>
   );

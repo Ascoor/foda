@@ -45,13 +45,24 @@
   "dashboard": {
     "title": "لوحة التحكم",
     "welcome": "مرحباً بك في دائرة الانتخابات",
+    "subtitle": "تابع وأدر عمليات الانتخابات ببيانات لحظية",
     "total_elections": "إجمالي الانتخابات",
     "active_voters": "الناخبون النشطون",
     "total_candidates": "إجمالي المرشحين",
     "committees_count": "عدد اللجان",
     "recent_activity": "النشاط الأخير",
+    "view_all_activities": "عرض كل الأنشطة",
     "election_progress": "تقدم الانتخابات",
-    "voter_turnout": "نسبة الإقبال"
+    "registration": "التسجيل",
+    "verification": "التحقق",
+    "campaign": "الحملة",
+    "voting": "التصويت",
+    "overall_progress": "التقدم الكلي",
+    "days_remaining": "الأيام المتبقية",
+    "voter_turnout": "نسبة الإقبال",
+    "load_success": "تم تحميل بيانات اللوحة",
+    "load_error": "فشل تحميل بيانات اللوحة",
+    "area": "المنطقة {{number}}"
   },
   "elections": {
     "title": "الانتخابات",

@@ -45,13 +45,24 @@
   "dashboard": {
     "title": "Dashboard",
     "welcome": "Welcome to ElectionCircle",
+    "subtitle": "Monitor and manage your election processes with real-time insights",
     "total_elections": "Total Elections",
     "active_voters": "Active Voters",
     "total_candidates": "Total Candidates",
     "committees_count": "Committees Count",
     "recent_activity": "Recent Activity",
+    "view_all_activities": "View All Activities",
     "election_progress": "Election Progress",
-    "voter_turnout": "Voter Turnout"
+    "registration": "Registration",
+    "verification": "Verification",
+    "campaign": "Campaign",
+    "voting": "Voting",
+    "overall_progress": "Overall Progress",
+    "days_remaining": "Days Remaining",
+    "voter_turnout": "Voter Turnout",
+    "load_success": "Dashboard data loaded",
+    "load_error": "Failed to load dashboard data",
+    "area": "Area {{number}}"
   },
   "elections": {
     "title": "Elections",

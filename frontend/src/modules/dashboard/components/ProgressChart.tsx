@@ -2,12 +2,17 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { BarChart3 } from 'lucide-react';
 
-const progressData = [
-  { label: 'Registration', value: 85, color: 'primary' },
-  { label: 'Verification', value: 72, color: 'secondary' },
-  { label: 'Campaign', value: 58, color: 'accent' },
-  { label: 'Voting', value: 31, color: 'success' }
-];
+interface ProgressItem {
+  label: string;
+  value: number;
+  color: 'primary' | 'secondary' | 'accent' | 'success';
+}
+
+interface ProgressChartProps {
+  data: ProgressItem[];
+  overall: number;
+  remaining: number;
+}
 
 const colorClasses = {
   primary: 'bg-gradient-to-r from-primary to-primary-glow',
@@ -16,7 +21,7 @@ const colorClasses = {
   success: 'bg-gradient-to-r from-success to-success'
 };
 
-export const ProgressChart = () => {
+export const ProgressChart = ({ data, overall, remaining }: ProgressChartProps) => {
   const { t } = useTranslation();
 
   return (
@@ -27,7 +32,7 @@ export const ProgressChart = () => {
       </div>
 
       <div className="space-y-6">
-        {progressData.map((item, index) => (
+        {data.map((item, index) => (
           <motion.div
             key={item.label}
             initial={{ opacity: 0, x: -20 }}
@@ -35,17 +40,17 @@ export const ProgressChart = () => {
             transition={{ delay: index * 0.1 }}
             className="space-y-2"
           >
-            {/* Label and Value */}
+            {/* التسمية والقيمة */}
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium text-foreground">
-                {item.label}
+                {t(item.label)}
               </span>
               <span className="text-sm font-bold text-primary">
                 {item.value}%
               </span>
             </div>
 
-            {/* Progress Bar */}
+            {/* شريط التقدم */}
             <div className="relative h-3 bg-muted/30 rounded-full overflow-hidden">
               <motion.div
                 initial={{ width: 0 }}
@@ -57,7 +62,7 @@ export const ProgressChart = () => {
                 }}
                 className={`h-full rounded-full ${colorClasses[item.color as keyof typeof colorClasses]} relative`}
               >
-                {/* Animated glow effect */}
+                {/* تأثير توهج متحرك */}
                 <motion.div
                   animate={{ 
                     x: ['-100%', '100%'],
@@ -77,7 +82,7 @@ export const ProgressChart = () => {
         ))}
       </div>
 
-      {/* Summary Stats */}
+      {/* ملخص الأرقام */}
       <div className="mt-8 pt-6 border-t border-white/10">
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
@@ -87,9 +92,9 @@ export const ProgressChart = () => {
               transition={{ delay: 1 }}
               className="text-2xl font-bold text-gradient-primary"
             >
-              62%
+              {overall}%
             </motion.div>
-            <p className="text-xs text-muted-foreground">Overall Progress</p>
+            <p className="text-xs text-muted-foreground">{t('dashboard.overall_progress')}</p>
           </div>
           <div className="text-center">
             <motion.div
@@ -98,9 +103,9 @@ export const ProgressChart = () => {
               transition={{ delay: 1.2 }}
               className="text-2xl font-bold text-gradient-secondary"
             >
-              18
+              {remaining}
             </motion.div>
-            <p className="text-xs text-muted-foreground">Days Remaining</p>
+            <p className="text-xs text-muted-foreground">{t('dashboard.days_remaining')}</p>
           </div>
         </div>
       </div>
