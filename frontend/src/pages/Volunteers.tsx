@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { fetchVolunteers, createVolunteer, updateVolunteer, deleteVolunteer, VolunteerPayload } from '@/lib/volunteers';
+import { VolunteerForm } from '@/components/Volunteer/VolunteerForm';
+import { VolunteerTable } from '@/components/Volunteer/VolunteerTable';
+import { VolunteerPayload } from '@/lib/volunteers';
+import { useVolunteers } from '@/hooks/useVolunteers';
 
 interface Volunteer {
   id: number;
@@ -18,24 +19,11 @@ interface Volunteer {
 
 const Volunteers: React.FC = () => {
   const { language, direction, t } = useLanguage();
-  const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const { data, isLoading, error, create, update, remove: removeMutation } = useVolunteers(search);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Volunteer | null>(null);
   const [form, setForm] = useState<VolunteerPayload>({ name: '', email: '', phone: '', team_id: null });
-
-  const load = () => {
-    setLoading(true);
-    fetchVolunteers()
-      .then((res) => setVolunteers(res.data ?? res))
-      .catch((e) => setError((e as Error).message))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    load();
-  }, []);
 
   const openCreate = () => {
     setEditing(null);
@@ -58,117 +46,63 @@ const Volunteers: React.FC = () => {
     try {
       const payload: VolunteerPayload = { ...form };
       if (editing) {
-        await updateVolunteer(editing.id, payload);
+        await update.mutateAsync({ id: editing.id, data: payload });
       } else {
-        await createVolunteer(payload);
+        await create.mutateAsync(payload);
       }
       setDialogOpen(false);
-      load();
     } catch (e) {
-      setError((e as Error).message);
+      /* empty */
     }
   };
 
   const remove = async (id: number) => {
     if (!confirm(t('volunteers.confirm_delete'))) return;
     try {
-      await deleteVolunteer(id);
-      load();
+      await removeMutation.mutateAsync(id);
     } catch (e) {
-      setError((e as Error).message);
+      /* empty */
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div className="p-6">{t('common.loading')}</div>;
   }
 
   if (error) {
-    return <div className="p-6 text-red-500">{error}</div>;
+    return <div className="p-6 text-red-500">{(error as Error).message}</div>;
   }
 
   return (
     <div className="space-y-6 p-6">
       <div className={`flex items-center justify-between ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
         <h1 className={`text-3xl font-bold ${language === 'ar' ? 'font-arabic-heading' : ''}`}>{t('volunteers.title')}</h1>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={openCreate} className="transition-glow hover:neon-glow-orange">
-              <Plus className={`h-4 w-4 ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`} />
-              <span className={language === 'ar' ? 'font-arabic' : ''}>{t('volunteers.create')}</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="glass max-w-md">
-            <DialogHeader>
-              <DialogTitle className={language === 'ar' ? 'font-arabic-heading' : ''}>
-                {editing ? t('volunteers.edit') : t('volunteers.create')}
-              </DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('volunteers.name')}</Label>
-                <Input className="glass" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-              </div>
-              <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('volunteers.email')}</Label>
-                <Input className="glass" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-              </div>
-              <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('volunteers.phone')}</Label>
-                <Input className="glass" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-              </div>
-              <div>
-                <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('volunteers.team')}</Label>
-                <Input
-                  className="glass"
-                  value={form.team_id ?? ''}
-                  onChange={(e) => setForm({ ...form, team_id: e.target.value ? Number(e.target.value) : null })}
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>
-                <span className={language === 'ar' ? 'font-arabic' : ''}>{t('common.cancel')}</span>
+        <div className={`flex gap-2 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
+          <Input
+            placeholder={t('common.search')}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-48 glass"
+          />
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={openCreate} className="transition-glow hover:neon-glow-orange">
+                <Plus className={`h-4 w-4 ${direction === 'rtl' ? 'ml-2' : 'mr-2'}`} />
+                <span className={language === 'ar' ? 'font-arabic' : ''}>{t('volunteers.create')}</span>
               </Button>
-              <Button onClick={submit} className="transition-glow hover:neon-glow-orange">
-                <span className={language === 'ar' ? 'font-arabic' : ''}>{t('common.save')}</span>
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+            </DialogTrigger>
+            <DialogContent className="glass max-w-md">
+              <DialogHeader>
+                <DialogTitle className={language === 'ar' ? 'font-arabic-heading' : ''}>
+                  {editing ? t('volunteers.edit') : t('volunteers.create')}
+                </DialogTitle>
+              </DialogHeader>
+              <VolunteerForm initial={form} onChange={setForm} onSubmit={submit} submitting={create.isPending || update.isPending} />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
-
-      <Table>
-        <TableHeader>
-          <TableRow className={direction === 'rtl' ? 'text-right' : ''}>
-            <TableHead>{t('volunteers.name')}</TableHead>
-            <TableHead>{t('volunteers.email')}</TableHead>
-            <TableHead>{t('volunteers.phone')}</TableHead>
-            <TableHead>{t('volunteers.team')}</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {volunteers.map((vol) => (
-            <TableRow key={vol.id} className={direction === 'rtl' ? 'text-right' : ''}>
-              <TableCell>{vol.name}</TableCell>
-              <TableCell>{vol.email}</TableCell>
-              <TableCell>{vol.phone}</TableCell>
-              <TableCell>{vol.team?.name}</TableCell>
-              <TableCell>
-                <div className={`flex gap-2 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-                  <Button size="sm" variant="outline" onClick={() => openEdit(vol)}>
-                    {t('common.edit')}
-                  </Button>
-                  <Button size="sm" variant="destructive" onClick={() => remove(vol.id)}>
-                    {t('common.delete')}
-                  </Button>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <VolunteerTable data={data?.data ?? data ?? []} onEdit={openEdit} onDelete={remove} />
     </div>
   );
 };
