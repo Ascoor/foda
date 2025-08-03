@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react';
+/**
+ * SwotPage
+ * Legacy views: old/application/modules/snw/views/snw.php, old/application/modules/snw/views/add_new.php
+ * Usage: manage SWOT records (create, edit, delete) and generate reports.
+ * Test: run `npm run lint` and navigate to /swots in the dev server to verify CRUD and report flows.
+ */
+import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
  
 import { useLanguage } from '@/contexts/LanguageContext';
 import { fetchSwots, createSwot, updateSwot, deleteSwot, fetchSwotReport, SwotPayload } from '@/lib/swots';
@@ -22,9 +30,11 @@ interface Swot {
 
 const SwotPage: React.FC = () => {
   const { language, direction, t } = useLanguage();
-  const [swots, setSwots] = useState<Swot[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
+  const { data: swots = [], isLoading, error: listError } = useQuery({
+    queryKey: ['swots'],
+    queryFn: () => fetchSwots().then(res => res.data ?? res),
+  });
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editing, setEditing] = useState<Swot | null>(null);
   const [form, setForm] = useState<SwotPayload>({
@@ -38,18 +48,7 @@ const SwotPage: React.FC = () => {
  
   const [reportParams, setReportParams] = useState({ entity_type: 'area', entity_ids: '' });
   const [reportData, setReportData] = useState<Swot[]>([]);
-
-  const load = () => {
-    setLoading(true);
-    fetchSwots()
-      .then(res => setSwots(res.data ?? res))
-      .catch(e => setError(e.message))
-      .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    load();
-  }, []);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const openCreate = () => {
     setEditing(null);
@@ -78,9 +77,10 @@ const SwotPage: React.FC = () => {
         await createSwot(form);
       }
       setDialogOpen(false);
-      load();
+      setActionError(null);
+      queryClient.invalidateQueries({ queryKey: ['swots'] });
     } catch (e: unknown) {
-      setError((e as Error).message);
+      setActionError((e as Error).message);
     }
   };
 
@@ -88,9 +88,10 @@ const SwotPage: React.FC = () => {
     if (!confirm(t('swots.confirm_delete'))) return;
     try {
       await deleteSwot(id);
-      load();
+      setActionError(null);
+      queryClient.invalidateQueries({ queryKey: ['swots'] });
     } catch (e: unknown) {
-      setError((e as Error).message);
+      setActionError((e as Error).message);
     }
   };
 
@@ -106,16 +107,16 @@ const SwotPage: React.FC = () => {
       const res = await fetchSwotReport(reportParams.entity_type, ids);
       setReportData(res.data ?? res);
     } catch (e: unknown) {
-      setError((e as Error).message);
+      setActionError((e as Error).message);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div className="p-6">{t('common.loading')}</div>;
   }
 
-  if (error) {
-    return <div className="p-6 text-red-500">{error}</div>;
+  if (listError) {
+    return <div className="p-6 text-red-500">{(listError as Error).message}</div>;
   }
 
   return (
@@ -173,47 +174,8 @@ const SwotPage: React.FC = () => {
           </DialogContent>
         </Dialog>
       </div>
- 
-      <div className="space-y-4">
-        <h2 className={`text-xl font-semibold ${language === 'ar' ? 'font-arabic-heading' : ''}`}>{t('swots.report')}</h2>
-        <div className={`flex gap-4 ${direction === 'rtl' ? 'flex-row-reverse' : ''}`}>
-          <div>
-            <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_type')}</Label>
-            <Input className="glass" value={reportParams.entity_type} onChange={e => setReportParams({ ...reportParams, entity_type: e.target.value })} />
-          </div>
-          <div>
-            <Label className={language === 'ar' ? 'font-arabic' : ''}>{t('swots.entity_ids')}</Label>
-            <Input className="glass" value={reportParams.entity_ids} onChange={e => setReportParams({ ...reportParams, entity_ids: e.target.value })} placeholder="1,2,3" />
-          </div>
-          <div className="flex items-end">
-            <Button onClick={generateReport} className="transition-glow hover:neon-glow-orange">
-              {t('swots.report')}
-            </Button>
-          </div>
-        </div>
-        {reportData.length > 0 && (
-          <Table>
-            <TableHeader>
-              <TableRow className={direction === 'rtl' ? 'text-right' : ''}>
-                <TableHead>{t('swots.entity_type')}</TableHead>
-                <TableHead>{t('swots.entity_id')}</TableHead>
-                <TableHead>{t('swots.strengths')}</TableHead>
-                <TableHead>{t('swots.weaknesses')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {reportData.map(r => (
-                <TableRow key={r.id} className={direction === 'rtl' ? 'text-right' : ''}>
-                  <TableCell>{r.entity_type}</TableCell>
-                  <TableCell>{r.entity_id}</TableCell>
-                  <TableCell>{r.strengths}</TableCell>
-                  <TableCell>{r.weaknesses}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </div>
+
+      {actionError && <div className="text-red-500">{actionError}</div>}
  
       <Table>
         <TableHeader>
