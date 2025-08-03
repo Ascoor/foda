@@ -5,18 +5,22 @@ namespace App\Http\Controllers\ElectionCircle;
 use App\Http\Controllers\Controller;
 use App\Models\ElectionCircle\Committee;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ElectionCircle\Concerns\HandlesIndexRequests;
 
 class CommitteeController extends Controller
 {
+    use HandlesIndexRequests;
     public function __construct()
     {
         $this->middleware('can:manage-electioncircle');
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        return Committee::all();
+        $query = Committee::query();
+
+        return $this->paginateAndFilter($request, $query, ['geo_area_id']);
     }
 
     public function show(Committee $committee)

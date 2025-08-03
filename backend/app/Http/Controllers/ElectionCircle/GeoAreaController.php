@@ -5,18 +5,22 @@ namespace App\Http\Controllers\ElectionCircle;
 use App\Http\Controllers\Controller;
 use App\Models\ElectionCircle\GeoArea;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ElectionCircle\Concerns\HandlesIndexRequests;
 
 class GeoAreaController extends Controller
 {
+    use HandlesIndexRequests;
     public function __construct()
     {
         $this->middleware('can:manage-electioncircle');
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        return GeoArea::all();
+        $query = GeoArea::query();
+
+        return $this->paginateAndFilter($request, $query, ['election_id']);
     }
 
     public function show(GeoArea $geoArea)
