@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Plus } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -205,6 +206,9 @@ export const Event: React.FC = () => {
               <TableCell>{event.area?.name}</TableCell>
               <TableCell>{event.team?.name}</TableCell>
               <TableCell className="space-x-2">
+                <Button size="sm" variant="secondary" asChild>
+                  <Link to={`/events/${event.id}`}>{t('common.view')}</Link>
+                </Button>
                 <Button size="sm" variant="outline" onClick={() => openEdit(event)}>
                   {t('common.edit')}
                 </Button>

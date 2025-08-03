@@ -17,6 +17,7 @@ import { CampaignReports } from "./pages/CampaignReports";
 import { Teams } from "./pages/Teams";
 import TeamMembers from "./pages/TeamMembers";
 import { Event } from "./pages/Event";
+import EventDetails from "./pages/Event/EventDetails";
 import { Analytics } from "./pages/Analytics";
 import Settings  from "./pages/Settings"; 
 import NotFound from "./pages/NotFound";
@@ -75,6 +76,7 @@ const App = () => (
                 <Route path="/areas" element={<Area />} />
   
                 <Route path="/events" element={<Event />} />
+                <Route path="/events/:id" element={<EventDetails />} />
 
                 <Route path="/sms" element={<SmsPage />} />
                 <Route path="/sms/settings" element={<SmsSettings />} />

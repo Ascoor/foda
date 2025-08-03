@@ -22,6 +22,11 @@ export async function fetchUpcomingEvents() {
   return apiFetch('/api/v1/events/upcoming', { token });
 }
 
+export async function fetchEvent(id: number | string) {
+  const token = getToken();
+  return apiFetch(`/api/v1/events/${id}`, { token });
+}
+
 export interface EventPayload {
   name: string;
   organiser: string;
