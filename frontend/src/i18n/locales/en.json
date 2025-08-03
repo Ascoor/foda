@@ -22,6 +22,9 @@
     "confirm": "Confirm",
     "yes": "Yes",
     "no": "No",
+ 
+    "view": "View",
+ 
     "no_data": "No data"
   },
   "navigation": {
@@ -89,9 +92,13 @@
     "title": "Committees",
     "add_committee": "Add Committee",
     "committee_name": "Committee Name",
+    "location": "Location",
+    "area": "Area",
+    "export_csv": "Export CSV",
+    "search_placeholder": "Search committees...",
+    "assign_members": "Assign Members",
     "committee_number": "Committee Number",
     "address": "Address",
-    "area": "Area",
     "election": "Election",
     "capacity": "Capacity",
     "assigned_voters": "Assigned Voters",

@@ -9,10 +9,14 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { Dashboard } from "@/modules/dashboard/Dashboard";
 import { ElectionsList } from "@/modules/elections/ElectionsList";
 import { GeoAreasList } from "@/modules/geo-areas/GeoAreasList";
-import { VotersList } from "@/modules/voters/VotersList";
+import { VotersList } from "@/modules/voters/VotersList"; 
 import { CandidatesList } from "@/modules/candidates/CandidatesList";
 import { AgentsList } from "@/modules/agents/AgentsList";
 import { VolunteersList } from "@/modules/volunteers/VolunteersList";
+ 
+import { CommitteesList } from "@/modules/committees/List";
+import { CommitteeDetails } from "@/modules/committees/Details";
+ 
 import "@/i18n";
 
 const queryClient = new QueryClient();
@@ -30,7 +34,8 @@ const App = () => (
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/elections" element={<ElectionsList />} />
                 <Route path="/geo-areas" element={<GeoAreasList />} />
-                <Route path="/committees" element={<ComingSoon module="Committees" />} />
+                <Route path="/committees" element={<CommitteesList />} />
+                <Route path="/committees/:id" element={<CommitteeDetails />} />
                 <Route path="/voters" element={<VotersList />} />
                 <Route path="/candidates" element={<CandidatesList />} />
                 <Route path="/agents" element={<AgentsList />} />
