@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             AreaSeeder::class,
             TeamSeeder::class,
             EventSeeder::class,
+            ExpenseCategorySeeder::class,
             FinanceSeeder::class,
             HomeSeeder::class,
             ProfileSeeder::class,
