@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +19,8 @@ export const Header = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, direction } = useLanguage();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <motion.header
@@ -90,7 +94,13 @@ export const Header = () => {
                 {t('settings.title')}
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive">
+              <DropdownMenuItem
+                className="text-destructive"
+                onSelect={() => {
+                  logout();
+                  navigate('/login');
+                }}
+              >
                 {t('auth.logout')}
               </DropdownMenuItem>
             </DropdownMenuContent>
