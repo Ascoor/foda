@@ -13,7 +13,8 @@ import NotFound from "@/pages/NotFound";
 import { Dashboard } from "@/modules/dashboard/Dashboard";
 import { ElectionsList } from "@/modules/elections/List";
 import { ElectionDetails } from "@/modules/elections/Details";
-import { GeoAreasList } from "@/modules/geo-areas/GeoAreasList";
+import { GeoAreasList } from "@/modules/geo-areas/List";
+import { GeoAreaDetails } from "@/modules/geo-areas/Details";
 import { VotersList } from "@/modules/voters/List";
 import { VoterDetails } from "@/modules/voters/Details";
 import { CandidatesList } from "@/modules/candidates/List";
@@ -51,6 +52,7 @@ const App = () => (
                     <Route path="/elections" element={<ElectionsList />} />
                     <Route path="/elections/:id" element={<ElectionDetails />} />
                     <Route path="/geo-areas" element={<GeoAreasList />} />
+                    <Route path="/geo-areas/:id" element={<GeoAreaDetails />} />
                     <Route path="/committees" element={<CommitteesList />} />
                     <Route path="/committees/:id" element={<CommitteeDetails />} />
                     <Route path="/voters" element={<VotersList />} />

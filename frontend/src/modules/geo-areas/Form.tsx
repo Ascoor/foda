@@ -94,15 +94,9 @@ export const GeoAreaForm = ({
       setIsSubmitting(true);
       
       if (area) {
-        // Update existing area
         await updateGeoArea(area.id, data);
       } else {
-        // Create new area
-        await createGeoArea({
-          ...data,
-          total_voters: 0,
-          total_committees: 0
-        });
+        await createGeoArea(data);
       }
       
       onSuccess();

@@ -28,7 +28,7 @@ import { DataTableSkeleton, EmptyState } from '@/components/ui/DataTableSkeleton
 import { useLanguage } from '@/contexts/LanguageContext';
 import { GeoArea } from './types';
 import { fetchGeoAreas } from './api';
-import { GeoAreaForm } from './GeoAreaForm';
+import { GeoAreaForm } from './Form';
 
 const typeIcons = {
   governorate: Building,
