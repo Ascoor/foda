@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Header } from './Header';
-import { Sidebar } from './Sidebar';
+import { Sidebar } from '@/components/sidebar/Sidebar';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface MainLayoutProps {
