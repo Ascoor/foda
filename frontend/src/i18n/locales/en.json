@@ -3,6 +3,7 @@
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
+    "reset": "Reset",
     "delete": "Delete",
     "edit": "Edit",
     "add": "Add",
@@ -196,7 +197,9 @@
     "dark_mode": "Dark Mode",
     "light_mode": "Light Mode",
     "region": "Region",
-    "allow_registration": "Allow Registration"
+    "allow_registration": "Allow Registration",
+    "save_success": "Settings saved successfully",
+    "save_error": "Failed to save settings"
   },
   "analytics": {
     "title": "Analytics",
