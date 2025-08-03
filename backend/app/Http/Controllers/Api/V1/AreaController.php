@@ -6,13 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAreaRequest;
 use App\Http\Requests\UpdateAreaRequest;
 use App\Http\Resources\AreaResource;
+use Illuminate\Http\Request;
 use App\Models\Area;
 
 class AreaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return AreaResource::collection(Area::all());
+        $query = Area::query();
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        return AreaResource::collection($query->get());
     }
 
     public function store(StoreAreaRequest $request)
