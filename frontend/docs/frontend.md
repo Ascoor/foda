@@ -22,7 +22,7 @@ Mutations trigger revalidation via `queryClient.invalidateQueries`.
 ## Adding New Modules
 1. Create API helpers in `src/lib`.
 2. Build page components under `src/pages` and optional UI in `src/components`.
-3. Register routes in `src/App.tsx` and navigation links in `components/layout/Sidebar.tsx`.
+3. Register routes in `src/App.tsx` and navigation links in `components/sidebar/sidebarConfig.ts`.
 4. Use `useLanguage` for bilingual labels and RTL handling.
 5. Keep styling consistent with Tailwind and existing glassmorphism theme.
 

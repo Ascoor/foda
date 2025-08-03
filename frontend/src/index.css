@@ -259,3 +259,10 @@
     background: hsl(var(--primary-glow));
   }
 }
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--secondary));
+  border-radius: 3px;
+}
