@@ -208,6 +208,7 @@
     "logout": "Logout",
     "username": "Username",
     "password": "Password",
-    "remember_me": "Remember Me"
+    "remember_me": "Remember Me",
+    "login_error": "Unable to login"
   }
 }

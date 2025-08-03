@@ -208,6 +208,7 @@
     "logout": "تسجيل الخروج",
     "username": "اسم المستخدم",
     "password": "كلمة المرور",
-    "remember_me": "تذكرني"
+    "remember_me": "تذكرني",
+    "login_error": "فشل تسجيل الدخول"
   }
 }

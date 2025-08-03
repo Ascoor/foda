@@ -12,6 +12,7 @@ vi.mock('@/contexts/LanguageContext', () => ({
     toggleLanguage: vi.fn(),
     setLanguage: vi.fn(),
   }),
+  LanguageProvider: ({ children }: any) => children,
 }));
 
 class ResizeObserver {

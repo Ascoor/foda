@@ -2,10 +2,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { Login } from "@/pages/Login";
+import NotFound from "@/pages/NotFound";
 import { Dashboard } from "@/modules/dashboard/Dashboard";
 import { ElectionsList } from "@/modules/elections/ElectionsList";
 import { GeoAreasList } from "@/modules/geo-areas/GeoAreasList";
@@ -29,38 +33,49 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider>
-      <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <MainLayout>
+    <AuthProvider>
+      <ThemeProvider>
+        <LanguageProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
               <Routes>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/elections" element={<ElectionsList />} />
-                <Route path="/geo-areas" element={<GeoAreasList />} />
-                <Route path="/committees" element={<CommitteesList />} />
-                <Route path="/committees/:id" element={<CommitteeDetails />} />
-                <Route path="/voters" element={<VotersList />} />
-                <Route path="/candidates" element={<CandidatesList />} />
-                <Route path="/agents" element={<AgentsList />} />
-                <Route path="/volunteers" element={<VolunteersList />} />
- 
-                <Route path="/observations" element={<ObservationsList />} />
-                <Route path="/campaigns" element={<CampaignsList />} />
-                <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
-                <Route path="/settings" element={<ComingSoon module="Settings" />} />
- 
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
+                <Route path="/login" element={<Login />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route element={<MainLayoutWrapper />}>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/elections" element={<ElectionsList />} />
+                    <Route path="/geo-areas" element={<GeoAreasList />} />
+                    <Route path="/committees" element={<CommitteesList />} />
+                    <Route path="/committees/:id" element={<CommitteeDetails />} />
+                    <Route path="/voters" element={<VotersList />} />
+                    <Route path="/candidates" element={<CandidatesList />} />
+                    <Route path="/agents" element={<AgentsList />} />
+                    <Route path="/volunteers" element={<VolunteersList />} />
+
+                    <Route path="/observations" element={<ObservationsList />} />
+                    <Route path="/campaigns" element={<CampaignsList />} />
+                    <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
+                    <Route path="/settings" element={<ComingSoon module="Settings" />} />
+
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+                </Route>
               </Routes>
-            </MainLayout>
-          </BrowserRouter>
-        </TooltipProvider>
-      </LanguageProvider>
-    </ThemeProvider>
+            </BrowserRouter>
+          </TooltipProvider>
+        </LanguageProvider>
+      </ThemeProvider>
+    </AuthProvider>
   </QueryClientProvider>
+);
+
+const MainLayoutWrapper = () => (
+  <MainLayout>
+    <Outlet />
+  </MainLayout>
 );
 
 // Temporary component for modules under development
