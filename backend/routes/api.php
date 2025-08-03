@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\MemberController;
 use App\Http\Controllers\Api\V1\VolunteerController;
 use App\Http\Controllers\Api\V1\VoterController;
+use App\Http\Controllers\Api\V1\PasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,8 @@ use App\Http\Controllers\Api\V1\VoterController;
 Route::prefix('v1')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register'])->middleware(['auth:sanctum', 'role:admin']);
+    Route::post('forgot-password', [PasswordController::class, 'forgot']);
+    Route::post('reset-password', [PasswordController::class, 'reset']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
