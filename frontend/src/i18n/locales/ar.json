@@ -59,6 +59,7 @@
     "election_type": "نوع الانتخابات",
     "start_date": "تاريخ البدء",
     "end_date": "تاريخ الانتهاء",
+    "search_placeholder": "ابحث في الانتخابات...",
     "description": "الوصف",
     "status": {
       "draft": "مسودة",

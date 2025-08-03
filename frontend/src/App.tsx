@@ -11,7 +11,8 @@ import { MainLayout } from "@/components/layout/MainLayout";
 import { Login } from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
 import { Dashboard } from "@/modules/dashboard/Dashboard";
-import { ElectionsList } from "@/modules/elections/ElectionsList";
+import { ElectionsList } from "@/modules/elections/List";
+import { ElectionDetails } from "@/modules/elections/Details";
 import { GeoAreasList } from "@/modules/geo-areas/GeoAreasList";
 import { VotersList } from "@/modules/voters/VotersList"; 
 import { CandidatesList } from "@/modules/candidates/CandidatesList";
@@ -46,6 +47,7 @@ const App = () => (
                   <Route element={<MainLayoutWrapper />}>
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/elections" element={<ElectionsList />} />
+                    <Route path="/elections/:id" element={<ElectionDetails />} />
                     <Route path="/geo-areas" element={<GeoAreasList />} />
                     <Route path="/committees" element={<CommitteesList />} />
                     <Route path="/committees/:id" element={<CommitteeDetails />} />
