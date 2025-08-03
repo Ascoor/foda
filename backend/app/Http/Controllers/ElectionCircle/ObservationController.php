@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\ElectionCircle;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ElectionCircle\Traits\HandlesIndexRequests;
 use App\Models\ElectionCircle\Observation;
 use Illuminate\Http\Request;
 
 class ObservationController extends Controller
 {
+    use HandlesIndexRequests;
+
     public function __construct()
     {
         $this->middleware('can:manage-electioncircle');
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        return Observation::all();
+        return $this->handleIndex($request, Observation::query(), ['title', 'description']);
     }
 
     public function show(Observation $observation)

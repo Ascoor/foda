@@ -3,20 +3,22 @@
 namespace App\Http\Controllers\ElectionCircle;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ElectionCircle\Traits\HandlesIndexRequests;
 use App\Models\ElectionCircle\Agent;
 use Illuminate\Http\Request;
 
 class AgentController extends Controller
 {
+    use HandlesIndexRequests;
     public function __construct()
     {
         $this->middleware('can:manage-electioncircle');
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        return Agent::all();
+        return $this->handleIndex($request, Agent::query(), ['name']);
     }
 
     public function show(Agent $agent)

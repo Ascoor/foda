@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\ElectionCircle;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ElectionCircle\Traits\HandlesIndexRequests;
 use App\Models\ElectionCircle\Voter;
 use Illuminate\Http\Request;
 
 class VoterController extends Controller
 {
+    use HandlesIndexRequests;
+
     public function __construct()
     {
         $this->middleware('can:manage-electioncircle');
     }
 
 
-    public function index()
+    public function index(Request $request)
     {
-        return Voter::all();
+        return $this->handleIndex($request, Voter::query(), ['name', 'national_id']);
     }
 
     public function show(Voter $voter)
@@ -48,14 +51,5 @@ class VoterController extends Controller
         return response()->json([
             'message' => __('messages.deleted', ['entity' => 'Voter']),
         ]);
-    }
-
-    public function search(Request $request)
-    {
-        $query = Voter::query();
-        if ($term = $request->get('q')) {
-            $query->where('name', 'like', "%{$term}%");
-        }
-        return $query->get();
     }
 }

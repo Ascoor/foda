@@ -21,11 +21,21 @@ This backend provides RESTful endpoints for core election management entities. I
 - Candidate has many Agents and Volunteers
 - Volunteer has many Observations
 
+## Listing Parameters
+Index endpoints support a common set of query parameters:
+
+| Parameter | Description |
+|-----------|-------------|
+| `search`  | Text search across name and other configured columns |
+| `sort_by` | Column to sort by |
+| `order`   | Sort direction (`asc` or `desc`) |
+| Any other field | Filter by exact value |
+
 ## Example Endpoints
 ```
 GET /api/ec/elections
 POST /api/ec/voters
-GET /api/ec/voters/search?q=ahmed
+GET /api/ec/voters?search=ahmed&committee_id=5&sort_by=created_at&order=desc
 ```
 
 All endpoints return JSON responses. Authorization is guarded by the `manage-electioncircle` gate which allows `admin` and `manager` roles.

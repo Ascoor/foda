@@ -91,5 +91,4 @@ Route::prefix('ec')->group(function () {
     Route::apiResource('observations', ECObservationController::class);
     Route::apiResource('campaigns', ECCampaignController::class);
     Route::apiResource('settings', ECSettingController::class);
-    Route::get('voters/search', [ECVoterController::class, 'search']);
 });
