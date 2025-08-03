@@ -14,8 +14,10 @@ import { Dashboard } from "@/modules/dashboard/Dashboard";
 import { ElectionsList } from "@/modules/elections/List";
 import { ElectionDetails } from "@/modules/elections/Details";
 import { GeoAreasList } from "@/modules/geo-areas/GeoAreasList";
-import { VotersList } from "@/modules/voters/VotersList"; 
-import { CandidatesList } from "@/modules/candidates/CandidatesList";
+import { VotersList } from "@/modules/voters/List";
+import { VoterDetails } from "@/modules/voters/Details";
+import { CandidatesList } from "@/modules/candidates/List";
+import { CandidateDetails } from "@/modules/candidates/Details";
 import { AgentsList } from "@/modules/agents/AgentsList";
 import { VolunteersList } from "@/modules/volunteers/VolunteersList";
 
@@ -52,7 +54,9 @@ const App = () => (
                     <Route path="/committees" element={<CommitteesList />} />
                     <Route path="/committees/:id" element={<CommitteeDetails />} />
                     <Route path="/voters" element={<VotersList />} />
+                    <Route path="/voters/:id" element={<VoterDetails />} />
                     <Route path="/candidates" element={<CandidatesList />} />
+                    <Route path="/candidates/:id" element={<CandidateDetails />} />
                     <Route path="/agents" element={<AgentsList />} />
                     <Route path="/volunteers" element={<VolunteersList />} />
 

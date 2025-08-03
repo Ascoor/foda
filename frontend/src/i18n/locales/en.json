@@ -129,6 +129,11 @@
     "gender_options": {
       "male": "Male",
       "female": "Female"
+    },
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended"
     }
   },
   "candidates": {
@@ -144,6 +149,10 @@
     "types": {
       "individual": "Individual",
       "list": "List"
+    },
+    "status_options": {
+      "active": "Active",
+      "withdrawn": "Withdrawn"
     }
   },
   "agents": {

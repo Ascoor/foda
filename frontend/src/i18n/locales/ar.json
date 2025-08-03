@@ -129,6 +129,11 @@
     "gender_options": {
       "male": "ذكر",
       "female": "أنثى"
+    },
+    "status_options": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "suspended": "موقوف"
     }
   },
   "candidates": {
@@ -144,6 +149,10 @@
     "types": {
       "individual": "فردي",
       "list": "قائمة"
+    },
+    "status_options": {
+      "active": "نشط",
+      "withdrawn": "منسحب"
     }
   },
   "agents": {
