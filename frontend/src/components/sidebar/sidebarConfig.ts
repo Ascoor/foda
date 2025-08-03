@@ -78,6 +78,7 @@ export const sidebarSections: SidebarSection[] = [
   {
     title: 'Data & Management',
     items: [
+      { key: 'elections', label: 'nav.elections', icon: Vote, path: '/elections', color: 'text-red-500' },
       { key: 'areas', label: 'nav.areas', icon: MapPin, path: '/areas', color: 'text-yellow-500' },
       { key: 'events', label: 'nav.events', icon: Calendar, path: '/events', color: 'text-pink-500' },
       { key: 'analytics', label: 'nav.analytics', icon: BarChart3, path: '/analytics', color: 'text-blue-500' },

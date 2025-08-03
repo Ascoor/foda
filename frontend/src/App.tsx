@@ -37,9 +37,11 @@ import SmsSettings from "./pages/SmsSettings";
 import SmsHistory from "./pages/SmsHistory";
 import ExpenseCategories from "./pages/Finance/ExpenseCategories";
 import FinancialReport from "./pages/Finance/FinancialReport";
- 
+
 import Permission from "./pages/Permission";
 import FooterPage from "./pages/Footer";
+
+import ElectionList from "./modules/Elections/List";
  
  
 
@@ -77,7 +79,8 @@ const App = () => (
                 <Route path="/teams/*" element={<Teams />} />
 
                 <Route path="/areas" element={<Area />} />
-  
+                <Route path="/elections" element={<ElectionList />} />
+
                 <Route path="/events" element={<Event />} />
                 <Route path="/events/:id" element={<EventDetails />} />
 
