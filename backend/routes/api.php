@@ -47,6 +47,7 @@ Route::prefix('v1')->group(function () {
         Route::get('home/heatmap', [HomeController::class, 'heatmap']);
         Route::apiResource('profiles', ProfileController::class);
         Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
+        Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);
         Route::apiResource('settings', SettingController::class);
         Route::apiResource('sms', SmsController::class);
         Route::get('swots/report', [SwotController::class, 'report']);
