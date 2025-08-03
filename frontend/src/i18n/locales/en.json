@@ -177,6 +177,15 @@
       "complaint": "Complaint"
     }
   },
+  "campaigns": {
+    "title": "Campaigns",
+    "add_campaign": "Add Campaign",
+    "campaign_name": "Campaign Name",
+    "message": "Message",
+    "sent": "Sent",
+    "delivered": "Delivered",
+    "send": "Send"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",

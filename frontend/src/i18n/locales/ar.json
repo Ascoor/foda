@@ -177,6 +177,15 @@
       "complaint": "شكوى"
     }
   },
+  "campaigns": {
+    "title": "الحملات",
+    "add_campaign": "إضافة حملة",
+    "campaign_name": "اسم الحملة",
+    "message": "الرسالة",
+    "sent": "تم الإرسال",
+    "delivered": "تم التوصيل",
+    "send": "إرسال"
+  },
   "settings": {
     "title": "الإعدادات",
     "language": "اللغة",
