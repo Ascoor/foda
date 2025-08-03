@@ -149,7 +149,9 @@ export const Teams: React.FC = () => {
 
       {/* Teams Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {filteredTeams.map((team) => (
+        {filteredTeams.map((team) => {
+          const members = team.members ?? [];
+          return (
           <Card key={team.id} className="glass transition-glow hover:neon-glow-orange">
             <CardHeader className={`flex flex-row items-center justify-between space-y-0 pb-4 ${
               direction === 'rtl' ? 'flex-row-reverse' : ''
@@ -185,14 +187,14 @@ export const Teams: React.FC = () => {
                   {t('teams.members')}
                 </span>
                 <Badge variant="secondary">
-                  {team.members.length} {language === 'ar' ? 'عضو' : 'members'}
+                  {members.length} {language === 'ar' ? 'عضو' : 'members'}
                 </Badge>
               </div>
 
               <div className="space-y-3">
-                {team.members.slice(0, 3).map((member) => (
-                  <div 
-                    key={member.id} 
+                {members.slice(0, 3).map((member) => (
+                  <div
+                    key={member.id}
                     className={`flex items-center gap-3 p-2 rounded-lg glass transition-glow hover:neon-glow-blue ${
                       direction === 'rtl' ? 'flex-row-reverse' : ''
                     }`}
@@ -230,14 +232,14 @@ export const Teams: React.FC = () => {
                     </div>
                   </div>
                 ))}
-                
-                {team.members.length > 3 && (
-                  <Button 
-                    variant="ghost" 
+
+                {members.length > 3 && (
+                  <Button
+                    variant="ghost"
                     className={`w-full text-sm transition-glow hover:neon-glow-orange ${language === 'ar' ? 'font-arabic' : ''}`}
                     onClick={() => setSelectedTeam(team)}
                   >
-                    {language === 'ar' ? `عرض جميع الأعضاء (${team.members.length})` : `View all members (${team.members.length})`}
+                    {language === 'ar' ? `عرض جميع الأعضاء (${members.length})` : `View all members (${members.length})`}
                   </Button>
                 )}
               </div>
@@ -250,7 +252,8 @@ export const Teams: React.FC = () => {
               </div>
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
       </div>
 
       {/* Team Details Dialog */}

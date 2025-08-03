@@ -79,24 +79,24 @@ const menuItems: MenuItem[] = [
  
     ],
   }, 
-  {
-    key: 'messages',
-    icon: MessageSquare,
-    path: '/messages',
-    badge: null,
-  },  
-  {
-    key: 'contacts',
-    icon: UserPlus,
-    path: '/contacts',
-    badge: null,
-  },
-  {
-    key: 'contacts',
-    icon: UserPlus,
-    path: '/contacts',
-    badge: null,
-  },
+    {
+      key: 'sms',
+      icon: MessageSquare,
+      path: '/sms',
+      badge: null,
+    },
+    {
+      key: 'contacts',
+      icon: UserPlus,
+      path: '/contacts',
+      badge: null,
+    },
+    {
+      key: 'volunteers',
+      icon: UserPlus,
+      path: '/volunteers',
+      badge: null,
+    },
   {
     key: 'areas',
     icon: MapPin,
