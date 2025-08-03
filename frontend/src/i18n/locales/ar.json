@@ -3,6 +3,7 @@
     "loading": "جاري التحميل...",
     "save": "حفظ",
     "cancel": "إلغاء",
+    "reset": "إعادة تعيين",
     "delete": "حذف",
     "edit": "تعديل",
     "add": "إضافة",
@@ -139,6 +140,11 @@
     "gender_options": {
       "male": "ذكر",
       "female": "أنثى"
+    },
+    "status_options": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "suspended": "موقوف"
     }
   },
   "candidates": {
@@ -154,6 +160,10 @@
     "types": {
       "individual": "فردي",
       "list": "قائمة"
+    },
+    "status_options": {
+      "active": "نشط",
+      "withdrawn": "منسحب"
     }
   },
   "agents": {
@@ -207,7 +217,9 @@
     "dark_mode": "الوضع المظلم",
     "light_mode": "الوضع المضيء",
     "region": "المنطقة",
-    "allow_registration": "السماح بالتسجيل"
+    "allow_registration": "السماح بالتسجيل",
+    "save_success": "تم حفظ الإعدادات بنجاح",
+    "save_error": "فشل حفظ الإعدادات"
   },
   "analytics": {
     "title": "التحليلات",

@@ -3,6 +3,7 @@
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
+    "reset": "Reset",
     "delete": "Delete",
     "edit": "Edit",
     "add": "Add",
@@ -139,6 +140,11 @@
     "gender_options": {
       "male": "Male",
       "female": "Female"
+    },
+    "status_options": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "suspended": "Suspended"
     }
   },
   "candidates": {
@@ -154,6 +160,10 @@
     "types": {
       "individual": "Individual",
       "list": "List"
+    },
+    "status_options": {
+      "active": "Active",
+      "withdrawn": "Withdrawn"
     }
   },
   "agents": {
@@ -207,7 +217,9 @@
     "dark_mode": "Dark Mode",
     "light_mode": "Light Mode",
     "region": "Region",
-    "allow_registration": "Allow Registration"
+    "allow_registration": "Allow Registration",
+    "save_success": "Settings saved successfully",
+    "save_error": "Failed to save settings"
   },
   "analytics": {
     "title": "Analytics",
