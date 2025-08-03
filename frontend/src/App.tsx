@@ -35,8 +35,8 @@ import SmsPage from "./pages/Sms";
 import SmsSettings from "./pages/SmsSettings";
  
 import SmsHistory from "./pages/SmsHistory";
-import ExpenseCategories from "./pages/ExpenseCategories";
-import FinancialReport from "./pages/FinancialReport";
+import ExpenseCategories from "./pages/Finance/ExpenseCategories";
+import FinancialReport from "./pages/Finance/FinancialReport";
  
 import Permission from "./pages/Permission";
 import FooterPage from "./pages/Footer";
