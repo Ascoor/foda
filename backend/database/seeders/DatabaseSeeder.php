@@ -23,10 +23,18 @@ class DatabaseSeeder extends Seeder
             HomeSeeder::class,
             ProfileSeeder::class,
             SettingSeeder::class,
-            SmsSeeder::class, 
+            SmsSeeder::class,
             SwotSeeder::class,
             VolunteerSeeder::class,
             VoterSeeder::class,
+            ElectionSeeder::class,
+            GeoAreaSeeder::class,
+            CommitteeSeeder::class,
+            CandidateSeeder::class,
+            AgentSeeder::class,
+            CampaignSeeder::class,
+            ECSettingSeeder::class,
+            ObservationSeeder::class,
         ]);
     }
 }
