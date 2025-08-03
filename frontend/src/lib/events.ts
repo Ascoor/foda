@@ -17,6 +17,11 @@ export async function fetchEvents(filters: EventFilters = {}) {
   return apiFetch(`/api/v1/events${query ? `?${query}` : ''}`, { token });
 }
 
+export async function fetchUpcomingEvents() {
+  const token = getToken();
+  return apiFetch('/api/v1/events/upcoming', { token });
+}
+
 export interface EventPayload {
   name: string;
   organiser: string;

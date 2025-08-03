@@ -13,6 +13,11 @@ export async function fetchSettings() {
   return apiFetch('/api/v1/settings', { token });
 }
 
+export async function fetchSettingByKey(key: string) {
+  const token = getToken();
+  return apiFetch(`/api/v1/settings/key/${key}`, { token });
+}
+
 export async function createSetting(payload: SettingPayload) {
   const token = getToken();
   return apiFetch('/api/v1/settings', {
