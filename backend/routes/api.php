@@ -17,6 +17,16 @@ use App\Http\Controllers\Api\V1\MemberController;
 use App\Http\Controllers\Api\V1\VolunteerController;
 use App\Http\Controllers\Api\V1\VoterController;
 use App\Http\Controllers\Api\V1\PasswordController;
+use App\Http\Controllers\ElectionCircle\ElectionController as ECElectionController;
+use App\Http\Controllers\ElectionCircle\GeoAreaController as ECGeoAreaController;
+use App\Http\Controllers\ElectionCircle\CommitteeController as ECCommitteeController;
+use App\Http\Controllers\ElectionCircle\CandidateController as ECCandidateController;
+use App\Http\Controllers\ElectionCircle\VoterController as ECVoterController;
+use App\Http\Controllers\ElectionCircle\AgentController as ECAgentController;
+use App\Http\Controllers\ElectionCircle\VolunteerController as ECVolunteerController;
+use App\Http\Controllers\ElectionCircle\ObservationController as ECObservationController;
+use App\Http\Controllers\ElectionCircle\CampaignController as ECCampaignController;
+use App\Http\Controllers\ElectionCircle\SettingController as ECSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,3 +79,17 @@ Route::prefix('v1')->group(function () {
     });
 });
 
+
+Route::prefix('ec')->group(function () {
+    Route::apiResource('elections', ECElectionController::class);
+    Route::apiResource('geo-areas', ECGeoAreaController::class);
+    Route::apiResource('committees', ECCommitteeController::class);
+    Route::apiResource('candidates', ECCandidateController::class);
+    Route::apiResource('voters', ECVoterController::class);
+    Route::apiResource('agents', ECAgentController::class);
+    Route::apiResource('volunteers', ECVolunteerController::class);
+    Route::apiResource('observations', ECObservationController::class);
+    Route::apiResource('campaigns', ECCampaignController::class);
+    Route::apiResource('settings', ECSettingController::class);
+    Route::get('voters/search', [ECVoterController::class, 'search']);
+});

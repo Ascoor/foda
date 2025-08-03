@@ -27,6 +27,9 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+        Gate::define('manage-electioncircle', function ($user) {
+            return in_array($user->role ?? 'viewer', ['admin','manager']);
+        });
 
         //
     }
