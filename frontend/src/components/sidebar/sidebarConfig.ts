@@ -1,4 +1,4 @@
-import { LayoutDashboard, Megaphone, Users, MessageSquare, UserPlus, MapPin, Calendar, Vote, BarChart3, Wallet, Settings, FileText, Database } from 'lucide-react';
+import { LayoutDashboard, Megaphone, Users, MessageSquare, UserPlus, MapPin, Calendar, Vote, BarChart3, Wallet, Settings, FileText, Database, History, User } from 'lucide-react';
 import type React from 'react';
 
 export interface SidebarChild {
@@ -66,6 +66,7 @@ export const sidebarSections: SidebarSection[] = [
         children: [
           { key: 'sms.overview', label: 'SMS', path: '/sms', icon: MessageSquare },
           { key: 'sms.settings', label: 'SMS Settings', path: '/sms/settings', icon: Settings },
+          { key: 'sms.history', label: 'SMS History', path: '/sms/history', icon: History },
         ],
       },
       { key: 'volunteers', label: 'nav.volunteers', icon: UserPlus, path: '/volunteers', color: 'text-teal-500' },
@@ -95,6 +96,7 @@ export const sidebarSections: SidebarSection[] = [
     title: 'Settings',
     items: [
       { key: 'settings', label: 'nav.settings', icon: Settings, path: '/settings', color: 'text-gray-500' },
+      { key: 'profile', label: 'nav.profile', icon: User, path: '/profile', color: 'text-gray-500' },
     ],
   },
 ];

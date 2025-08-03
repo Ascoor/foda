@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSmsRequest;
 use App\Http\Resources\SmsResource;
 use App\Models\Sms;
+use App\Models\SmsSetting;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
 
@@ -67,5 +68,26 @@ class SmsController extends Controller
         $sms->delete();
 
         return response()->noContent();
+    }
+
+    public function settings()
+    {
+        $setting = SmsSetting::first();
+        return response()->json(['data' => $setting]);
+    }
+
+    public function updateSettings(Request $request)
+    {
+        $data = $request->validate([
+            'api_key' => ['nullable', 'string'],
+            'sender_id' => ['nullable', 'string'],
+        ]);
+        $setting = SmsSetting::first();
+        if ($setting) {
+            $setting->update($data);
+        } else {
+            $setting = SmsSetting::create($data);
+        }
+        return response()->json(['data' => $setting]);
     }
 }

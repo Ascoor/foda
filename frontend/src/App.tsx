@@ -33,6 +33,7 @@ import Volunteers from "./pages/Volunteers";
 import Voters from "./pages/Voters"; 
 import SmsPage from "./pages/Sms";
 import SmsSettings from "./pages/SmsSettings";
+import SmsHistory from "./pages/SmsHistory";
 import ExpenseCategories from "./pages/ExpenseCategories";
 import FinancialReport from "./pages/FinancialReport";
 import Permission from "./pages/Permission";
@@ -80,6 +81,7 @@ const App = () => (
 
                 <Route path="/sms" element={<SmsPage />} />
                 <Route path="/sms/settings" element={<SmsSettings />} />
+                <Route path="/sms/history" element={<SmsHistory />} />
  
  
                 <Route path="/swots" element={<Swot />} />
