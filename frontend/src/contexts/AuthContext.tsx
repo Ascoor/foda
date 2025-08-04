@@ -1,10 +1,9 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import api, { setAuthToken } from '@/lib/api';
 
+// واجهة بيانات المستخدم البسيطة
 interface AuthContextType {
   token: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -24,48 +23,41 @@ interface Props {
 }
 
 export const AuthProvider = ({ children }: Props) => {
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(() =>
+    typeof window !== 'undefined' ? localStorage.getItem('token') : null
+  );
 
-  // تحقق من التوكن عند التحميل الأولي
+  // مزامنة التوكن مع خدمة الـAPI
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    if (storedToken) {
-      setToken(storedToken);
-      setAuthToken(storedToken);
-    }
-    setIsLoading(false);
-  }, []);
+    setAuthToken(token);
+  }, [token]);
 
+  // تسجيل الدخول واستلام التوكن من الخادم
   const login = async (username: string, password: string) => {
-    // Align with backend route `/v1/login` instead of the previous `/auth/login`
-    const response = await api.post<{ token: string }>('/v1/login', {
+    const response = await api.post<{ token: string }>('/auth/login', {
       username,
       password,
     });
     const newToken = response.data.token;
     setToken(newToken);
-    setAuthToken(newToken);
-    localStorage.setItem('token', newToken);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', newToken);
+    }
   };
 
+  // تسجيل الخروج وتنظيف التخزين المحلي
   const logout = () => {
     setToken(null);
-    localStorage.removeItem('token');
-    setAuthToken(null);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+    }
   };
 
   return (
-    <AuthContext.Provider
-      value={{
-        token,
-        isAuthenticated: !!token,
-        isLoading,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext;
