@@ -23,9 +23,12 @@
     "confirm": "تأكيد",
     "yes": "نعم",
     "no": "لا",
- 
+
     "view": "عرض",
- 
+
+    "close": "إغلاق",
+
+    "all": "الكل",
     "no_data": "لا توجد بيانات"
   },
   "navigation": {
@@ -118,11 +121,21 @@
       "city": "مدينة",
       "village": "قرية"
     },
-    "status": {
+    "dashboard": {
+      "map_view": "الخريطة",
+      "list_view": "القائمة",
+      "search_placeholder": "ابحث عن منطقة...",
+      "status_filter": "الحالة",
+      "no_areas": "لا توجد مناطق مطابقة للمرشحات.",
+      "voters": "الناخبون",
+      "volunteers": "المتطوعون",
+      "committees": "اللجان",
+      "legend": "دليل"
+    },
+    "statuses": {
       "covered": "مغطاة",
-      "pending": "قيد المعالجة",
-      "high_priority": "أولوية عالية",
-      "uncovered": "غير مغطاة"
+      "uncovered": "غير مغطاة",
+      "high_priority": "أولوية قصوى"
     }
   },
   "committees": {
