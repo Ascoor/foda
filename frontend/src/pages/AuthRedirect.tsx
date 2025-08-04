@@ -5,7 +5,7 @@ import LandingPage from './Landing';
 import { Dashboard } from '@/modules/dashboard/Dashboard';
 
 export const AuthRedirect = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { token } = useAuth();
   const [clientReady, setClientReady] = useState(false);
 
   // ننتظر حتى تتأكد الـ AuthProvider من وجود التوكن (من localStorage)
@@ -13,7 +13,7 @@ export const AuthRedirect = () => {
     setClientReady(true);
   }, []);
 
-  if (!clientReady || isLoading) return null; // أو spinner
+  if (!clientReady) return null; // أو spinner
 
-  return isAuthenticated ? <Dashboard /> : <LandingPage />;
+  return token ? <Dashboard /> : <LandingPage />;
 };
