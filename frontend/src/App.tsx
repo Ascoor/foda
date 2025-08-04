@@ -33,6 +33,7 @@ import { CampaignsList } from "@/modules/campaigns/CampaignsList";
 
  
 import "@/i18n";
+import { AuthRedirect } from "./pages/AuthRedirect";
 
 const queryClient = new QueryClient();
 
@@ -46,11 +47,16 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
-
+                <Route
+  path="/"
+  element={
+    <AuthRedirect />
+  }
+/>
                 <Route path="/login" element={<Login />} />
                 <Route element={<ProtectedRoute />}>
                   <Route element={<MainLayoutWrapper />}>
-     <Route path="/" element={<Dashboard />} />
+     <Route path="/dashboard" element={<Dashboard />} />
 
                     <Route path="/elections" element={<ElectionsList />} />
                     <Route path="/elections/:id" element={<ElectionDetails />} />

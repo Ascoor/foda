@@ -4,7 +4,7 @@ import api, { setAuthToken } from '@/lib/api';
 // واجهة بيانات المستخدم البسيطة
 interface AuthContextType {
   token: string | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -33,9 +33,9 @@ export const AuthProvider = ({ children }: Props) => {
   }, [token]);
 
   // تسجيل الدخول واستلام التوكن من الخادم
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     const response = await api.post<{ token: string }>('/login', {
-      username,
+      email,
       password,
     });
     const newToken = response.data.token;

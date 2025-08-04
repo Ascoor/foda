@@ -11,14 +11,14 @@ export const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await login(username, password);
+      await login(email, password);
       navigate('/');
     } catch (err) {
       setError(t('auth.login_error'));
@@ -33,13 +33,13 @@ export const Login = () => {
         </h1>
         {error && <p className="text-destructive text-sm">{error}</p>}
         <div>
-          <label className="block mb-1" htmlFor="username">
-            {t('auth.username')}
+          <label className="block mb-1" htmlFor="email">
+            {t('auth.email')}
           </label>
           <Input
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div>

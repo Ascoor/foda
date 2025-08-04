@@ -13,20 +13,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import Login from "./Login";
 
 export default function LandingPage() {
-  const { t } = useTranslation();
-  const { login } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const { t } = useTranslation(); 
   const [error, setError] = useState<string | null>(null);
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await login(username, password);
-    } catch {
-      setError(t("auth.login_error"));
-    }
-  };
+ 
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0c1023] via-[#101735] to-[#162048] text-white flex flex-col">
@@ -39,7 +29,6 @@ export default function LandingPage() {
           </h1>
           <p className="mt-4 text-lg text-gray-200 max-w-xl mx-auto">
             إدارة  حملتك من مكان واحد 
-            <br />
             الجغرافيا، الناخبين، المرشحين، المتطوعين، التحليلات، وأكثر.
           </p>
           
@@ -62,7 +51,7 @@ export default function LandingPage() {
                 <DialogTitle>{t("auth.login")}</DialogTitle>
               </DialogHeader>
               {error && <p className="text-destructive text-sm">{error}</p>}
-               <Login />
+              <Login />
             </DialogContent>
           </Dialog>
         </div>
