@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -9,14 +7,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useAuth } from "@/contexts/AuthContext";
-import Login from "./Login";
+import { LoginForm } from "@/components/auth/LoginForm";
 
 export default function LandingPage() {
-  const { t } = useTranslation(); 
-  const [error, setError] = useState<string | null>(null);
-
- 
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0c1023] via-[#101735] to-[#162048] text-white flex flex-col">
@@ -28,10 +22,10 @@ export default function LandingPage() {
             منصة إدارة الحملات الانتخابية
           </h1>
           <p className="mt-4 text-lg text-gray-200 max-w-xl mx-auto">
-            إدارة  حملتك من مكان واحد 
+            إدارة  حملتك من مكان واحد
             الجغرافيا، الناخبين، المرشحين، المتطوعين، التحليلات، وأكثر.
           </p>
-          
+
         </div>
       </header>
 
@@ -50,8 +44,7 @@ export default function LandingPage() {
               <DialogHeader>
                 <DialogTitle>{t("auth.login")}</DialogTitle>
               </DialogHeader>
-              {error && <p className="text-destructive text-sm">{error}</p>}
-              <Login />
+              <LoginForm />
             </DialogContent>
           </Dialog>
         </div>
