@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   // تسجيل الدخول واستلام التوكن من الخادم
   const login = async (username: string, password: string) => {
-    const response = await api.post<{ token: string }>('/auth/login', {
+    const response = await api.post<{ token: string }>('/login', {
       username,
       password,
     });

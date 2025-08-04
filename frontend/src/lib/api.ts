@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { useState, useCallback } from 'react';
 
 // token يتم حقنه من سياق المصادقة بدلاً من التخزين المحلي
@@ -9,13 +9,14 @@ export const setAuthToken = (token: string | null) => {
 };
 
 const api: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000',
+  baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/v1',
 });
 
 api.interceptors.request.use((config) => {
   const token = authToken ||
     (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
-  if (token && config.headers) {
+  if (token) {
+    config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
@@ -86,3 +87,4 @@ export function useApi<T = any>(
 }
 
 export default api;
+  

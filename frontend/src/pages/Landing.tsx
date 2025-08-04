@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
+import Login from "./Login";
 
 export default function LandingPage() {
   const { t } = useTranslation();
@@ -30,14 +31,16 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0c1023] via-[#101735] to-[#162048] text-white flex flex-col">
       {/* Cover Section */}
-      <header className="relative h-[90vh] flex items-center justify-center bg-[url('/img/landing.png')] bg-cover bg-center shadow-xl">
+      <header className="relative h-[90vh] flex items-center justify-center bg-[url('/img/landing.webp')] bg-cover bg-center shadow-xl">
         <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div className="relative z-10 text-center max-w-4xl px-4 animate-fade-in-up">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight drop-shadow-md">
-            منصة متكاملة لإدارة الحملات الانتخابية
+            منصة إدارة الحملات الانتخابية
           </h1>
           <p className="mt-4 text-lg text-gray-200 max-w-xl mx-auto">
-            قم بإدارة جميع جوانب حملتك من مكان واحد: الجغرافيا، الناخبين، المرشحين، المتطوعين، التحليلات، وأكثر.
+            إدارة  حملتك من مكان واحد 
+            <br />
+            الجغرافيا، الناخبين، المرشحين، المتطوعين، التحليلات، وأكثر.
           </p>
           
         </div>
@@ -59,32 +62,7 @@ export default function LandingPage() {
                 <DialogTitle>{t("auth.login")}</DialogTitle>
               </DialogHeader>
               {error && <p className="text-destructive text-sm">{error}</p>}
-              <form onSubmit={onSubmit} className="space-y-4">
-                <div>
-                  <label className="block mb-1" htmlFor="username">
-                    {t("auth.username")}
-                  </label>
-                  <Input
-                    id="username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="block mb-1" htmlFor="password">
-                    {t("auth.password")}
-                  </label>
-                  <Input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <Button type="submit" className="w-full bg-gradient-primary text-white">
-                  {t("auth.login")}
-                </Button>
-              </form>
+               <Login />
             </DialogContent>
           </Dialog>
         </div>
