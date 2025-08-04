@@ -23,9 +23,12 @@
     "confirm": "تأكيد",
     "yes": "نعم",
     "no": "لا",
- 
+
     "view": "عرض",
- 
+
+    "close": "Close",
+
+    "all": "All",
     "no_data": "لا توجد بيانات"
   },
   "navigation": {
@@ -99,6 +102,22 @@
       "district": "مركز",
       "city": "مدينة",
       "village": "قرية"
+    },
+    "dashboard": {
+      "map_view": "Map",
+      "list_view": "List",
+      "search_placeholder": "Search districts...",
+      "status_filter": "Status",
+      "no_areas": "No districts match your filters.",
+      "voters": "Voters",
+      "volunteers": "Volunteers",
+      "committees": "Committees",
+      "legend": "Legend"
+    },
+    "statuses": {
+      "covered": "Covered",
+      "uncovered": "Uncovered",
+      "high_priority": "High Priority"
     }
   },
   "committees": {
