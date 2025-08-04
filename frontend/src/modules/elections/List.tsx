@@ -47,9 +47,9 @@ export const ElectionsList = () => {
         page,
         per_page: 10,
         search,
-        status: statusFilter || undefined,
+        status: (statusFilter as "draft" | "active" | "completed" | "cancelled") || undefined,
       }),
-    keepPreviousData: true,
+    placeholderData: (prevData) => prevData,
   });
 
   const elections = safeArray(data.data);

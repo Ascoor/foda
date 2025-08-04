@@ -225,7 +225,18 @@
     "title": "التحليلات",
     "kpi": "مؤشرات الأداء",
     "heatmap": "خريطة حرارية",
-    "funnel": "قمع التحويل"
+    "funnel": "قمع التحويل",
+    "voter_turnout": "نسبة الإقبال",
+    "candidate_distribution": "توزيع المرشحين",
+    "weekly_activity": "النشاط الأسبوعي",
+    "export_report": "تصدير التقرير",
+    "last_updated": "آخر تحديث",
+    "total_voters": "إجمالي الناخبين",
+    "active_candidates": "المرشحون النشطون",
+    "observations_count": "المراقبات",
+    "committees_count": "اللجان",
+    "coming_soon": "قريباً",
+    "data_will_appear": "ستظهر البيانات الحقيقية هنا عند الربط بالخادم"
   },
   "auth": {
     "login": "تسجيل الدخول",

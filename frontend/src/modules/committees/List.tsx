@@ -48,7 +48,7 @@ export const CommitteesList = () => {
         search,
         geo_area_id: areaFilter || undefined,
       }),
-    keepPreviousData: true,
+    placeholderData: (prevData) => prevData,
   });
 
   const committees: Committee[] = data?.data || [];

@@ -34,10 +34,10 @@ export const CandidatesList = () => {
         page,
         per_page: 10,
         search,
-        type: typeFilter || undefined,
-        status: statusFilter || undefined,
+        type: (typeFilter as "list" | "individual") || undefined,
+        status: (statusFilter as "active" | "withdrawn") || undefined,
       }),
-    keepPreviousData: true,
+    placeholderData: (prevData) => prevData,
   });
 
   const candidates: Candidate[] = data?.data || [];

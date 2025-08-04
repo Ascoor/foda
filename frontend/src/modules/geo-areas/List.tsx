@@ -29,6 +29,9 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { GeoArea } from './types';
 import { fetchGeoAreas } from './api';
 import { GeoAreaForm } from './Form';
+function safeArray(arr: any): GeoArea[] {
+  return Array.isArray(arr) ? arr : [];
+}
 
 const typeIcons = {
   governorate: Building,
@@ -51,11 +54,14 @@ export const GeoAreasList = () => {
   const [geoAreas, setGeoAreas] = useState<GeoArea[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+    const [isError, setIsError] = useState(false);
   const [selectedArea, setSelectedArea] = useState<GeoArea | null>(null);
 
-  useEffect(() => {
+useEffect(() => {
     loadGeoAreas();
+ 
   }, []);
+
 
   const loadGeoAreas = async () => {
     try {
@@ -68,10 +74,10 @@ export const GeoAreasList = () => {
       setIsLoading(false);
     }
   };
-
-  const filteredAreas = geoAreas.filter(area =>
-    area.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (area.parent_name && area.parent_name.toLowerCase().includes(searchTerm.toLowerCase()))
+  const safeGeoAreas = safeArray(geoAreas);
+  const filteredAreas = safeGeoAreas.filter(area =>
+    (area.name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+    (area.parent_name?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false)
   );
 
   const handleAddArea = () => {
@@ -93,6 +99,22 @@ export const GeoAreasList = () => {
     handleCloseForm();
     loadGeoAreas(); // Reload data
   };
+ // حالات التحميل والخطأ وعدم وجود بيانات
+  if (isLoading) {
+    return <DataTableSkeleton rows={5} columns={6} />;
+  }
+  if (isError) {
+    return (
+      <div className="glass-card p-8 flex flex-col items-center gap-4">
+        <div className="text-destructive text-lg font-bold">
+          {t('common.error_loading_data') || "Error loading data"}
+        </div>
+        <Button onClick={loadGeoAreas} className="glass-button bg-gradient-primary text-white">
+          {t('common.retry') || "Retry"}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -123,7 +145,7 @@ export const GeoAreasList = () => {
       </motion.div>
 
       {/* Filters */}
-      <motion.div
+       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
@@ -139,7 +161,6 @@ export const GeoAreasList = () => {
               className={`glass border-white/20 ${direction === 'rtl' ? 'pr-10' : 'pl-10'}`}
             />
           </div>
-          
           <Button variant="outline" className="glass-button">
             <Filter className="h-4 w-4 mr-2" />
             {t('common.filter')}
@@ -147,7 +168,7 @@ export const GeoAreasList = () => {
         </div>
       </motion.div>
 
-      {/* Areas Table */}
+      {/* Table */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -180,18 +201,12 @@ export const GeoAreasList = () => {
             </thead>
             <tbody>
               <AnimatePresence>
-                {isLoading ? (
-                  <tr>
-                    <td colSpan={6} className="p-6">
-                      <DataTableSkeleton rows={5} columns={6} />
-                    </td>
-                  </tr>
-                ) : filteredAreas.length === 0 ? (
+                {filteredAreas.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="p-6">
                       <EmptyState
-                        title="No geographic areas found"
-                        description="Get started by creating your first geographic area"
+                        title={t('geo_areas.no_data') || "No geographic areas found"}
+                        description={t('geo_areas.create_first') || "Get started by creating your first geographic area"}
                         icon={<MapPin className="h-8 w-8 text-muted-foreground" />}
                         action={
                           <Button 
@@ -208,7 +223,6 @@ export const GeoAreasList = () => {
                 ) : (
                   filteredAreas.map((area, index) => {
                     const TypeIcon = typeIcons[area.type];
-                    
                     return (
                       <motion.tr
                         key={area.id}
@@ -226,17 +240,16 @@ export const GeoAreasList = () => {
                             </div>
                             <div>
                               <div className="font-medium text-foreground group-hover:text-primary transition-colors">
-                                {area.name}
+                                {area.name || "—"}
                               </div>
                               {area.children_count && area.children_count > 0 && (
                                 <div className="text-xs text-muted-foreground">
-                                  {area.children_count} sub-areas
+                                  {area.children_count} {t('geo_areas.sub_areas')}
                                 </div>
                               )}
                             </div>
                           </div>
                         </td>
-
                         {/* Type */}
                         <td className="px-6 py-4">
                           <StatusBadge 
@@ -244,7 +257,6 @@ export const GeoAreasList = () => {
                             className={typeColors[area.type]}
                           />
                         </td>
-
                         {/* Parent */}
                         <td className="px-6 py-4">
                           {area.parent_name ? (
@@ -257,27 +269,24 @@ export const GeoAreasList = () => {
                             </Badge>
                           )}
                         </td>
-
                         {/* Voters */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <Users className="h-4 w-4 text-primary" />
                             <span className="font-medium">
-                              {area.total_voters.toLocaleString()}
+                              {typeof area.total_voters === 'number' ? area.total_voters.toLocaleString() : 0}
                             </span>
                           </div>
                         </td>
-
                         {/* Committees */}
                         <td className="px-6 py-4">
                           <div className="flex items-center gap-2">
                             <Building className="h-4 w-4 text-secondary" />
                             <span className="font-medium">
-                              {area.total_committees}
+                              {typeof area.total_committees === 'number' ? area.total_committees : 0}
                             </span>
                           </div>
                         </td>
-
                         {/* Actions */}
                         <td className="px-6 py-4">
                           <DropdownMenu>
@@ -292,7 +301,7 @@ export const GeoAreasList = () => {
                             >
                               <DropdownMenuItem>
                                 <Eye className="h-4 w-4 mr-2" />
-                                View Details
+                                {t('common.view')}
                               </DropdownMenuItem>
                               <DropdownMenuItem onClick={() => handleEditArea(area)}>
                                 <Edit className="h-4 w-4 mr-2" />
@@ -321,7 +330,7 @@ export const GeoAreasList = () => {
         onClose={handleCloseForm}
         onSuccess={handleFormSuccess}
         area={selectedArea}
-        parentAreas={geoAreas.filter(area => area.type !== 'village')}
+        parentAreas={safeGeoAreas.filter(area => area.type !== 'village')}
       />
     </div>
   );

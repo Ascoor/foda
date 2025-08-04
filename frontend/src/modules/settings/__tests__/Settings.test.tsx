@@ -48,7 +48,7 @@ test('saves updated settings', async () => {
 });
 
 test('shows error when save fails', async () => {
-  updateSettings.mockRejectedValueOnce(new Error('fail'));
+  vi.mocked(updateSettings).mockRejectedValueOnce(new Error('fail'));
   renderWithClient(<Settings />);
   await screen.findByLabelText('Language');
   fireEvent.click(screen.getByRole('button', { name: /save/i }));

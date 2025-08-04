@@ -1,7 +1,12 @@
-import { Dashboard } from '@/modules/dashboard/Dashboard';
+import { ProfessionalLayout } from '@/components/ProfessionalLayout';
+import { EnhancedDashboard } from '@/components/dashboard/EnhancedDashboard';
 
 const Index = () => {
-  return <Dashboard />;
+  return (
+    <ProfessionalLayout>
+      <EnhancedDashboard />
+    </ProfessionalLayout>
+  );
 };
 
 export default Index;

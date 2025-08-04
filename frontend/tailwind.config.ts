@@ -27,6 +27,11 @@ export default {
 					secondary: 'hsl(var(--background-secondary))'
 				},
 				foreground: 'hsl(var(--foreground))',
+				surface: {
+					DEFAULT: 'hsl(var(--surface))',
+					secondary: 'hsl(var(--surface-secondary))',
+					accent: 'hsl(var(--surface-accent))'
+				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
@@ -77,6 +82,14 @@ export default {
 			},
 			backdropBlur: {
 				'glass': 'var(--glass-backdrop)'
+			},
+			fontFamily: {
+				'inter': ['Inter', 'system-ui', 'sans-serif'],
+				'poppins': ['Poppins', 'system-ui', 'sans-serif'],
+				'dm-sans': ['DM Sans', 'system-ui', 'sans-serif'],
+				'cairo': ['Cairo', 'system-ui', 'sans-serif'],
+				'tajawal': ['Tajawal', 'system-ui', 'sans-serif'],
+				'noto-kufi': ['Noto Kufi Arabic', 'system-ui', 'sans-serif'],
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',

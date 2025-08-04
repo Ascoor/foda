@@ -24,6 +24,7 @@ test('renders voters list', async () => {
         id: '1',
         full_name: 'Voter A',
         national_id: '123',
+        birth_date: '1990-01-01',
         gender: 'male',
         mobile: '0100',
       },

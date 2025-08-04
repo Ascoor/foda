@@ -40,9 +40,9 @@ export const VotersList = () => {
         page,
         per_page: 10,
         search,
-        gender: genderFilter || undefined,
+        gender: (genderFilter as "male" | "female") || undefined,
       }),
-    keepPreviousData: true,
+    placeholderData: (prevData) => prevData,
   });
 
   const voters = safeArray(data.data);

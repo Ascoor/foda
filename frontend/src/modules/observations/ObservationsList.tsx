@@ -2,17 +2,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Eye, Edit, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DataTableSkeleton, EmptyState } from '@/components/ui/DataTableSkeleton';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Observation, ObservationFilters } from './types';
 import { fetchObservations, deleteObservation, mockCommittees } from './api';
 import { ObservationForm } from './ObservationForm';
 import { ObservationDetails } from './ObservationDetails';
 
+function safeArray<T = any>(arr: any): T[] {
+  return Array.isArray(arr) ? arr : [];
+}
 export const ObservationsList = () => {
   const { t } = useTranslation();
   const [items, setItems] = useState<Observation[]>([]);
   const [filters, setFilters] = useState<ObservationFilters>({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const [selected, setSelected] = useState<Observation | null>(null);
@@ -25,12 +30,30 @@ export const ObservationsList = () => {
   }, [filters]);
 
   useEffect(() => { load(); }, [load]);
-
+ 
   const handleAdd = () => { setSelected(null); setShowForm(true); };
   const handleEdit = (o: Observation) => { setSelected(o); setShowForm(true); };
   const handleView = (o: Observation) => { setSelected(o); setShowDetails(true); };
 
-  const filtered = items; // filtering handled in API
+  // حماية من undefined/null
+  const filtered = safeArray(items);
+
+  // --- حالات التحميل، الخطأ، لا توجد بيانات ---
+  if (isLoading) {
+    return <DataTableSkeleton rows={5} columns={5} />;
+  }
+  if (isError) {
+    return (
+      <div className="glass-card p-8 flex flex-col items-center gap-4">
+        <div className="text-destructive text-lg font-bold">
+          {t('common.error_loading_data') || "Error loading data"}
+        </div>
+        <Button onClick={load} className="glass-button bg-gradient-primary text-white">
+          {t('common.retry') || "Retry"}
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -57,7 +80,7 @@ export const ObservationsList = () => {
             <SelectValue placeholder={t('observations.committee')} />
           </SelectTrigger>
           <SelectContent>
-            {mockCommittees.map((c) => (
+            {safeArray(mockCommittees).map((c) => (
               <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
             ))}
           </SelectContent>
@@ -76,31 +99,35 @@ export const ObservationsList = () => {
             </tr>
           </thead>
           <tbody>
-            {filtered.map((o) => (
-              <tr key={o.id} className="border-t border-white/10">
-                <td className="px-4 py-2">{o.observer}</td>
-                <td className="px-4 py-2">{t(`observations.types.${o.type}`)}</td>
-                <td className="px-4 py-2">{o.committee_name || '-'}</td>
-                <td className="px-4 py-2">{new Date(o.timestamp).toLocaleString()}</td>
-                <td className="px-4 py-2 space-x-2">
-                  <Button size="sm" variant="ghost" onClick={() => handleView(o)}>
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                  <Button size="sm" variant="ghost" onClick={() => handleEdit(o)}>
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button size="sm" variant="ghost" className="text-destructive" onClick={() => deleteObservation(o.id)}>
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-            {!isLoading && filtered.length === 0 && (
+            {filtered.length === 0 ? (
               <tr>
                 <td colSpan={5} className="text-center py-4 text-muted-foreground">
-                  {t('common.no_data')}
+                  <EmptyState
+                    title={t('common.no_data')}
+                    description={t('observations.no_observations') || ""}
+                  />
                 </td>
               </tr>
+            ) : (
+              filtered.map((o) => (
+                <tr key={o.id} className="border-t border-white/10">
+                  <td className="px-4 py-2">{o.observer || '-'}</td>
+                  <td className="px-4 py-2">{t(`observations.types.${o.type}`)}</td>
+                  <td className="px-4 py-2">{o.committee_name || '-'}</td>
+                  <td className="px-4 py-2">{o.timestamp ? new Date(o.timestamp).toLocaleString() : '-'}</td>
+                  <td className="px-4 py-2 space-x-2">
+                    <Button size="sm" variant="ghost" onClick={() => handleView(o)}>
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" onClick={() => handleEdit(o)}>
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-destructive" onClick={() => deleteObservation(o.id)}>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </td>
+                </tr>
+              ))
             )}
           </tbody>
         </table>

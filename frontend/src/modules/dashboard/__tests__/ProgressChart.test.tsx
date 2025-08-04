@@ -4,7 +4,7 @@ import { LanguageProvider } from '@/contexts/LanguageContext';
 
 test('renders progress chart', () => {
   const data = [
-    { label: 'dashboard.registration', value: 50, color: 'primary' },
+    { label: 'dashboard.registration', value: 50, color: 'primary' as const },
   ];
   render(
     <LanguageProvider>

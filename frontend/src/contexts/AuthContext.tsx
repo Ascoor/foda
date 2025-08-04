@@ -1,9 +1,10 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import api, { setAuthToken } from '@/lib/api';
 
-// واجهة بيانات المستخدم البسيطة
 interface AuthContextType {
   token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
   login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -23,16 +24,19 @@ interface Props {
 }
 
 export const AuthProvider = ({ children }: Props) => {
-  const [token, setToken] = useState<string | null>(() =>
-    typeof window !== 'undefined' ? localStorage.getItem('token') : null
-  );
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // مزامنة التوكن مع خدمة الـAPI
+  // تحقق من التوكن عند التحميل الأولي
   useEffect(() => {
-    setAuthToken(token);
-  }, [token]);
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setToken(storedToken);
+      setAuthToken(storedToken);
+    }
+    setIsLoading(false);
+  }, []);
 
-  // تسجيل الدخول واستلام التوكن من الخادم
   const login = async (username: string, password: string) => {
     const response = await api.post<{ token: string }>('/auth/login', {
       username,
@@ -40,24 +44,27 @@ export const AuthProvider = ({ children }: Props) => {
     });
     const newToken = response.data.token;
     setToken(newToken);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('token', newToken);
-    }
+    setAuthToken(newToken);
+    localStorage.setItem('token', newToken);
   };
 
-  // تسجيل الخروج وتنظيف التخزين المحلي
   const logout = () => {
     setToken(null);
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('token');
-    }
+    localStorage.removeItem('token');
+    setAuthToken(null);
   };
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        token,
+        isAuthenticated: !!token,
+        isLoading,
+        login,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
-
-export default AuthContext;

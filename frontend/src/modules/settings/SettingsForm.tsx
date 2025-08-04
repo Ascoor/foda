@@ -105,14 +105,14 @@ export const SettingsForm = () => {
       </div>
 
       <div className="flex gap-2">
-        <Button type="submit" disabled={mutation.isLoading}>
+        <Button type="submit" disabled={mutation.isPending}>
           {t('common.save')}
         </Button>
         <Button
           type="button"
           variant="outline"
           onClick={handleReset}
-          disabled={mutation.isLoading}
+          disabled={mutation.isPending}
         >
           {t('common.reset')}
         </Button>
