@@ -38,7 +38,8 @@ export const AuthProvider = ({ children }: Props) => {
   }, []);
 
   const login = async (username: string, password: string) => {
-    const response = await api.post<{ token: string }>('/auth/login', {
+    // Align with backend route `/v1/login` instead of the previous `/auth/login`
+    const response = await api.post<{ token: string }>('/v1/login', {
       username,
       password,
     });
