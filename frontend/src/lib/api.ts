@@ -9,7 +9,7 @@ export const setAuthToken = (token: string | null) => {
 };
 
 const api: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000',
 });
 
 api.interceptors.request.use((config) => {

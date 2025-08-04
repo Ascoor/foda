@@ -1,6 +1,32 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function LandingPage() {
+  const { t } = useTranslation();
+  const { login } = useAuth();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await login(username, password);
+    } catch {
+      setError(t("auth.login_error"));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0c1023] via-[#101735] to-[#162048] text-white flex flex-col">
       {/* Cover Section */}
@@ -22,12 +48,45 @@ export default function LandingPage() {
         <div className="max-w-3xl mx-auto bg-white text-black rounded-2xl shadow-xl p-6 md:p-10 text-center border-t-4 border-primary">
           <h3 className="text-xl md:text-2xl font-bold mb-2">هل لديك حساب بالفعل؟</h3>
           <p className="mb-4 text-sm text-muted-foreground">قم بتسجيل الدخول لمتابعة حملتك الانتخابية بكل احترافية</p>
-          <Link
-            to="/login"
-            className="inline-block bg-blue-800 text-white font-semibold px-6 py-2 rounded-lg shadow hover:bg-blue-900 transition"
-          >
-            تسجيل الدخول الآن
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button className="bg-blue-800 hover:bg-blue-900">
+                تسجيل الدخول الآن
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t("auth.login")}</DialogTitle>
+              </DialogHeader>
+              {error && <p className="text-destructive text-sm">{error}</p>}
+              <form onSubmit={onSubmit} className="space-y-4">
+                <div>
+                  <label className="block mb-1" htmlFor="username">
+                    {t("auth.username")}
+                  </label>
+                  <Input
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block mb-1" htmlFor="password">
+                    {t("auth.password")}
+                  </label>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <Button type="submit" className="w-full bg-gradient-primary text-white">
+                  {t("auth.login")}
+                </Button>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
       </section>
 
