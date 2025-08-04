@@ -94,11 +94,35 @@
     "area_type": "نوع المنطقة",
     "total_voters": "إجمالي الناخبين",
     "total_committees": "إجمالي اللجان",
+    "map_view": "عرض الخريطة",
+    "list_view": "عرض القائمة",
+    "search_areas": "البحث في المناطق...",
+    "filter_by_status": "تصفية حسب الحالة",
+    "campaign_coverage": "تغطية الحملة",
+    "active_volunteers": "المتطوعون النشطون",
+    "registered_voters": "الناخبون المسجلون",
+    "coverage_percentage": "نسبة التغطية",
+    "area_details": "تفاصيل المنطقة",
+    "campaign_status": "حالة الحملة",
+    "view_on_map": "عرض على الخريطة",
+    "zoom_to_area": "تكبير المنطقة",
+    "export_data": "تصدير البيانات",
+    "areas": "مناطق",
+    "sub_areas": "مناطق فرعية",
+    "no_data": "لا توجد مناطق جغرافية",
+    "create_first": "ابدأ بإنشاء أول منطقة جغرافية",
+    "map_visualization": "الخريطة التفاعلية",
     "types": {
       "governorate": "محافظة",
       "district": "مركز",
       "city": "مدينة",
       "village": "قرية"
+    },
+    "status": {
+      "covered": "مغطاة",
+      "pending": "قيد المعالجة",
+      "high_priority": "أولوية عالية",
+      "uncovered": "غير مغطاة"
     }
   },
   "committees": {

@@ -9,6 +9,7 @@ interface LanguageContextType {
   direction: Direction;
   toggleLanguage: () => void;
   setLanguage: (lang: Language) => void;
+  t: (key: string, options?: any) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -26,7 +27,7 @@ interface LanguageProviderProps {
 }
 
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [language, setLanguageState] = useState<Language>(() => {
     const stored = localStorage.getItem('language');
     return (stored as Language) || 'ar';
@@ -55,7 +56,8 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
       language, 
       direction, 
       toggleLanguage, 
-      setLanguage 
+      setLanguage,
+      t
     }}>
       {children}
     </LanguageContext.Provider>
