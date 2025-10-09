@@ -10,9 +10,15 @@ interface ProfessionalLayoutProps {
 
 export const ProfessionalLayout = ({ children }: ProfessionalLayoutProps) => {
   const { direction } = useLanguage();
+  const isRTL = direction === 'rtl';
 
   return (
-    <div className={`min-h-screen flex w-full ${direction === 'rtl' ? 'rtl' : 'ltr'}`} dir={direction}>
+    <div
+      className={`min-h-screen flex w-full ${
+        isRTL ? 'rtl flex-row-reverse' : 'ltr flex-row'
+      }`}
+      dir={direction}
+    >
       {/* Enhanced Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-surface via-background to-surface-secondary" />
