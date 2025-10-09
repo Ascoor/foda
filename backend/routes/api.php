@@ -80,7 +80,7 @@ Route::prefix('v1')->group(function () {
         Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
     });
-    Route::prefix('ec')->group(function () {
+    Route::middleware('auth:sanctum')->prefix('ec')->group(function () {
         Route::apiResource('elections', ECElectionController::class);
         Route::apiResource('geo-areas', ECGeoAreaController::class);
         Route::apiResource('committees', ECCommitteeController::class);
