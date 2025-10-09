@@ -141,6 +141,7 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
           x: isMobile ? (isMobileOpen ? 0 : isRTL ? 256 : -256) : 0
         }}
         transition={{ type: "spring", damping: 20, stiffness: 100 }}
+        dir={direction}
         className={cn(
           'glass-card rounded-none border-y-0 flex flex-col h-screen z-40',
           mobileClasses,
@@ -155,7 +156,10 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                 initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-                className="flex items-center gap-3"
+                className={cn(
+                  'flex items-center gap-3',
+                  isRTL && 'flex-row-reverse text-right'
+                )}
               >
                 <div className="w-8 h-8 bg-gradient-primary rounded-xl flex items-center justify-center shadow-glow">
                   <LayoutDashboard className="h-5 w-5 text-white" />
@@ -197,10 +201,11 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                   <div
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative cursor-pointer",
-                      active 
-                        ? 'bg-gradient-primary text-white shadow-glow' 
+                      active
+                        ? 'bg-gradient-primary text-white shadow-glow'
                         : 'hover:bg-white/10 text-foreground hover:text-primary',
-                      isCollapsed ? 'justify-center' : ''
+                      isCollapsed ? 'justify-center' : '',
+                      !isCollapsed && direction === 'rtl' ? 'flex-row-reverse text-right' : 'text-left'
                     )}
                     onClick={() => {
                       if (hasChildren && !isCollapsed) {
@@ -209,20 +214,35 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                     }}
                   >
                     {hasChildren && !isCollapsed ? (
-                      <div className="flex items-center gap-3 w-full">
+                      <div
+                        className={cn(
+                          'flex w-full items-center gap-3',
+                          direction === 'rtl' && 'flex-row-reverse text-right'
+                        )}
+                      >
                         <Icon className={cn("h-5 w-5", active && "animate-glow-pulse")} />
-                        <span className="font-medium flex-1">{t(`navigation.${item.key}`)}</span>
-                        <ChevronDown 
+                        <span
+                          className={cn(
+                            'font-medium flex-1',
+                            direction === 'rtl' && 'text-right'
+                          )}
+                        >
+                          {t(`navigation.${item.key}`)}
+                        </span>
+                        <ChevronDown
                           className={cn(
                             "h-4 w-4 transition-transform duration-200",
                             isExpanded && "rotate-180"
-                          )} 
+                          )}
                         />
                       </div>
                     ) : (
                       <NavLink
                         to={item.path}
-                        className="flex items-center gap-3 w-full"
+                        className={cn(
+                          'flex w-full items-center gap-3',
+                          direction === 'rtl' && 'flex-row-reverse text-right'
+                        )}
                         onClick={() => isMobile && setIsMobileOpen(false)}
                       >
                         <div className="relative">
@@ -234,7 +254,9 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                           )}
                         </div>
                         {!isCollapsed && (
-                          <span className="font-medium">{t(`navigation.${item.key}`)}</span>
+                          <span className={cn('font-medium', direction === 'rtl' && 'text-right')}>
+                            {t(`navigation.${item.key}`)}
+                          </span>
                         )}
                       </NavLink>
                     )}
@@ -276,14 +298,17 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                                 to={child.path}
                                 className={cn(
                                   "flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
-                                  childActive 
-                                    ? 'bg-primary/20 text-primary' 
-                                    : 'hover:bg-white/5 text-muted-foreground hover:text-foreground'
+                                  childActive
+                                    ? 'bg-primary/20 text-primary'
+                                    : 'hover:bg-white/5 text-muted-foreground hover:text-foreground',
+                                  direction === 'rtl' && 'flex-row-reverse text-right'
                                 )}
                                 onClick={() => isMobile && setIsMobileOpen(false)}
                               >
                                 <ChildIcon className="h-4 w-4" />
-                                <span className="text-sm">{t(`navigation.${child.key}`)}</span>
+                                <span className={cn('text-sm', direction === 'rtl' && 'text-right')}>
+                                  {t(`navigation.${child.key}`)}
+                                </span>
                               </NavLink>
                             </li>
                           );
