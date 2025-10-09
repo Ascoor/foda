@@ -17,7 +17,8 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  Menu
+  Menu,
+  Cpu
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
@@ -41,6 +42,7 @@ const navigationItems: NavigationItem[] = [
   { key: 'volunteers', icon: Heart, path: '/volunteers', roles: ['Admin', 'FieldLead'] },
   { key: 'observations', icon: Eye, path: '/observations', roles: ['Admin', 'FieldLead', 'Agent'] },
   { key: 'campaigns', icon: Megaphone, path: '/campaigns', roles: ['Admin', 'FieldLead'] },
+  { key: 'automation', icon: Cpu, path: '/automation', roles: ['Admin'] },
   { key: 'analytics', icon: BarChart3, path: '/analytics', roles: ['Admin'] },
   { key: 'settings', icon: Settings, path: '/settings', roles: ['Admin'] },
 ];

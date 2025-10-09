@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+import { NotificationDrawer } from '@/components/notifications/NotificationDrawer';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface MainLayoutProps {
@@ -29,6 +30,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
           <Header />
+          <NotificationDrawer />
 
           {/* Page Content */}
           <main className="flex-1 overflow-auto custom-scrollbar">

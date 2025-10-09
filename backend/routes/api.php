@@ -11,9 +11,11 @@ use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\FinanceController;
 use App\Http\Controllers\Api\V1\ExpenseCategoryController;
 use App\Http\Controllers\Api\V1\HomeController;
+use App\Http\Controllers\Api\V1\AutomationController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SmsController;
+use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\MemberController;
@@ -59,6 +61,13 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('areas', AreaController::class);
         Route::get('analytics', AnalyticsController::class);
         Route::get('analytics/forecast', [AnalyticsController::class, 'forecast']);
+        Route::get('notifications', [NotificationController::class, 'index']);
+        Route::patch('notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
+        Route::post('notifications/read-all', [NotificationController::class, 'markAll']);
+
+        Route::get('automation/config', [AutomationController::class, 'index']);
+        Route::put('automation/config', [AutomationController::class, 'update']);
+        Route::post('automation/config/{task}/trigger', [AutomationController::class, 'trigger']);
         Route::get('committees/geo', CommitteeGeoController::class);
         Route::get('events/upcoming', [EventController::class, 'upcoming']);
         Route::apiResource('events', EventController::class);
