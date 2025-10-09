@@ -23,6 +23,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
+import { cn } from '@/lib/utils';
 
 interface NavigationItem {
   key: string;
@@ -69,13 +70,12 @@ export const Sidebar = () => {
       initial={{ x: direction === 'rtl' ? 100 : -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
-      className={`
-        glass-card rounded-none border-y-0
-        flex flex-col h-screen sticky top-0 z-50
-        transition-all duration-300 ease-in-out
-        ${isCollapsed ? 'w-16' : 'w-64'}
-        ${direction === 'rtl' ? 'border-l border-r-0' : 'border-r border-l-0'}
-      `}
+      dir={direction}
+      className={cn(
+        'glass-card rounded-none border-y-0 flex h-screen flex-col sticky top-0 z-50 transition-all duration-300 ease-in-out',
+        isCollapsed ? 'w-16' : 'w-64',
+        direction === 'rtl' ? 'border-l border-r-0' : 'border-r border-l-0'
+      )}
     >
       {/* Header */}
       <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
@@ -85,7 +85,10 @@ export const Sidebar = () => {
               initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-              className="flex items-center gap-3"
+              className={cn(
+                'flex items-center gap-3',
+                direction === 'rtl' && 'flex-row-reverse text-right'
+              )}
             >
               <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
                 <Vote className="h-5 w-5 text-white" />
@@ -133,15 +136,14 @@ export const Sidebar = () => {
               >
                 <NavLink
                   to={item.path}
-                  className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-lg
-                    transition-all duration-200 group relative
-                    ${active 
-                      ? 'bg-gradient-primary text-white shadow-glow' 
-                      : 'hover:bg-white/10 text-foreground hover:text-primary'
-                    }
-                    ${isCollapsed ? 'justify-center' : ''}
-                  `}
+                  className={cn(
+                    'group relative flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200',
+                    active
+                      ? 'bg-gradient-primary text-white shadow-glow'
+                      : 'text-foreground hover:bg-white/10 hover:text-primary',
+                    isCollapsed && 'justify-center',
+                    !isCollapsed && direction === 'rtl' && 'flex-row-reverse text-right'
+                  )}
                 >
                   <Icon className={`h-5 w-5 ${active ? 'animate-glow-pulse' : ''}`} />
                   
@@ -151,7 +153,7 @@ export const Sidebar = () => {
                         initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-                        className="font-medium"
+                        className={cn('font-medium', direction === 'rtl' && 'text-right')}
                       >
                         {t(`navigation.${item.key}`)}
                       </motion.span>
@@ -160,13 +162,12 @@ export const Sidebar = () => {
 
                   {/* Tooltip for collapsed state */}
                   {isCollapsed && (
-                    <div className={`
-                      absolute ${direction === 'rtl' ? 'right-full mr-2' : 'left-full ml-2'} 
-                      top-1/2 transform -translate-y-1/2
-                      bg-foreground text-background px-2 py-1 rounded text-sm
-                      opacity-0 group-hover:opacity-100 transition-opacity
-                      pointer-events-none whitespace-nowrap z-50
-                    `}>
+                    <div
+                      className={cn(
+                        'pointer-events-none absolute top-1/2 z-50 -translate-y-1/2 whitespace-nowrap rounded bg-foreground px-2 py-1 text-sm text-background opacity-0 transition-opacity group-hover:opacity-100',
+                        direction === 'rtl' ? 'right-full mr-2' : 'left-full ml-2'
+                      )}
+                    >
                       {t(`navigation.${item.key}`)}
                     </div>
                   )}
