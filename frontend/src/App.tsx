@@ -21,10 +21,10 @@ import { CandidatesList } from "@/modules/candidates/List";
 import { CandidateDetails } from "@/modules/candidates/Details";
 import { AgentsList } from "@/modules/agents/AgentsList";
 import { VolunteersList } from "@/modules/volunteers/VolunteersList";
+import { ZoneDashboard } from "@/modules/zones/ZoneDashboard";
 
 import { CommitteesList } from "@/modules/committees/List";
 import { CommitteeDetails } from "@/modules/committees/Details";
-import { Analytics } from "@/modules/analytics/Analytics";
 import { Settings } from "@/modules/settings/Settings";
 
 import { ObservationsList } from "@/modules/observations/ObservationsList";
@@ -77,6 +77,7 @@ const App = () => (
                     <Route path="/campaigns" element={<CampaignsList />} />
                     <Route path="/automation" element={<AutomationDashboard />} />
                     <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
+                    <Route path="/zones/mansoura" element={<ZoneDashboard />} />
                     <Route path="/settings" element={<Settings />} />
 
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
