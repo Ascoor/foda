@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useMemo, type CSSProperties } from 'react';
 import { motion } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
@@ -12,10 +12,20 @@ interface MainLayoutProps {
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const { direction } = useLanguage();
   const isRTL = direction === 'rtl';
+  const paddingStyle = useMemo(() => {
+    const property = isRTL ? 'paddingInlineEnd' : 'paddingInlineStart';
+    return {
+      [property]: 'var(--sidebar-width, 16rem)',
+      transition: 'padding-inline-start 0.3s ease, padding-inline-end 0.3s ease'
+    } as CSSProperties;
+  }, [isRTL]);
 
   return (
     <div className={`min-h-screen w-full ${isRTL ? 'rtl' : 'ltr'}`} dir={direction}>
-      <div className={`min-h-screen flex w-full ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+      <div
+        className={`min-h-screen flex w-full ${isRTL ? 'justify-end' : 'justify-start'}`}
+        style={paddingStyle}
+      >
         {/* Animated Background */}
         <div className="fixed inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
