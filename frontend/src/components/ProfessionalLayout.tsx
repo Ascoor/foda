@@ -41,11 +41,7 @@ export const ProfessionalLayout = ({ children }: ProfessionalLayoutProps) => {
       <SmartSidebar side={sidebarSide} />
 
       {/* Main Content Area */}
-      <div
-        className={`flex-1 flex flex-col overflow-hidden transition-[margin,transform] duration-300 ease-in-out ${
-          sidebarSide === 'right' ? 'order-1' : 'order-2'
-        }`}
-      >
+      <div className="flex-1 flex flex-col overflow-hidden transition-[margin,transform] duration-300 ease-in-out order-2">
         {/* Navbar */}
         <ProfessionalNavbar />
 
