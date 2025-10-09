@@ -58,6 +58,7 @@ Route::prefix('v1')->group(function () {
 
         Route::apiResource('areas', AreaController::class);
         Route::get('analytics', AnalyticsController::class);
+        Route::get('analytics/forecast', [AnalyticsController::class, 'forecast']);
         Route::get('committees/geo', CommitteeGeoController::class);
         Route::get('events/upcoming', [EventController::class, 'upcoming']);
         Route::apiResource('events', EventController::class);
