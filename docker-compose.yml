@@ -13,14 +13,21 @@ services:
       - db
     volumes:
       - ./backend:/var/www/html
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=foda
+      - DB_USERNAME=foda
+      - DB_PASSWORD=foda
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     environment:
-      - VITE_API_URL=http://localhost:8000/api/
+      - VITE_API_URL=http://localhost:8000/api/v1
     ports:
-      - '5173:5173'
+      - '8080:8080'
     depends_on:
       - app
     volumes:
@@ -28,10 +35,10 @@ services:
   db:
     image: mysql:8.0
     environment:
-      MYSQL_DATABASE: elections360
+      MYSQL_DATABASE: foda
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_USER: elections
-      MYSQL_PASSWORD: elections
+      MYSQL_USER: foda
+      MYSQL_PASSWORD: foda
     ports:
       - '3306:3306'
     volumes:
