@@ -59,6 +59,7 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
   const { t } = useTranslation();
   const location = useLocation();
   const { direction } = useLanguage();
+  const isRTL = direction === 'rtl';
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
@@ -102,8 +103,10 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
   };
 
   const sidebarWidth = isCollapsed ? 'w-16' : 'w-64';
-  const mobileClasses = isMobile 
-    ? 'fixed inset-y-0 z-50 transform transition-transform duration-300 ease-in-out'
+  const mobileClasses = isMobile
+    ? `fixed inset-y-0 z-50 transform transition-transform duration-300 ease-in-out ${
+        isRTL ? 'right-0' : 'left-0'
+      }`
     : 'relative';
 
   return (
@@ -114,7 +117,9 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 lg:hidden glass-button"
+          className={`fixed top-4 z-50 lg:hidden glass-button ${
+            isRTL ? 'right-4' : 'left-4'
+          }`}
         >
           {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
@@ -133,13 +138,13 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
         initial={false}
         animate={{
           width: isCollapsed ? 64 : 256,
-          x: isMobile ? (isMobileOpen ? 0 : -256) : 0
+          x: isMobile ? (isMobileOpen ? 0 : isRTL ? 256 : -256) : 0
         }}
         transition={{ type: "spring", damping: 20, stiffness: 100 }}
         className={cn(
-          "glass-card rounded-none border-y-0 border-l-0 flex flex-col h-screen z-40",
+          'glass-card rounded-none border-y-0 flex flex-col h-screen z-40',
           mobileClasses,
-          direction === 'rtl' ? 'border-r border-l-0' : 'border-r border-l-0'
+          isRTL ? 'border-l-0 border-r' : 'border-r border-l-0'
         )}
       >
         {/* Header */}
@@ -256,7 +261,10 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="ml-6 mt-2 space-y-1 overflow-hidden"
+                        className={cn(
+                          'mt-2 space-y-1 overflow-hidden',
+                          isRTL ? 'mr-6' : 'ml-6'
+                        )}
                       >
                         {item.children?.map((child) => {
                           const ChildIcon = child.icon;

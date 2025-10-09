@@ -15,7 +15,7 @@ class NotificationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'type' => strtolower($this->type),
+            'type' => filled($this->type) ? strtolower($this->type) : null,
             'category' => $this->category,
             'title' => $this->title,
             'message' => $this->message,
