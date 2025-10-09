@@ -79,18 +79,16 @@ Route::prefix('v1')->group(function () {
         Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
     });
-});
-
-
-Route::prefix('ec')->group(function () {
-    Route::apiResource('elections', ECElectionController::class);
-    Route::apiResource('geo-areas', ECGeoAreaController::class);
-    Route::apiResource('committees', ECCommitteeController::class);
-    Route::apiResource('candidates', ECCandidateController::class);
-    Route::apiResource('voters', ECVoterController::class);
-    Route::apiResource('agents', ECAgentController::class);
-    Route::apiResource('volunteers', ECVolunteerController::class);
-    Route::apiResource('observations', ECObservationController::class);
-    Route::apiResource('campaigns', ECCampaignController::class);
-    Route::apiResource('settings', ECSettingController::class);
+    Route::prefix('ec')->group(function () {
+        Route::apiResource('elections', ECElectionController::class);
+        Route::apiResource('geo-areas', ECGeoAreaController::class);
+        Route::apiResource('committees', ECCommitteeController::class);
+        Route::apiResource('candidates', ECCandidateController::class);
+        Route::apiResource('voters', ECVoterController::class);
+        Route::apiResource('agents', ECAgentController::class);
+        Route::apiResource('volunteers', ECVolunteerController::class);
+        Route::apiResource('observations', ECObservationController::class);
+        Route::apiResource('campaigns', ECCampaignController::class);
+        Route::apiResource('settings', ECSettingController::class);
+    });
 });
