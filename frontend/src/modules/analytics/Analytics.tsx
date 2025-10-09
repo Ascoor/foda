@@ -1,307 +1,176 @@
-import { useState, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { 
-  BarChart3, 
-  PieChart, 
-  TrendingUp, 
-  Users, 
-  Vote, 
-  MapPin,
-  Calendar,
-  Activity
-} from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { motion, AnimatePresence } from 'framer-motion';
+import { CalendarDays, GaugeCircle, Signal, Sparkles, TrendingUp } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SafeDataRenderer } from '@/components/ui/SafeDataRenderer';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart as RechartsPieChart, Cell, LineChart, Line } from 'recharts';
-import { safeArray, safeNumber } from '@/lib/safeData';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { toast } from 'sonner';
 import { fetchAnalytics } from './api';
-import { AnalyticsData } from './types';
+import type { AnalyticsResponse } from './types';
 
-const COLORS = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accent))', 'hsl(var(--success))'];
+const DashboardCharts = lazy(() =>
+  import('./DashboardCharts').then((module) => ({ default: module.DashboardCharts })),
+);
 
-interface KPICardProps {
-  title: string;
-  value: number | string;
-  change?: number;
+interface MetricCardProps {
+  label: string;
+  value: string;
+  helper: string;
   icon: React.ReactNode;
-  description?: string;
+  highlight?: boolean;
 }
 
-const KPICard = ({ title, value, change, icon, description }: KPICardProps) => (
-  <Card className="glass-card border-primary/20 hover:border-primary/40 transition-all duration-300">
-    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-      <div className="h-4 w-4 text-primary">{icon}</div>
-    </CardHeader>
-    <CardContent>
-      <div className="text-2xl font-bold text-gradient-primary">{value}</div>
-      {change !== undefined && (
-        <p className={`text-xs ${change >= 0 ? 'text-success' : 'text-destructive'} flex items-center gap-1`}>
-          <TrendingUp className="h-3 w-3" />
-          {change > 0 ? '+' : ''}{change}%
+const MetricCard = ({ label, value, helper, icon, highlight = false }: MetricCardProps) => (
+  <motion.div
+    layout
+    initial={{ opacity: 0, y: 16 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.35, ease: 'easeOut' }}
+  >
+    <Card className={`glass-card border-primary/20 ${highlight ? 'shadow-lg shadow-primary/20' : ''}`}>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium text-muted-foreground">{label}</CardTitle>
+        <div className="text-primary">{icon}</div>
+      </CardHeader>
+      <CardContent>
+        <p className="text-3xl font-bold text-gradient-primary">{value}</p>
+        <p className="text-xs text-muted-foreground mt-2 flex items-center gap-2">
+          <Sparkles className="h-3 w-3 text-primary/70" />
+          {helper}
         </p>
-      )}
-      {description && <p className="text-xs text-muted-foreground mt-1">{description}</p>}
-    </CardContent>
-  </Card>
+      </CardContent>
+    </Card>
+  </motion.div>
 );
 
 export const Analytics = () => {
   const { t } = useTranslation();
-  const [data, setData] = useState<AnalyticsData | null>(null);
+  const [analytics, setAnalytics] = useState<AnalyticsResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadAnalytics = async () => {
+    const load = async () => {
       setLoading(true);
       setError(null);
       try {
-        const analyticsData = await fetchAnalytics();
-        setData(analyticsData);
+        const payload = await fetchAnalytics();
+        setAnalytics(payload);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load analytics');
+        const message = err instanceof Error ? err.message : 'Failed to load analytics';
+        setError(message);
+        toast.error(message);
       } finally {
         setLoading(false);
       }
     };
 
-    loadAnalytics();
+    load();
+    const interval = setInterval(load, 5 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  const mockData = {
-    kpis: [
-      { label: 'Total Voters', value: 15420, change: 12 },
-      { label: 'Registered Candidates', value: 247, change: 8 },
-      { label: 'Active Committees', value: 89, change: 5 },
-      { label: 'Total Observations', value: 156, change: -3 }
-    ],
-    voterTurnout: [
-      { area: 'Area 1', turnout: 78, registered: 1200 },
-      { area: 'Area 2', turnout: 65, registered: 980 },
-      { area: 'Area 3', turnout: 82, registered: 1500 },
-      { area: 'Area 4', turnout: 71, registered: 1100 },
-      { area: 'Area 5', turnout: 89, registered: 1350 }
-    ],
-    candidatesByParty: [
-      { name: 'Party A', value: 45, color: COLORS[0] },
-      { name: 'Party B', value: 38, color: COLORS[1] },
-      { name: 'Party C', value: 25, color: COLORS[2] },
-      { name: 'Independent', value: 15, color: COLORS[3] }
-    ],
-    weeklyActivity: [
-      { day: 'Mon', observations: 12, registrations: 25, campaigns: 8 },
-      { day: 'Tue', observations: 19, registrations: 32, campaigns: 12 },
-      { day: 'Wed', observations: 15, registrations: 28, campaigns: 15 },
-      { day: 'Thu', observations: 22, registrations: 35, campaigns: 10 },
-      { day: 'Fri', observations: 18, registrations: 40, campaigns: 18 },
-      { day: 'Sat', observations: 25, registrations: 45, campaigns: 22 },
-      { day: 'Sun', observations: 20, registrations: 38, campaigns: 16 }
-    ]
-  };
+  const metrics = useMemo(() => {
+    if (!analytics) return [];
 
-  if (loading || error || !data) {
-    return (
-      <SafeDataRenderer
-        data={data ? [data] : []}
-        loading={loading}
-        error={error}
-        onRetry={() => window.location.reload()}
-        emptyTitle="No analytics data"
-        emptyDescription="Analytics data will appear here when available"
-      >
-        {() => <div />}
-      </SafeDataRenderer>
-    );
-  }
+    const { support_percentage, turnout_estimate, coverage_gap } = analytics.summary;
+
+    return [
+      {
+        label: t('analytics.supportScore', 'Support sentiment'),
+        value: `${support_percentage.toFixed(1)}%`,
+        helper: t('analytics.supportHelper', 'Average support score from field reports'),
+        icon: <TrendingUp className="h-4 w-4" />,
+        highlight: true,
+      },
+      {
+        label: t('analytics.turnoutEstimate', 'Turnout estimate'),
+        value: `${turnout_estimate.toFixed(1)}%`,
+        helper: t('analytics.turnoutHelper', 'Projected turnout based on active agents'),
+        icon: <GaugeCircle className="h-4 w-4" />,
+      },
+      {
+        label: t('analytics.coverageGap', 'Coverage gap'),
+        value: `${coverage_gap.toFixed(1)}%`,
+        helper: t('analytics.coverageHelper', 'Remaining precincts that need field agents'),
+        icon: <Signal className="h-4 w-4" />,
+      },
+    ];
+  }, [analytics, t]);
+
+  const hasData = analytics && analytics.regions.length > 0;
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gradient-primary">{t('analytics.title')}</h1>
-          <p className="text-muted-foreground mt-1">Real-time insights and performance metrics</p>
-        </div>
-        <div className="flex gap-2">
-          <Card className="glass-card border-success/20">
-            <CardContent className="flex items-center gap-2 p-4">
-              <Calendar className="h-4 w-4 text-success" />
-              <span className="text-sm font-medium">Last Updated: {new Date().toLocaleDateString()}</span>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* KPI Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <KPICard
-          title="Total Voters"
-          value={mockData.kpis[0].value.toLocaleString()}
-          change={mockData.kpis[0].change}
-          icon={<Users />}
-          description="Registered voters across all areas"
-        />
-        <KPICard
-          title="Active Candidates"
-          value={mockData.kpis[1].value}
-          change={mockData.kpis[1].change}
-          icon={<Vote />}
-          description="Currently registered candidates"
-        />
-        <KPICard
-          title="Committees"
-          value={mockData.kpis[2].value}
-          change={mockData.kpis[2].change}
-          icon={<MapPin />}
-          description="Active voting committees"
-        />
-        <KPICard
-          title="Observations"
-          value={mockData.kpis[3].value}
-          change={mockData.kpis[3].change}
-          icon={<Activity />}
-          description="Total recorded observations"
-        />
-      </div>
-
-      {/* Charts Grid */}
-      <div className="grid gap-6 md:grid-cols-2">
-        {/* Voter Turnout by Area */}
-        <Card className="glass-card border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-primary" />
-              Voter Turnout by Area
-            </CardTitle>
-            <CardDescription>Percentage of registered voters participating</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={mockData.voterTurnout}>
-                <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
-                <XAxis dataKey="area" stroke="hsl(var(--foreground))" />
-                <YAxis stroke="hsl(var(--foreground))" />
-                <Tooltip 
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--popover))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '6px'
-                  }}
-                />
-                <Bar dataKey="turnout" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
-
-        {/* Candidate Distribution */}
-        <Card className="glass-card border-secondary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <PieChart className="h-5 w-5 text-secondary" />
-              Candidate Distribution
-            </CardTitle>
-            <CardDescription>Candidates by political affiliation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <RechartsPieChart>
-                <RechartsPieChart 
-                  data={mockData.candidatesByParty}
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  dataKey="value"
-                >
-                  {mockData.candidatesByParty.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </RechartsPieChart>
-                <Tooltip 
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--popover))',
-                    border: '1px solid hsl(var(--border))',
-                    borderRadius: '6px'
-                  }}
-                />
-              </RechartsPieChart>
-            </ResponsiveContainer>
-            <div className="flex flex-wrap gap-2 mt-4">
-              {mockData.candidatesByParty.map((item, index) => (
-                <div key={index} className="flex items-center gap-2 text-sm">
-                  <div 
-                    className="w-3 h-3 rounded-full" 
-                    style={{ backgroundColor: item.color }}
-                  />
-                  <span>{item.name}: {item.value}</span>
-                </div>
-              ))}
+    <SafeDataRenderer
+      data={hasData ? [analytics] : []}
+      loading={loading}
+      error={error}
+      onRetry={() => window.location.reload()}
+      emptyTitle={t('analytics.emptyTitle', 'Analytics data is coming soon')}
+      emptyDescription={t(
+        'analytics.emptyDescription',
+        'Once activities are logged you will see field intelligence in real time.',
+      )}
+    >
+      {() => (
+        <div className="space-y-8">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gradient-primary">
+                {t('analytics.title', 'Operations analytics')}
+              </h1>
+              <p className="text-muted-foreground mt-2 max-w-2xl">
+                {t(
+                  'analytics.subtitle',
+                  'Track agent coverage, support momentum, and live field activity across regions.',
+                )}
+              </p>
             </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Weekly Activity Chart */}
-      <Card className="glass-card border-accent/20">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-accent" />
-            Weekly Activity Trends
-          </CardTitle>
-          <CardDescription>Daily activity across different modules</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart data={mockData.weeklyActivity}>
-              <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--muted))" />
-              <XAxis dataKey="day" stroke="hsl(var(--foreground))" />
-              <YAxis stroke="hsl(var(--foreground))" />
-              <Tooltip 
-                contentStyle={{
-                  backgroundColor: 'hsl(var(--popover))',
-                  border: '1px solid hsl(var(--border))',
-                  borderRadius: '6px'
-                }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="observations" 
-                stroke="hsl(var(--primary))" 
-                strokeWidth={2}
-                dot={{ fill: 'hsl(var(--primary))' }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="registrations" 
-                stroke="hsl(var(--secondary))" 
-                strokeWidth={2}
-                dot={{ fill: 'hsl(var(--secondary))' }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="campaigns" 
-                stroke="hsl(var(--accent))" 
-                strokeWidth={2}
-                dot={{ fill: 'hsl(var(--accent))' }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-          <div className="flex justify-center gap-6 mt-4">
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-3 h-3 rounded-full bg-primary" />
-              <span>Observations</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-3 h-3 rounded-full bg-secondary" />
-              <span>Registrations</span>
-            </div>
-            <div className="flex items-center gap-2 text-sm">
-              <div className="w-3 h-3 rounded-full bg-accent" />
-              <span>Campaigns</span>
+            <div className="flex items-center gap-2">
+              <CalendarDays className="h-4 w-4 text-primary" />
+              <span className="text-sm text-muted-foreground">
+                {t('analytics.updated', 'Updated')}: {new Date(analytics!.generated_at).toLocaleString()}
+              </span>
+              <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
+                {t('common.refresh', 'Refresh')}
+              </Button>
             </div>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+
+          <AnimatePresence>
+            <div className="grid gap-4 md:grid-cols-3">
+              {metrics.map((metric) => (
+                <MetricCard key={metric.label} {...metric} />
+              ))}
+            </div>
+          </AnimatePresence>
+
+          <Suspense
+            fallback={
+              <div className="grid gap-6 lg:grid-cols-3">
+                {[0, 1, 2].map((index) => (
+                  <Card key={`chart-skeleton-${index}`} className="glass-card border-muted/40">
+                    <CardHeader>
+                      <Skeleton className="h-6 w-40" />
+                    </CardHeader>
+                    <CardContent>
+                      <Skeleton className="h-[280px] w-full" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            }
+          >
+            <DashboardCharts
+              regions={analytics!.regions}
+              trends={analytics!.support_trends}
+              distribution={analytics!.report_distribution}
+            />
+          </Suspense>
+        </div>
+      )}
+    </SafeDataRenderer>
   );
 };

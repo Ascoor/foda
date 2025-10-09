@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useQuery } from '@tanstack/react-query';
-import { 
-  Vote, UserCheck, Users, Activity, CheckCircle, BarChart3, 
-  TrendingUp, MapPin, Calendar, Target
-} from 'lucide-react';
+import { Vote, UserCheck, Users, Activity, CheckCircle, TrendingUp, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { SafeDataRenderer } from '@/components/ui/SafeDataRenderer';
-import { MapVisualization } from '@/components/ui/MapVisualization';
 import { StatsCard } from '@/modules/dashboard/components/StatsCard';
 import { ProgressChart } from '@/modules/dashboard/components/ProgressChart';
 import { ActivityFeed } from '@/modules/dashboard/components/ActivityFeed';
+import { LiveOperationsMap } from '@/modules/dashboard/components/LiveOperationsMap';
+import { ActivitiesTimeline } from '@/modules/activities/ActivitiesTimeline';
 import { useApi } from '@/lib/api';
-import { fetchGeoAreas } from '@/modules/geo-areas/api';
-import { safeArray, createSafeApiResponse } from '@/lib/safeData';
+import { safeArray } from '@/lib/safeData';
 import { toast } from '@/hooks/use-toast';
 
 interface DashboardData {
@@ -135,23 +131,12 @@ export const EnhancedDashboard: React.FC = () => {
     method: 'GET' 
   });
   
-  // GeoAreas data query
-  const { 
-    data: geoAreasData, 
-    isLoading: geoAreasLoading, 
-    error: geoAreasError 
-  } = useQuery({
-    queryKey: ['geo-areas'],
-    queryFn: fetchGeoAreas,
-  });
-  
   useEffect(() => {
     refetchDashboard()
       .then(() => toast({ description: t('dashboard.load_success') }))
       .catch(() => toast({ variant: 'destructive', description: t('dashboard.load_error') }));
   }, [refetchDashboard, t]);
   
-  const safeGeoAreas = safeArray(geoAreasData);
   const safeDashboardData = dashboardData || {
     stats: {},
     activities: [],
@@ -264,81 +249,22 @@ export const EnhancedDashboard: React.FC = () => {
         </motion.div>
       </div>
       
-      {/* Map Visualization */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
+      {/* Live Map */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
       >
-        <SafeDataRenderer
-          data={safeGeoAreas}
-          loading={geoAreasLoading}
-          error={geoAreasError}
-          loadingMessage={t('geo_areas.loading')}
-          emptyTitle={t('geo_areas.no_areas')}
-          emptyDescription={t('geo_areas.no_areas_description')}
-        >
-          {(data) => (
-            <MapVisualization 
-              geoAreas={data}
-              onAreaClick={(area) => {
-                toast({ 
-                  description: `${t('geo_areas.selected')}: ${area.name}` 
-                });
-              }}
-            />
-          )}
-        </SafeDataRenderer>
+        <LiveOperationsMap />
       </motion.div>
-      
-      {/* Turnout Heatmap */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
-        animate={{ opacity: 1, y: 0 }} 
+
+      {/* Activity Timeline */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.7 }}
-        className="glass-card"
       >
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <BarChart3 className="h-6 w-6 text-primary" />
-            {t('dashboard.voter_turnout')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <SafeDataRenderer
-            data={safeDashboardData.turnout}
-            loading={dashboardLoading}
-            error={dashboardError}
-            loadingMessage={t('dashboard.loading_turnout')}
-          >
-            {(turnoutData) => (
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
-                {turnoutData.map((value, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.8 + i * 0.02 }}
-                    className={`
-                      aspect-square rounded-lg glass-button relative overflow-hidden
-                      ${value > 70 ? 'bg-success/20 border-success' : 
-                        value > 50 ? 'bg-primary/20 border-primary' : 
-                        value > 30 ? 'bg-accent/20 border-accent' : 
-                        'bg-muted/20 border-muted'}
-                      hover:scale-110 transition-transform cursor-pointer
-                    `}
-                    title={`${t('dashboard.area', { number: i + 1 })}: ${value}%`}
-                  >
-                    <div className="absolute inset-0 bg-current opacity-10" />
-                    <div className="relative z-10 flex items-center justify-center h-full">
-                      <span className="text-xs font-medium">{value}%</span>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </SafeDataRenderer>
-        </CardContent>
+        <ActivitiesTimeline />
       </motion.div>
     </div>
   );
