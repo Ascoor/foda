@@ -29,6 +29,8 @@ import { Settings } from "@/modules/settings/Settings";
 
 import { ObservationsList } from "@/modules/observations/ObservationsList";
 import { CampaignsList } from "@/modules/campaigns/CampaignsList";
+import { AutomationDashboard } from "@/modules/automation/AutomationDashboard";
+import { NotificationProvider } from "@/contexts/NotificationContext";
  
 
  
@@ -73,6 +75,7 @@ const App = () => (
 
                     <Route path="/observations" element={<ObservationsList />} />
                     <Route path="/campaigns" element={<CampaignsList />} />
+                    <Route path="/automation" element={<AutomationDashboard />} />
                     <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
                     <Route path="/settings" element={<Settings />} />
 
@@ -90,9 +93,11 @@ const App = () => (
 );
 
 const MainLayoutWrapper = () => (
-  <MainLayout>
-    <Outlet />
-  </MainLayout>
+  <NotificationProvider>
+    <MainLayout>
+      <Outlet />
+    </MainLayout>
+  </NotificationProvider>
 );
 
 // Temporary component for modules under development

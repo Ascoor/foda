@@ -14,6 +14,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useNotifications } from '@/contexts/NotificationContext';
 
 export const Header = () => {
   const { t } = useTranslation();
@@ -21,6 +22,7 @@ export const Header = () => {
   const { language, toggleLanguage, direction } = useLanguage();
   const { logout, user } = useAuth();
   const navigate = useNavigate();
+  const { unreadCount, setDrawerOpen } = useNotifications();
 
   return (
     <motion.header
@@ -74,9 +76,14 @@ export const Header = () => {
             variant="ghost"
             size="sm"
             className="glass-button relative"
+            onClick={() => setDrawerOpen(true)}
           >
             <Bell className="h-4 w-4" />
-            <span className="absolute -top-1 -right-1 h-3 w-3 bg-destructive rounded-full animate-pulse" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-white">
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
           </Button>
 
           {/* User Menu */}
