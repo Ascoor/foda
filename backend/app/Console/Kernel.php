@@ -15,7 +15,29 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        if (! config('scheduler.enabled')) {
+            return;
+        }
+
+        $schedule->call(function () {
+            app(\App\Services\AlertService::class)->run();
+        })
+            ->name('automation:smart-alert-engine')
+            ->everyThirtyMinutes()
+            ->withoutOverlapping()
+            ->runInBackground();
+
+        $schedule->command('daily:send-analytics-summary')
+            ->dailyAt('07:30')
+            ->when(fn () => \App\Models\AutomationTask::isEnabled('daily:send-analytics-summary'));
+
+        $schedule->command('weekly:send-gotv-reminders')
+            ->weeklyOn(1, '09:00')
+            ->when(fn () => \App\Models\AutomationTask::isEnabled('weekly:send-gotv-reminders'));
+
+        $schedule->command('cleanup:stale-assignments')
+            ->dailyAt('22:00')
+            ->when(fn () => \App\Models\AutomationTask::isEnabled('cleanup:stale-assignments'));
     }
 
     /**
