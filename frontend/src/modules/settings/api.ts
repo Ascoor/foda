@@ -9,7 +9,7 @@ interface SettingItem {
 export const fetchSettings = async (): Promise<SystemSettings> => {
   try {
     const res = await request<{ data: SettingItem[] }>(
-      { url: '/v1/settings', method: 'GET' },
+      { url: '/settings', method: 'GET' },
       { useCache: true },
     );
     const map = Object.fromEntries(res.data.map((s) => [s.key, s.value]));
@@ -28,7 +28,7 @@ export const updateSettings = async (
 ): Promise<SystemSettings> => {
   try {
     await request({
-      url: '/v1/settings',
+      url: '/settings',
       method: 'PUT',
       data: {
         language: settings.language,
