@@ -53,13 +53,16 @@ const navigationItems: NavigationItem[] = [
 
 interface SmartSidebarProps {
   defaultCollapsed?: boolean;
+  side?: 'left' | 'right';
 }
 
-export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => {
+export const SmartSidebar = ({ defaultCollapsed = true, side }: SmartSidebarProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const { direction } = useLanguage();
   const isRTL = direction === 'rtl';
+  const computedSide = side ?? (isRTL ? 'right' : 'left');
+  const isRightAligned = computedSide === 'right';
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
@@ -102,12 +105,15 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
     );
   };
 
-  const sidebarWidth = isCollapsed ? 'w-16' : 'w-64';
   const mobileClasses = isMobile
-    ? `fixed inset-y-0 z-50 transform transition-transform duration-300 ease-in-out ${
-        isRTL ? 'right-0' : 'left-0'
-      }`
-    : 'relative';
+    ? cn(
+        'fixed inset-y-0 z-50 transform transition-transform duration-300 ease-in-out',
+        isRightAligned ? 'right-0' : 'left-0'
+      )
+    : cn('relative', isRightAligned ? 'order-2' : 'order-1');
+
+  const ExpandIcon = isRightAligned ? ChevronLeft : ChevronRight;
+  const CollapseIcon = isRightAligned ? ChevronRight : ChevronLeft;
 
   return (
     <>
@@ -118,7 +124,7 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
           size="icon"
           onClick={toggleSidebar}
           className={`fixed top-4 z-50 lg:hidden glass-button ${
-            isRTL ? 'right-4' : 'left-4'
+            isRightAligned ? 'right-4' : 'left-4'
           }`}
         >
           {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -138,14 +144,14 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
         initial={false}
         animate={{
           width: isCollapsed ? 64 : 256,
-          x: isMobile ? (isMobileOpen ? 0 : isRTL ? 256 : -256) : 0
+          x: isMobile ? (isMobileOpen ? 0 : isRightAligned ? 256 : -256) : 0
         }}
         transition={{ type: "spring", damping: 20, stiffness: 100 }}
         dir={direction}
         className={cn(
           'glass-card rounded-none border-y-0 flex flex-col h-screen z-40',
           mobileClasses,
-          isRTL ? 'border-l-0 border-r' : 'border-r border-l-0'
+          isRightAligned ? 'border-l-0 border-r' : 'border-r border-l-0'
         )}
       >
         {/* Header */}
@@ -153,9 +159,9 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
           <AnimatePresence>
             {!isCollapsed && (
               <motion.div
-                initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
+                initial={{ opacity: 0, x: isRightAligned ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
+                exit={{ opacity: 0, x: isRightAligned ? 20 : -20 }}
                 className={cn(
                   'flex items-center gap-3',
                   isRTL && 'flex-row-reverse text-right'
@@ -179,9 +185,9 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
               className="p-2"
             >
               {isCollapsed ? (
-                direction === 'rtl' ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />
+                <ExpandIcon className="h-4 w-4" />
               ) : (
-                direction === 'rtl' ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />
+                <CollapseIcon className="h-4 w-4" />
               )}
             </Button>
           )}
@@ -266,8 +272,8 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                       <div className={cn(
                         "absolute z-50 px-2 py-1 bg-foreground text-background rounded text-sm",
                         "opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap",
-                        direction === 'rtl' 
-                          ? 'right-full mr-2 top-1/2 transform -translate-y-1/2' 
+                        isRightAligned
+                          ? 'right-full mr-2 top-1/2 transform -translate-y-1/2'
                           : 'left-full ml-2 top-1/2 transform -translate-y-1/2'
                       )}>
                         {t(`navigation.${item.key}`)}
@@ -285,7 +291,7 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                         transition={{ duration: 0.2 }}
                         className={cn(
                           'mt-2 space-y-1 overflow-hidden',
-                          isRTL ? 'mr-6' : 'ml-6'
+                          isRightAligned ? 'mr-6' : 'ml-6'
                         )}
                       >
                         {item.children?.map((child) => {

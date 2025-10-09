@@ -11,14 +11,10 @@ interface ProfessionalLayoutProps {
 export const ProfessionalLayout = ({ children }: ProfessionalLayoutProps) => {
   const { direction } = useLanguage();
   const isRTL = direction === 'rtl';
+  const sidebarSide = isRTL ? 'right' : 'left';
 
   return (
-    <div
-      className={`min-h-screen flex w-full ${
-        isRTL ? 'rtl flex-row-reverse' : 'ltr flex-row'
-      }`}
-      dir={direction}
-    >
+    <div className="min-h-screen flex w-full" dir={direction}>
       {/* Enhanced Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-surface via-background to-surface-secondary" />
@@ -42,10 +38,14 @@ export const ProfessionalLayout = ({ children }: ProfessionalLayoutProps) => {
       </div>
 
       {/* Sidebar */}
-      <SmartSidebar />
+      <SmartSidebar side={sidebarSide} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div
+        className={`flex-1 flex flex-col overflow-hidden transition-[margin,transform] duration-300 ease-in-out ${
+          sidebarSide === 'right' ? 'order-1' : 'order-2'
+        }`}
+      >
         {/* Navbar */}
         <ProfessionalNavbar />
 
