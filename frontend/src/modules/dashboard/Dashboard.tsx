@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Vote, UserCheck, Users, Activity, CheckCircle, BarChart3 } from 'lucide-react';
+import { Vote, UserCheck, Users, Activity, CheckCircle } from 'lucide-react';
 import { StatsCard } from './components/StatsCard';
 import { ActivityFeed } from './components/ActivityFeed';
 import { ProgressChart } from './components/ProgressChart';
+import { LiveOperationsMap } from './components/LiveOperationsMap';
 import { useApi } from '@/lib/api';
 import { toast } from '@/hooks/use-toast';
 
@@ -78,7 +79,6 @@ export const Dashboard = () => {
     { label: 'dashboard.voting', value: data?.progress?.voting ?? 0, color: 'success' as const },
   ];
 
-  const turnout = data?.turnout ?? [];
   const overall = data?.progress?.overall ?? 0;
   const remaining = data?.progress?.remaining ?? 0;
 
@@ -123,35 +123,8 @@ export const Dashboard = () => {
         </motion.div>
       </div>
 
-      {/* خريطة الإقبال */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="glass-card">
-        <div className="flex items-center gap-3 mb-6">
-          <BarChart3 className="h-6 w-6 text-primary" />
-          <h2 className="text-xl font-semibold">{t('dashboard.voter_turnout')}</h2>
-        </div>
-
-        {loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
-            {Array.from({ length: 32 }).map((_, i) => (
-              <div key={i} className="aspect-square rounded-lg bg-muted/20 animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
-            {turnout.map((value, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7 + i * 0.02 }}
-                className={`aspect-square rounded-lg glass-button ${
-                  value > 50 ? 'bg-primary/20' : 'bg-muted/20'
-                } hover:scale-110 transition-transform cursor-pointer`}
-                title={`${t('dashboard.area', { number: i + 1 })}: ${value}%`}
-              />
-            ))}
-          </div>
-        )}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
+        <LiveOperationsMap />
       </motion.div>
 
       {error && <p className="text-destructive text-sm">{t('dashboard.load_error')}</p>}

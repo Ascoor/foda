@@ -1,47 +1,38 @@
-export interface KPIData {
-  totalVoters: number;
-  totalCandidates: number;
-  totalCommittees: number;
-  totalObservations: number;
-  voterTurnoutPercentage: number;
-  activeElections: number;
+export interface RegionAnalytics {
+  area_id: number;
+  region: string;
+  total_voters: number;
+  active_agents: number;
+  reports_today: number;
+  support_score_avg: number;
 }
 
-export interface AreaAnalytics {
-  areaId: string;
-  areaName: string;
-  voterTurnout: number;
-  registeredVoters: number;
-  totalObservations: number;
-  committeesCount: number;
-}
-
-export interface CandidateAnalytics {
-  party: string;
-  candidateCount: number;
-  percentage: number;
-}
-
-export interface ActivityData {
+export interface SupportTrendPoint {
   date: string;
-  observations: number;
-  registrations: number;
-  campaigns: number;
+  support_score_avg: number;
 }
 
-export interface AnalyticsData {
-  kpis: KPIData;
-  areaAnalytics: AreaAnalytics[];
-  candidateDistribution: CandidateAnalytics[];
-  weeklyActivity: ActivityData[];
-  lastUpdated: string;
+export interface ReportDistributionSlice {
+  type: string;
+  count: number;
+}
+
+export interface AnalyticsSummary {
+  support_percentage: number;
+  turnout_estimate: number;
+  coverage_gap: number;
+}
+
+export interface AnalyticsResponse {
+  regions: RegionAnalytics[];
+  support_trends: SupportTrendPoint[];
+  report_distribution: ReportDistributionSlice[];
+  summary: AnalyticsSummary;
+  generated_at: string;
 }
 
 export interface AnalyticsFilters {
-  dateRange?: {
-    start: string;
-    end: string;
-  };
-  areaId?: string;
-  electionId?: string;
+  areaId?: number;
+  from?: string;
+  to?: string;
 }

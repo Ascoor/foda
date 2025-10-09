@@ -2,8 +2,11 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\ActivityController;
+use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\AreaController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CommitteeGeoController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\FinanceController;
 use App\Http\Controllers\Api\V1\ExpenseCategoryController;
@@ -54,6 +57,8 @@ Route::prefix('v1')->group(function () {
         Route::patch('profile/password', [ProfileController::class, 'updatePassword']);
 
         Route::apiResource('areas', AreaController::class);
+        Route::get('analytics', AnalyticsController::class);
+        Route::get('committees/geo', CommitteeGeoController::class);
         Route::get('events/upcoming', [EventController::class, 'upcoming']);
         Route::apiResource('events', EventController::class);
         Route::get('finances/report', [FinanceController::class, 'report']);
@@ -76,6 +81,8 @@ Route::prefix('v1')->group(function () {
         Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
         Route::apiResource('members', MemberController::class)->only(['index', 'store']);
         Route::apiResource('volunteers', VolunteerController::class);
+        Route::get('activities/recent', [ActivityController::class, 'recent']);
+        Route::apiResource('activities', ActivityController::class);
         Route::post('voters/import', [VoterController::class, 'import']);
         Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
