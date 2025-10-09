@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Vote, UserCheck, Users, Activity, CheckCircle, BarChart3 } from 'lucide-react';
@@ -45,8 +45,12 @@ const activityIcons: Record<string, any> = {
 export const Dashboard = () => {
   const { t } = useTranslation();
   const { data, loading, error, execute } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
+  const hasFetched = useRef(false);
 
   useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    
     execute()
       .then(() => toast({ description: t('dashboard.load_success') }))
       .catch(() => toast({ variant: 'destructive', description: t('dashboard.load_error') }));

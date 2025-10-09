@@ -59,6 +59,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('finances', FinanceController::class);
         Route::apiResource('expense-categories', ExpenseCategoryController::class);
         Route::get('home', [HomeController::class, 'index']);
+        // Alias for frontend expecting /dashboard
+        Route::get('dashboard', [HomeController::class, 'index']);
         Route::get('home/heatmap', [HomeController::class, 'heatmap']);
         Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
         Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);

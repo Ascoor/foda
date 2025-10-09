@@ -34,11 +34,18 @@ export const AuthProvider = ({ children }: Props) => {
 
   // تسجيل الدخول واستلام التوكن من الخادم
   const login = async (email: string, password: string) => {
-    const response = await api.post<{ token: string }>('/login', {
+    const response = await api.post<any>('/login', {
       email,
       password,
     });
-    const newToken = response.data.token;
+    const body = response.data;
+    const newToken: string | undefined =
+      body?.token || body?.access_token || body?.data?.token || body?.data?.access_token;
+    if (!newToken) {
+      throw new Error('Missing token in login response');
+    }
+    // Immediately inject token into API client to avoid race during navigation
+    setAuthToken(newToken);
     setToken(newToken);
     if (typeof window !== 'undefined') {
       localStorage.setItem('token', newToken);
