@@ -110,7 +110,7 @@ export const SmartSidebar = ({ defaultCollapsed = true, side }: SmartSidebarProp
         'fixed inset-y-0 z-50 transform transition-transform duration-300 ease-in-out',
         isRightAligned ? 'right-0' : 'left-0'
       )
-    : cn('relative', isRightAligned ? 'order-2' : 'order-1');
+    : cn('relative order-1');
 
   const ExpandIcon = isRightAligned ? ChevronLeft : ChevronRight;
   const CollapseIcon = isRightAligned ? ChevronRight : ChevronLeft;
