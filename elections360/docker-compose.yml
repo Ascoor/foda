@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+    volumes:
+      - ./backend:/var/www/html
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    environment:
+      - VITE_API_URL=http://localhost:8000/api/
+    ports:
+      - '5173:5173'
+    depends_on:
+      - app
+    volumes:
+      - ./frontend:/usr/src/app
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: elections360
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: elections
+      MYSQL_PASSWORD: elections
+    ports:
+      - '3306:3306'
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
