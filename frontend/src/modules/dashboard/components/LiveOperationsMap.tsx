@@ -19,6 +19,17 @@ const EMPTY_COLLECTION: FeatureCollection<Point, Record<string, any>> = {
   features: [],
 };
 
+const isFeatureCollection = (
+  value: unknown,
+): value is FeatureCollection<Point, Record<string, any>> =>
+  Boolean(
+    value &&
+      typeof value === 'object' &&
+      'type' in value &&
+      (value as { type?: unknown }).type === 'FeatureCollection' &&
+      Array.isArray((value as { features?: unknown }).features),
+  );
+
 type FilterValue = 'all' | string;
 
 interface Filters {
@@ -76,8 +87,8 @@ export const LiveOperationsMap = () => {
 
         if (!isMounted) return;
 
-        setCommittees(committeesGeo as FeatureCollection<Point, Record<string, any>>);
-        setActivities(activityGeo as FeatureCollection<Point, Record<string, any>>);
+        setCommittees(isFeatureCollection(committeesGeo) ? committeesGeo : EMPTY_COLLECTION);
+        setActivities(isFeatureCollection(activityGeo) ? activityGeo : EMPTY_COLLECTION);
       } catch (error) {
         console.error('Failed to load live operations map', error);
         toast.error('Unable to load map overlays.');
