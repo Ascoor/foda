@@ -19,7 +19,7 @@ export const Header = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, direction } = useLanguage();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -87,8 +87,9 @@ export const Header = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="glass-card border-white/20">
-              <DropdownMenuItem>
-                {t('settings.profile')}
+              <DropdownMenuItem className="flex flex-col items-start gap-1">
+                <span className="text-sm font-medium">{user?.name ?? t('settings.profile')}</span>
+                <span className="text-xs text-muted-foreground">{user?.email}</span>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 {t('settings.title')}
@@ -96,8 +97,8 @@ export const Header = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 className="text-destructive"
-                onSelect={() => {
-                  logout();
+                onSelect={async () => {
+                  await logout();
                   navigate('/login');
                 }}
               >

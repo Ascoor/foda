@@ -21,40 +21,42 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface NavigationItem {
   key: string;
   icon: any;
   path: string;
+  roles?: string[];
 }
 
 const navigationItems: NavigationItem[] = [
-  { key: 'dashboard', icon: LayoutDashboard, path: '/' },
-  { key: 'elections', icon: Vote, path: '/elections' },
-  { key: 'geo_areas', icon: MapPin, path: '/geo-areas' },
-  { key: 'committees', icon: Users, path: '/committees' },
-  { key: 'voters', icon: UserCheck, path: '/voters' },
-  { key: 'candidates', icon: Crown, path: '/candidates' },
-  { key: 'agents', icon: Shield, path: '/agents' },
-  { key: 'volunteers', icon: Heart, path: '/volunteers' },
-  { key: 'observations', icon: Eye, path: '/observations' },
-  { key: 'campaigns', icon: Megaphone, path: '/campaigns' },
-  { key: 'analytics', icon: BarChart3, path: '/analytics' },
-  { key: 'settings', icon: Settings, path: '/settings' },
+  { key: 'dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  { key: 'elections', icon: Vote, path: '/elections', roles: ['Admin', 'FieldLead'] },
+  { key: 'geo_areas', icon: MapPin, path: '/geo-areas', roles: ['Admin', 'FieldLead'] },
+  { key: 'committees', icon: Users, path: '/committees', roles: ['Admin', 'FieldLead'] },
+  { key: 'voters', icon: UserCheck, path: '/voters', roles: ['Admin', 'FieldLead'] },
+  { key: 'candidates', icon: Crown, path: '/candidates', roles: ['Admin', 'FieldLead'] },
+  { key: 'agents', icon: Shield, path: '/agents', roles: ['Admin', 'FieldLead'] },
+  { key: 'volunteers', icon: Heart, path: '/volunteers', roles: ['Admin', 'FieldLead'] },
+  { key: 'observations', icon: Eye, path: '/observations', roles: ['Admin', 'FieldLead', 'Agent'] },
+  { key: 'campaigns', icon: Megaphone, path: '/campaigns', roles: ['Admin', 'FieldLead'] },
+  { key: 'analytics', icon: BarChart3, path: '/analytics', roles: ['Admin'] },
+  { key: 'settings', icon: Settings, path: '/settings', roles: ['Admin'] },
 ];
 
 export const Sidebar = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const { direction } = useLanguage();
+  const { user } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const isActive = (path: string) => {
-    if (path === '/') {
-      return location.pathname === '/';
-    }
     return location.pathname.startsWith(path);
   };
+
+  const availableRoles = new Set((user?.roleNames ?? user?.roles?.map((role) => role.name) ?? []).map((role) => role.toLowerCase()));
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -111,6 +113,13 @@ export const Sidebar = () => {
       <nav className="flex-1 overflow-y-auto custom-scrollbar p-4">
         <ul className="space-y-2">
           {navigationItems.map((item) => {
+            const requiredRoles = item.roles?.map((role) => role.toLowerCase());
+            const hasAccess = !requiredRoles || requiredRoles.some((role) => availableRoles.has(role));
+
+            if (!hasAccess) {
+              return null;
+            }
+
             const Icon = item.icon;
             const active = isActive(item.path);
             

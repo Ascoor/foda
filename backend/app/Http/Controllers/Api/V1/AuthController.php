@@ -97,10 +97,23 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $token = $request->user()?->currentAccessToken();
+
+        if ($token) {
+            $token->delete();
+        }
+
         return response()->json([
             'status' => 'success',
             'message' => 'Logged out',
+        ]);
+    }
+
+    public function me(Request $request)
+    {
+        return response()->json([
+            'status' => 'success',
+            'data' => new UserResource($request->user()->loadMissing('roles', 'permissions')),
         ]);
     }
 

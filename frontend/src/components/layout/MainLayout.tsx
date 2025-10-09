@@ -11,8 +11,10 @@ interface MainLayoutProps {
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const { direction } = useLanguage();
 
+  const directionClasses = direction === 'rtl' ? 'rtl flex-row-reverse' : 'ltr';
+
   return (
-    <div className={`min-h-screen flex w-full ${direction === 'rtl' ? 'rtl' : 'ltr'}`} dir={direction}>
+    <div className={`min-h-screen flex w-full ${directionClasses}`} dir={direction}>
       {/* Animated Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
