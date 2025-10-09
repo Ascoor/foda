@@ -77,6 +77,14 @@ if [ ! -d "vendor" ]; then
   php artisan key:generate
 fi
 
+# Prepare SQLite database for local development if configured
+if grep -q "^DB_CONNECTION=sqlite" .env 2>/dev/null; then
+  if [ ! -f "database/database.sqlite" ]; then
+    echo "🆕 Creating SQLite database file..."
+    touch database/database.sqlite
+  fi
+fi
+
 # Ensure database connection before migration
 DB_CONNECTION_OK=false
 if php artisan migrate:status >/dev/null 2>&1; then
