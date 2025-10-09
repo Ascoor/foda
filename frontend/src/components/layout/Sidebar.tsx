@@ -68,11 +68,11 @@ export const Sidebar = () => {
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
       className={`
-        glass-card rounded-none border-y-0 border-l-0 
+        glass-card rounded-none border-y-0
         flex flex-col h-screen sticky top-0 z-50
         transition-all duration-300 ease-in-out
         ${isCollapsed ? 'w-16' : 'w-64'}
-        ${direction === 'rtl' ? 'border-r border-l-0' : 'border-r border-l-0'}
+        ${direction === 'rtl' ? 'border-l border-r-0' : 'border-r border-l-0'}
       `}
     >
       {/* Header */}
