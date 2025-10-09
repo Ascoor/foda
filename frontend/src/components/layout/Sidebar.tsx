@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -17,7 +16,6 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  Menu,
   Cpu
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,69 +23,103 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
+import type { LucideIcon } from 'lucide-react';
+
+/**
+ * Sidebar keeps navigation items aligned with the current interface direction.
+ * The component listens to {@link LanguageContext} for language & direction
+ * updates and mirrors layout, borders, padding, and animations accordingly.
+ */
+
 interface NavigationItem {
   key: string;
-  icon: any;
+  icon: LucideIcon;
   path: string;
   roles?: string[];
 }
 
-const navigationItems: NavigationItem[] = [
-  { key: 'dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { key: 'elections', icon: Vote, path: '/elections', roles: ['Admin', 'FieldLead'] },
-  { key: 'geo_areas', icon: MapPin, path: '/geo-areas', roles: ['Admin', 'FieldLead'] },
-  { key: 'committees', icon: Users, path: '/committees', roles: ['Admin', 'FieldLead'] },
-  { key: 'voters', icon: UserCheck, path: '/voters', roles: ['Admin', 'FieldLead'] },
-  { key: 'candidates', icon: Crown, path: '/candidates', roles: ['Admin', 'FieldLead'] },
-  { key: 'agents', icon: Shield, path: '/agents', roles: ['Admin', 'FieldLead'] },
-  { key: 'volunteers', icon: Heart, path: '/volunteers', roles: ['Admin', 'FieldLead'] },
-  { key: 'observations', icon: Eye, path: '/observations', roles: ['Admin', 'FieldLead', 'Agent'] },
-  { key: 'campaigns', icon: Megaphone, path: '/campaigns', roles: ['Admin', 'FieldLead'] },
-  { key: 'automation', icon: Cpu, path: '/automation', roles: ['Admin'] },
-  { key: 'analytics', icon: BarChart3, path: '/analytics', roles: ['Admin'] },
-  { key: 'settings', icon: Settings, path: '/settings', roles: ['Admin'] },
-];
-
 export const Sidebar = () => {
-  const { t } = useTranslation();
+  const { language, direction, t } = useLanguage();
   const location = useLocation();
-  const { direction } = useLanguage();
   const { user } = useAuth();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const isRTL = direction === 'rtl';
+
+  const navigationItems: NavigationItem[] = useMemo(() => {
+    const items: NavigationItem[] = [
+      { key: 'dashboard', icon: LayoutDashboard, path: '/dashboard' },
+      { key: 'elections', icon: Vote, path: '/elections', roles: ['Admin', 'FieldLead'] },
+      { key: 'geo_areas', icon: MapPin, path: '/geo-areas', roles: ['Admin', 'FieldLead'] },
+      { key: 'committees', icon: Users, path: '/committees', roles: ['Admin', 'FieldLead'] },
+      { key: 'voters', icon: UserCheck, path: '/voters', roles: ['Admin', 'FieldLead'] },
+      { key: 'candidates', icon: Crown, path: '/candidates', roles: ['Admin', 'FieldLead'] },
+      { key: 'agents', icon: Shield, path: '/agents', roles: ['Admin', 'FieldLead'] },
+      { key: 'volunteers', icon: Heart, path: '/volunteers', roles: ['Admin', 'FieldLead'] },
+      {
+        key: 'observations',
+        icon: Eye,
+        path: '/observations',
+        roles: ['Admin', 'FieldLead', 'Agent']
+      },
+      { key: 'campaigns', icon: Megaphone, path: '/campaigns', roles: ['Admin', 'FieldLead'] },
+      { key: 'automation', icon: Cpu, path: '/automation', roles: ['Admin'] },
+      { key: 'analytics', icon: BarChart3, path: '/analytics', roles: ['Admin'] },
+      { key: 'settings', icon: Settings, path: '/settings', roles: ['Admin'] }
+    ];
+
+    return language === 'ar' ? items : items;
+  }, [language]);
 
   const isActive = (path: string) => {
     return location.pathname.startsWith(path);
   };
 
-  const availableRoles = new Set((user?.roleNames ?? user?.roles?.map((role) => role.name) ?? []).map((role) => role.toLowerCase()));
+  const availableRoles = useMemo(() => {
+    const rawRoles = user?.roleNames ?? user?.roles?.map((role) => role.name) ?? [];
+    return new Set(rawRoles.map((role) => role.toLowerCase()));
+  }, [user]);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
 
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.style.setProperty('--sidebar-width', isCollapsed ? '4rem' : '16rem');
+    }
+  }, [isCollapsed]);
+
+  const sidebarWidth = isCollapsed ? '4rem' : '16rem';
+  const sidebarPositionClass = isRTL ? 'right-0' : 'left-0';
+  const sidebarBorderClass = isRTL ? 'border-s border-e-0' : 'border-e border-s-0';
+  const toggleIconCollapsed = isRTL ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />;
+  const toggleIconExpanded = isRTL ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />;
+
   return (
     <motion.aside
-      initial={{ x: direction === 'rtl' ? 100 : -100, opacity: 0 }}
+      key={direction}
+      initial={{ x: isRTL ? 100 : -100, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ duration: 0.3 }}
       dir={direction}
       className={cn(
-        'glass-card rounded-none border-y-0 flex h-screen flex-col sticky top-0 z-50 transition-all duration-300 ease-in-out',
-        isCollapsed ? 'w-16' : 'w-64',
-        direction === 'rtl' ? 'border-l border-r-0' : 'border-r border-l-0'
+        'glass-card rounded-none border-y-0 fixed top-0 z-50 flex h-screen flex-col transition-[width,transform] duration-300 ease-in-out',
+        sidebarPositionClass,
+        sidebarBorderClass
       )}
+      style={{ width: sidebarWidth }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
+      <div className="flex h-16 items-center justify-between border-b border-white/10 ps-4 pe-4">
         <AnimatePresence>
           {!isCollapsed && (
             <motion.div
-              initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
+              initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
+              exit={{ opacity: 0, x: isRTL ? 20 : -20 }}
               className={cn(
                 'flex items-center gap-3',
-                direction === 'rtl' && 'flex-row-reverse text-right'
+                isRTL && 'flex-row-reverse text-right'
               )}
             >
               <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
@@ -105,18 +137,20 @@ export const Sidebar = () => {
           size="sm"
           onClick={toggleSidebar}
           className="glass-button p-2"
+          aria-label={t('navigation.toggleSidebar', { defaultValue: 'Toggle sidebar' })}
+          aria-expanded={!isCollapsed}
         >
-          {isCollapsed ? (
-            direction === 'rtl' ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />
-          ) : (
-            direction === 'rtl' ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />
-          )}
+          {isCollapsed ? toggleIconCollapsed : toggleIconExpanded}
         </Button>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto custom-scrollbar p-4">
-        <ul className="space-y-2">
+      <nav
+        className="flex-1 overflow-y-auto custom-scrollbar p-4"
+        aria-label={t('navigation.main', { defaultValue: 'Main navigation' })}
+        lang={language}
+      >
+        <ul className="space-y-2" dir={direction}>
           {navigationItems.map((item) => {
             const requiredRoles = item.roles?.map((role) => role.toLowerCase());
             const hasAccess = !requiredRoles || requiredRoles.some((role) => availableRoles.has(role));
@@ -142,18 +176,18 @@ export const Sidebar = () => {
                       ? 'bg-gradient-primary text-white shadow-glow'
                       : 'text-foreground hover:bg-white/10 hover:text-primary',
                     isCollapsed && 'justify-center',
-                    !isCollapsed && direction === 'rtl' && 'flex-row-reverse text-right'
+                    !isCollapsed && isRTL && 'flex-row-reverse text-right'
                   )}
                 >
                   <Icon className={`h-5 w-5 ${active ? 'animate-glow-pulse' : ''}`} />
-                  
+
                   <AnimatePresence>
                     {!isCollapsed && (
                       <motion.span
-                        initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
+                        initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-                        className={cn('font-medium', direction === 'rtl' && 'text-right')}
+                        exit={{ opacity: 0, x: isRTL ? 20 : -20 }}
+                        className={cn('font-medium', isRTL && 'text-right')}
                       >
                         {t(`navigation.${item.key}`)}
                       </motion.span>
@@ -165,7 +199,7 @@ export const Sidebar = () => {
                     <div
                       className={cn(
                         'pointer-events-none absolute top-1/2 z-50 -translate-y-1/2 whitespace-nowrap rounded bg-foreground px-2 py-1 text-sm text-background opacity-0 transition-opacity group-hover:opacity-100',
-                        direction === 'rtl' ? 'right-full mr-2' : 'left-full ml-2'
+                        isRTL ? 'right-full me-2' : 'left-full ms-2'
                       )}
                     >
                       {t(`navigation.${item.key}`)}
@@ -186,7 +220,7 @@ export const Sidebar = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-muted-foreground text-center"
+              className="text-center text-xs text-muted-foreground"
             >
               ElectionCircle v2.0
             </motion.div>
