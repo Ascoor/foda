@@ -60,71 +60,76 @@ export const Sidebar = ({
   const renderDesktopNav = () => (
     <TooltipProvider delayDuration={100}>
       <nav
-        className={cn(
-          'flex-1 overflow-y-auto px-3 pb-6 transition-all duration-300',
-          isRTL ? 'pr-4 text-right' : 'pl-4 text-left'
-        )}
-        dir={direction}
-      >
-        <ul
-          className={cn(
-            'flex flex-col gap-1.5',
-            isRTL ? 'items-end justify-end' : 'items-start justify-start'
-          )}
-        >
-          {filteredItems.map((item) => {
-            const Icon = item.icon;
-            const content = (
-              <NavLink
-                to={item.path}
-                className={({ isActive }) =>
-                  cn(
-                    'group relative flex items-center rounded-xl px-3 py-3 text-sm font-medium transition-colors duration-200 w-full',
-                    collapsed && 'justify-center px-0',
-                    isActive
-                      ? 'bg-[#E7B10A]/15 text-white'
-                      : 'text-white/80 hover:bg-[#E7B10A]/20 hover:text-white',
-                    isRTL
-                      ? 'flex-row-reverse justify-end text-right'
-                      : 'flex-row justify-start text-left'
-                  )
-                }
-              >
-                {isRTL ? (
-                  <>
-                    <Icon className="h-5 w-5 shrink-0 order-last ml-2" />
-                    {!collapsed && (
-                      <span className="truncate text-sm">{renderNavItem(item.key)}</span>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <Icon className="h-5 w-5 shrink-0 order-first mr-2" />
-                    {!collapsed && (
-                      <span className="truncate text-sm">{renderNavItem(item.key)}</span>
-                    )}
-                  </>
+    className={cn(
+      'flex-1 overflow-y-auto transition-all duration-300 px-3 pb-6',
+      collapsed && 'overflow-hidden scrollbar-hide',
+      isRTL ? 'pr-4 text-right' : 'pl-4 text-left'
+    )}
+    dir={direction}
+  >
+    <ul
+      className={cn(
+        'flex flex-col gap-1.5',
+        isRTL ? 'items-end justify-end' : 'items-start justify-start'
+      )}
+    >
+      {filteredItems.map((item) => {
+        const Icon = item.icon;
+        const content = (
+          <NavLink
+            to={item.path}
+            className={({ isActive }) =>
+              cn(
+                'group relative flex items-center rounded-xl px-3 py-3 text-sm font-medium transition-all duration-300 w-full',
+                collapsed && 'justify-center px-0',
+                isActive
+                  ? 'bg-primary/15 text-primary dark:text-[#E7B10A]'
+                  : 'text-foreground/70 hover:text-primary hover:bg-primary/10 dark:hover:text-[#E7B10A]',
+                isRTL
+                  ? 'flex-row-reverse justify-end text-right'
+                  : 'flex-row justify-start text-left'
+              )
+            }
+          >
+            {isRTL ? (
+              <>
+                <Icon className="h-5 w-5 shrink-0 order-last ml-2 group-hover:scale-110 group-hover:text-[#E7B10A] transition-transform duration-200" />
+                {!collapsed && (
+                  <span className="truncate text-sm">{renderNavItem(item.key)}</span>
                 )}
-              </NavLink>
-            );
-  
-            return (
-              <li key={item.key} className={cn(isRTL && 'w-full flex justify-end')}>
-                {collapsed ? (
-                  <Tooltip>
-                    <TooltipTrigger asChild>{content}</TooltipTrigger>
-                    <TooltipContent side={isRTL ? 'left' : 'right'}>
-                      {renderNavItem(item.key)}
-                    </TooltipContent>
-                  </Tooltip>
-                ) : (
-                  content
+              </>
+            ) : (
+              <>
+                <Icon className="h-5 w-5 shrink-0 order-first mr-2 group-hover:scale-110 group-hover:text-[#E7B10A] transition-transform duration-200" />
+                {!collapsed && (
+                  <span className="truncate text-sm">{renderNavItem(item.key)}</span>
                 )}
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
+              </>
+            )}
+          </NavLink>
+        );
+
+        return (
+          <li key={item.key} className={cn(isRTL && 'w-full flex justify-end')}>
+            {collapsed ? (
+              <Tooltip>
+                <TooltipTrigger asChild>{content}</TooltipTrigger>
+                <TooltipContent
+                  side={isRTL ? 'left' : 'right'}
+                  className="bg-background/90 text-foreground shadow-md backdrop-blur-md border border-border/10"
+                >
+                  {renderNavItem(item.key)}
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              content
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  </nav>
+
     </TooltipProvider>
   );
   
@@ -171,64 +176,89 @@ export const Sidebar = ({
     <Fragment>
       {/* 💻 Desktop Sidebar */}
       {!isMobile && (
-        <aside
-          dir={direction}
-          className={cn(
-            'fixed top-0 z-40 hidden h-full flex-col bg-[#1C3F60] text-white shadow-2xl transition-[width] duration-300 ease-in-out md:flex',
-            isRTL
-              ? 'right-0 border-l border-[#E7B10A]/20'
-              : 'left-0 border-r border-[#E7B10A]/20'
-          )}
-          style={{ width: expandedWidth }}
-        >
-          {/* 🧩 الرأس */}
-          <div
-            className={cn(
-              'flex h-20 items-center px-4 justify-between',
-              isRTL && 'flex-row-reverse'
-            )}
-          >
-            <div
-              className={cn(
-                'flex items-center  gap-3',
-                collapsed && 'gap-0',
-                isRTL && !collapsed && 'flex-row-reverse'
-              )}
-            >
-              {!collapsed && (
-                <span className="text-lg font-semibold tracking-wide">
-                  {brandLabel}
-                </span>
-              )}
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
-                <Vote className="h-5 w-5" />
-              </div>
-            </div>
-
-            {/* 🔁 زر الطي */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className={cn(
-                'h-10 w-10 rounded-xl  border border-white/20 bg-white/5 text-white hover:bg-[#E7B10A]/20',
-                isRTL ? 'order-first -ml-4' : 'order-last '
-              )}
-              onClick={() => onCollapseChange(!collapsed)}
-            >
-              {isRTL ? (
-                collapsed ? (
-                  <ChevronLeft className="h-5 w-5" />
-                ) : (
-                  <ChevronRight className="h-5 w-5" />
-                )
-              ) : collapsed ? (
-                <ChevronRight className="h-5 w-5" />
-              ) : (
-                <ChevronLeft className="h-5 w-5" />
-              )}
-            </Button>
-          </div>
-
+       <aside
+       dir={direction}
+       className={cn(
+         'fixed top-0 z-40 hidden h-full flex-col transition-[width,background,box-shadow] duration-500 ease-in-out md:flex',
+         'backdrop-blur-lg shadow-2xl border-r border-border/10',
+         'supports-[backdrop-filter]:bg-gradient-to-b supports-[backdrop-filter]:from-background/80 supports-[backdrop-filter]:to-background/40',
+         'dark:from-[#0F1E2E]/90 dark:to-[#162C46]/80 dark:border-[#E7B10A]/20',
+         'bg-gradient-to-b from-white/70 to-white/50 text-foreground/90',
+         isRTL ? 'right-0 border-l' : 'left-0 border-r',
+         collapsed ? 'w-20' : 'w-72'
+       )}
+     >{/* 🧩 الرأس */}
+     <div
+       className={cn(
+         'relative flex h-20 items-center px-4 justify-center transition-all duration-300',
+         isRTL && 'flex-row-reverse'
+       )}
+     >
+       {/* ====== زر الفتح/الإغلاق ثابت على الحافة ====== */}
+       <motion.div
+         className={cn(
+           'absolute top-1/2 -translate-y-1/2 z-50',
+           isRTL ? 'left-0 translate-x-1/2' : 'right-0 -translate-x-1/2'
+         )}
+         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+       >
+         <Button
+           variant="ghost"
+           size="icon"
+           className={cn(
+             'h-10 w-10 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-[#E7B10A]/20 transition-all duration-300 shadow-lg',
+             'backdrop-blur-md'
+           )}
+           onClick={() => onCollapseChange(!collapsed)}
+         >
+           {isRTL ? (
+             collapsed ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />
+           ) : collapsed ? (
+             <ChevronRight className="h-5 w-5" />
+           ) : (
+             <ChevronLeft className="h-5 w-5" />
+           )}
+         </Button>
+       </motion.div>
+     
+       {/* ====== البراند والشعار ====== */}
+       <div
+         className={cn(
+           'flex items-center gap-3 transition-all duration-500 ease-in-out',
+           isRTL && 'flex-row-reverse',
+           collapsed && 'justify-center gap-2'
+         )}
+       >
+       
+         {!collapsed && (
+           <motion.span
+             initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
+             animate={{ opacity: 1, x: 0 }}
+             transition={{ duration: 0.4 }}
+             className={cn(
+               'text-lg font-semibold tracking-wide select-none transition-colors duration-300',
+               'text-[#1C3F60] dark:text-[#E7B10A]'
+             )}
+           >
+             {brandLabel}
+           </motion.span>
+         )}
+           <motion.div
+           whileHover={{ scale: 1.1, rotate: 3 }}
+           whileTap={{ scale: 0.95 }}
+           className={cn(
+             'relative flex h-11 w-11 items-center justify-center rounded-xl transition-all duration-300',
+             'bg-[#E7B10A] text-[#1C3F60] shadow-md dark:bg-[#E7B10A]/90 dark:text-[#0B1A2A]',
+             'ring-1 ring-white/10 hover:ring-[#E7B10A]/50 hover:shadow-[0_0_10px_#E7B10A66]'
+           )}
+         >
+           <Vote className="h-5 w-5 transition-transform duration-300" />
+           <div className="absolute inset-0 rounded-xl bg-[#E7B10A]/20 blur-md opacity-60 dark:opacity-80" />
+         </motion.div>
+     
+       </div>
+     </div>
+     
           {renderDesktopNav()}
 
           {/* ⬇️ الفوتر */}

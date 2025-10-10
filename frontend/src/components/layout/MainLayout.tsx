@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -18,25 +19,20 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const { theme } = useTheme();
   const { width } = useWindowSize();
 
-  // ✅ الحالات (states)
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
-  // ✅ تحديد وضع الموبايل أو الديسكتوب
   const isMobile = width < DESKTOP_BREAKPOINT;
   const sidebarWidth = isMobile ? 0 : collapsed ? 80 : 272;
 
-  // ✅ التبديل التلقائي عند تغير حجم الشاشة
   useEffect(() => {
     if (!isMobile) {
       setMobileSidebarOpen(false);
       return;
     }
-    // تعطيل الطي في الموبايل
     setCollapsed(false);
   }, [isMobile]);
 
-  // ✅ محاذاة padding للغة RTL / LTR
   const paddingStyle = useMemo(() => {
     const paddingValue = `${sidebarWidth}px`;
     return direction === 'rtl'
@@ -45,20 +41,23 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   }, [direction, sidebarWidth]);
 
   return (
-    <div
+    <motion.div
       dir={direction}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.25, 0.8, 0.25, 1] }}
       className={cn(
-        'relative min-h-screen w-full transition-colors duration-500',
+        'relative min-h-screen w-full overflow-hidden transition-colors duration-700 ease-in-out',
         theme === 'dark'
-          ? 'dark bg-[#0b1a2a] text-slate-100'
-          : 'bg-slate-50 text-slate-900'
+          ? 'bg-[#0b1a2a] text-slate-100'
+          : 'bg-gradient-to-br from-slate-50 to-slate-100 text-slate-900'
       )}
       style={{
         '--layout-header-height': '4.25rem',
         '--layout-footer-height': '3.5rem',
       } as React.CSSProperties}
     >
-      {/* ✅ الشريط الجانبي */}
+      {/* 💫 الشريط الجانبي (ثابت ومتحرك بانسيابية) */}
       <Sidebar
         collapsed={collapsed}
         onCollapseChange={setCollapsed}
@@ -67,28 +66,63 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         setMobileSidebarOpen={setMobileSidebarOpen}
       />
 
-      {/* ✅ الهيكل الرئيسي */}
-      <div
-        className="flex min-h-screen flex-col"
+      {/* 🌈 الطبقة الأمامية المتحركة (المحتوى + الهيدر + الفوتر) */}
+      <motion.div
+        className="flex min-h-screen flex-col relative z-10"
+        animate={{
+          paddingLeft: direction === 'ltr' ? sidebarWidth : 0,
+          paddingRight: direction === 'rtl' ? sidebarWidth : 0,
+        }}
+        transition={{
+          type: 'spring',
+          stiffness: 90,
+          damping: 20,
+        }}
         style={{
-          ...paddingStyle,
           transition: 'padding 0.3s ease',
         }}
       >
-        <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
+        {/* 🔹 رأس الصفحة */}
+        <motion.div
+          layout
+          transition={{ duration: 0.4 }}
+          className="sticky top-0 z-50"
+        >
+          <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
+        </motion.div>
 
-        {/* ✅ المحتوى */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="mx-auto w-full max-w-[1440px] px-4 pb-6 pt-8 sm:px-6 sm:pt-10 lg:px-10">
-            {children}
+        {/* 📜 المحتوى */}
+        <motion.main
+          layout
+          className="flex-1 overflow-y-auto relative z-0"
+          transition={{ duration: 0.4 }}
+        >
+          <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 pt-8 sm:px-6 sm:pt-10 lg:px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {children}
+            </motion.div>
           </div>
-        </main>
+        </motion.main>
 
-        {/* ✅ الفوتر */}
-        <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 sm:px-6 lg:px-10">
-          <Footer />
-        </div>
-      </div>
-    </div>
+        {/* 🧱 الفوتر */}
+        <motion.div
+          layout
+          transition={{ duration: 0.4 }}
+          className="relative z-10 mt-auto border-t border-white/10 backdrop-blur-sm"
+        >
+          <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 sm:px-6 lg:px-10">
+            <Footer />
+          </div>
+        </motion.div>
+      </motion.div>
+
+      {/* 🩵 تأثير تلاحم بصري بين الطبقات */}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-transparent via-white/[0.03] to-transparent dark:via-[#E7B10A]/[0.05] transition-all duration-700" />
+    </motion.div>
   );
 };
+  

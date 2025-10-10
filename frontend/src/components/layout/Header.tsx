@@ -89,24 +89,15 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
               <Menu className="h-5 w-5" />
             </Button>
           )}
-
-
-        </div>
-          {/* Logo */}
-          <div
-            className={cn(
-              'flex items-center gap-2 font-semibold tracking-wide',
-              isRTL && 'flex-row-reverse'
-            )}
-          >  
+ </div>
         {/* ================== Center Section (Clock) ================== */}
+        <div className="hidden sm:flex flex-col items-center  justify-center select-none text-center">
           <span className="text-[0.8rem] text-muted-foreground uppercase tracking-wide">
             {formattedDate}
           </span>
           <span className="font-mono text-lg font-semibold tracking-tight">
             {formattedTime}
           </span>
-     
         </div>
 
         {/* ================== Right Section ================== */}

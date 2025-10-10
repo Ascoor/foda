@@ -174,11 +174,11 @@ export const EnhancedDashboard = () => {
   return (
     <section
       dir={direction}
-      className="container mx-auto max-w-[1600px] space-y-8 p-4 sm:p-6 md:p-8"
+      className="space-y-4  "
     >
       {/* 🎯 الرأس */}
       <motion.header
-        initial={{ opacity: 0, y: 24 }}
+        initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         className="overflow-hidden rounded-3xl bg-gradient-to-r from-[#1C3F60] via-[#1C3F60]/95 to-[#0f2740] p-6 sm:p-8 text-white shadow-lg"
