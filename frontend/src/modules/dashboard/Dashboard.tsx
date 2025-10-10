@@ -8,6 +8,7 @@ import { ProgressChart } from './components/ProgressChart';
 import { LiveOperationsMap } from './components/LiveOperationsMap';
 import { useApi } from '@/lib/api';
 import { toast } from '@/hooks/use-toast';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface StatItem {
   value: number;
@@ -45,13 +46,15 @@ const activityIcons: Record<string, any> = {
 
 export const Dashboard = () => {
   const { t } = useTranslation();
+  const { direction } = useLanguage();
+  const isRTL = direction === 'rtl';
   const { data, loading, error, execute } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
   const hasFetched = useRef(false);
 
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-    
+
     execute()
       .then(() => toast({ description: t('dashboard.load_success') }))
       .catch(() => toast({ variant: 'destructive', description: t('dashboard.load_error') }));
@@ -83,20 +86,27 @@ export const Dashboard = () => {
   const remaining = data?.progress?.remaining ?? 0;
 
   return (
-    <div className="space-y-6">
-      {/* رأس الترحيب */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card">
-        <div className="text-center py-8">
-          <h1 className="text-4xl font-bold text-gradient-primary mb-2">{t('dashboard.welcome')}</h1>
-          <p className="text-muted-foreground text-lg">{t('dashboard.subtitle')}</p>
-        </div>
+    <div dir={direction} className="min-h-screen flex flex-col gap-6 px-4 sm:px-6 lg:px-8 py-6">
+      {/* ====== Header / Welcome Section ====== */}
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="glass-card text-center py-10 shadow-xl rounded-2xl"
+      >
+        <h1 className="text-3xl sm:text-4xl font-bold text-gradient-primary mb-2">
+          {t('dashboard.welcome')}
+        </h1>
+        <p className="text-muted-foreground text-base sm:text-lg">
+          {t('dashboard.subtitle')}
+        </p>
       </motion.div>
 
-      {/* شبكة الإحصاءات */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* ====== Stats Grid ====== */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
         {loading
           ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-32 glass-card animate-pulse" />
+              <div key={i} className="h-32 glass-card animate-pulse rounded-2xl" />
             ))
           : statsData.map((stat, index) => (
               <motion.div
@@ -110,25 +120,56 @@ export const Dashboard = () => {
             ))}
       </div>
 
-      {/* الرسوم البيانية والنشاط */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* رسم التقدم */}
-        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4 }} className="lg:col-span-2">
-          {loading ? <div className="h-64 glass-card animate-pulse" /> : <ProgressChart data={progressData} overall={overall} remaining={remaining} />}
+      {/* ====== Charts + Activity ====== */}
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+        {/* Progress Chart */}
+        <motion.div
+          initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.3 }}
+          className="xl:col-span-2"
+        >
+          {loading ? (
+            <div className="h-72 glass-card animate-pulse rounded-2xl" />
+          ) : (
+            <ProgressChart data={progressData} overall={overall} remaining={remaining} />
+          )}
         </motion.div>
 
-        {/* موجز النشاط */}
-        <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.5 }}>
-          {loading ? <div className="h-64 glass-card animate-pulse" /> : <ActivityFeed activities={activities} />}
+        {/* Activity Feed */}
+        <motion.div
+          initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          {loading ? (
+            <div className="h-72 glass-card animate-pulse rounded-2xl" />
+          ) : (
+            <ActivityFeed activities={activities} />
+          )}
         </motion.div>
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}>
-        <LiveOperationsMap />
+      {/* ====== Live Map ====== */}
+      <motion.div
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="rounded-2xl overflow-hidden shadow-lg"
+      >
+        {loading ? (
+          <div className="h-96 glass-card animate-pulse" />
+        ) : (
+          <LiveOperationsMap />
+        )}
       </motion.div>
 
-      {error && <p className="text-destructive text-sm">{t('dashboard.load_error')}</p>}
+      {/* ====== Error ====== */}
+      {error && (
+        <p className="text-destructive text-sm text-center mt-4">
+          {t('dashboard.load_error')}
+        </p>
+      )}
     </div>
   );
 };
-
