@@ -17,22 +17,26 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const { direction } = useLanguage();
   const { theme } = useTheme();
   const { width } = useWindowSize();
+
+  // ✅ الحالات (states)
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
 
+  // ✅ تحديد وضع الموبايل أو الديسكتوب
   const isMobile = width < DESKTOP_BREAKPOINT;
   const sidebarWidth = isMobile ? 0 : collapsed ? 80 : 272;
 
+  // ✅ التبديل التلقائي عند تغير حجم الشاشة
   useEffect(() => {
     if (!isMobile) {
       setMobileSidebarOpen(false);
       return;
     }
-
-    // Ensure the desktop collapse state doesn't affect mobile layout.
+    // تعطيل الطي في الموبايل
     setCollapsed(false);
   }, [isMobile]);
 
+  // ✅ محاذاة padding للغة RTL / LTR
   const paddingStyle = useMemo(() => {
     const paddingValue = `${sidebarWidth}px`;
     return direction === 'rtl'
@@ -52,8 +56,9 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       style={{
         '--layout-header-height': '4.25rem',
         '--layout-footer-height': '3.5rem',
-      }}
+      } as React.CSSProperties}
     >
+      {/* ✅ الشريط الجانبي */}
       <Sidebar
         collapsed={collapsed}
         onCollapseChange={setCollapsed}
@@ -62,6 +67,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         setMobileSidebarOpen={setMobileSidebarOpen}
       />
 
+      {/* ✅ الهيكل الرئيسي */}
       <div
         className="flex min-h-screen flex-col"
         style={{
@@ -71,12 +77,14 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       >
         <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
 
-        <main className="flex-1">
+        {/* ✅ المحتوى */}
+        <main className="flex-1 overflow-y-auto">
           <div className="mx-auto w-full max-w-[1440px] px-4 pb-6 pt-8 sm:px-6 sm:pt-10 lg:px-10">
             {children}
           </div>
         </main>
 
+        {/* ✅ الفوتر */}
         <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 sm:px-6 lg:px-10">
           <Footer />
         </div>
