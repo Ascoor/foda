@@ -68,18 +68,11 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
       {/* 🌈 الطبقة الأمامية المتحركة (المحتوى + الهيدر + الفوتر) */}
       <motion.div
-        className="flex min-h-screen flex-col relative z-10"
-        animate={{
-          paddingLeft: direction === 'ltr' ? sidebarWidth : 0,
-          paddingRight: direction === 'rtl' ? sidebarWidth : 0,
-        }}
-        transition={{
-          type: 'spring',
-          stiffness: 90,
-          damping: 20,
-        }}
+        className="relative z-10 flex min-h-screen w-full flex-col"
         style={{
-          transition: 'padding 0.3s ease',
+          paddingInlineStart: direction === 'ltr' ? sidebarWidth : 0,
+          paddingInlineEnd: direction === 'rtl' ? sidebarWidth : 0,
+          transition: 'padding-inline-start 0.3s ease, padding-inline-end 0.3s ease',
         }}
       >
         {/* 🔹 رأس الصفحة */}
@@ -94,8 +87,11 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         {/* 📜 المحتوى */}
         <motion.main
           layout
-          className="flex-1 overflow-y-auto relative z-0"
+          className="relative z-0 flex-1 overflow-y-auto min-h-0"
           transition={{ duration: 0.4 }}
+          style={{
+            scrollbarGutter: 'stable both-edges',
+          }}
         >
           <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 pt-8 sm:px-6 sm:pt-10 lg:px-10">
             <motion.div
