@@ -40,30 +40,30 @@ export const Footer = () => {
       initial="initial"
       animate="animate"
       transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
-      className="glass flex flex-col gap-3 border border-white/10 bg-white/40 p-4 text-xs text-muted-foreground shadow-glass backdrop-blur-md dark:bg-white/5 md:flex-row md:items-center md:justify-between md:gap-6 md:text-sm"
+      className="glass flex w-full flex-col gap-3 rounded-[var(--radius-xl)] border border-white/10 bg-card/75 px-4 py-3 text-sm text-muted-foreground shadow-glass backdrop-blur-md dark:bg-card/20 md:flex-row md:items-center md:justify-between md:gap-6"
       style={{ minHeight: 'var(--layout-footer-height, 3.5rem)' }}
     >
-      <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-primary text-white shadow-glow">
-          <Sparkles className="h-4 w-4" />
+      <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-primary text-white shadow-glow">
+          <Sparkles className="h-5 w-5" />
         </span>
         <div className="flex flex-col">
           <span className="font-medium text-foreground">{rightsText}</span>
-          <span className="text-[11px] md:text-xs text-muted-foreground">{adaptiveLabel}</span>
+          <span className="text-xs text-muted-foreground">{adaptiveLabel}</span>
         </div>
       </div>
 
       <div className={`flex flex-wrap items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
-        <div className="glass-button border-0 px-3 py-2 text-[11px] md:text-xs">
-          <Languages className="h-3.5 w-3.5" />
+        <div className="glass-button border-0 px-4 py-2 text-xs">
+          <Languages className="h-5 w-5" />
           <span>
             {t('common.language', {
               defaultValue: language === 'ar' ? 'اللغة الحالية: العربية' : 'Current language: Arabic',
             })}
           </span>
         </div>
-        <div className="glass-button border-0 px-3 py-2 text-[11px] md:text-xs">
-          <MoonStar className="h-3.5 w-3.5" />
+        <div className="glass-button border-0 px-4 py-2 text-xs">
+          <MoonStar className="h-5 w-5" />
           <span>{themeLabel}</span>
         </div>
       </div>

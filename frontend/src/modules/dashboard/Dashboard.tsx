@@ -86,27 +86,28 @@ export const Dashboard = () => {
   const remaining = data?.progress?.remaining ?? 0;
 
   return (
-    <div dir={direction} className="min-h-screen flex flex-col gap-6 px-4 sm:px-6 lg:px-8 py-6">
+    <div dir={direction} className="space-y-6">
       {/* ====== Header / Welcome Section ====== */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="glass-card text-center py-10 shadow-xl rounded-2xl"
+        className="glass-card text-center shadow-xl"
+        style={{ paddingBlock: 'clamp(var(--spacing-lg), 6vw, var(--spacing-3xl))' }}
       >
         <h1 className="text-3xl sm:text-4xl font-bold text-gradient-primary mb-2">
           {t('dashboard.welcome')}
         </h1>
-        <p className="text-muted-foreground text-base sm:text-lg">
+        <p className="text-base text-muted-foreground sm:text-lg">
           {t('dashboard.subtitle')}
         </p>
       </motion.div>
 
       {/* ====== Stats Grid ====== */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+      <div className="card-grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         {loading
           ? Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-32 glass-card animate-pulse rounded-2xl" />
+              <div key={i} className="glass-card h-32 animate-pulse" />
             ))
           : statsData.map((stat, index) => (
               <motion.div
@@ -121,7 +122,7 @@ export const Dashboard = () => {
       </div>
 
       {/* ====== Charts + Activity ====== */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 items-start">
+      <div className="card-grid grid-cols-1 items-start xl:grid-cols-3">
         {/* Progress Chart */}
         <motion.div
           initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
@@ -130,7 +131,7 @@ export const Dashboard = () => {
           className="xl:col-span-2"
         >
           {loading ? (
-            <div className="h-72 glass-card animate-pulse rounded-2xl" />
+            <div className="glass-card h-72 animate-pulse" />
           ) : (
             <ProgressChart data={progressData} overall={overall} remaining={remaining} />
           )}
@@ -143,7 +144,7 @@ export const Dashboard = () => {
           transition={{ delay: 0.4 }}
         >
           {loading ? (
-            <div className="h-72 glass-card animate-pulse rounded-2xl" />
+            <div className="glass-card h-72 animate-pulse" />
           ) : (
             <ActivityFeed activities={activities} />
           )}
@@ -155,10 +156,10 @@ export const Dashboard = () => {
         initial={{ opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="rounded-2xl overflow-hidden shadow-lg"
+        className="overflow-hidden rounded-[var(--radius-2xl)] shadow-lg"
       >
         {loading ? (
-          <div className="h-96 glass-card animate-pulse" />
+          <div className="glass-card h-96 animate-pulse" />
         ) : (
           <LiveOperationsMap />
         )}

@@ -13,21 +13,22 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const layoutVariables = useMemo(() => ({
-    '--layout-header-height': '4rem',
-    '--layout-footer-height': '3.5rem',
+    '--layout-header-height': 'var(--header-height, 4rem)',
+    '--layout-footer-height': 'var(--footer-height, 3.5rem)',
+    '--sidebar-width': 'var(--sidebar-width-expanded)',
   }) as CSSProperties, []);
 
   return (
     <div
       dir={direction}
-      className="min-h-screen w-full flex flex-col bg-gradient-to-br from-background via-background/90 to-secondary/10 text-foreground"
+      className="flex min-h-screen w-full flex-col bg-gradient-to-br from-background via-background/95 to-secondary/10 text-foreground"
       style={layoutVariables}
     >
       {/* ===== Header ثابت ===== */}
       <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
 
       {/* ===== المحتوى بعد الهيدر ===== */}
-      <div className="flex flex-1 overflow-hidden w-full">
+      <div className="flex w-full flex-1 overflow-hidden">
         {/* Sidebar */}
         <Sidebar
           isMobileSidebarOpen={isMobileSidebarOpen}
@@ -36,15 +37,11 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
         {/* Main content */}
         <main
-          className="flex flex-1 flex-col gap-4 overflow-auto custom-scrollbar p-4 md:p-6"
-          style={{
-            width: 'min(100%, calc(100vw - var(--sidebar-width, 16rem)))',
-            minHeight: 'calc(100vh - var(--layout-header-height, 4rem))',
-            transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-          }}
+          className="custom-scrollbar flex-1 overflow-auto"
+          style={{ minHeight: 'calc(100vh - var(--layout-header-height, 4rem))' }}
         >
-          <div className="flex-1 space-y-4">{children}</div>
-          <div className="mt-auto pt-4">
+          <div className="page-shell layout-content">
+            <div className="page-content">{children}</div>
             <Footer />
           </div>
         </main>

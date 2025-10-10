@@ -29,80 +29,87 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
       dir={direction}
-      className="glass-card sticky top-0 z-50 flex h-16 items-center justify-between px-4 md:px-6 border-x-0 border-t-0 w-full"
+      className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/70 backdrop-blur-xl"
     >
-      {/* Left Section */}
-      <div className={cn('flex items-center gap-3 flex-1', isRTL && 'flex-row-reverse')}>
-        {isMobile && (
-          <Button variant="ghost" size="icon" className="glass-button" onClick={onToggleSidebar}>
-            <Menu className="h-5 w-5" />
-          </Button>
-        )}
-        
-        {/* Logo for mobile */}
-        {isMobile && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className={cn('flex items-center gap-2', isRTL && 'flex-row-reverse')}
-          >
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow pulse-glow">
-              <Vote className="h-4 w-4 text-white" />
-            </div>
-            <span className="font-bold text-sm neon-text" style={{ color: 'hsl(var(--primary))' }}>
-              {t('app.name', { defaultValue: language === 'ar' ? 'فودا' : 'Foda' })}
-            </span>
-          </motion.div>
-        )}
-
-        <div className="relative w-full max-w-md hidden sm:block">
-          <Input
-            placeholder="Search..."
-            className={cn(
-              'glass pl-9 border-0 focus-visible:ring-0',
-              isRTL && 'text-right pr-9 pl-0'
-            )}
-          />
-          <Bell
-            className={cn(
-              'absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground',
-              isRTL ? 'right-3' : 'left-3'
-            )}
-          />
-        </div>
-      </div>
-
-      {/* Right Section */}
-      <div className={cn('flex items-center gap-2', isRTL && 'flex-row-reverse')}>
-        <Button variant="ghost" size="icon" className="glass-button" onClick={toggleTheme}>
-          {theme === 'light' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
-        </Button>
-
-        <Button variant="ghost" size="icon" className="glass-button" onClick={toggleLanguage}>
-          <Globe className="h-4 w-4" />
-        </Button>
-
-        <Button variant="ghost" size="icon" className="glass-button relative">
-          <Bell className="h-4 w-4" />
-          {unreadCount > 0 && (
-            <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-white">
-              {unreadCount}
-            </span>
-          )}
-        </Button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="glass-button">
-              <User className="h-4 w-4" />
+      <div className="page-shell flex h-[var(--layout-header-height)] items-center justify-between gap-4">
+        {/* Left Section */}
+        <div className={cn('flex flex-1 items-center gap-3', isRTL && 'flex-row-reverse')}>
+          {isMobile && (
+            <Button variant="ghost" size="icon" className="glass-button" onClick={onToggleSidebar}>
+              <Menu className="h-5 w-5" />
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="glass-card border-white/20">
-            <DropdownMenuItem>{user?.name ?? 'Profile'}</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive">Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          )}
+
+          {/* Logo for mobile */}
+          {isMobile && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className={cn('flex items-center gap-2', isRTL && 'flex-row-reverse')}
+            >
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary shadow-glow pulse-glow">
+                <Vote className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-sm font-bold neon-text" style={{ color: 'hsl(var(--primary))' }}>
+                {t('app.name', { defaultValue: language === 'ar' ? 'فودا' : 'Foda' })}
+              </span>
+            </motion.div>
+          )}
+
+          <div className="relative hidden w-full max-w-md sm:block">
+            <Input
+              placeholder={t('common.search', { defaultValue: 'Search…' })}
+              className={cn(
+                'glass h-11 border-0 pl-11 text-sm focus-visible:ring-0',
+                isRTL && 'text-right pr-11 pl-0'
+              )}
+            />
+            <Bell
+              className={cn(
+                'pointer-events-none absolute top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground',
+                isRTL ? 'right-3.5' : 'left-3.5'
+              )}
+            />
+          </div>
+        </div>
+
+        {/* Right Section */}
+        <div className={cn('flex items-center gap-2', isRTL && 'flex-row-reverse')}>
+          <Button variant="ghost" size="icon" className="glass-button" onClick={toggleTheme}>
+            {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+          </Button>
+
+          <Button variant="ghost" size="icon" className="glass-button" onClick={toggleLanguage}>
+            <Globe className="h-5 w-5" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="glass-button relative"
+            aria-label={t('notifications.title', { defaultValue: 'Notifications' })}
+          >
+            <Bell className="h-5 w-5" />
+            {unreadCount > 0 && (
+              <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white">
+                {unreadCount}
+              </span>
+            )}
+          </Button>
+
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="glass-button">
+                <User className="h-5 w-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align={isRTL ? 'start' : 'end'} className="glass-card border-white/20">
+              <DropdownMenuItem>{user?.name ?? 'Profile'}</DropdownMenuItem>
+              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem className="text-destructive">Logout</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </motion.header>
   );
