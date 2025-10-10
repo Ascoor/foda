@@ -78,7 +78,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         setMobileSidebarOpen={setMobileSidebarOpen}
       />
         {/* ✅ المحتوى */}
-        <main className="flex-1 overflow-y-auto">
+        <main className="flex-1 overflow-y-auto scrollbar-stable">
           <div className="mx-auto w-full max-w-[1440px] px-4 pb-6 pt-8 sm:px-6 sm:pt-10 lg:px-10">
             {children}
           </div>
