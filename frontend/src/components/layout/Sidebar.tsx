@@ -292,17 +292,22 @@ export const Sidebar = ({
               onClick={() => setMobileSidebarOpen(false)}
             >
               <motion.aside
-                dir={direction}
-                className={cn(
-                  'absolute top-0 flex h-full w-72 flex-col bg-[#1C3F60] px-5 pb-8 pt-6 text-white shadow-2xl',
-                  isRTL ? 'right-0' : 'left-0'
-                )}
-                initial={{ x: isRTL ? 300 : -300 }}
-                animate={{ x: 0 }}
-                exit={{ x: isRTL ? 300 : -300 }}
-                transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-                onClick={(e) => e.stopPropagation()}
-              >
+  dir={direction}
+  className={cn(
+    'fixed top-0 z-40 hidden h-full flex-col transition-[width,background,box-shadow] duration-500 ease-in-out md:flex',
+    'backdrop-blur-lg shadow-2xl border-r border-border/10',
+    'supports-[backdrop-filter]:bg-gradient-to-b supports-[backdrop-filter]:from-background/80 supports-[backdrop-filter]:to-background/40',
+    'dark:from-[#0F1E2E]/90 dark:to-[#162C46]/80 dark:border-[#E7B10A]/20',
+    'bg-gradient-to-b from-white/70 to-white/50 text-foreground/90',
+    isRTL ? 'right-0 border-l' : 'left-0 border-r'
+  )}
+  style={{
+    width: collapsed ? '5rem' : '17rem',
+    '--sidebar-width': collapsed ? '5rem' : '17rem',
+    transition: 'width 0.45s cubic-bezier(0.4, 0, 0.2, 1)',
+  } as React.CSSProperties}
+>
+
                 <div
                   className={cn(
                     'flex items-center justify-between',
