@@ -1,5 +1,45 @@
 @layer base {
   :root {
+    /* Typography */
+    --font-family-base: 'Inter', 'DM Sans', 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-family-rtl: 'Noto Kufi Arabic', 'Tajawal', 'Cairo', 'Poppins', system-ui, sans-serif;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+    --font-size-4xl: clamp(2.25rem, 2rem + 1.5vw, 2.75rem);
+    --line-height-tight: 1.25;
+    --line-height-base: 1.6;
+
+    /* Layout scale */
+    --spacing-2xs: 0.375rem;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 2.5rem;
+    --spacing-3xl: 3rem;
+    --layout-max-width: 1280px;
+    --container-padding-inline: clamp(1rem, 2.5vw, 2.75rem);
+    --header-height: 4rem;
+    --footer-height: 3.5rem;
+    --sidebar-width-expanded: 16rem;
+    --sidebar-width-collapsed: 5rem;
+    --sidebar-width: var(--sidebar-width-expanded);
+
+    /* Icon sizing */
+    --icon-size-sm: 1.25rem;
+    --icon-size-md: 1.5rem;
+    --icon-size-lg: 1.75rem;
+
     /* Brand palette */
     --color-primary: 220 95% 50%;
     --color-primary-glow: 220 85% 65%;
@@ -158,10 +198,10 @@
   }
 
   [dir="rtl"] {
-    font-family: 'Noto Kufi Arabic', 'Tajawal', 'Cairo', 'Poppins', 'Inter', system-ui, sans-serif;
+    font-family: var(--font-family-rtl);
   }
 
   [dir="ltr"] {
-    font-family: 'Inter', 'DM Sans', 'Poppins', 'Cairo', 'Tajawal', system-ui, sans-serif;
+    font-family: var(--font-family-base);
   }
 }

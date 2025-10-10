@@ -56,7 +56,7 @@ export const StatusBadge = ({ status, variant = 'default', className }: StatusBa
     <ShadBadge
       variant="outline"
       className={cn(
-        'font-medium transition-colors',
+        'capitalize font-medium tracking-tight transition-colors',
         statusClass,
         className
       )}
