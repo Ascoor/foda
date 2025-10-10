@@ -27,9 +27,9 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
     <motion.header
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
       dir={direction}
-      className="glass-card sticky top-0 z-40 flex h-16 items-center justify-between px-4 md:px-6 border-x-0 border-t-0"
+      className="glass-card sticky top-0 z-50 flex h-16 items-center justify-between px-4 md:px-6 border-x-0 border-t-0 w-full"
     >
       {/* Left Section */}
       <div className={cn('flex items-center gap-3 flex-1', isRTL && 'flex-row-reverse')}>

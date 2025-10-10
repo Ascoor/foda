@@ -47,6 +47,10 @@ export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: S
   const isMobile = width < 768;
   const [collapsed, setCollapsed] = useState(false);
 
+  // Widths
+  const sidebarWidth = collapsed ? '5rem' : '16rem';
+  const sidebarWidthMobile = '16rem';
+
   const navigationItems: NavigationItem[] = useMemo(() => {
     const items: NavigationItem[] = [
       { key: 'dashboard', icon: LayoutDashboard, path: '/dashboard' },
@@ -76,46 +80,50 @@ export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: S
 
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.style.setProperty(
-        '--sidebar-width',
-        collapsed ? '5rem' : '16rem'
-      );
+      document.documentElement.style.setProperty('--sidebar-width', sidebarWidth);
     }
-  }, [collapsed]);
+  }, [sidebarWidth]);
 
   const slideDir = isRTL ? 300 : -300;
-  const sidebarSide = isRTL ? 'right-0 border-s' : 'left-0 border-e';
+  const sidebarSide = isRTL ? 'end-0 border-s' : 'start-0 border-e';
 
   return (
     <>
       {/* ========== Desktop Sidebar ========== */}
       {!isMobile && (
         <motion.aside
-          key={direction}
+          key={`sidebar-${direction}-${collapsed}`}
           initial={{ x: isRTL ? 100 : -100, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           dir={direction}
           className={cn(
-            'glass-card sticky top-16 z-40 h-[calc(100vh-4rem)] flex flex-col justify-between border-y-0 border-white/10 backdrop-blur-xl transition-all duration-300',
+            'glass-card sticky top-16 z-30 h-[calc(100vh-4rem)] flex flex-col border-y-0 border-white/10 backdrop-blur-xl',
             sidebarSide
           )}
-          style={{ width: collapsed ? '5rem' : '16rem' }}
+          style={{ 
+            width: sidebarWidth,
+            transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
         >
           {/* ==== Header ==== */}
-          <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
-            <AnimatePresence>
+          <div className={cn(
+            "flex items-center h-16 px-4 border-b border-white/10",
+            collapsed ? "justify-center" : "justify-between"
+          )}>
+            <AnimatePresence mode="wait">
               {!collapsed && (
                 <motion.div
-                  initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: isRTL ? 20 : -20 }}
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: 'auto' }}
+                  exit={{ opacity: 0, width: 0 }}
+                  transition={{ duration: 0.2 }}
                   className={cn('flex items-center gap-3', isRTL && 'flex-row-reverse')}
                 >
-                  <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow">
+                  <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center shadow-glow pulse-glow">
                     <Vote className="h-5 w-5 text-white" />
                   </div>
-                  <span className="font-bold text-lg neon-text" style={{ color: 'hsl(var(--primary))' }}>
+                  <span className="font-bold text-lg neon-text whitespace-nowrap" style={{ color: 'hsl(var(--primary))' }}>
                     {t('app.name', { defaultValue: language === 'ar' ? 'فودا' : 'Foda' })}
                   </span>
                 </motion.div>
@@ -127,7 +135,7 @@ export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: S
               variant="ghost"
               size="icon"
               onClick={toggleCollapse}
-              className="glass-button"
+              className="glass-button shrink-0"
               aria-label={t('navigation.toggleSidebar', { defaultValue: 'Toggle sidebar' })}
             >
               {collapsed
@@ -156,47 +164,51 @@ export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: S
                 const active = isActive(item.path);
 
                 return (
-                  <motion.li key={item.key} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                  <motion.li 
+                    key={item.key} 
+                    whileHover={{ scale: 1.02 }} 
+                    whileTap={{ scale: 0.98 }}
+                  >
                     <NavLink
                       to={item.path}
-                      className={cn(
+                      className={({ isActive }) => cn(
                         'group relative flex items-center rounded-lg px-3 py-2.5 transition-all duration-200 font-medium',
-                        active
+                        isActive
                           ? 'bg-gradient-primary text-white shadow-glow'
-                          : 'text-foreground hover:bg-white/10 hover:text-primary',
-                        collapsed ? 'justify-center' : isRTL ? 'flex-row-reverse gap-3' : 'flex-row gap-3'
+                          : 'text-foreground hover:bg-muted/50 hover:text-primary',
+                        collapsed ? 'justify-center' : 'gap-3',
+                        !collapsed && isRTL && 'flex-row-reverse'
                       )}
                     >
                       {/* Icon */}
                       <Icon
                         className={cn(
                           'h-5 w-5 shrink-0 transition-transform duration-200',
-                          active && 'scale-110',
-                          isRTL && 'order-2'
+                          active && 'scale-110'
                         )}
                       />
 
                       {/* Label */}
-                      {!collapsed && (
-                        <motion.span
-                          initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: isRTL ? 20 : -20 }}
-                          className={cn(
-                            'truncate text-sm leading-tight',
-                            isRTL ? 'text-right pr-1' : 'text-left pl-1'
-                          )}
-                        >
-                          {t(`navigation.${item.key}`, { defaultValue: item.key })}
-                        </motion.span>
-                      )}
+                      <AnimatePresence mode="wait">
+                        {!collapsed && (
+                          <motion.span
+                            initial={{ opacity: 0, width: 0 }}
+                            animate={{ opacity: 1, width: 'auto' }}
+                            exit={{ opacity: 0, width: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="truncate text-sm leading-tight whitespace-nowrap"
+                          >
+                            {t(`navigation.${item.key}`, { defaultValue: item.key })}
+                          </motion.span>
+                        )}
+                      </AnimatePresence>
 
                       {/* Tooltip عند الطي */}
                       {collapsed && (
                         <div
                           className={cn(
-                            'pointer-events-none absolute top-1/2 z-50 -translate-y-1/2 whitespace-nowrap rounded bg-foreground px-2 py-1 text-xs text-background opacity-0 transition-opacity group-hover:opacity-100',
-                            isRTL ? 'right-full mr-2' : 'left-full ml-2'
+                            'pointer-events-none absolute top-1/2 z-50 -translate-y-1/2 whitespace-nowrap rounded-lg glass-card px-3 py-1.5 text-xs opacity-0 transition-opacity group-hover:opacity-100',
+                            isRTL ? 'end-full me-2' : 'start-full ms-2'
                           )}
                         >
                           {t(`navigation.${item.key}`, { defaultValue: item.key })}
@@ -210,9 +222,18 @@ export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: S
           </nav>
 
           {/* ==== Footer ==== */}
-          <div className="p-4 border-t border-white/10 text-center text-xs text-muted-foreground">
-            {!collapsed && (language === 'ar' ? 'إصدار ٢.٠' : 'Version 2.0')}
-          </div>
+          <AnimatePresence mode="wait">
+            {!collapsed && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="p-4 border-t border-white/10 text-center text-xs text-muted-foreground"
+              >
+                {language === 'ar' ? 'إصدار ٢.٠' : 'Version 2.0'}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.aside>
       )}
 
@@ -234,9 +255,10 @@ export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: S
                 transition={{ duration: 0.3 }}
                 dir={direction}
                 className={cn(
-                  'glass-card absolute top-0 h-full w-64 flex flex-col p-4 shadow-xl',
-                  isRTL ? 'right-0' : 'left-0'
+                  'glass-card absolute top-0 h-full flex flex-col p-4 shadow-xl',
+                  isRTL ? 'end-0' : 'start-0'
                 )}
+                style={{ width: sidebarWidthMobile }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex justify-between items-center mb-4">
@@ -262,16 +284,16 @@ export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: S
                         key={item.key}
                         to={item.path}
                         onClick={() => setMobileSidebarOpen && setMobileSidebarOpen(false)}
-                        className={cn(
-                          'flex items-center gap-3 rounded-lg px-3 py-2 transition-all duration-200',
-                          active
-                            ? 'bg-gradient-primary text-white'
-                            : 'text-foreground hover:bg-white/10 hover:text-primary',
-                          isRTL ? 'flex-row-reverse text-right' : 'flex-row text-left'
+                        className={({ isActive }) => cn(
+                          'flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200 font-medium',
+                          isActive
+                            ? 'bg-gradient-primary text-white shadow-glow'
+                            : 'text-foreground hover:bg-muted/50 hover:text-primary',
+                          isRTL && 'flex-row-reverse'
                         )}
                       >
-                        <Icon className="h-5 w-5" />
-                        <span className="font-medium">
+                        <Icon className="h-5 w-5 shrink-0" />
+                        <span className="truncate">
                           {t(`navigation.${item.key}`, { defaultValue: item.key })}
                         </span>
                       </NavLink>

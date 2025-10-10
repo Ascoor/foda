@@ -14,13 +14,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <div
       dir={direction}
-      className="min-h-screen flex flex-col bg-gradient-to-br from-background via-background/90 to-secondary/10 text-foreground"
+      className="min-h-screen w-full flex flex-col bg-gradient-to-br from-background via-background/90 to-secondary/10 text-foreground"
     >
       {/* ===== Header ثابت ===== */}
       <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
 
       {/* ===== المحتوى بعد الهيدر ===== */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden w-full">
         {/* Sidebar */}
         <Sidebar
           isMobileSidebarOpen={isMobileSidebarOpen}
@@ -28,7 +28,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         />
 
         {/* Main content */}
-        <main className="flex-1 overflow-auto custom-scrollbar p-6 mt-0">
+        <main 
+          className="flex-1 overflow-auto custom-scrollbar p-4 md:p-6"
+          style={{
+            width: 'calc(100vw - var(--sidebar-width, 16rem))',
+            transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        >
           {children}
         </main>
       </div>
