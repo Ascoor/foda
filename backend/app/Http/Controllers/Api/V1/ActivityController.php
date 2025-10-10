@@ -6,10 +6,12 @@ use App\Events\ActivityCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ActivityResource;
 use App\Models\Activity;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 
 class ActivityController extends Controller
 {
@@ -113,7 +115,7 @@ class ActivityController extends Controller
 
         $cacheKey = sprintf('activities.recent.%d', $limit);
 
-        $features = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($limit) {
+        $featuresResolver = function () use ($limit) {
             return Activity::query()
                 ->with('area')
                 ->whereNotNull('latitude')
@@ -145,7 +147,18 @@ class ActivityController extends Controller
                     ];
                 })
                 ->values();
-        });
+        };
+
+        try {
+            $features = Cache::remember($cacheKey, now()->addMinutes(5), $featuresResolver);
+        } catch (QueryException $exception) {
+            report($exception);
+            $features = collect();
+        }
+
+        if ($features instanceof Collection) {
+            $features = $features->all();
+        }
 
         return response()->json([
             'type' => 'FeatureCollection',
