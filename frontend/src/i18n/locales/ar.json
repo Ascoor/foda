@@ -33,7 +33,8 @@
     "close": "إغلاق",
 
     "all": "الكل",
-    "no_data": "لا توجد بيانات"
+    "no_data": "لا توجد بيانات",
+    "language": "اللغة"
   },
   "navigation": {
     "toggleSidebar": "تبديل الشريط الجانبي",

@@ -41,36 +41,36 @@
     --icon-size-lg: 1.75rem;
 
     /* Brand palette */
-    --color-primary: 220 95% 50%;
-    --color-primary-glow: 220 85% 65%;
-    --color-primary-foreground: 0 0% 100%;
+    --color-primary: 209 55% 24%;
+    --color-primary-glow: 209 48% 38%;
+    --color-primary-foreground: 210 40% 96%;
 
-    --color-secondary: 15 95% 55%;
-    --color-secondary-glow: 15 85% 70%;
-    --color-secondary-foreground: 0 0% 100%;
+    --color-secondary: 45 92% 47%;
+    --color-secondary-glow: 45 92% 60%;
+    --color-secondary-foreground: 35 94% 18%;
 
-    --color-accent: 280 75% 60%;
-    --color-accent-glow: 280 65% 75%;
-    --color-accent-foreground: 0 0% 100%;
+    --color-accent: 200 70% 45%;
+    --color-accent-glow: 200 70% 58%;
+    --color-accent-foreground: 210 40% 96%;
 
-    --color-surface: 210 25% 98%;
-    --color-surface-secondary: 210 20% 95%;
-    --color-surface-accent: 210 30% 92%;
+    --color-surface: 210 40% 98%;
+    --color-surface-secondary: 210 35% 96%;
+    --color-surface-accent: 210 28% 92%;
 
-    --color-background: 220 15% 97%;
-    --color-background-secondary: 220 20% 95%;
-    --color-foreground: 220 15% 15%;
+    --color-background: 210 42% 97%;
+    --color-background-secondary: 210 34% 95%;
+    --color-foreground: 215 32% 18%;
 
-    --color-text-primary: 220 15% 15%;
-    --color-text-secondary: 220 10% 45%;
-    --color-text-muted: 220 10% 65%;
+    --color-text-primary: 215 32% 18%;
+    --color-text-secondary: 215 20% 38%;
+    --color-text-muted: 215 15% 56%;
 
-    --color-border: 220 15% 88%;
-    --color-input: 220 15% 90%;
-    --color-ring: 240 100% 45%;
+    --color-border: 210 30% 88%;
+    --color-input: 210 30% 90%;
+    --color-ring: 209 55% 34%;
 
-    --color-muted: 220 15% 92%;
-    --color-muted-foreground: 220 10% 45%;
+    --color-muted: 210 32% 92%;
+    --color-muted-foreground: 215 18% 42%;
 
     --color-success: 120 100% 35%;
     --color-success-foreground: 0 0% 100%;
@@ -143,58 +143,58 @@
     --destructive: var(--color-destructive);
     --destructive-foreground: var(--color-destructive-foreground);
 
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-glow)));
-    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    --gradient-glow: radial-gradient(ellipse at center, hsl(var(--primary-glow) / 0.3), transparent);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
+    --gradient-glass: linear-gradient(135deg, rgba(28, 63, 96, 0.08), rgba(231, 177, 10, 0.06));
+    --gradient-glow: radial-gradient(ellipse at top, hsl(var(--secondary) / 0.25), transparent 65%);
 
-    --neon-glow: 0 0 20px rgba(69, 243, 255, 0.4);
-    --neon-glow-secondary: 0 0 20px rgba(168, 85, 247, 0.4);
-    --neon-glow-accent: 0 0 20px rgba(251, 146, 60, 0.4);
+    --neon-glow: 0 0 20px rgba(28, 63, 96, 0.25);
+    --neon-glow-secondary: 0 0 20px rgba(231, 177, 10, 0.25);
+    --neon-glow-accent: 0 0 20px rgba(59, 130, 246, 0.25);
 
-    --hover-background: rgba(69, 243, 255, 0.05);
-    --active-background: rgba(69, 243, 255, 0.1);
-    --hover-glow: 0 0 16px rgba(69, 243, 255, 0.3);
+    --hover-background: rgba(231, 177, 10, 0.15);
+    --active-background: rgba(28, 63, 96, 0.2);
+    --hover-glow: 0 0 16px rgba(231, 177, 10, 0.35);
 
   }
 
   .dark {
-    --color-background: 222 47% 6%;
+    --color-background: 220 60% 6%;
     --color-foreground: 210 40% 95%;
-    --color-surface: 221 39% 11%;
-    --color-surface-secondary: 221 39% 11%;
-    --color-surface-accent: 221 39% 16%;
+    --color-surface: 216 52% 10%;
+    --color-surface-secondary: 216 46% 12%;
+    --color-surface-accent: 216 40% 16%;
 
-    --color-primary: 217 91% 60%;
-    --color-primary-glow: 217 91% 70%;
-    --color-primary-foreground: 222 84% 4.9%;
+    --color-primary: 209 70% 45%;
+    --color-primary-glow: 209 70% 55%;
+    --color-primary-foreground: 210 50% 96%;
 
-    --color-secondary: 262 83% 58%;
-    --color-secondary-glow: 262 83% 68%;
-    --color-secondary-foreground: 210 40% 98%;
+    --color-secondary: 45 90% 56%;
+    --color-secondary-glow: 45 90% 64%;
+    --color-secondary-foreground: 35 90% 20%;
 
-    --color-accent: 30 100% 60%;
-    --color-accent-glow: 30 100% 70%;
-    --color-accent-foreground: 222 84% 4.9%;
+    --color-accent: 200 68% 52%;
+    --color-accent-glow: 200 68% 60%;
+    --color-accent-foreground: 210 50% 96%;
 
     --color-success: 142 76% 36%;
     --color-destructive: 0 62.8% 50%;
     --color-destructive-foreground: 210 40% 98%;
 
-    --color-muted: 215 27.9% 16.9%;
-    --color-muted-foreground: 215 20.2% 65.1%;
+    --color-muted: 215 30% 18%;
+    --color-muted-foreground: 215 20% 64%;
 
-    --color-border: 215 27.9% 16.9%;
-    --color-input: 215 27.9% 16.9%;
-    --color-ring: 217 91% 60%;
+    --color-border: 215 32% 18%;
+    --color-input: 215 32% 20%;
+    --color-ring: 209 70% 45%;
 
-    --glass-background: rgba(10, 15, 26, 0.92);
-    --glass-border: rgba(69, 243, 255, 0.2);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(69, 243, 255, 0.1);
-    --gradient-glass: linear-gradient(135deg, rgba(69, 243, 255, 0.08), rgba(168, 85, 247, 0.03));
-    --hover-background: rgba(69, 243, 255, 0.05);
-    --active-background: rgba(69, 243, 255, 0.1);
-    --hover-glow: 0 0 16px rgba(69, 243, 255, 0.3);
+    --glass-background: rgba(12, 23, 38, 0.9);
+    --glass-border: rgba(231, 177, 10, 0.25);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 20px rgba(231, 177, 10, 0.15);
+    --gradient-glass: linear-gradient(135deg, rgba(28, 63, 96, 0.35), rgba(231, 177, 10, 0.15));
+    --hover-background: rgba(231, 177, 10, 0.12);
+    --active-background: rgba(28, 63, 96, 0.35);
+    --hover-glow: 0 0 16px rgba(231, 177, 10, 0.4);
   }
 
   [dir="rtl"] {

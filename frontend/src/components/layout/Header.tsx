@@ -29,9 +29,14 @@ export const Header = ({ onToggleSidebar }: HeaderProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
       dir={direction}
-      className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/70 backdrop-blur-xl"
+      className={cn(
+        'sticky top-0 z-50 w-full border-b backdrop-blur-xl transition-colors duration-300',
+        theme === 'dark'
+          ? 'border-white/10 bg-[#0b1a2a]/90 text-white'
+          : 'border-[#1C3F60]/10 bg-white/85 text-[#1C3F60] shadow-sm'
+      )}
     >
-      <div className="page-shell flex h-[var(--layout-header-height)] items-center justify-between gap-4">
+      <div className="mx-auto flex h-[var(--layout-header-height)] w-full max-w-[1440px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-10">
         {/* Left Section */}
         <div className={cn('flex flex-1 items-center gap-3', isRTL && 'flex-row-reverse')}>
           {isMobile && (

@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type Language = 'ar' | 'en';
@@ -29,15 +29,18 @@ interface LanguageProviderProps {
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   const { i18n, t } = useTranslation();
   const [language, setLanguageState] = useState<Language>(() => {
-    const stored = localStorage.getItem('language');
+    if (typeof window === 'undefined') {
+      return 'ar';
+    }
+
+    const stored = window.localStorage.getItem('language');
     return (stored as Language) || 'ar';
   });
 
-  const direction: Direction = language === 'ar' ? 'rtl' : 'ltr';
+  const direction = useMemo<Direction>(() => (language === 'ar' ? 'rtl' : 'ltr'), [language]);
 
   const toggleLanguage = () => {
-    const newLang = language === 'ar' ? 'en' : 'ar';
-    setLanguageState(newLang);
+    setLanguageState((prev) => (prev === 'ar' ? 'en' : 'ar'));
   };
 
   const setLanguage = (newLang: Language) => {
@@ -46,20 +49,35 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
 
   useEffect(() => {
     i18n.changeLanguage(language);
-    document.documentElement.setAttribute('dir', direction);
-    document.documentElement.setAttribute('lang', language);
-    localStorage.setItem('language', language);
-  }, [language, direction, i18n]);
+  }, [i18n, language]);
 
-  return (
-    <LanguageContext.Provider value={{ 
-      language, 
-      direction, 
-      toggleLanguage, 
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return;
+    }
+
+    document.dir = direction;
+    document.documentElement.lang = language;
+  }, [direction, language]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    window.localStorage.setItem('language', language);
+  }, [language]);
+
+  const value = useMemo(
+    () => ({
+      language,
+      direction,
+      toggleLanguage,
       setLanguage,
-      t
-    }}>
-      {children}
-    </LanguageContext.Provider>
+      t,
+    }),
+    [direction, language, t]
   );
+
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
