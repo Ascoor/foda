@@ -196,11 +196,14 @@ export const Sidebar = ({
      >
        {/* ====== زر الفتح/الإغلاق ثابت على الحافة ====== */}
        <motion.div
-         className={cn(
-           'absolute top-1/2 -translate-y-1/2 z-50',
-           isRTL ? 'left-0 translate-x-1/2' : 'right-0 -translate-x-1/2'
-         )}
-         transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+    className={cn(
+      'absolute top-1/2 -translate-y-1/2 z-50',
+      // يطفو خارج الشريط
+      isRTL
+        ? '-left-5 translate-x-full' // RTL: للخارج يسار
+        : '-right-5 -translate-x-full' // LTR: للخارج يمين
+    )}
+    transition={{ type: 'spring', stiffness: 200, damping: 18 }} 
        >
          <Button
            variant="ghost"
