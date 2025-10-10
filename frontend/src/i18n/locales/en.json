@@ -1,4 +1,8 @@
 {
+  "app": {
+    "name": "Foda",
+    "tagline": "Smart Electoral Campaign Management System"
+  },
   "common": {
     "loading": "جاري التحميل...",
     "save": "حفظ",
@@ -32,6 +36,8 @@
     "no_data": "لا توجد بيانات"
   },
   "navigation": {
+    "toggleSidebar": "Toggle sidebar",
+    "main": "Main navigation",
     "dashboard": "Dashboard",
     "elections": "Elections",
     "geo_areas": "Geographic Areas",

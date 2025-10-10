@@ -85,8 +85,12 @@ const getZoneCenter = (zones: ElectoralZone[]): [number, number] => {
   zones.forEach((zone) => {
     const polygons = getLeafletPolygons(zone);
     polygons.forEach((polygon) => {
-      polygon.forEach(([lat, lng]) => {
-        points.push([lat, lng]);
+      polygon.forEach((ring) => {
+        ring.forEach((coord) => {
+          if (Array.isArray(coord) && coord.length >= 2) {
+            points.push([coord[0] as number, coord[1] as number]);
+          }
+        });
       });
     });
   });
