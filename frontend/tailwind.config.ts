@@ -1,8 +1,14 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
-export default {
+const config: Config = {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -82,16 +88,6 @@ export default {
         sans: ["var(--font-family-base)", "system-ui", "sans-serif"],
         rtl: ["var(--font-family-rtl)", "system-ui", "sans-serif"],
       },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "fade-in": "fade-in 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
-        "slide-in": "slide-in 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
-        "scale-in": "scale-in 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-        "glow-pulse": "glow-pulse 2s ease-in-out infinite alternate",
-        float: "float 3s ease-in-out infinite",
-        counter: "counter 2s ease-out",
-      },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
@@ -107,32 +103,38 @@ export default {
           to: { height: "0" },
         },
         "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
+          "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
-        "slide-in": {
-          "0%": { opacity: "0", transform: "translateX(-20px)" },
-          "100%": { opacity: "1", transform: "translateX(0)" },
+        "fade-out": {
+          "0%": { opacity: "1", transform: "translateY(0)" },
+          "100%": { opacity: "0", transform: "translateY(10px)" },
         },
         "scale-in": {
-          "0%": { opacity: "0", transform: "scale(0.9)" },
-          "100%": { opacity: "1", transform: "scale(1)" },
-        },
-        "glow-pulse": {
-          "0%": { boxShadow: "0 0 20px hsl(var(--primary-glow) / 0.3)" },
-          "100%": { boxShadow: "0 0 40px hsl(var(--primary-glow) / 0.6)" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        counter: {
-          "0%": { transform: "scale(0.8)", opacity: "0" },
-          "50%": { transform: "scale(1.1)" },
+          "0%": { transform: "scale(0.98)", opacity: "0" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.7" },
+        },
+        "slide-in": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.4s ease-out",
+        "fade-out": "fade-out 0.4s ease-out",
+        "scale-in": "scale-in 0.35s ease-out",
+        "pulse-glow": "pulse-glow 3s infinite",
+        "slide-in": "slide-in 0.4s ease-out",
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
+  plugins: [tailwindcssAnimate],
+};
+
+export default config;

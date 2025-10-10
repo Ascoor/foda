@@ -1,7 +1,12 @@
 import { Fragment, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Vote, X } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Vote,
+  X,
+} from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
@@ -33,13 +38,13 @@ export const Sidebar = ({
   const { user } = useAuth();
   const isRTL = direction === 'rtl';
 
-  // 🧩 صلاحيات المستخدم
+  // 🎯 صلاحيات المستخدم
   const availableRoles = useMemo(() => {
     const rawRoles = user?.roleNames ?? user?.roles?.map((r) => r.name) ?? [];
     return new Set(rawRoles.map((r) => r.toLowerCase()));
   }, [user]);
 
-  // 🧭 تصفية العناصر حسب الدور
+  // 🔍 تصفية العناصر بناءً على الأدوار
   const filteredItems = useMemo(
     () =>
       sidebarItems.filter((item) => {
@@ -49,19 +54,24 @@ export const Sidebar = ({
     [availableRoles]
   );
 
-  // 🏷️ ترجمة العناوين
+  // 🌍 ترجمة العنصر
   const renderNavItem = (key: string) =>
     t(`navigation.${key}`, { defaultValue: key.replace('_', ' ') });
-
-  // 🎨 تنسيق العناصر على الديسكتوب
   const renderDesktopNav = () => (
     <TooltipProvider delayDuration={100}>
       <nav
-        className="flex-1 overflow-y-auto px-3 pb-6"
-        aria-label={t('navigation.main', { defaultValue: 'Main navigation' })}
+        className={cn(
+          'flex-1 overflow-y-auto px-3 pb-6 transition-all duration-300',
+          isRTL ? 'pr-4 text-right' : 'pl-4 text-left'
+        )}
         dir={direction}
       >
-        <ul className="flex flex-col gap-1.5">
+        <ul
+          className={cn(
+            'flex flex-col gap-1.5',
+            isRTL ? 'items-end justify-end' : 'items-start justify-start'
+          )}
+        >
           {filteredItems.map((item) => {
             const Icon = item.icon;
             const content = (
@@ -69,27 +79,37 @@ export const Sidebar = ({
                 to={item.path}
                 className={({ isActive }) =>
                   cn(
-                    'group relative flex items-center rounded-xl px-3 py-3 text-sm font-medium transition-colors duration-200',
+                    'group relative flex items-center rounded-xl px-3 py-3 text-sm font-medium transition-colors duration-200 w-full',
                     collapsed && 'justify-center px-0',
                     isActive
                       ? 'bg-[#E7B10A]/15 text-white'
                       : 'text-white/80 hover:bg-[#E7B10A]/20 hover:text-white',
-                    isRTL && !collapsed ? 'flex-row-reverse gap-3' : 'gap-3'
+                    isRTL
+                      ? 'flex-row-reverse justify-end text-right'
+                      : 'flex-row justify-start text-left'
                   )
                 }
               >
-                {/* الأيقونة */}
-                <Icon className="h-5 w-5 shrink-0" aria-hidden />
-
-                {/* النص */}
-                {!collapsed && (
-                  <span className="truncate">{renderNavItem(item.key)}</span>
+                {isRTL ? (
+                  <>
+                    <Icon className="h-5 w-5 shrink-0 order-last ml-2" />
+                    {!collapsed && (
+                      <span className="truncate text-sm">{renderNavItem(item.key)}</span>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <Icon className="h-5 w-5 shrink-0 order-first mr-2" />
+                    {!collapsed && (
+                      <span className="truncate text-sm">{renderNavItem(item.key)}</span>
+                    )}
+                  </>
                 )}
               </NavLink>
             );
-
+  
             return (
-              <li key={item.key}>
+              <li key={item.key} className={cn(isRTL && 'w-full flex justify-end')}>
                 {collapsed ? (
                   <Tooltip>
                     <TooltipTrigger asChild>{content}</TooltipTrigger>
@@ -107,8 +127,9 @@ export const Sidebar = ({
       </nav>
     </TooltipProvider>
   );
+  
 
-  // 🎨 على الموبايل
+  // 📱 شريط الموبايل
   const renderMobileNav = () => (
     <nav
       className="mt-6 flex flex-col gap-2"
@@ -132,7 +153,7 @@ export const Sidebar = ({
               )
             }
           >
-            <Icon className="h-5 w-5" aria-hidden />
+            <Icon className="h-5 w-5" />
             <span className="truncate">{renderNavItem(item.key)}</span>
           </NavLink>
         );
@@ -140,14 +161,15 @@ export const Sidebar = ({
     </nav>
   );
 
-  // 🏷️ العلامة التجارية والإصدار
+  // 🏷️ بيانات العلامة والإصدار
   const brandLabel = language === 'ar' ? 'فودا برو' : 'Foda Pro';
   const versionLabel = language === 'ar' ? 'الإصدار 1.0.0' : 'Version 1.0.0';
   const expandedWidth = collapsed ? '5rem' : '17rem';
 
+  // 🧩 واجهة الشريط الكامل
   return (
     <Fragment>
-      {/* 💻 Sidebar Desktop */}
+      {/* 💻 Desktop Sidebar */}
       {!isMobile && (
         <aside
           dir={direction}
@@ -159,38 +181,37 @@ export const Sidebar = ({
           )}
           style={{ width: expandedWidth }}
         >
-          {/* 🧩 رأس الشريط */}
+          {/* 🧩 الرأس */}
           <div
             className={cn(
-              'flex h-20 items-center px-4',
-              collapsed ? 'justify-center' : 'justify-between',
+              'flex h-20 items-center px-4 justify-between',
               isRTL && 'flex-row-reverse'
             )}
           >
             <div
               className={cn(
-                'flex items-center gap-3',
+                'flex items-center  gap-3',
                 collapsed && 'gap-0',
                 isRTL && !collapsed && 'flex-row-reverse'
               )}
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
-                <Vote className="h-5 w-5" aria-hidden />
-              </div>
               {!collapsed && (
                 <span className="text-lg font-semibold tracking-wide">
                   {brandLabel}
                 </span>
               )}
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
+                <Vote className="h-5 w-5" />
+              </div>
             </div>
 
-            {/* 🔁 زر الفتح والإغلاق (السهم) */}
+            {/* 🔁 زر الطي */}
             <Button
               variant="ghost"
               size="icon"
               className={cn(
-                'h-10 w-10 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-[#E7B10A]/20',
-                isRTL ? 'order-first' : 'order-last'
+                'h-10 w-10 rounded-xl  border border-white/20 bg-white/5 text-white hover:bg-[#E7B10A]/20',
+                isRTL ? 'order-first -ml-4' : 'order-last '
               )}
               onClick={() => onCollapseChange(!collapsed)}
             >
@@ -210,6 +231,7 @@ export const Sidebar = ({
 
           {renderDesktopNav()}
 
+          {/* ⬇️ الفوتر */}
           <div
             className={cn(
               'px-4 pb-6 text-xs text-white/65',
@@ -225,7 +247,7 @@ export const Sidebar = ({
         </aside>
       )}
 
-      {/* 📱 Sidebar Mobile */}
+      {/* 📱 Mobile Sidebar */}
       {isMobile && (
         <AnimatePresence>
           {isMobileSidebarOpen && (
@@ -254,11 +276,9 @@ export const Sidebar = ({
                     isRTL && 'flex-row-reverse'
                   )}
                 >
-                  <div
-                    className={cn('flex items-center gap-3', isRTL && 'flex-row-reverse')}
-                  >
+                  <div className={cn('flex items-center gap-3', isRTL && 'flex-row-reverse')}>
                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E7B10A] text-[#1C3F60] shadow-md">
-                      <Vote className="h-5 w-5" aria-hidden />
+                      <Vote className="h-5 w-5" />
                     </div>
                     <span className="text-base font-semibold">{brandLabel}</span>
                   </div>

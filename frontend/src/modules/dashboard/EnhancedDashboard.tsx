@@ -70,7 +70,6 @@ const defaultDashboard: DashboardResponse = {
 export const EnhancedDashboard = () => {
   const { t, i18n } = useTranslation();
   const { direction, language } = useLanguage();
-
   const {
     data,
     loading,
@@ -78,7 +77,6 @@ export const EnhancedDashboard = () => {
     execute: refetchDashboard,
   } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
 
-  // 🟢 تحميل البيانات عند الفتح
   useEffect(() => {
     refetchDashboard()
       .then(() => toast({ description: t('dashboard.load_success') }))
@@ -87,10 +85,9 @@ export const EnhancedDashboard = () => {
       );
   }, [refetchDashboard, t]);
 
-  // 🧩 تأمين البيانات
   const dashboardData = data ?? defaultDashboard;
 
-  // 📊 مؤشرات الإحصائيات
+  // 🧮 الإحصائيات
   const statsMetrics: StatMetric[] = useMemo(() => {
     const config = [
       { key: 'total_elections', icon: Vote, color: 'primary' as const },
@@ -114,7 +111,7 @@ export const EnhancedDashboard = () => {
     });
   }, [dashboardData?.stats]);
 
-  // 📈 بيانات التقدم
+  // ⏳ التقدم
   const progressData = useMemo(
     () => [
       {
@@ -138,16 +135,10 @@ export const EnhancedDashboard = () => {
         color: 'success' as const,
       },
     ],
-    [
-      dashboardData?.progress?.registration,
-      dashboardData?.progress?.verification,
-      dashboardData?.progress?.campaign,
-      dashboardData?.progress?.voting,
-      t,
-    ]
+    [dashboardData?.progress, t]
   );
 
-  // 🕒 الأنشطة الأخيرة
+  // 🕓 الأنشطة
   const activities = useMemo(
     () =>
       (dashboardData?.activities ?? []).map((activity) => ({
@@ -157,26 +148,21 @@ export const EnhancedDashboard = () => {
     [dashboardData?.activities]
   );
 
-  // 📊 متوسط المشاركة
+  // 📈 متوسط المشاركة
   const averageTurnout = useMemo(() => {
     const turnoutArray = dashboardData?.turnout ?? [];
     if (!turnoutArray.length) return 0;
-    const total = turnoutArray.reduce((sum, v) => sum + v, 0);
-    return total / turnoutArray.length;
+    return turnoutArray.reduce((sum, v) => sum + v, 0) / turnoutArray.length;
   }, [dashboardData?.turnout]);
 
   const refreshLabel = language === 'ar' ? 'تحديث الآن' : 'Refresh insights';
 
-  // 🧭 عرض واجهة فارغة في حال لا توجد بيانات
+  // 🧭 واجهة فارغة
   if (!loading && !data && !error) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-muted-foreground">
         <p>{t('dashboard.no_data', { defaultValue: 'No data available yet' })}</p>
-        <Button
-          variant="outline"
-          className="mt-4"
-          onClick={() => refetchDashboard()}
-        >
+        <Button variant="outline" className="mt-4" onClick={() => refetchDashboard()}>
           <RefreshCcw className="me-2 h-4 w-4" />
           {refreshLabel}
         </Button>
@@ -186,78 +172,48 @@ export const EnhancedDashboard = () => {
 
   // ============================ واجهة العرض ============================
   return (
-    <section dir={direction} className="space-y-8">
-      {/* 🎯 رأس لوحة التحكم */}
-      <motion.div
+    <section
+      dir={direction}
+      className="container mx-auto max-w-[1600px] space-y-8 p-4 sm:p-6 md:p-8"
+    >
+      {/* 🎯 الرأس */}
+      <motion.header
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="overflow-hidden rounded-[32px] bg-gradient-to-r from-[#1C3F60] via-[#1C3F60]/95 to-[#0f2740] p-8 text-white shadow-xl"
+        className="overflow-hidden rounded-3xl bg-gradient-to-r from-[#1C3F60] via-[#1C3F60]/95 to-[#0f2740] p-6 sm:p-8 text-white shadow-lg"
       >
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-          <div className="space-y-3">
+          <div className="space-y-4">
             <Badge className="w-fit bg-[#E7B10A] text-[#1C3F60] shadow-sm">
               {language === 'ar'
                 ? 'لوحة التحكم المتقدمة'
                 : 'Advanced electoral operations'}
             </Badge>
-
-            <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h1 className="text-3xl font-semibold sm:text-4xl">
               {t('dashboard.welcome')}
             </h1>
-
-            <p className="max-w-2xl text-sm text-white/80 sm:text-base">
+            <p className="max-w-xl text-sm text-white/80 sm:text-base">
               {t('dashboard.subtitle')}
             </p>
-
-            <div className="flex flex-wrap items-center gap-3 text-xs text-white/75">
+            <div className="flex flex-wrap items-center gap-3 text-xs text-white/70">
               <span className="flex items-center gap-2">
                 <CalendarCheck className="h-4 w-4" />
                 {new Intl.DateTimeFormat(i18n.language, {
                   dateStyle: 'full',
                 }).format(new Date())}
               </span>
-              <span className="rounded-full border border-white/20 px-3 py-1">
+              <span className="rounded-full border border-white/25 px-3 py-1">
                 {language === 'ar'
                   ? 'جاهز للعرض التجريبي v1.0.0'
                   : 'Demo-ready release v1.0.0'}
               </span>
             </div>
           </div>
-
-          <div className="flex items-center gap-3">
-            <Button
-              variant="secondary"
-              className="rounded-2xl border border-white/20 bg-white/15 text-white hover:bg-white/25"
-              onClick={() =>
-                refetchDashboard()
-                  .then(() => toast({ description: t('dashboard.load_success') }))
-                  .catch(() =>
-                    toast({
-                      variant: 'destructive',
-                      description: t('dashboard.load_error'),
-                    })
-                  )
-              }
-              disabled={loading}
-            >
-              <RefreshCcw className="me-2 h-4 w-4" />
-              {refreshLabel}
-            </Button>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* مؤشرات الإحصائيات */}
-      <StatsOverview metrics={statsMetrics} loading={loading} />
-
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
-        <div className="xl:col-span-2">
-          <ProgressOverview
-            data={progressData}
-            loading={loading}
-            error={error}
-            onRetry={() =>
+          <Button
+            variant="secondary"
+            className="rounded-2xl border border-white/20 bg-white/15 text-white hover:bg-white/25"
+            onClick={() =>
               refetchDashboard()
                 .then(() => toast({ description: t('dashboard.load_success') }))
                 .catch(() =>
@@ -267,15 +223,30 @@ export const EnhancedDashboard = () => {
                   })
                 )
             }
+            disabled={loading}
+          >
+            <RefreshCcw className="me-2 h-4 w-4" />
+            {refreshLabel}
+          </Button>
+        </div>
+      </motion.header>
+
+      {/* 📊 مؤشرات الإحصائيات */}
+      <StatsOverview metrics={statsMetrics} loading={loading} />
+
+      {/* 🧩 التقدم والأنشطة */}
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <div className="xl:col-span-2">
+          <ProgressOverview
+            data={progressData}
+            loading={loading}
+            error={error}
+            onRetry={() => refetchDashboard()}
             overall={dashboardData?.progress?.overall ?? 0}
             remaining={dashboardData?.progress?.remaining ?? 0}
             heading={t('dashboard.election_progress')}
-            description={t('dashboard.overall_progress')}
-            overallLabel={t('dashboard.overall_progress')}
-            remainingLabel={t('dashboard.days_remaining')}
-          />
+            description={t('dashboard.overall_progress')} overallLabel={''} remainingLabel={''}          />
         </div>
-
         <ActivityPanel
           activities={activities}
           loading={loading}
@@ -284,6 +255,7 @@ export const EnhancedDashboard = () => {
         />
       </div>
 
+      {/* 🔹 تغطية ومُلخص */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[2fr_1fr]">
         <LiveOperationsPanel
           loading={loading}
@@ -296,9 +268,7 @@ export const EnhancedDashboard = () => {
         />
         <SummaryPanel
           headline={
-            language === 'ar'
-              ? 'مؤشرات التقدم العامة'
-              : 'Overall progress insights'
+            language === 'ar' ? 'مؤشرات التقدم العامة' : 'Overall progress insights'
           }
           description={
             language === 'ar'
