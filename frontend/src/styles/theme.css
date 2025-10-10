@@ -1,0 +1,136 @@
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'DM Sans', 'Poppins', 'Cairo', 'Tajawal', 'Noto Kufi Arabic', system-ui, sans-serif;
+    scroll-behavior: smooth;
+    background-image: var(--gradient-glow);
+    background-attachment: fixed;
+  }
+
+  [dir="rtl"] {
+    direction: rtl;
+  }
+
+  [dir="ltr"] {
+    direction: ltr;
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--glass-background);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: saturate(180%) blur(20px);
+    transition: var(--transition-glass);
+    position: relative;
+  }
+
+  .glass-card {
+    @apply glass p-6 md:p-8;
+    border-radius: var(--radius-2xl);
+  }
+
+  .glass-card:hover {
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: var(--glass-shadow), var(--hover-glow);
+  }
+
+  .glass-button {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3;
+    @apply text-sm font-medium;
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.05)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    backdrop-filter: blur(18px);
+  }
+
+  .glass-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .glass-button:hover::before {
+    left: 100%;
+  }
+
+  .glass-button:hover {
+    background: var(--hover-background);
+    transform: translateY(-2px);
+    box-shadow: var(--hover-glow);
+  }
+
+  .glow-border {
+    box-shadow: var(--neon-glow);
+  }
+
+  .glow-border-secondary {
+    box-shadow: var(--neon-glow-secondary);
+  }
+
+  .glow-border-accent {
+    box-shadow: var(--neon-glow-accent);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-muted/30 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary/50 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/70;
+  }
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+
+  .text-gradient-secondary {
+    @apply bg-gradient-secondary bg-clip-text text-transparent;
+  }
+
+  .rtl\:mr-auto[dir="rtl"] {
+    margin-right: auto;
+  }
+
+  .rtl\:ml-auto[dir="rtl"] {
+    margin-left: auto;
+  }
+
+  .ltr\:ml-auto[dir="ltr"] {
+    margin-left: auto;
+  }
+
+  .ltr\:mr-auto[dir="ltr"] {
+    margin-right: auto;
+  }
+}

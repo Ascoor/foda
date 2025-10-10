@@ -1,0 +1,167 @@
+@layer base {
+  :root {
+    /* Brand palette */
+    --color-primary: 220 95% 50%;
+    --color-primary-glow: 220 85% 65%;
+    --color-primary-foreground: 0 0% 100%;
+
+    --color-secondary: 15 95% 55%;
+    --color-secondary-glow: 15 85% 70%;
+    --color-secondary-foreground: 0 0% 100%;
+
+    --color-accent: 280 75% 60%;
+    --color-accent-glow: 280 65% 75%;
+    --color-accent-foreground: 0 0% 100%;
+
+    --color-surface: 210 25% 98%;
+    --color-surface-secondary: 210 20% 95%;
+    --color-surface-accent: 210 30% 92%;
+
+    --color-background: 220 15% 97%;
+    --color-background-secondary: 220 20% 95%;
+    --color-foreground: 220 15% 15%;
+
+    --color-text-primary: 220 15% 15%;
+    --color-text-secondary: 220 10% 45%;
+    --color-text-muted: 220 10% 65%;
+
+    --color-border: 220 15% 88%;
+    --color-input: 220 15% 90%;
+    --color-ring: 240 100% 45%;
+
+    --color-muted: 220 15% 92%;
+    --color-muted-foreground: 220 10% 45%;
+
+    --color-success: 120 100% 35%;
+    --color-success-foreground: 0 0% 100%;
+    --color-warning: 45 100% 50%;
+    --color-warning-foreground: 45 100% 10%;
+    --color-destructive: 0 85% 55%;
+    --color-destructive-foreground: 0 0% 100%;
+
+    /* Radius scale */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.5rem;
+    --radius-xl: 2rem;
+    --radius-2xl: 2.5rem;
+    --radius-full: 9999px;
+    --radius: 1rem;
+
+    /* Shadows */
+    --shadow-soft: 0 2px 12px -4px rgba(0, 0, 0, 0.1);
+    --shadow-elegant: 0 10px 40px -10px hsl(var(--color-primary) / 0.25);
+    --shadow-glow: 0 0 50px hsl(var(--color-primary-glow) / 0.4);
+    --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
+
+    /* Glassmorphism */
+    --glass-background: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    --glass-backdrop: blur(20px);
+
+    /* Motion */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-glass: backdrop-filter 0.3s ease, background-color 0.3s ease;
+
+    /* Legacy tokens for Tailwind theme */
+    --primary: var(--color-primary);
+    --primary-glow: var(--color-primary-glow);
+    --primary-foreground: var(--color-primary-foreground);
+
+    --secondary: var(--color-secondary);
+    --secondary-glow: var(--color-secondary-glow);
+    --secondary-foreground: var(--color-secondary-foreground);
+
+    --accent: var(--color-accent);
+    --accent-glow: var(--color-accent-glow);
+    --accent-foreground: var(--color-accent-foreground);
+
+    --surface: var(--color-surface);
+    --surface-secondary: var(--color-surface-secondary);
+    --surface-accent: var(--color-surface-accent);
+
+    --background: var(--color-background);
+    --background-secondary: var(--color-background-secondary);
+    --foreground: var(--color-foreground);
+
+    --card: 0 0% 100%;
+    --card-foreground: var(--color-text-primary);
+    --card-glass: 0 0% 100% / 0.7;
+
+    --muted: var(--color-muted);
+    --muted-foreground: var(--color-muted-foreground);
+
+    --border: var(--color-border);
+    --input: var(--color-input);
+    --ring: var(--color-ring);
+
+    --success: var(--color-success);
+    --success-foreground: var(--color-success-foreground);
+    --warning: var(--color-warning);
+    --warning-foreground: var(--color-warning-foreground);
+    --destructive: var(--color-destructive);
+    --destructive-foreground: var(--color-destructive-foreground);
+
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-glow)));
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    --gradient-glow: radial-gradient(ellipse at center, hsl(var(--primary-glow) / 0.3), transparent);
+
+    --neon-glow: 0 0 20px rgba(69, 243, 255, 0.4);
+    --neon-glow-secondary: 0 0 20px rgba(168, 85, 247, 0.4);
+    --neon-glow-accent: 0 0 20px rgba(251, 146, 60, 0.4);
+
+    --hover-background: rgba(69, 243, 255, 0.05);
+    --active-background: rgba(69, 243, 255, 0.1);
+    --hover-glow: 0 0 16px rgba(69, 243, 255, 0.3);
+
+  }
+
+  .dark {
+    --color-background: 222 47% 6%;
+    --color-foreground: 210 40% 95%;
+    --color-surface: 221 39% 11%;
+    --color-surface-secondary: 221 39% 11%;
+    --color-surface-accent: 221 39% 16%;
+
+    --color-primary: 217 91% 60%;
+    --color-primary-glow: 217 91% 70%;
+    --color-primary-foreground: 222 84% 4.9%;
+
+    --color-secondary: 262 83% 58%;
+    --color-secondary-glow: 262 83% 68%;
+    --color-secondary-foreground: 210 40% 98%;
+
+    --color-accent: 30 100% 60%;
+    --color-accent-glow: 30 100% 70%;
+    --color-accent-foreground: 222 84% 4.9%;
+
+    --color-success: 142 76% 36%;
+    --color-destructive: 0 62.8% 50%;
+    --color-destructive-foreground: 210 40% 98%;
+
+    --color-muted: 215 27.9% 16.9%;
+    --color-muted-foreground: 215 20.2% 65.1%;
+
+    --color-border: 215 27.9% 16.9%;
+    --color-input: 215 27.9% 16.9%;
+    --color-ring: 217 91% 60%;
+
+    --glass-background: rgba(10, 15, 26, 0.92);
+    --glass-border: rgba(69, 243, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(69, 243, 255, 0.1);
+    --gradient-glass: linear-gradient(135deg, rgba(69, 243, 255, 0.08), rgba(168, 85, 247, 0.03));
+    --hover-background: rgba(69, 243, 255, 0.05);
+    --active-background: rgba(69, 243, 255, 0.1);
+    --hover-glow: 0 0 16px rgba(69, 243, 255, 0.3);
+  }
+
+  [dir="rtl"] {
+    font-family: 'Noto Kufi Arabic', 'Tajawal', 'Cairo', 'Poppins', 'Inter', system-ui, sans-serif;
+  }
+
+  [dir="ltr"] {
+    font-family: 'Inter', 'DM Sans', 'Poppins', 'Cairo', 'Tajawal', system-ui, sans-serif;
+  }
+}
