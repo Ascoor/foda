@@ -1,324 +1,219 @@
-import { useEffect, useMemo, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { NavLink, useLocation } from 'react-router-dom';
-import {
-  LayoutDashboard,
-  Vote,
-  MapPin,
-  Users,
-  UserCheck,
-  Crown,
-  Shield,
-  Heart,
-  Eye,
-  Megaphone,
-  BarChart3,
-  Settings,
-  ChevronLeft,
-  ChevronRight,
-  Cpu,
-  X,
-} from 'lucide-react';
+import { Fragment, useMemo } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { NavLink } from 'react-router-dom';
+import { ChevronLeft, ChevronRight, Vote, X } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
-import { useWindowSize } from '@/hooks/use-window-size';
-import type { LucideIcon } from 'lucide-react';
-
-interface NavigationItem {
-  key: string;
-  icon: LucideIcon;
-  path: string;
-  roles?: string[];
-}
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { sidebarItems } from './sidebarItems';
 
 interface SidebarProps {
-  isMobileSidebarOpen?: boolean;
-  setMobileSidebarOpen?: (open: boolean) => void;
+  collapsed: boolean;
+  onCollapseChange: (collapsed: boolean) => void;
+  isMobile: boolean;
+  isMobileSidebarOpen: boolean;
+  setMobileSidebarOpen: (open: boolean) => void;
 }
 
-export const Sidebar = ({ isMobileSidebarOpen = false, setMobileSidebarOpen }: SidebarProps) => {
+export const Sidebar = ({
+  collapsed,
+  onCollapseChange,
+  isMobile,
+  isMobileSidebarOpen,
+  setMobileSidebarOpen,
+}: SidebarProps) => {
   const { language, direction, t } = useLanguage();
   const { user } = useAuth();
   const isRTL = direction === 'rtl';
-  const location = useLocation();
-  const { width } = useWindowSize();
-  const isMobile = width < 768;
-  const [collapsed, setCollapsed] = useState(false);
-
-  // Widths
-  const sidebarWidth = collapsed ? 'var(--sidebar-width-collapsed, 5rem)' : 'var(--sidebar-width-expanded, 16rem)';
-  const sidebarWidthMobile = 'min(80vw, var(--sidebar-width-expanded, 16rem))';
-
-  const navigationItems: NavigationItem[] = useMemo(() => {
-    const items: NavigationItem[] = [
-      { key: 'dashboard', icon: LayoutDashboard, path: '/dashboard' },
-      { key: 'elections', icon: Vote, path: '/elections', roles: ['Admin', 'FieldLead'] },
-      { key: 'geo_areas', icon: MapPin, path: '/geo-areas', roles: ['Admin', 'FieldLead'] },
-      { key: 'committees', icon: Users, path: '/committees', roles: ['Admin', 'FieldLead'] },
-      { key: 'voters', icon: UserCheck, path: '/voters', roles: ['Admin', 'FieldLead'] },
-      { key: 'candidates', icon: Crown, path: '/candidates', roles: ['Admin', 'FieldLead'] },
-      { key: 'agents', icon: Shield, path: '/agents', roles: ['Admin', 'FieldLead'] },
-      { key: 'volunteers', icon: Heart, path: '/volunteers', roles: ['Admin', 'FieldLead'] },
-      { key: 'observations', icon: Eye, path: '/observations', roles: ['Admin', 'FieldLead', 'Agent'] },
-      { key: 'campaigns', icon: Megaphone, path: '/campaigns', roles: ['Admin', 'FieldLead'] },
-      { key: 'automation', icon: Cpu, path: '/automation', roles: ['Admin'] },
-      { key: 'analytics', icon: BarChart3, path: '/analytics', roles: ['Admin'] },
-      { key: 'settings', icon: Settings, path: '/settings', roles: ['Admin'] },
-    ];
-    return items;
-  }, [language]);
 
   const availableRoles = useMemo(() => {
-    const rawRoles = user?.roleNames ?? user?.roles?.map((r) => r.name) ?? [];
-    return new Set(rawRoles.map((r) => r.toLowerCase()));
+    const rawRoles = user?.roleNames ?? user?.roles?.map((role) => role.name) ?? [];
+    return new Set(rawRoles.map((role) => role.toLowerCase()));
   }, [user]);
 
-  const isActive = (path: string) => location.pathname.startsWith(path);
-  const toggleCollapse = () => setCollapsed((v) => !v);
+  const filteredItems = useMemo(
+    () =>
+      sidebarItems.filter((item) => {
+        if (!item.roles?.length) return true;
+        return item.roles.some((role) => availableRoles.has(role.toLowerCase()));
+      }),
+    [availableRoles]
+  );
 
-  useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.documentElement.style.setProperty(
-        '--sidebar-width',
-        collapsed ? 'var(--sidebar-width-collapsed, 5rem)' : 'var(--sidebar-width-expanded, 16rem)'
-      );
-    }
-  }, [collapsed]);
+  const renderNavItem = (itemKey: string) =>
+    t(`navigation.${itemKey}`, { defaultValue: itemKey.replace('_', ' ') });
 
-  const slideDir = isRTL ? 300 : -300;
-  const sidebarSide = isRTL ? 'end-0 border-s' : 'start-0 border-e';
+  const renderDesktopNav = () => (
+    <TooltipProvider delayDuration={100}>
+      <nav className="flex-1 overflow-y-auto px-3 pb-6" aria-label={t('navigation.main', { defaultValue: 'Main navigation' })}>
+        <ul className="flex flex-col gap-1.5" dir={direction}>
+          {filteredItems.map((item) => {
+            const Icon = item.icon;
+            const linkContent = (
+              <NavLink
+                to={item.path}
+                className={({ isActive }) =>
+                  cn(
+                    'group relative flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-colors duration-200',
+                    collapsed && 'justify-center gap-0 px-0',
+                    isActive
+                      ? 'bg-[#E7B10A]/15 text-white'
+                      : 'text-white/80 hover:bg-[#E7B10A]/20 hover:text-white',
+                    isRTL && !collapsed && 'flex-row-reverse'
+                  )
+                }
+                style={{ minHeight: '2.75rem' }}
+              >
+                <Icon className="h-5 w-5 shrink-0" aria-hidden />
+                {!collapsed && <span className="truncate">{renderNavItem(item.key)}</span>}
+              </NavLink>
+            );
+
+            return (
+              <li key={item.key}>
+                {collapsed ? (
+                  <Tooltip>
+                    <TooltipTrigger asChild>{linkContent}</TooltipTrigger>
+                    <TooltipContent side={isRTL ? 'left' : 'right'}>{renderNavItem(item.key)}</TooltipContent>
+                  </Tooltip>
+                ) : (
+                  linkContent
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </TooltipProvider>
+  );
+
+  const renderMobileNav = () => (
+    <nav className="mt-6 flex flex-col gap-2" aria-label={t('navigation.main', { defaultValue: 'Main navigation' })}>
+      {filteredItems.map((item) => {
+        const Icon = item.icon;
+        return (
+          <NavLink
+            key={item.key}
+            to={item.path}
+            onClick={() => setMobileSidebarOpen(false)}
+            className={({ isActive }) =>
+              cn(
+                'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors duration-200',
+                isActive
+                  ? 'bg-[#E7B10A]/25 text-white'
+                  : 'text-white/85 hover:bg-[#E7B10A]/15 hover:text-white',
+                direction === 'rtl' && 'flex-row-reverse'
+              )
+            }
+          >
+            <Icon className="h-5 w-5" aria-hidden />
+            <span className="truncate">{renderNavItem(item.key)}</span>
+          </NavLink>
+        );
+      })}
+    </nav>
+  );
+
+  const brandLabel = language === 'ar' ? 'فودا برو' : 'Foda Pro';
+  const versionLabel = language === 'ar' ? 'الإصدار 1.0.0' : 'Version 1.0.0';
+  const expandedWidth = collapsed ? '5rem' : '17rem';
 
   return (
-    <>
-      {/* ========== Desktop Sidebar ========== */}
+    <Fragment>
       {!isMobile && (
-        <motion.aside
-          key={`sidebar-${direction}-${collapsed}`}
-          initial={{ x: isRTL ? 100 : -100, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        <aside
           dir={direction}
           className={cn(
-            'glass-card sticky z-30 flex flex-col border-y-0 border-white/10 backdrop-blur-xl',
-            sidebarSide
+            'fixed top-0 z-40 hidden h-full flex-col bg-[#1C3F60] text-white shadow-2xl transition-[width] duration-300 ease-in-out md:flex',
+            isRTL ? 'right-0 border-l border-[#E7B10A]/20' : 'left-0 border-r border-[#E7B10A]/20'
           )}
-          style={{
-            width: sidebarWidth,
-            top: 'calc(var(--layout-header-height) + var(--spacing-lg))',
-            height: 'calc(100vh - var(--layout-header-height) - (var(--spacing-lg) * 2))',
-            transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-          }}
+          style={{ width: expandedWidth }}
         >
-          {/* ==== Header ==== */}
-          <div
-            className={cn(
-              'flex h-16 items-center border-b border-white/10 px-4',
-              collapsed ? 'justify-center' : 'justify-between'
-            )}
-            style={{ gap: collapsed ? '0' : 'var(--spacing-sm)' }}
-          >
-            <AnimatePresence mode="wait">
-              {!collapsed && (
-                <motion.div
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: 'auto' }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className={cn('flex items-center gap-3', isRTL && 'flex-row-reverse')}
-                >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-primary shadow-glow pulse-glow">
-                    <Vote className="h-5 w-5 text-white" />
-                  </div>
-                  <span className="font-bold text-lg neon-text whitespace-nowrap" style={{ color: 'hsl(var(--primary))' }}>
-                    {t('app.name', { defaultValue: language === 'ar' ? 'فودا' : 'Foda' })}
-                  </span>
-                </motion.div>
-              )}
-            </AnimatePresence>
+          <div className={cn('flex h-20 items-center px-4', collapsed ? 'justify-center' : 'justify-between', isRTL && 'flex-row-reverse')}>
+            <div className={cn('flex items-center gap-3', collapsed && 'gap-0', isRTL && !collapsed && 'flex-row-reverse')}>
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
+                <Vote className="h-5 w-5" aria-hidden />
+              </div>
+              {!collapsed && <span className="text-lg font-semibold tracking-wide">{brandLabel}</span>}
+            </div>
 
-            {/* Toggle */}
             <Button
               variant="ghost"
               size="icon"
-              onClick={toggleCollapse}
-              className="glass-button shrink-0"
+              className="h-10 w-10 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-[#E7B10A]/20"
+              onClick={() => onCollapseChange(!collapsed)}
               aria-label={t('navigation.toggleSidebar', { defaultValue: 'Toggle sidebar' })}
             >
-              {collapsed
-                ? isRTL
-                  ? <ChevronLeft className="h-5 w-5" />
-                  : <ChevronRight className="h-5 w-5" />
-                : isRTL
-                  ? <ChevronRight className="h-5 w-5" />
-                  : <ChevronLeft className="h-5 w-5" />}
+              {isRTL ? (
+                collapsed ? (
+                  <ChevronLeft className="h-5 w-5" />
+                ) : (
+                  <ChevronRight className="h-5 w-5" />
+                )
+              ) : collapsed ? (
+                <ChevronRight className="h-5 w-5" />
+              ) : (
+                <ChevronLeft className="h-5 w-5" />
+              )}
             </Button>
           </div>
 
-          {/* ==== Navigation ==== */}
-          <nav
-            className="flex-1 overflow-y-auto custom-scrollbar p-3"
-            aria-label={t('navigation.main', { defaultValue: 'Main navigation' })}
-            lang={language}
-          >
-            <ul className="space-y-1.5" dir={direction}>
-              {navigationItems.map((item) => {
-                const requiredRoles = item.roles?.map((r) => r.toLowerCase());
-                const hasAccess = !requiredRoles || requiredRoles.some((r) => availableRoles.has(r));
-                if (!hasAccess) return null;
+          {renderDesktopNav()}
 
-                const Icon = item.icon;
-                const active = isActive(item.path);
-
-                return (
-                  <motion.li 
-                    key={item.key} 
-                    whileHover={{ scale: 1.02 }} 
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <NavLink
-                      to={item.path}
-                      className={({ isActive }) => cn(
-                        'group relative flex items-center rounded-xl px-3.5 py-3 text-sm font-medium transition-colors duration-200',
-                        isActive
-                          ? 'bg-gradient-primary text-white shadow-glow'
-                          : 'text-foreground hover:bg-muted/50 hover:text-primary',
-                        collapsed ? 'justify-center' : 'gap-3.5',
-                        !collapsed && isRTL && 'flex-row-reverse'
-                      )}
-                      style={{ minHeight: '3rem' }}
-                    >
-                      {/* Icon */}
-                      <Icon
-                        className={cn(
-                          'h-5 w-5 shrink-0 transition-transform duration-200',
-                          active && 'scale-110'
-                        )}
-                      />
-
-                      {/* Label */}
-                      <AnimatePresence mode="wait">
-                        {!collapsed && (
-                          <motion.span
-                            initial={{ opacity: 0, width: 0 }}
-                            animate={{ opacity: 1, width: 'auto' }}
-                            exit={{ opacity: 0, width: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="truncate text-sm font-medium leading-tight whitespace-nowrap"
-                          >
-                            {t(`navigation.${item.key}`, { defaultValue: item.key })}
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-
-                      {/* Tooltip عند الطي */}
-                      {collapsed && (
-                        <div
-                          className={cn(
-                            'pointer-events-none absolute top-1/2 z-50 -translate-y-1/2 whitespace-nowrap rounded-xl bg-card/90 px-3 py-1 text-xs font-medium shadow-elegant opacity-0 transition-opacity group-hover:opacity-100',
-                            isRTL ? 'end-full me-2' : 'start-full ms-2'
-                          )}
-                          style={{ backdropFilter: 'blur(12px)' }}
-                        >
-                          {t(`navigation.${item.key}`, { defaultValue: item.key })}
-                        </div>
-                      )}
-                    </NavLink>
-                  </motion.li>
-                );
-              })}
-            </ul>
-          </nav>
-
-          {/* ==== Footer ==== */}
-          <AnimatePresence mode="wait">
-            {!collapsed && (
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="border-t border-white/10 p-4 text-center text-xs text-muted-foreground"
-              >
-                {language === 'ar' ? 'إصدار ٢.٠' : 'Version 2.0'}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.aside>
+          <div className={cn('px-4 pb-6 text-xs text-white/65', collapsed && 'text-center')}>
+            {collapsed ? <span>{versionLabel}</span> : <span className="tracking-wide">{versionLabel}</span>}
+          </div>
+        </aside>
       )}
 
-      {/* ========== Mobile Sidebar ========== */}
       {isMobile && (
         <AnimatePresence>
           {isMobileSidebarOpen && (
             <motion.div
-              className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              onClick={() => setMobileSidebarOpen && setMobileSidebarOpen(false)}
+              onClick={() => setMobileSidebarOpen(false)}
             >
               <motion.aside
-                initial={{ x: slideDir }}
-                animate={{ x: 0 }}
-                exit={{ x: slideDir }}
-                transition={{ duration: 0.3 }}
                 dir={direction}
                 className={cn(
-                  'glass-card absolute top-0 flex h-full flex-col shadow-xl',
-                  isRTL ? 'end-0' : 'start-0'
+                  'absolute top-0 flex h-full w-72 flex-col bg-[#1C3F60] px-5 pb-8 pt-6 text-white shadow-2xl',
+                  isRTL ? 'right-0' : 'left-0'
                 )}
-                style={{
-                  width: sidebarWidthMobile,
-                  padding: 'var(--spacing-lg)'
-                }}
-                onClick={(e) => e.stopPropagation()}
+                initial={{ x: isRTL ? 300 : -300 }}
+                animate={{ x: 0 }}
+                exit={{ x: isRTL ? 300 : -300 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+                onClick={(event) => event.stopPropagation()}
               >
-                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-lg font-semibold neon-text" style={{ color: 'hsl(var(--primary))' }}>
-                    {t('app.name', { defaultValue: language === 'ar' ? 'فودا' : 'Foda' })}
-                  </h2>
-                  <Button variant="ghost" size="icon" onClick={() => setMobileSidebarOpen && setMobileSidebarOpen(false)}>
+                <div className={cn('flex items-center justify-between', isRTL && 'flex-row-reverse')}>
+                  <div className={cn('flex items-center gap-3', isRTL && 'flex-row-reverse')}>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#E7B10A] text-[#1C3F60] shadow-md">
+                      <Vote className="h-5 w-5" aria-hidden />
+                    </div>
+                    <span className="text-base font-semibold">{brandLabel}</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9 rounded-lg border border-white/20 bg-white/10 text-white hover:bg-white/20"
+                    onClick={() => setMobileSidebarOpen(false)}
+                    aria-label={t('navigation.toggleSidebar', { defaultValue: 'Toggle sidebar' })}
+                  >
                     <X className="h-5 w-5" />
                   </Button>
                 </div>
-
-                <nav className="custom-scrollbar flex-1 space-y-2 overflow-y-auto">
-                  {navigationItems.map((item) => {
-                    const requiredRoles = item.roles?.map((r) => r.toLowerCase());
-                    const hasAccess = !requiredRoles || requiredRoles.some((r) => availableRoles.has(r));
-                    if (!hasAccess) return null;
-
-                    const Icon = item.icon;
-                    const active = isActive(item.path);
-
-                    return (
-                      <NavLink
-                        key={item.key}
-                        to={item.path}
-                        onClick={() => setMobileSidebarOpen && setMobileSidebarOpen(false)}
-                        className={({ isActive }) => cn(
-                          'flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-medium transition-colors duration-200',
-                          isActive
-                            ? 'bg-gradient-primary text-white shadow-glow'
-                            : 'text-foreground hover:bg-muted/50 hover:text-primary',
-                          isRTL && 'flex-row-reverse'
-                        )}
-                        style={{ minHeight: '3rem' }}
-                      >
-                        <Icon className="h-5 w-5 shrink-0" />
-                        <span className="truncate">
-                          {t(`navigation.${item.key}`, { defaultValue: item.key })}
-                        </span>
-                      </NavLink>
-                    );
-                  })}
-                </nav>
+                {renderMobileNav()}
+                <p className="mt-auto text-xs text-white/70">{versionLabel}</p>
               </motion.aside>
             </motion.div>
           )}
         </AnimatePresence>
       )}
-    </>
+    </Fragment>
   );
 };

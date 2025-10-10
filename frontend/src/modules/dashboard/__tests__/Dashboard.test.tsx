@@ -1,12 +1,22 @@
 import { render, screen } from '@testing-library/react';
+import { vi, beforeEach } from 'vitest';
 import { Dashboard } from '../Dashboard';
 import { LanguageProvider } from '@/contexts/LanguageContext';
-import { vi } from 'vitest';
 
 const mockUseApi = vi.fn();
+
 vi.mock('@/lib/api', () => ({
   useApi: (config: any) => mockUseApi(config),
 }));
+
+vi.mock('../components/LiveOperationsMap', () => ({
+  LiveOperationsMap: () => <div data-testid="live-map" />,
+}));
+
+beforeEach(() => {
+  mockUseApi.mockReset();
+  window.localStorage.setItem('language', 'en');
+});
 
 const renderDashboard = () =>
   render(

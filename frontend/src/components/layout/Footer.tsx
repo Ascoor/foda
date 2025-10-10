@@ -57,9 +57,9 @@ export const Footer = () => {
         <div className="glass-button border-0 px-4 py-2 text-xs">
           <Languages className="h-5 w-5" />
           <span>
-            {t('common.language', {
-              defaultValue: language === 'ar' ? 'اللغة الحالية: العربية' : 'Current language: Arabic',
-            })}
+            {`${t('common.language', { defaultValue: language === 'ar' ? 'اللغة' : 'Language' })}: ${
+              language === 'ar' ? 'العربية' : 'Arabic'
+            }`}
           </span>
         </div>
         <div className="glass-button border-0 px-4 py-2 text-xs">

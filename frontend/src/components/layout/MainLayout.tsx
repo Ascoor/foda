@@ -1,50 +1,85 @@
-import { type CSSProperties, type ReactNode, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useWindowSize } from '@/hooks/use-window-size';
+import { cn } from '@/lib/utils';
 
 interface MainLayoutProps {
   children: ReactNode;
 }
 
+const DESKTOP_BREAKPOINT = 1024;
+
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const { direction } = useLanguage();
+  const { theme } = useTheme();
+  const { width } = useWindowSize();
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
-  const layoutVariables = useMemo(() => ({
-    '--layout-header-height': 'var(--header-height, 4rem)',
-    '--layout-footer-height': 'var(--footer-height, 3.5rem)',
-    '--sidebar-width': 'var(--sidebar-width-expanded)',
-  }) as CSSProperties, []);
+  const isMobile = width < DESKTOP_BREAKPOINT;
+  const sidebarWidth = isMobile ? 0 : collapsed ? 80 : 272;
+
+  useEffect(() => {
+    if (!isMobile) {
+      setMobileSidebarOpen(false);
+      return;
+    }
+
+    // Ensure the desktop collapse state doesn't affect mobile layout.
+    setCollapsed(false);
+  }, [isMobile]);
+
+  const paddingStyle = useMemo(() => {
+    const paddingValue = `${sidebarWidth}px`;
+    return direction === 'rtl'
+      ? { paddingRight: paddingValue }
+      : { paddingLeft: paddingValue };
+  }, [direction, sidebarWidth]);
 
   return (
     <div
       dir={direction}
-      className="flex min-h-screen w-full flex-col bg-gradient-to-br from-background via-background/95 to-secondary/10 text-foreground"
-      style={layoutVariables}
+      className={cn(
+        'relative min-h-screen w-full transition-colors duration-500',
+        theme === 'dark'
+          ? 'dark bg-[#0b1a2a] text-slate-100'
+          : 'bg-slate-50 text-slate-900'
+      )}
+      style={{
+        '--layout-header-height': '4.25rem',
+        '--layout-footer-height': '3.5rem',
+      }}
     >
-      {/* ===== Header ثابت ===== */}
-      <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
+      <Sidebar
+        collapsed={collapsed}
+        onCollapseChange={setCollapsed}
+        isMobile={isMobile}
+        isMobileSidebarOpen={isMobileSidebarOpen}
+        setMobileSidebarOpen={setMobileSidebarOpen}
+      />
 
-      {/* ===== المحتوى بعد الهيدر ===== */}
-      <div className="flex w-full flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <Sidebar
-          isMobileSidebarOpen={isMobileSidebarOpen}
-          setMobileSidebarOpen={setMobileSidebarOpen}
-        />
+      <div
+        className="flex min-h-screen flex-col"
+        style={{
+          ...paddingStyle,
+          transition: 'padding 0.3s ease',
+        }}
+      >
+        <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
 
-        {/* Main content */}
-        <main
-          className="custom-scrollbar flex-1 overflow-auto"
-          style={{ minHeight: 'calc(100vh - var(--layout-header-height, 4rem))' }}
-        >
-          <div className="page-shell layout-content">
-            <div className="page-content">{children}</div>
-            <Footer />
+        <main className="flex-1">
+          <div className="mx-auto w-full max-w-[1440px] px-4 pb-6 pt-8 sm:px-6 sm:pt-10 lg:px-10">
+            {children}
           </div>
         </main>
+
+        <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 sm:px-6 lg:px-10">
+          <Footer />
+        </div>
       </div>
     </div>
   );
