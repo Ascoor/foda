@@ -1,5 +1,5 @@
  import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 // token يتم حقنه من سياق المصادقة بدلاً من التخزين المحلي
 let authToken: string | null = null;
@@ -60,6 +60,17 @@ export function useApi<T = any>(
   config: AxiosRequestConfig,
   options: { useCache?: boolean; ttl?: number } = {}
 ) {
+  const configRef = useRef(config);
+  const optionsRef = useRef(options);
+
+  useEffect(() => {
+    configRef.current = config;
+  }, [config]);
+
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
+
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(false);
@@ -69,7 +80,9 @@ export function useApi<T = any>(
       setLoading(true);
       setError(null);
       try {
-        const result = await request<T>({ ...config, ...overrideConfig }, options);
+        const baseConfig = configRef.current;
+        const finalConfig = { ...baseConfig, ...overrideConfig };
+        const result = await request<T>(finalConfig, optionsRef.current);
         setData(result);
         return result;
       } catch (err) {
@@ -79,7 +92,7 @@ export function useApi<T = any>(
         setLoading(false);
       }
     },
-    [config, options]
+    []
   );
 
   return { data, error, loading, execute };
