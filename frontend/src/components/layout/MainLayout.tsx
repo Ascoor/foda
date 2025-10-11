@@ -1,4 +1,5 @@
-import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header'; 
@@ -18,6 +19,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const { theme } = useTheme();
   const { width } = useWindowSize();
   const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
+  const contentRef = useRef<HTMLElement | null>(null);
 
   // ✅ الحالات (states)
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -32,6 +35,18 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     () => !hideFooterRoutes.some((route) => location.pathname.startsWith(route)),
     [hideFooterRoutes, location.pathname],
   );
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    contentRef.current.scrollTo({
+      top: 0,
+      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+    });
+  }, [location.pathname, shouldReduceMotion]);
+
+  const pageKey = `${location.pathname}${location.search}`;
+  const isRTL = direction === 'rtl';
 
   // ✅ التبديل التلقائي عند تغير حجم الشاشة
   useEffect(() => {
@@ -85,12 +100,44 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           setMobileSidebarOpen={setMobileSidebarOpen}
         />
         {/* ✅ المحتوى */}
-        <main className="flex-1 overflow-y-auto scrollbar-stable">
-            {children}
+        <main
+          ref={contentRef}
+          className="relative flex-1 overflow-y-auto scrollbar-stable"
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={pageKey}
+              initial={
+                shouldReduceMotion
+                  ? { opacity: 0 }
+                  : {
+                      opacity: 0,
+                      x: isMobile ? 0 : isRTL ? 28 : -28,
+                      y: isMobile ? 24 : 12,
+                      filter: 'blur(10px)',
+                    }
+              }
+              animate={{ opacity: 1, x: 0, y: 0, filter: 'blur(0px)' }}
+              exit={
+                shouldReduceMotion
+                  ? { opacity: 0 }
+                  : {
+                      opacity: 0,
+                      x: isMobile ? 0 : isRTL ? -20 : 20,
+                      y: isMobile ? 16 : 8,
+                      filter: 'blur(8px)',
+                    }
+              }
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex min-h-full flex-col gap-6 p-4 sm:p-6"
+            >
+              {children}
+            </motion.div>
+          </AnimatePresence>
         </main>
 
         {/* ✅ الفوتر */}
- 
+
       </div>
     </div>
   );
