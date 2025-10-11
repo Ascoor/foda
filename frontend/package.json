@@ -45,7 +45,6 @@
     "@types/jest": "^30.0.0",
     "@types/leaflet": "^1.9.20",
     "axios": "^1.11.0",
-    "@barba/core": "^2.10.3",
     "@fancyapps/ui": "^5.0.35",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

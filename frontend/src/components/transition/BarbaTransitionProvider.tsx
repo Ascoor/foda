@@ -2,102 +2,70 @@ import type { PropsWithChildren } from "react";
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
-
-type BarbaInstance = typeof import("@barba/core")["default"] | null;
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
   const location = useLocation();
-  const barbaRef = useRef<BarbaInstance>(null);
-  const lastPathRef = useRef<string>("");
+  const { direction } = useLanguage();
+  const prefersReducedMotion = useRef(false);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
-    let isMounted = true;
+    if (typeof window === "undefined") return;
 
-    const setup = async () => {
-      if (typeof window === "undefined") return;
-
-      // تحميل barba core فقط عند الحاجة
-      const module = await import("@barba/core");
-      if (!isMounted) return;
-
-      const barba = module.default;
-      if (!barba) return;
-
-      // تحقق من وجود container فعلاً قبل التهيئة
-      const container = document.querySelector("[data-barba='container']");
-      if (!container) {
-        console.warn("[Barba] No container found, skipping init.");
-        return;
-      }
-
-      barba.init({
-        transitions: [
-          {
-            name: "fade-slide",
-            leave: ({ current }) =>
-              gsap.to(current.container, {
-                opacity: 0,
-                x: -40,
-                duration: 0.4,
-                ease: "power2.out",
-              }),
-            enter: ({ next }) => {
-              gsap.set(next.container, { opacity: 0, x: 40 });
-              return gsap.to(next.container, {
-                opacity: 1,
-                x: 0,
-                duration: 0.5,
-                ease: "power2.out",
-              });
-            },
-          },
-        ],
-      });
-
-      barbaRef.current = barba;
-      lastPathRef.current = window.location.pathname + window.location.search;
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => {
+      prefersReducedMotion.current = mediaQuery.matches;
     };
 
-    setup();
+    updatePreference();
+    mediaQuery.addEventListener("change", updatePreference);
 
-    return () => {
-      isMounted = false;
-      barbaRef.current?.destroy?.();
-      barbaRef.current = null;
-    };
+    return () => mediaQuery.removeEventListener("change", updatePreference);
   }, []);
 
   useEffect(() => {
-    const barba = barbaRef.current;
-    const path = location.pathname + location.search;
+    if (typeof window === "undefined") return;
 
-    if (!barba) {
-      // fallback animation إذا لم تتم تهيئة Barba
-      const container = document.querySelector<HTMLElement>("[data-barba='container']");
-      if (container) {
-        gsap.fromTo(
-          container,
-          { opacity: 0, x: 40 },
-          { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }
-        );
-      }
+    const container = document.querySelector<HTMLElement>("[data-barba='container']");
+    if (!container) {
       return;
     }
 
-    if (lastPathRef.current === path) return;
-    lastPathRef.current = path;
+    if (prefersReducedMotion.current) {
+      gsap.set(container, { opacity: 1, x: 0, y: 0, clearProps: "filter" });
+      isFirstRender.current = false;
+      return;
+    }
 
-    barba.go(path).catch(() => {
-      const container = document.querySelector<HTMLElement>("[data-barba='container']");
-      if (container) {
-        gsap.fromTo(
-          container,
-          { opacity: 0, x: 40 },
-          { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }
-        );
-      }
-    });
-  }, [location]);
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const horizontalOffset = isMobile ? 0 : direction === "rtl" ? 32 : -32;
+    const verticalOffset = isMobile ? 28 : 12;
+
+    const fromVars = {
+      opacity: isFirstRender.current ? 0.7 : 0,
+      x: horizontalOffset,
+      y: verticalOffset,
+      filter: "blur(14px)",
+    };
+
+    const toVars: gsap.TweenVars = {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      filter: "blur(0px)",
+      ease: "power3.out",
+      duration: isFirstRender.current ? 0.36 : 0.48,
+    };
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(container, fromVars, toVars);
+    }, container);
+
+    isFirstRender.current = false;
+
+    return () => ctx.revert();
+  }, [location.pathname, location.search, direction]);
 
   return <div data-barba="wrapper">{children}</div>;
 };
