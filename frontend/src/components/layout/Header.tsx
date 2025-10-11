@@ -7,7 +7,6 @@ import {
   Globe,
   User,
   Menu,
-  Vote,
   LogOut,
   Settings,
   UserCircle,
@@ -25,6 +24,7 @@ import { useNotifications } from "@/contexts/NotificationContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import { useWindowSize } from "@/hooks/use-window-size";
+import { useNavigate } from "react-router-dom";
 
 const SPRING_TRANSITION = {
   type: "spring",
@@ -39,10 +39,11 @@ interface HeaderProps {
 
 export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
   const { theme, toggleTheme } = useTheme();
-  const { language, toggleLanguage, direction, t } = useLanguage();
+  const { language, toggleLanguage, direction } = useLanguage();
   const { unreadCount } = useNotifications();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { width } = useWindowSize();
+  const navigate = useNavigate();
   const isMobile = width < 768;
   const isRTL = direction === "rtl";
 
@@ -68,6 +69,159 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
     theme === "dark"
       ? "bg-[hsla(var(--color-surface)/0.45)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.65)]"
       : "bg-[hsla(var(--color-surface)/0.75)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.95)] shadow-sm";
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      navigate("/", { replace: true });
+      setIsLoggingOut(false);
+    }
+  };
+
+  const themeToggle = (
+    <Button
+      key="theme"
+      variant="ghost"
+      size="icon"
+      aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+      onClick={toggleTheme}
+      className={cn(
+        "relative rounded-full p-2 transition-all hover:scale-105",
+        surfaceControlClass,
+      )}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={theme}
+          initial={{ rotate: -90, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          exit={{ rotate: 90, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {theme === "light" ? (
+            <Moon className="h-5 w-5 text-[hsl(var(--primary))]" />
+          ) : (
+            <Sun className="h-5 w-5 text-[hsl(var(--accent))]" />
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </Button>
+  );
+
+  const languageToggle = (
+    <Button
+      key="language"
+      variant="ghost"
+      size="icon"
+      aria-label="Toggle language"
+      onClick={toggleLanguage}
+      className={cn(
+        "rounded-full p-2 transition-all hover:scale-105",
+        surfaceControlClass,
+      )}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={language}
+          initial={{ rotateY: 180, opacity: 0 }}
+          animate={{ rotateY: 0, opacity: 1 }}
+          exit={{ rotateY: -180, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Globe
+            className={cn(
+              "h-5 w-5",
+              language === "ar" ? "text-[hsl(var(--accent))]" : "text-[hsl(var(--primary))]",
+            )}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </Button>
+  );
+
+  const notificationsToggle = (
+    <Button
+      key="notifications"
+      variant="ghost"
+      size="icon"
+      aria-label={language === "ar" ? "الإشعارات" : "Notifications"}
+      className={cn(
+        "relative rounded-full p-2 hover:scale-105 transition-all",
+        surfaceControlClass,
+      )}
+    >
+      <Bell className="h-5 w-5" />
+      {unreadCount > 0 && (
+        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white shadow-md">
+          {unreadCount}
+        </span>
+      )}
+    </Button>
+  );
+
+  const userMenu = (
+    <DropdownMenu key="user">
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={cn(
+            "rounded-full p-2 hover:scale-105 transition-all",
+            surfaceControlClass,
+          )}
+        >
+          <User className="h-5 w-5" />
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        align={isRTL ? "start" : "end"}
+        sideOffset={8}
+        className={cn(
+          "min-w-[180px] rounded-2xl border p-2 backdrop-blur-lg shadow-lg",
+          "border-[hsla(var(--border)/0.2)] text-[hsl(var(--foreground))]",
+          theme === "dark"
+            ? "bg-[hsla(var(--color-surface)/0.92)]"
+            : "bg-[hsla(var(--color-surface)/0.97)]",
+        )}
+      >
+        <DropdownMenuItem className="flex items-center gap-2">
+          <UserCircle className="h-4 w-4" />
+          {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
+        </DropdownMenuItem>
+        <DropdownMenuItem className="flex items-center gap-2">
+          <Settings className="h-4 w-4" />
+          {language === "ar" ? "الإعدادات" : "Settings"}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="flex items-center gap-2 text-destructive"
+          disabled={isLoggingOut}
+          onSelect={(event) => {
+            event.preventDefault();
+            void handleLogout();
+          }}
+        >
+          <LogOut className="h-4 w-4" />
+          {isLoggingOut
+            ? language === "ar"
+              ? "جاري تسجيل الخروج..."
+              : "Logging out..."
+            : language === "ar"
+              ? "تسجيل الخروج"
+              : "Logout"}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
+  const orderedControls = isRTL
+    ? [userMenu, notificationsToggle, languageToggle, themeToggle]
+    : [themeToggle, languageToggle, notificationsToggle, userMenu];
 
   return (
     <motion.header
@@ -117,127 +271,8 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
         </div>
 
         {/* ================== Right Section ================== */}
-        <div
-          className={cn(
-            "flex items-center gap-2 sm:gap-3",
-            isRTL && "flex-row-reverse",
-          )}
-        >
-          {/* Theme Switcher */}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={
-              theme === "light" ? "Switch to dark mode" : "Switch to light mode"
-            }
-            onClick={toggleTheme}
-            className={cn(
-              "relative rounded-full p-2 transition-all hover:scale-105",
-              surfaceControlClass,
-            )}
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={theme}
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.3 }}
-              >
-                {theme === "light" ? (
-                  <Moon className="h-5 w-5 text-[hsl(var(--primary))]" />
-                ) : (
-                  <Sun className="h-5 w-5 text-[hsl(var(--accent))]" />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </Button>
-
-          {/* Language Switcher */}
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="Toggle language"
-            onClick={toggleLanguage}
-            className={cn(
-              "rounded-full p-2 transition-all hover:scale-105",
-              surfaceControlClass,
-            )}
-          >
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={language}
-                initial={{ rotateY: 180, opacity: 0 }}
-                animate={{ rotateY: 0, opacity: 1 }}
-                exit={{ rotateY: -180, opacity: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                {language === "ar" ? (
-                  <Globe className="h-5 w-5 text-[hsl(var(--accent))]" />
-                ) : (
-                  <Globe className="h-5 w-5 text-[hsl(var(--primary))]" />
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </Button>
-
-          {/* Notifications */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "relative rounded-full p-2 hover:scale-105 transition-all",
-              surfaceControlClass,
-            )}
-          >
-            <Bell className="h-5 w-5" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white shadow-md">
-                {unreadCount}
-              </span>
-            )}
-          </Button>
-
-          {/* User Menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className={cn(
-                  "rounded-full p-2 hover:scale-105 transition-all",
-                  surfaceControlClass,
-                )}
-              >
-                <User className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent
-              align={isRTL ? "start" : "end"}
-              sideOffset={8}
-              className={cn(
-                "min-w-[180px] rounded-2xl border p-2 backdrop-blur-lg shadow-lg",
-                "border-[hsla(var(--border)/0.2)] text-[hsl(var(--foreground))]",
-                theme === "dark"
-                  ? "bg-[hsla(var(--color-surface)/0.92)]"
-                  : "bg-[hsla(var(--color-surface)/0.97)]",
-              )}
-            >
-              <DropdownMenuItem className="flex items-center gap-2">
-                <UserCircle className="h-4 w-4" />
-                {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <Settings className="h-4 w-4" />
-                {language === "ar" ? "الإعدادات" : "Settings"}
-              </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2 text-destructive">
-                <LogOut className="h-4 w-4" />
-                {language === "ar" ? "تسجيل الخروج" : "Logout"}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <div className="flex items-center gap-2 sm:gap-3" dir={direction}>
+          {orderedControls.map((control) => control)}
         </div>
       </div>
     </motion.header>

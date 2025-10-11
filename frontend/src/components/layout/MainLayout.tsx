@@ -1,4 +1,5 @@
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
 import { Footer } from './Footer';
@@ -17,6 +18,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const { direction } = useLanguage();
   const { theme } = useTheme();
   const { width } = useWindowSize();
+  const location = useLocation();
 
   // ✅ الحالات (states)
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -25,6 +27,12 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   // ✅ تحديد وضع الموبايل أو الديسكتوب
   const isMobile = width < DESKTOP_BREAKPOINT;
   const sidebarWidth = isMobile ? 0 : collapsed ? 80 : 272;
+
+  const hideFooterRoutes = useMemo(() => ['/dashboard'], []);
+  const shouldRenderFooter = useMemo(
+    () => !hideFooterRoutes.some((route) => location.pathname.startsWith(route)),
+    [hideFooterRoutes, location.pathname],
+  );
 
   // ✅ التبديل التلقائي عند تغير حجم الشاشة
   useEffect(() => {
@@ -71,21 +79,23 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       >
         <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
         <Sidebar
-        collapsed={collapsed}
-        onCollapseChange={setCollapsed}
-        isMobile={isMobile}
-        isMobileSidebarOpen={isMobileSidebarOpen}
-        setMobileSidebarOpen={setMobileSidebarOpen}
-      />
+          collapsed={collapsed}
+          onCollapseChange={setCollapsed}
+          isMobile={isMobile}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          setMobileSidebarOpen={setMobileSidebarOpen}
+        />
         {/* ✅ المحتوى */}
-        <main className="flex-1 overflow-y-auto scrollbar-stable"> 
-            {children} 
+        <main className="flex-1 overflow-y-auto scrollbar-stable">
+            {children}
         </main>
 
         {/* ✅ الفوتر */}
-        <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 sm:px-6 lg:px-10">
-          <Footer />
-        </div>
+        {shouldRenderFooter && (
+          <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 sm:px-6 lg:px-10">
+            <Footer />
+          </div>
+        )}
       </div>
     </div>
   );

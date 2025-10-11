@@ -1,7 +1,8 @@
-import { Fragment, useMemo } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Vote,
@@ -42,6 +43,7 @@ export const Sidebar = ({
   const { user } = useAuth();
   const location = useLocation();
   const isRTL = direction === 'rtl';
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
   // 🎯 صلاحيات المستخدم
   const availableRoles = useMemo(() => {
@@ -85,8 +87,37 @@ export const Sidebar = ({
   const translateNavLabel = (key: string) =>
     t(`navigation.${key}`, { defaultValue: key.replace('_', ' ') });
 
-  const isPathActive = (path: string) =>
-    location.pathname === path || location.pathname.startsWith(`${path}/`);
+  const isPathActive = useCallback(
+    (path: string) =>
+      location.pathname === path || location.pathname.startsWith(`${path}/`),
+    [location.pathname],
+  );
+
+  useEffect(() => {
+    setOpenSections((prev) => {
+      const next: Record<string, boolean> = {};
+      filteredSections.forEach((section) => {
+        const hasActiveItem = section.items.some((item) => isPathActive(item.path));
+        const previous = prev[section.key];
+
+        if (hasActiveItem) {
+          next[section.key] = true;
+        } else if (previous !== undefined) {
+          next[section.key] = previous;
+        } else {
+          next[section.key] = true;
+        }
+      });
+      return next;
+    });
+  }, [filteredSections, isPathActive]);
+
+  const toggleSection = (key: string) => {
+    setOpenSections((prev) => {
+      const current = prev[key] ?? true;
+      return { ...prev, [key]: !current };
+    });
+  };
 
   const getRelatedItems = (item: SidebarItemConfig) =>
     item.relatedKeys
@@ -194,28 +225,72 @@ export const Sidebar = ({
         dir={direction}
       >
         <div className="flex flex-col gap-4">
-          {filteredSections.map((section) => (
-            <div key={section.key} className="w-full">
-              {!collapsed && (
-                <p
-                  className={cn(
-                    'mb-2 px-3 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70',
-                    isRTL ? 'text-right' : 'text-left'
-                  )}
-                >
-                  {translateNavLabel(section.key)}
-                </p>
-              )}
-              <ul
-                className={cn(
-                  'flex flex-col gap-1.5',
-                  isRTL ? 'items-end justify-end' : 'items-start justify-start'
+          {filteredSections.map((section) => {
+            const SectionIcon = section.icon;
+            const isOpen = collapsed ? true : openSections[section.key] ?? true;
+            const hasActiveItem = section.items.some((item) => isPathActive(item.path));
+
+            return (
+              <div key={section.key} className="w-full">
+                {!collapsed && (
+                  <button
+                    type="button"
+                    onClick={() => toggleSection(section.key)}
+                    className={cn(
+                      'group flex w-full items-center justify-between rounded-xl px-3 py-2 text-[0.7rem] font-semibold uppercase tracking-[0.2em] transition-colors',
+                      isRTL ? 'flex-row-reverse text-right' : 'flex-row text-left',
+                      hasActiveItem
+                        ? 'bg-primary/10 text-primary dark:text-[#E7B10A]'
+                        : 'text-muted-foreground/70 hover:bg-primary/10 hover:text-primary dark:hover:text-[#E7B10A]'
+                    )}
+                    aria-expanded={isOpen}
+                    dir={direction}
+                  >
+                    <span
+                      className={cn(
+                        'flex items-center gap-2',
+                        isRTL ? 'flex-row-reverse' : 'flex-row'
+                      )}
+                    >
+                      {SectionIcon && (
+                        <SectionIcon className="h-4 w-4 opacity-80 transition-opacity group-hover:opacity-100" />
+                      )}
+                      <span className="text-[0.65rem] tracking-[0.3em]">
+                        {translateNavLabel(section.key)}
+                      </span>
+                    </span>
+                    <motion.span
+                      animate={{ rotate: isOpen ? 180 : 0 }}
+                      className={cn(
+                        'transition-transform duration-200',
+                        isRTL ? 'mr-1' : 'ml-1'
+                      )}
+                    >
+                      <ChevronDown className="h-4 w-4" />
+                    </motion.span>
+                  </button>
                 )}
-              >
-                {section.items.map((item) => renderDesktopItem(item))}
-              </ul>
-            </div>
-          ))}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.ul
+                      key={`${section.key}-items`}
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+                      className={cn(
+                        'flex flex-col gap-1.5 overflow-hidden',
+                        !collapsed && 'mt-2',
+                        isRTL ? 'items-end justify-end' : 'items-start justify-start'
+                      )}
+                    >
+                      {section.items.map((item) => renderDesktopItem(item))}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </div>
       </nav>
     </TooltipProvider>
