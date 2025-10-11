@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -31,6 +31,7 @@ import { ObservationsList } from "@/modules/observations/ObservationsList";
 import { CampaignsList } from "@/modules/campaigns/CampaignsList";
 import { AutomationDashboard } from "@/modules/automation/AutomationDashboard";
 import { NotificationProvider } from "@/contexts/NotificationContext";
+import { BarbaTransitionProvider } from "@/components/transition/BarbaTransitionProvider";
  
 
  
@@ -48,16 +49,12 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
-              <Routes>
-                <Route
-  path="/"
-  element={
-    <AuthRedirect />
-  }
-/>
-                <Route path="/login" element={<Login />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route element={<MainLayoutWrapper />}>
+              <BarbaTransitionProvider>
+                <Routes>
+                  <Route path="/" element={<AuthRedirect />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<MainLayoutWrapper />}>
      <Route path="/dashboard" element={<Dashboard />} />
 
                     <Route path="/elections" element={<ElectionsList />} />
@@ -81,10 +78,11 @@ const App = () => (
                     <Route path="/settings" element={<Settings />} />
 
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
                   </Route>
-                </Route>
-              </Routes>
+                </Routes>
+              </BarbaTransitionProvider>
             </BrowserRouter>
           </TooltipProvider>
         </LanguageProvider>
@@ -93,13 +91,20 @@ const App = () => (
   </QueryClientProvider>
 );
 
-const MainLayoutWrapper = () => (
-  <NotificationProvider>
-    <MainLayout>
-      <Outlet />
-    </MainLayout>
-  </NotificationProvider>
-);
+const MainLayoutWrapper = () => {
+  const location = useLocation();
+  const namespace = location.pathname.replace(/\//g, "-") || "app";
+
+  return (
+    <NotificationProvider>
+      <div data-barba="container" data-barba-namespace={namespace} className="min-h-screen">
+        <MainLayout>
+          <Outlet />
+        </MainLayout>
+      </div>
+    </NotificationProvider>
+  );
+};
 
 // Temporary component for modules under development
 const ComingSoon = ({ module }: { module: string }) => (
