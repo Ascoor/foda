@@ -95,8 +95,18 @@ export const Sidebar = ({
     t(`navigation.${key}`, { defaultValue: key.replace("_", " ") });
 
   // 🔹 عنصر فرعي
-  const renderItem = (item: SidebarItemConfig) => {
+  const renderItem = (
+    item: SidebarItemConfig,
+    options?: {
+      onNavigate?: () => void;
+      variant?: 'desktop' | 'mobile';
+    },
+  ) => {
     const Icon = item.icon;
+    const handleNavigate = () => {
+      options?.onNavigate?.();
+    };
+    const isMobileVariant = options?.variant === 'mobile';
     return (
       <li key={item.key}>
         <NavLink
@@ -107,12 +117,16 @@ export const Sidebar = ({
               isActive || isPathActive(item.path)
                 ? "bg-[#E7B10A]/15 text-white"
                 : "text-white/80 hover:bg-[#E7B10A]/15 hover:text-white",
-              isRTL ? "flex-row" : "flex-row-reverse"
+              isRTL ? "flex-row" : "flex-row-reverse",
+              isMobileVariant && "text-base"
             )
           }
+          onClick={handleNavigate}
         >
           <Icon className="h-5 w-5 shrink-0 mx-2" />
-          {!collapsed && <span className="truncate">{renderLabel(item.key)}</span>}
+          {!(isMobileVariant ? false : collapsed) && (
+            <span className="truncate">{renderLabel(item.key)}</span>
+          )}
         </NavLink>
       </li>
     );
@@ -237,6 +251,98 @@ export const Sidebar = ({
   const versionLabel = language === "ar" ? "الإصدار 1.0.0" : "Version 1.0.0";
   const expandedWidth = collapsed ? "5rem" : "17rem";
 
+  const renderMobileNav = () => (
+    <nav className="flex-1 overflow-y-auto px-4 pb-10" dir={direction}>
+      <ul className="flex flex-col gap-3">
+        {filteredSections.map((section) => {
+          const SectionIcon = section.icon;
+          const isOpen = openSections[section.key] ?? false;
+          const hasItems = section.items && section.items.length > 0;
+
+          if (section.path && !hasItems) {
+            return (
+              <li key={section.key}>
+                <NavLink
+                  to={section.path}
+                  onClick={() => setMobileSidebarOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex items-center justify-between rounded-xl bg-white/5 px-4 py-3 text-base font-semibold text-white transition-all duration-300",
+                      isActive || isPathActive(section.path!)
+                        ? "bg-[#E7B10A]/20 text-white"
+                        : "hover:bg-[#E7B10A]/15"
+                    )
+                  }
+                  dir={direction}
+                >
+                  <span
+                    className={cn(
+                      "flex items-center gap-3",
+                      isRTL ? "flex-row-reverse" : "flex-row"
+                    )}
+                  >
+                    {SectionIcon && <SectionIcon className="h-5 w-5" />}
+                    <span className="truncate">{renderLabel(section.key)}</span>
+                  </span>
+                  <ChevronRight
+                    className={cn(
+                      "h-4 w-4 opacity-60",
+                      isRTL ? "rotate-180" : "rotate-0"
+                    )}
+                  />
+                </NavLink>
+              </li>
+            );
+          }
+
+          return (
+            <li key={section.key} className="rounded-xl bg-white/5">
+              <motion.button
+                onClick={() => toggleSection(section.key)}
+                whileTap={{ scale: 0.98 }}
+                className={cn(
+                  "flex w-full items-center justify-between px-4 py-3 text-base font-semibold text-white",
+                  isRTL ? "flex-row-reverse" : "flex-row"
+                )}
+              >
+                <span className="flex items-center gap-3">
+                  {SectionIcon && <SectionIcon className="h-5 w-5" />}
+                  <span>{renderLabel(section.key)}</span>
+                </span>
+                <motion.span
+                  animate={{ rotate: isOpen ? (isRTL ? -180 : 180) : 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="opacity-70"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </motion.span>
+              </motion.button>
+
+              <AnimatePresence initial={false}>
+                {isOpen && hasItems && (
+                  <motion.ul
+                    initial={{ height: 0, opacity: 0, y: -8 }}
+                    animate={{ height: "auto", opacity: 1, y: 0 }}
+                    exit={{ height: 0, opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25 }}
+                    className="flex flex-col gap-1 px-4 pb-3"
+                  >
+                    {section.items!.map((item) =>
+                      renderItem(item, {
+                        onNavigate: () => setMobileSidebarOpen(false),
+                        variant: 'mobile',
+                      }),
+                    )}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+
   return (
     <Fragment>
       {!isMobile && (
@@ -298,6 +404,65 @@ export const Sidebar = ({
             {versionLabel}
           </div>
         </aside>
+      )}
+
+      {isMobile && (
+        <AnimatePresence>
+          {isMobileSidebarOpen && (
+            <motion.div
+              className="fixed inset-0 z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div
+                className="absolute inset-0 bg-black/50"
+                onClick={() => setMobileSidebarOpen(false)}
+              />
+              <motion.aside
+                dir={direction}
+                className="relative flex h-full w-full flex-col bg-[#1C3F60] text-white"
+                initial={{ x: isRTL ? 80 : -80, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: isRTL ? 60 : -60, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+              >
+                <div
+                  className={cn(
+                    "flex items-center justify-between px-4 py-4",
+                    isRTL ? "flex-row-reverse" : "flex-row"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "flex items-center gap-3",
+                      isRTL ? "flex-row-reverse" : "flex-row"
+                    )}
+                  >
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
+                      <Vote className="h-5 w-5" />
+                    </div>
+                    <span className="text-lg font-semibold">{brandLabel}</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-10 w-10 rounded-xl border border-white/20 bg-white/10 text-white hover:bg-[#E7B10A]/20"
+                    onClick={() => setMobileSidebarOpen(false)}
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
+
+                {renderMobileNav()}
+
+                <div className="px-4 pb-6 text-center text-xs text-white/65">
+                  {versionLabel}
+                </div>
+              </motion.aside>
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
     </Fragment>
   );
