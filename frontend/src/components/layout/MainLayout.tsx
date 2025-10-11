@@ -1,8 +1,7 @@
 import { type ReactNode, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import { Header } from './Header';
-import { Footer } from './Footer';
+import { Header } from './Header'; 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useWindowSize } from '@/hooks/use-window-size';
@@ -91,11 +90,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         </main>
 
         {/* ✅ الفوتر */}
-        {shouldRenderFooter && (
-          <div className="mx-auto w-full max-w-[1440px] px-4 pb-8 sm:px-6 lg:px-10">
-            <Footer />
-          </div>
-        )}
+ 
       </div>
     </div>
   );

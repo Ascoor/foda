@@ -13,17 +13,22 @@ export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     let isMounted = true;
 
-    if (typeof window === "undefined") {
-      return undefined;
-    }
-
     const setup = async () => {
+      if (typeof window === "undefined") return;
+
+      // تحميل barba core فقط عند الحاجة
       const module = await import("@barba/core");
       if (!isMounted) return;
 
       const barba = module.default;
-
       if (!barba) return;
+
+      // تحقق من وجود container فعلاً قبل التهيئة
+      const container = document.querySelector("[data-barba='container']");
+      if (!container) {
+        console.warn("[Barba] No container found, skipping init.");
+        return;
+      }
 
       barba.init({
         transitions: [
@@ -33,7 +38,7 @@ export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
               gsap.to(current.container, {
                 opacity: 0,
                 x: -40,
-                duration: 0.45,
+                duration: 0.4,
                 ease: "power2.out",
               }),
             enter: ({ next }) => {
@@ -41,7 +46,7 @@ export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
               return gsap.to(next.container, {
                 opacity: 1,
                 x: 0,
-                duration: 0.55,
+                duration: 0.5,
                 ease: "power2.out",
               });
             },
@@ -67,7 +72,8 @@ export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
     const path = location.pathname + location.search;
 
     if (!barba) {
-      const container = document.querySelector<HTMLElement>("[data-barba=\"container\"]");
+      // fallback animation إذا لم تتم تهيئة Barba
+      const container = document.querySelector<HTMLElement>("[data-barba='container']");
       if (container) {
         gsap.fromTo(
           container,
@@ -79,11 +85,10 @@ export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
     }
 
     if (lastPathRef.current === path) return;
-
     lastPathRef.current = path;
 
     barba.go(path).catch(() => {
-      const container = document.querySelector<HTMLElement>("[data-barba=\"container\"]");
+      const container = document.querySelector<HTMLElement>("[data-barba='container']");
       if (container) {
         gsap.fromTo(
           container,

@@ -90,14 +90,17 @@ const App = () => (
     </AuthProvider>
   </QueryClientProvider>
 );
-
 const MainLayoutWrapper = () => {
   const location = useLocation();
   const namespace = location.pathname.replace(/\//g, "-") || "app";
 
   return (
     <NotificationProvider>
-      <div data-barba="container" data-barba-namespace={namespace} className="min-h-screen">
+      <div
+        data-barba="container"
+        data-barba-namespace={namespace}
+        className="min-h-screen"
+      >
         <MainLayout>
           <Outlet />
         </MainLayout>
