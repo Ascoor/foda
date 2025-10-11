@@ -1,6 +1,6 @@
 import { Fragment, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import {
   ChevronLeft,
   ChevronRight,
@@ -17,7 +17,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { sidebarItems } from './sidebarItems';
+import {
+  sidebarSections,
+  type SidebarItemConfig,
+  type SidebarSectionConfig,
+} from './sidebarItems';
 
 interface SidebarProps {
   collapsed: boolean;
@@ -36,6 +40,7 @@ export const Sidebar = ({
 }: SidebarProps) => {
   const { language, direction, t } = useLanguage();
   const { user } = useAuth();
+  const location = useLocation();
   const isRTL = direction === 'rtl';
 
   // 🎯 صلاحيات المستخدم
@@ -44,125 +49,246 @@ export const Sidebar = ({
     return new Set(rawRoles.map((r) => r.toLowerCase()));
   }, [user]);
 
-  // 🔍 تصفية العناصر بناءً على الأدوار
-  const filteredItems = useMemo(
-    () =>
-      sidebarItems.filter((item) => {
-        if (!item.roles?.length) return true;
-        return item.roles.some((role) => availableRoles.has(role.toLowerCase()));
-      }),
-    [availableRoles]
-  );
+  // 🔍 تصفية العناصر بناءً على الأدوار وتنظيمها في أقسام
+  const filteredSections = useMemo(() => {
+    const allow = (roles?: string[]) => {
+      if (!roles?.length) return true;
+      return roles.some((role) => availableRoles.has(role.toLowerCase()));
+    };
 
-  // 🌍 ترجمة العنصر
-  const renderNavItem = (key: string) =>
+    return sidebarSections
+      .map((section) => {
+        if (section.roles?.length && !allow(section.roles)) {
+          return null;
+        }
+
+        const items = section.items.filter((item) => allow(item.roles));
+        if (!items.length) {
+          return null;
+        }
+
+        return { ...section, items };
+      })
+      .filter((section): section is SidebarSectionConfig => Boolean(section));
+  }, [availableRoles]);
+
+  const accessibleItemsMap = useMemo(() => {
+    const map = new Map<string, SidebarItemConfig>();
+    filteredSections.forEach((section) => {
+      section.items.forEach((item) => {
+        map.set(item.key, item);
+      });
+    });
+    return map;
+  }, [filteredSections]);
+
+  const translateNavLabel = (key: string) =>
     t(`navigation.${key}`, { defaultValue: key.replace('_', ' ') });
-  const renderDesktopNav = () => (
-    <TooltipProvider delayDuration={100}>
-      <nav
-    className={cn(
-      'flex-1 overflow-y-auto transition-all duration-300 px-3 pb-6',
-      collapsed && 'overflow-hidden scrollbar-hide',
-      isRTL ? 'pr-4 text-right' : 'pl-4 text-left'
-    )}
-    dir={direction}
-  >
-    <ul
-      className={cn(
-        'flex flex-col gap-1.5',
-        isRTL ? 'items-end justify-end' : 'items-start justify-start'
-      )}
-    >
-      {filteredItems.map((item) => {
-        const Icon = item.icon;
-        const content = (
+
+  const isPathActive = (path: string) =>
+    location.pathname === path || location.pathname.startsWith(`${path}/`);
+
+  const getRelatedItems = (item: SidebarItemConfig) =>
+    item.relatedKeys
+      ?.map((relatedKey) => accessibleItemsMap.get(relatedKey))
+      .filter((related): related is SidebarItemConfig => Boolean(related) && related.key !== item.key) ?? [];
+
+  const renderDesktopRelatedLinks = (item: SidebarItemConfig) => {
+    if (collapsed) return null;
+    const relatedItems = getRelatedItems(item);
+    if (!relatedItems.length) return null;
+
+    return (
+      <div
+        className={cn(
+          'mt-2 flex flex-wrap gap-1.5',
+          isRTL ? 'justify-end text-right' : 'justify-start text-left'
+        )}
+      >
+        {relatedItems.map((related) => (
           <NavLink
-            to={item.path}
+            key={`${item.key}-related-${related.key}`}
+            to={related.path}
             className={({ isActive }) =>
               cn(
-                'group relative flex items-center rounded-xl px-3 py-3 text-sm font-medium transition-all duration-300 w-full',
-                collapsed && 'justify-center px-0',
+                'inline-flex items-center rounded-full border border-primary/30 px-2.5 py-1 text-xs transition-colors',
                 isActive
-                  ? 'bg-primary/15 text-primary dark:text-[#E7B10A]'
-                  : 'text-foreground/70 hover:text-primary hover:bg-primary/10 dark:hover:text-[#E7B10A]',
-                isRTL
-                  ? 'flex-row-reverse justify-end text-right'
-                  : 'flex-row justify-start text-left'
+                  ? 'bg-primary/20 text-primary dark:text-[#E7B10A]'
+                  : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
               )
             }
           >
-            {isRTL ? (
-              <>
-                <Icon className="h-5 w-5 shrink-0 order-last ml-2 group-hover:scale-110 group-hover:text-[#E7B10A] transition-transform duration-200" />
-                {!collapsed && (
-                  <span className="truncate text-sm">{renderNavItem(item.key)}</span>
-                )}
-              </>
-            ) : (
-              <>
-                <Icon className="h-5 w-5 shrink-0 order-first mr-2 group-hover:scale-110 group-hover:text-[#E7B10A] transition-transform duration-200" />
-                {!collapsed && (
-                  <span className="truncate text-sm">{renderNavItem(item.key)}</span>
-                )}
-              </>
-            )}
+            {translateNavLabel(related.key)}
           </NavLink>
-        );
+        ))}
+      </div>
+    );
+  };
 
-        return (
-          <li key={item.key} className={cn(isRTL && 'w-full flex justify-end')}>
-            {collapsed ? (
-              <Tooltip>
-                <TooltipTrigger asChild>{content}</TooltipTrigger>
-                <TooltipContent
-                  side={isRTL ? 'left' : 'right'}
-                  className="bg-background/90 text-foreground shadow-md backdrop-blur-md border border-border/10"
-                >
-                  {renderNavItem(item.key)}
-                </TooltipContent>
-              </Tooltip>
-            ) : (
-              content
+  const renderDesktopItem = (item: SidebarItemConfig) => {
+    const Icon = item.icon;
+    const content = (
+      <NavLink
+        to={item.path}
+        className={({ isActive }) =>
+          cn(
+            'group relative flex items-center rounded-xl px-3 py-3 text-sm font-medium transition-all duration-300 w-full',
+            collapsed && 'justify-center px-0',
+            (isActive || isPathActive(item.path))
+              ? 'bg-primary/15 text-primary dark:text-[#E7B10A]'
+              : 'text-foreground/70 hover:text-primary hover:bg-primary/10 dark:hover:text-[#E7B10A]',
+            isRTL
+              ? 'flex-row-reverse justify-end text-right'
+              : 'flex-row justify-start text-left'
+          )
+        }
+      >
+        {isRTL ? (
+          <>
+            <Icon className="h-5 w-5 shrink-0 order-last ml-2 group-hover:scale-110 group-hover:text-[#E7B10A] transition-transform duration-200" />
+            {!collapsed && (
+              <span className="truncate text-sm">{translateNavLabel(item.key)}</span>
             )}
-          </li>
-        );
-      })}
-    </ul>
-  </nav>
+          </>
+        ) : (
+          <>
+            <Icon className="h-5 w-5 shrink-0 order-first mr-2 group-hover:scale-110 group-hover:text-[#E7B10A] transition-transform duration-200" />
+            {!collapsed && (
+              <span className="truncate text-sm">{translateNavLabel(item.key)}</span>
+            )}
+          </>
+        )}
+      </NavLink>
+    );
 
+    return (
+      <li key={item.key} className={cn('w-full', isRTL && 'flex flex-col items-end')}>
+        {collapsed ? (
+          <Tooltip>
+            <TooltipTrigger asChild>{content}</TooltipTrigger>
+            <TooltipContent
+              side={isRTL ? 'left' : 'right'}
+              className="bg-background/90 text-foreground shadow-md backdrop-blur-md border border-border/10"
+            >
+              {translateNavLabel(item.key)}
+            </TooltipContent>
+          </Tooltip>
+        ) : (
+          <>
+            {content}
+            {renderDesktopRelatedLinks(item)}
+          </>
+        )}
+      </li>
+    );
+  };
+
+  const renderDesktopNav = () => (
+    <TooltipProvider delayDuration={100}>
+      <nav
+        className={cn(
+          'flex-1 overflow-y-auto transition-all duration-300 px-3 pb-6',
+          collapsed && 'overflow-hidden scrollbar-hide',
+          isRTL ? 'pr-4 text-right' : 'pl-4 text-left'
+        )}
+        dir={direction}
+      >
+        <div className="flex flex-col gap-4">
+          {filteredSections.map((section) => (
+            <div key={section.key} className="w-full">
+              {!collapsed && (
+                <p
+                  className={cn(
+                    'mb-2 px-3 text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-muted-foreground/70',
+                    isRTL ? 'text-right' : 'text-left'
+                  )}
+                >
+                  {translateNavLabel(section.key)}
+                </p>
+              )}
+              <ul
+                className={cn(
+                  'flex flex-col gap-1.5',
+                  isRTL ? 'items-end justify-end' : 'items-start justify-start'
+                )}
+              >
+                {section.items.map((item) => renderDesktopItem(item))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </nav>
     </TooltipProvider>
   );
-  
+
+  const renderMobileRelatedLinks = (item: SidebarItemConfig) => {
+    const relatedItems = getRelatedItems(item);
+    if (!relatedItems.length) return null;
+
+    return (
+      <div
+        className={cn(
+          'mt-1 flex flex-wrap gap-1.5 text-xs',
+          isRTL ? 'justify-end text-right' : 'justify-start text-left'
+        )}
+      >
+        {relatedItems.map((related) => (
+          <NavLink
+            key={`${item.key}-mobile-related-${related.key}`}
+            to={related.path}
+            onClick={() => setMobileSidebarOpen(false)}
+            className={({ isActive }) =>
+              cn(
+                'rounded-full border border-white/20 px-2 py-1 transition-colors',
+                isActive ? 'bg-white/20 text-white' : 'text-white/80 hover:bg-white/10'
+              )
+            }
+          >
+            {translateNavLabel(related.key)}
+          </NavLink>
+        ))}
+      </div>
+    );
+  };
 
   // 📱 شريط الموبايل
   const renderMobileNav = () => (
     <nav
-      className="mt-6 flex flex-col gap-2"
+      className="mt-6 flex flex-col gap-6"
       aria-label={t('navigation.main', { defaultValue: 'Main navigation' })}
       dir={direction}
     >
-      {filteredItems.map((item) => {
-        const Icon = item.icon;
-        return (
-          <NavLink
-            key={item.key}
-            to={item.path}
-            onClick={() => setMobileSidebarOpen(false)}
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors duration-200',
-                isActive
-                  ? 'bg-[#E7B10A]/25 text-white'
-                  : 'text-white/85 hover:bg-[#E7B10A]/15 hover:text-white',
-                isRTL && 'flex-row-reverse'
-              )
-            }
-          >
-            <Icon className="h-5 w-5" />
-            <span className="truncate">{renderNavItem(item.key)}</span>
-          </NavLink>
-        );
-      })}
+      {filteredSections.map((section) => (
+        <div key={section.key} className="flex flex-col gap-2">
+          <span className="px-4 text-xs font-semibold uppercase tracking-[0.2em] text-white/60">
+            {translateNavLabel(section.key)}
+          </span>
+          {section.items.map((item) => {
+            const Icon = item.icon;
+            return (
+              <Fragment key={item.key}>
+                <NavLink
+                  to={item.path}
+                  onClick={() => setMobileSidebarOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors duration-200',
+                      isActive
+                        ? 'bg-[#E7B10A]/25 text-white'
+                        : 'text-white/85 hover:bg-[#E7B10A]/15 hover:text-white',
+                      isRTL && 'flex-row-reverse'
+                    )
+                  }
+                >
+                  <Icon className="h-5 w-5" />
+                  <span className="truncate">{translateNavLabel(item.key)}</span>
+                </NavLink>
+                {renderMobileRelatedLinks(item)}
+              </Fragment>
+            );
+          })}
+        </div>
+      ))}
     </nav>
   );
 
