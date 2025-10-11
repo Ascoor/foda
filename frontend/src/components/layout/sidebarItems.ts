@@ -27,15 +27,18 @@ export interface SidebarSectionConfig {
   key: string;
   items: SidebarItemConfig[];
   roles?: string[];
+  icon?: LucideIcon;
 }
 
 export const sidebarSections: SidebarSectionConfig[] = [
   {
     key: 'section_overview',
+    icon: LayoutDashboard,
     items: [{ key: 'dashboard', icon: LayoutDashboard, path: '/dashboard' }],
   },
   {
     key: 'section_election_operations',
+    icon: Vote,
     items: [
       {
         key: 'elections',
@@ -83,6 +86,7 @@ export const sidebarSections: SidebarSectionConfig[] = [
   },
   {
     key: 'section_field_resources',
+    icon: Shield,
     items: [
       {
         key: 'agents',
@@ -109,6 +113,7 @@ export const sidebarSections: SidebarSectionConfig[] = [
   },
   {
     key: 'section_campaign_intelligence',
+    icon: Megaphone,
     items: [
       {
         key: 'campaigns',
@@ -135,6 +140,7 @@ export const sidebarSections: SidebarSectionConfig[] = [
   },
   {
     key: 'section_admin',
+    icon: Settings,
     items: [
       {
         key: 'settings',
