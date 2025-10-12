@@ -102,7 +102,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         {/* ✅ المحتوى */}
         <main
           ref={contentRef}
-          className="relative flex-1 overflow-y-auto scrollbar-stable"
+          className="relative  overflow-y-auto scrollbar-stable"
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
