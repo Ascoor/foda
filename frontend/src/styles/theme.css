@@ -23,6 +23,19 @@
     background-image: var(--gradient-glow);
     background-attachment: fixed;
     scrollbar-gutter: stable both-edges;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      padding-inline-start 0.35s ease,
+      padding-inline-end 0.35s ease;
+  }
+
+  body.is-rtl {
+    font-family: var(--font-family-rtl);
+  }
+
+  body.is-ltr {
+    font-family: var(--font-family-base);
   }
 
   main,

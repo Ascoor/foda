@@ -1,4 +1,11 @@
-import { type ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  type ReactNode,
+  type CSSProperties,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
@@ -59,12 +66,27 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   }, [isMobile]);
 
   // ✅ محاذاة padding للغة RTL / LTR
-  const paddingStyle = useMemo(() => {
-    const paddingValue = `${sidebarWidth}px`;
-    return direction === 'rtl'
-      ? { paddingRight: paddingValue }
-      : { paddingLeft: paddingValue };
-  }, [direction, sidebarWidth]);
+  const paddingStyle = useMemo(
+    () => {
+      const paddingValue = `${sidebarWidth}px`;
+      return {
+        paddingInlineStart: paddingValue,
+        transition: 'padding-inline-start 0.3s ease',
+        ...(direction === 'rtl'
+          ? { paddingRight: paddingValue }
+          : { paddingLeft: paddingValue }),
+      } satisfies CSSProperties;
+    },
+    [direction, sidebarWidth],
+  );
+
+  const layoutVariables = useMemo(
+    () =>
+      ({
+        '--sidebar-width': `${sidebarWidth}px`,
+      }) satisfies CSSProperties,
+    [sidebarWidth],
+  );
 
   return (
     <div
@@ -78,19 +100,14 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       style={{
         '--layout-header-height': '4.25rem',
         '--layout-footer-height': '3.5rem',
-      } as React.CSSProperties}
+        ...layoutVariables,
+      }}
     >
       {/* ✅ الشريط الجانبي */}
 
 
       {/* ✅ الهيكل الرئيسي */}
-      <div
-        className="flex min-h-screen flex-col"
-        style={{
-          ...paddingStyle,
-          transition: 'padding 0.3s ease',
-        }}
-      >
+      <div className="flex min-h-screen flex-col" style={paddingStyle}>
         <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
         <Sidebar
           collapsed={collapsed}

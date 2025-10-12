@@ -58,6 +58,15 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
 
     document.dir = direction;
     document.documentElement.lang = language;
+
+    const body = document.body;
+    if (!body) {
+      return;
+    }
+
+    body.dataset.direction = direction;
+    body.classList.toggle('is-rtl', direction === 'rtl');
+    body.classList.toggle('is-ltr', direction === 'ltr');
   }, [direction, language]);
 
   useEffect(() => {
