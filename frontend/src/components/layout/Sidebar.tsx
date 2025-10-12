@@ -95,6 +95,8 @@ export const Sidebar = ({
     t(`navigation.${key}`, { defaultValue: key.replace("_", " ") });
 
   // 🔹 عنصر فرعي
+  const directionalFlex = isRTL ? "flex-row-reverse" : "flex-row";
+
   const renderItem = (
     item: SidebarItemConfig,
     options?: {
@@ -113,19 +115,22 @@ export const Sidebar = ({
           to={item.path}
           className={({ isActive }) =>
             cn(
-              "group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300",
+              "group flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300",
               isActive || isPathActive(item.path)
                 ? "bg-[#E7B10A]/15 text-white"
                 : "text-white/80 hover:bg-[#E7B10A]/15 hover:text-white",
-              isRTL ? "flex-row" : "flex-row-reverse",
+              directionalFlex,
               isMobileVariant && "text-base"
             )
           }
+          dir={direction}
           onClick={handleNavigate}
         >
-          <Icon className="h-5 w-5 shrink-0 mx-2" />
+          <Icon className="h-5 w-5 shrink-0" />
           {!(isMobileVariant ? false : collapsed) && (
-            <span className="truncate">{renderLabel(item.key)}</span>
+            <span className="truncate text-sm leading-none text-start">
+              {renderLabel(item.key)}
+            </span>
           )}
         </NavLink>
       </li>
@@ -150,18 +155,21 @@ export const Sidebar = ({
                     to={section.path}
                     className={({ isActive }) =>
                       cn(
-                        "flex items-center rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
+                        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
                         isActive || isPathActive(section.path!)
                           ? "bg-[#E7B10A]/15 text-white"
                           : "text-white/80 hover:bg-[#E7B10A]/15 hover:text-white",
-                        isRTL ? "flex-row" : "flex-row-reverse",
+                        directionalFlex,
                         collapsed && "justify-center px-0"
                       )
                     }
+                    dir={direction}
                   >
-                    {SectionIcon && <SectionIcon className="h-5 w-5 mx-2" />}
+                    {SectionIcon && <SectionIcon className="h-5 w-5" />}
                     {!collapsed && (
-                      <span className="truncate">{renderLabel(section.key)}</span>
+                      <span className="truncate text-start">
+                        {renderLabel(section.key)}
+                      </span>
                     )}
                   </NavLink>
                 </li>
@@ -196,16 +204,17 @@ export const Sidebar = ({
                       whileTap={{ scale: 0.98 }}
                       className={cn(
                         "group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
-                        isRTL ? "flex-row" : "flex-row-reverse",
+                        directionalFlex,
                         isOpen
                           ? "bg-[#E7B10A]/20 text-white"
                           : "text-white/75 hover:text-white hover:bg-[#E7B10A]/10"
                       )}
+                      dir={direction}
                     >
                       <span
                         className={cn(
                           "flex items-center gap-2",
-                          isRTL ? "flex-row" : "flex-row-reverse"
+                          directionalFlex
                         )}
                       >
                         {SectionIcon && <SectionIcon className="h-5 w-5" />}
@@ -229,8 +238,10 @@ export const Sidebar = ({
                           exit={{ height: 0, opacity: 0, y: -10 }}
                           transition={{ duration: 0.3 }}
                           className={cn(
-                            "ml-2 mt-1 flex flex-col gap-1 overflow-hidden border-l border-[#E7B10A]/20 pl-2",
-                            isRTL && "mr-2 ml-0 border-r pr-2 border-l-0"
+                            "mt-1 flex flex-col gap-1 overflow-hidden border-[#E7B10A]/20",
+                            isRTL
+                              ? "mr-2 border-r pr-2"
+                              : "ml-2 border-l pl-2"
                           )}
                         >
                           {section.items!.map((item) => renderItem(item))}
@@ -275,12 +286,7 @@ export const Sidebar = ({
                   }
                   dir={direction}
                 >
-                  <span
-                    className={cn(
-                      "flex items-center gap-3",
-                      isRTL ? "flex-row-reverse" : "flex-row"
-                    )}
-                  >
+                  <span className={cn("flex items-center gap-3", directionalFlex)}>
                     {SectionIcon && <SectionIcon className="h-5 w-5" />}
                     <span className="truncate">{renderLabel(section.key)}</span>
                   </span>
@@ -302,10 +308,10 @@ export const Sidebar = ({
                 whileTap={{ scale: 0.98 }}
                 className={cn(
                   "flex w-full items-center justify-between px-4 py-3 text-base font-semibold text-white",
-                  isRTL ? "flex-row-reverse" : "flex-row"
+                  directionalFlex
                 )}
               >
-                <span className="flex items-center gap-3">
+                <span className={cn("flex items-center gap-3", directionalFlex)}>
                   {SectionIcon && <SectionIcon className="h-5 w-5" />}
                   <span>{renderLabel(section.key)}</span>
                 </span>
@@ -430,15 +436,10 @@ export const Sidebar = ({
                 <div
                   className={cn(
                     "flex items-center justify-between px-4 py-4",
-                    isRTL ? "flex-row-reverse" : "flex-row"
+                    directionalFlex
                   )}
                 >
-                  <div
-                    className={cn(
-                      "flex items-center gap-3",
-                      isRTL ? "flex-row-reverse" : "flex-row"
-                    )}
-                  >
+                  <div className={cn("flex items-center gap-3", directionalFlex)}>
                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
                       <Vote className="h-5 w-5" />
                     </div>
