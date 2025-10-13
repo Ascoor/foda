@@ -1,9 +1,9 @@
-import landingHero from "@/assets/img/landing.webp";
-import partner1Logo from "@/assets/img/partner-1.svg";
-import partner2Logo from "@/assets/img/partner-2.svg";
-import partner3Logo from "@/assets/img/partner-3.svg";
-import partner4Logo from "@/assets/img/partner-4.svg";
-import partner5Logo from "@/assets/img/partner-5.svg";
+import landingIllustration from "@/assets/img/landing.webp"
+import partner1Logo from "@/assets/img/partner-1.svg"
+import partner2Logo from "@/assets/img/partner-2.svg"
+import partner3Logo from "@/assets/img/partner-3.svg"
+import partner4Logo from "@/assets/img/partner-4.svg"
+import partner5Logo from "@/assets/img/partner-5.svg"
 
 export interface HeroSlide {
   id: string;
@@ -41,7 +41,11 @@ export const heroSlides: HeroSlide[] = [
     title: "منصة إدارة الحملات الانتخابية",
     description:
       "منصة موحدة لإدارة المتطوعين، المرشحين، الناخبين، والبيانات الميدانية مع تحليلات فورية وتقارير دقيقة.",
+<<<<<<< HEAD
     media: landingHero,
+=======
+    media: landingIllustration,
+>>>>>>> refs/remotes/origin/new
     badge: "منصة متكاملة",
     ctaLabel: "استعرض الجولة التعريفية",
     ctaVideo: "https://www.youtube.com/watch?v=21X5lGlDOfg",
@@ -51,7 +55,11 @@ export const heroSlides: HeroSlide[] = [
     title: "قرارات تعتمد على البيانات",
     description:
       "لوحات تحكم تفاعلية تساعدك على قراءة الأنماط الانتخابية وتحديد أولويات الحملة في ثوانٍ.",
+<<<<<<< HEAD
     media: landingHero,
+=======
+    media: landingIllustration,
+>>>>>>> refs/remotes/origin/new
     badge: "تحليلات لحظية",
     ctaLabel: "اكتشف نماذج التقارير",
     ctaVideo: "https://www.youtube.com/watch?v=5qap5aO4i9A",
@@ -61,7 +69,11 @@ export const heroSlides: HeroSlide[] = [
     title: "تنسيق الفرق الميدانية بسهولة",
     description:
       "جدولة المهام، تتبع الملاحظات، وإدارة المتطوعين من تطبيق واحد يدعم اللغة العربية بالكامل.",
+<<<<<<< HEAD
     media: landingHero,
+=======
+    media: landingIllustration,
+>>>>>>> refs/remotes/origin/new
     badge: "جاهز للميدان",
     ctaLabel: "شاهد كيفية إدارة الفرق",
     ctaVideo: "https://www.youtube.com/watch?v=hHW1oY26kxQ",
