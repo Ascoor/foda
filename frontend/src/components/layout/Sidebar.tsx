@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
 import {
@@ -40,10 +41,45 @@ export const Sidebar = ({
   setMobileSidebarOpen,
 }: SidebarProps) => {
   const { language, direction, t } = useLanguage();
+  const { theme } = useTheme();
   const { user } = useAuth();
   const location = useLocation();
   const isRTL = direction === "rtl";
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
+
+  const sidebarSurfaceClass =
+    theme === "dark"
+      ? "bg-[hsla(var(--surface-secondary)/0.92)] text-[hsl(var(--foreground))]"
+      : "bg-[hsla(var(--surface)/0.97)] text-[hsl(var(--foreground))]";
+
+  const sidebarMobileSurfaceClass =
+    theme === "dark"
+      ? "bg-[hsla(var(--surface-secondary)/0.88)] text-[hsl(var(--foreground))]"
+      : "bg-[hsla(var(--surface)/0.94)] text-[hsl(var(--foreground))]";
+
+  const sidebarBorderClass =
+    theme === "dark"
+      ? "border-[hsla(var(--border)/0.35)]"
+      : "border-[hsla(var(--border)/0.25)]";
+
+  const accentSurfaceClass =
+    theme === "dark"
+      ? "bg-[hsla(var(--surface-secondary)/0.65)]"
+      : "bg-[hsla(var(--surface-secondary)/0.55)]";
+
+  const navBaseClass =
+    "group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]";
+
+  const navActiveClass =
+    "bg-[hsla(var(--primary)/0.18)] text-[hsl(var(--foreground))] font-semibold ring-1 ring-[hsla(var(--primary)/0.35)] opacity-100 shadow-sm";
+
+  const iconButtonClass =
+    "flex items-center justify-center rounded-xl text-[hsl(var(--foreground))] opacity-80 transition-colors hover:bg-[hsla(var(--primary)/0.12)] hover:opacity-100";
+
+  const brandBadgeClass =
+    "flex h-11 w-11 items-center justify-center rounded-xl bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-lg";
+
+  const footerTextClass = "px-4 pb-6 text-center text-xs text-[hsl(var(--foreground))] opacity-60";
 
   // 🧩 صلاحيات المستخدم
   const availableRoles = useMemo(() => {
@@ -113,17 +149,15 @@ export const Sidebar = ({
           to={item.path}
           className={({ isActive }) =>
             cn(
-              "group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300",
-              isActive || isPathActive(item.path)
-                ? "bg-[#E7B10A]/15 text-white"
-                : "text-white/80 hover:bg-[#E7B10A]/15 hover:text-white",
+              navBaseClass,
+              (isActive || isPathActive(item.path)) && navActiveClass,
               isRTL ? "flex-row" : "flex-row-reverse",
               isMobileVariant && "text-base"
             )
           }
           onClick={handleNavigate}
         >
-          <Icon className="h-5 w-5 shrink-0 mx-2" />
+          <Icon className="mx-2 h-5 w-5 shrink-0" />
           {!(isMobileVariant ? false : collapsed) && (
             <span className="truncate">{renderLabel(item.key)}</span>
           )}
@@ -150,16 +184,15 @@ export const Sidebar = ({
                     to={section.path}
                     className={({ isActive }) =>
                       cn(
-                        "flex items-center rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
-                        isActive || isPathActive(section.path!)
-                          ? "bg-[#E7B10A]/15 text-white"
-                          : "text-white/80 hover:bg-[#E7B10A]/15 hover:text-white",
+                        navBaseClass,
+                        "font-semibold",
+                        (isActive || isPathActive(section.path!)) && navActiveClass,
                         isRTL ? "flex-row" : "flex-row-reverse",
                         collapsed && "justify-center px-0"
                       )
                     }
                   >
-                    {SectionIcon && <SectionIcon className="h-5 w-5 mx-2" />}
+                    {SectionIcon && <SectionIcon className="mx-2 h-5 w-5" />}
                     {!collapsed && (
                       <span className="truncate">{renderLabel(section.key)}</span>
                     )}
@@ -177,7 +210,9 @@ export const Sidebar = ({
                     <TooltipTrigger asChild>
                       <div
                         className={cn(
-                          "flex justify-center items-center h-10 w-10 rounded-xl hover:bg-[#E7B10A]/15 text-white/85 cursor-pointer transition",
+                          "h-10 w-10 cursor-pointer",
+                          iconButtonClass,
+                          accentSurfaceClass,
                         )}
                       >
                         {SectionIcon && <SectionIcon className="h-5 w-5" />}
@@ -196,10 +231,9 @@ export const Sidebar = ({
                       whileTap={{ scale: 0.98 }}
                       className={cn(
                         "group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
-                        isRTL ? "flex-row" : "flex-row-reverse",
-                        isOpen
-                          ? "bg-[#E7B10A]/20 text-white"
-                          : "text-white/75 hover:text-white hover:bg-[#E7B10A]/10"
+                        "text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
+                        isOpen && navActiveClass,
+                        isRTL ? "flex-row" : "flex-row-reverse"
                       )}
                     >
                       <span
@@ -229,7 +263,7 @@ export const Sidebar = ({
                           exit={{ height: 0, opacity: 0, y: -10 }}
                           transition={{ duration: 0.3 }}
                           className={cn(
-                            "ml-2 mt-1 flex flex-col gap-1 overflow-hidden border-l border-[#E7B10A]/20 pl-2",
+                            "ml-2 mt-1 flex flex-col gap-1 overflow-hidden border-l border-[hsla(var(--primary)/0.25)] pl-2",
                             isRTL && "mr-2 ml-0 border-r pr-2 border-l-0"
                           )}
                         >
@@ -267,10 +301,12 @@ export const Sidebar = ({
                   onClick={() => setMobileSidebarOpen(false)}
                   className={({ isActive }) =>
                     cn(
-                      "flex items-center justify-between rounded-xl bg-white/5 px-4 py-3 text-base font-semibold text-white transition-all duration-300",
+                      "flex items-center justify-between rounded-xl px-4 py-3 text-base font-semibold transition-all duration-300",
+                      accentSurfaceClass,
+                      "text-[hsl(var(--foreground))] opacity-85 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
                       isActive || isPathActive(section.path!)
-                        ? "bg-[#E7B10A]/20 text-white"
-                        : "hover:bg-[#E7B10A]/15"
+                        ? navActiveClass
+                        : null
                     )
                   }
                   dir={direction}
@@ -296,12 +332,13 @@ export const Sidebar = ({
           }
 
           return (
-            <li key={section.key} className="rounded-xl bg-white/5">
+            <li key={section.key} className={cn("rounded-xl", accentSurfaceClass)}>
               <motion.button
                 onClick={() => toggleSection(section.key)}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  "flex w-full items-center justify-between px-4 py-3 text-base font-semibold text-white",
+                  "flex w-full items-center justify-between px-4 py-3 text-base font-semibold text-[hsl(var(--foreground))]",
+                  "opacity-85 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
                   isRTL ? "flex-row-reverse" : "flex-row"
                 )}
               >
@@ -325,15 +362,15 @@ export const Sidebar = ({
                     animate={{ height: "auto", opacity: 1, y: 0 }}
                     exit={{ height: 0, opacity: 0, y: -8 }}
                     transition={{ duration: 0.25 }}
-                    className="flex flex-col gap-1 px-4 pb-3"
-                  >
-                    {section.items!.map((item) =>
-                      renderItem(item, {
-                        onNavigate: () => setMobileSidebarOpen(false),
-                        variant: 'mobile',
-                      }),
-                    )}
-                  </motion.ul>
+                  className="flex flex-col gap-1 px-4 pb-3"
+                >
+                  {section.items!.map((item) =>
+                    renderItem(item, {
+                      onNavigate: () => setMobileSidebarOpen(false),
+                      variant: 'mobile',
+                    }),
+                  )}
+                </motion.ul>
                 )}
               </AnimatePresence>
             </li>
@@ -349,8 +386,10 @@ export const Sidebar = ({
         <aside
           dir={direction}
           className={cn(
-            "fixed top-0 z-40 hidden h-full flex-col bg-[#1C3F60] text-white shadow-2xl transition-[width] duration-300 ease-in-out md:flex",
-            isRTL ? "right-0 border-l border-[#E7B10A]/20" : "left-0 border-r border-[#E7B10A]/20"
+            "fixed top-0 z-40 hidden h-full flex-col shadow-2xl transition-[width] duration-300 ease-in-out md:flex",
+            sidebarSurfaceClass,
+            isRTL ? "right-0 border-l" : "left-0 border-r",
+            sidebarBorderClass,
           )}
           style={{ width: expandedWidth }}
         >
@@ -369,7 +408,7 @@ export const Sidebar = ({
                 isRTL && !collapsed && "flex-row-reverse"
               )}
             >
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
+              <div className={brandBadgeClass}>
                 <Vote className="h-5 w-5" />
               </div>
               {!collapsed && <span className="text-lg font-semibold">{brandLabel}</span>}
@@ -379,7 +418,10 @@ export const Sidebar = ({
               variant="ghost"
               size="icon"
               className={cn(
-                "h-10 w-10 rounded-xl border border-white/20 bg-white/5 text-white hover:bg-[#E7B10A]/20",
+                "h-10 w-10 border",
+                iconButtonClass,
+                accentSurfaceClass,
+                sidebarBorderClass,
                 isRTL ? "order-first" : "order-last"
               )}
               onClick={() => onCollapseChange(!collapsed)}
@@ -400,9 +442,7 @@ export const Sidebar = ({
 
           {renderDesktopNav()}
 
-          <div className="px-4 pb-6 text-xs text-white/65 text-center">
-            {versionLabel}
-          </div>
+          <div className={footerTextClass}>{versionLabel}</div>
         </aside>
       )}
 
@@ -421,7 +461,10 @@ export const Sidebar = ({
               />
               <motion.aside
                 dir={direction}
-                className="relative flex h-full w-full flex-col bg-[#1C3F60] text-white"
+                className={cn(
+                  "relative flex h-full w-full flex-col",
+                  sidebarMobileSurfaceClass,
+                )}
                 initial={{ x: isRTL ? 80 : -80, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: isRTL ? 60 : -60, opacity: 0 }}
@@ -439,7 +482,7 @@ export const Sidebar = ({
                       isRTL ? "flex-row-reverse" : "flex-row"
                     )}
                   >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#E7B10A] text-[#1C3F60] shadow-lg">
+                    <div className={brandBadgeClass}>
                       <Vote className="h-5 w-5" />
                     </div>
                     <span className="text-lg font-semibold">{brandLabel}</span>
@@ -447,7 +490,12 @@ export const Sidebar = ({
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="h-10 w-10 rounded-xl border border-white/20 bg-white/10 text-white hover:bg-[#E7B10A]/20"
+                    className={cn(
+                      "h-10 w-10 border",
+                      iconButtonClass,
+                      accentSurfaceClass,
+                      sidebarBorderClass,
+                    )}
                     onClick={() => setMobileSidebarOpen(false)}
                   >
                     <X className="h-5 w-5" />
@@ -456,9 +504,7 @@ export const Sidebar = ({
 
                 {renderMobileNav()}
 
-                <div className="px-4 pb-6 text-center text-xs text-white/65">
-                  {versionLabel}
-                </div>
+                <div className={footerTextClass}>{versionLabel}</div>
               </motion.aside>
             </motion.div>
           )}

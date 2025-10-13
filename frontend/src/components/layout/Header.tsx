@@ -70,6 +70,14 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
       ? "bg-[hsla(var(--color-surface)/0.45)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.65)]"
       : "bg-[hsla(var(--color-surface)/0.75)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.95)] shadow-sm";
 
+  const themeToggleLabel = language === "ar"
+    ? theme === "light" ? "تفعيل الوضع الداكن" : "تفعيل الوضع الفاتح"
+    : theme === "light" ? "Switch to dark mode" : "Switch to light mode";
+
+  const languageToggleLabel = language === "ar" ? "تغيير اللغة" : "Toggle language";
+
+  const userMenuLabel = language === "ar" ? "قائمة المستخدم" : "User menu";
+
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
@@ -88,7 +96,7 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
       key="theme"
       variant="ghost"
       size="icon"
-      aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+      aria-label={themeToggleLabel}
       onClick={toggleTheme}
       className={cn(
         "relative rounded-full p-2 transition-all hover:scale-105",
@@ -118,7 +126,7 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
       key="language"
       variant="ghost"
       size="icon"
-      aria-label="Toggle language"
+      aria-label={languageToggleLabel}
       onClick={toggleLanguage}
       className={cn(
         "rounded-full p-2 transition-all hover:scale-105",
@@ -170,6 +178,7 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
         <Button
           variant="ghost"
           size="icon"
+          aria-label={userMenuLabel}
           className={cn(
             "rounded-full p-2 hover:scale-105 transition-all",
             surfaceControlClass,
@@ -250,6 +259,7 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
             <Button
               variant="ghost"
               size="icon"
+              aria-label={language === "ar" ? "فتح القائمة الجانبية" : "Open sidebar"}
               className={cn(
                 "rounded-2xl p-2 shadow-md transition-colors",
                 surfaceControlClass,
