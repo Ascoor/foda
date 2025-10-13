@@ -1,109 +1,85 @@
 @layer base {
   :root {
-    color-scheme: light;
+    /* ألوان أساسية جديدة */
+    --primary: 52, 144, 220; /* أزرق سماوي */
+    --secondary: 255, 105, 180; /* وردي */
+    --accent: 255, 215, 85; /* أصفر لامع */
+    --danger: 255, 99, 71; /* أحمر دافئ */
+    --success: 34, 193, 195; /* أخضر مزرق */
+    --warning: 255, 159, 28; /* برتقالي ساطع */
+    --muted: 188, 189, 189; /* رمادي خفيف */
+    
+    /* ألوان الخلفية */
+    --background: 250, 250, 255; /* خلفية فاتحة */
+    --background-dark: 18, 18, 18; /* خلفية داكنة */
+    --foreground: 33, 37, 41; /* نص مظلم */
+    --surface: 248, 249, 250; /* سطح فاتح */
+
+    /* تأثيرات الظلال */
+    --neon-glow: 0 0 15px rgba(52, 144, 220, 0.8), 0 0 25px rgba(52, 144, 220, 0.6);
+    --shadow-soft: rgba(0, 0, 0, 0.1) 0px 2px 4px;
+    --shadow-glow: rgba(0, 0, 0, 0.2) 0px 10px 30px;
+    
+    /* إعدادات الخطوط */
+    --font-family-base: "Arial", sans-serif;
+    --font-size-base: 16px; 
+    --font-size-lg: 18px;
+    --font-size-xl: 22px;
+    --font-weight-regular: 400;
+    --font-weight-semibold: 600;
+    --line-height-base: 1.5;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --radius-lg: 8px;
+    --radius-md: 4px;
   }
 
   .dark {
     color-scheme: dark;
+    --background: 18, 18, 18;
+    --foreground: 255, 255, 255;
+    --surface: 33, 37, 41;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
-    min-height: 100vh;
     font-family: var(--font-family-base);
     font-weight: var(--font-weight-regular);
     font-size: var(--font-size-base);
     line-height: var(--line-height-base);
-    letter-spacing: -0.01em;
-    scroll-behavior: smooth;
-    background-color: hsl(var(--background));
-    background-image: var(--gradient-glow);
-    background-attachment: fixed;
-    scrollbar-gutter: stable both-edges;
-    transition:
-      background-color 0.35s ease,
-      color 0.35s ease,
-      padding-inline-start 0.35s ease,
-      padding-inline-end 0.35s ease,
-      background-image 0.35s ease;
+    color: rgb(var(--foreground));
+    background-color: rgb(var(--background));
+    transition: background-color 0.3s, color 0.3s;
   }
 
-  body.is-rtl {
-    font-family: var(--font-family-rtl);
-    transform: translateX(0); /* RTL transition effect */
-  }
-
-  body.is-ltr {
-    font-family: var(--font-family-base);
-    transform: translateX(0); /* LTR transition effect */
-  }
-
-  main,
-  section,
-  article {
-    width: 100%;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-family: inherit;
+  h1, h2, h3, h4 {
     font-weight: var(--font-weight-semibold);
-    line-height: var(--line-height-tight);
-    letter-spacing: -0.02em;
   }
 
-  h1 { font-size: var(--font-size-4xl); }
-  h2 { font-size: var(--font-size-3xl); }
-  h3 { font-size: var(--font-size-2xl); }
-  h4 { font-size: var(--font-size-xl); }
-
-  p, span, li {
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
+  h1 {
+    font-size: var(--font-size-xl);
   }
 
-  small, .text-xs {
-    font-size: var(--font-size-xs);
+  h2 {
+    font-size: var(--font-size-lg);
   }
 
-  label {
-    font-weight: var(--font-weight-medium);
-    letter-spacing: -0.01em;
+  /* التفاعلات في النص */
+  .text-gradient-primary {
+    background: linear-gradient(90deg, rgba(var(--primary), 1), rgba(var(--accent), 1));
+    -webkit-background-clip: text;
+    color: transparent;
   }
 
-  [dir="rtl"] {
-    direction: rtl;
-  }
-
-  [dir="ltr"] {
-    direction: ltr;
+  .text-gradient-secondary {
+    background: linear-gradient(90deg, rgba(var(--secondary), 1), rgba(var(--accent), 1));
+    -webkit-background-clip: text;
+    color: transparent;
   }
 }
 
 @layer components {
-  .page-shell {
-    width: min(100%, var(--layout-max-width));
-    margin-inline: auto;
-    padding-inline: var(--container-padding-inline);
-  }
-
-  .layout-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xl);
-    padding-block: var(--spacing-xl);
-  }
-
-  .page-content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-lg);
-    flex: 1;
-    width: 100%;
-  }
-
   .card-grid {
     display: grid;
     gap: var(--spacing-lg);
@@ -125,21 +101,24 @@
     box-shadow: var(--neon-glow-accent);
   }
 
+  /* تخصيص شريط التمرير */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-muted/30 rounded-full;
+    background: rgba(var(--muted), 0.3);
+    border-radius: 50px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-primary/50 rounded-full;
+    background: rgba(var(--primary), 0.5);
+    border-radius: 50px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-primary/70;
+    background: rgba(var(--primary), 0.7);
   }
 }
 

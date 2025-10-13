@@ -2,37 +2,14 @@
 
 namespace App\Exceptions;
 
-use RuntimeException;
+use Exception;
 
-class ExternalApiException extends RuntimeException
+class ExternalApiException extends Exception
 {
-    protected string $service;
-
-    protected ?int $status;
-
-    protected ?array $details;
-
-    public function __construct(string $service, string $message, ?int $status = null, ?array $details = null)
+    public static function fromResponse(string $service, int $status, string $message = ''): self
     {
-        parent::__construct($message);
+        $description = $message !== '' ? $message : 'Unexpected response returned from external service.';
 
-        $this->service = $service;
-        $this->status = $status;
-        $this->details = $details;
-    }
-
-    public function getService(): string
-    {
-        return $this->service;
-    }
-
-    public function getStatus(): ?int
-    {
-        return $this->status;
-    }
-
-    public function getDetails(): ?array
-    {
-        return $this->details;
+        return new self(sprintf('[%s] %s (status: %d)', $service, $description, $status));
     }
 }
