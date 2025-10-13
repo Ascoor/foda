@@ -1,29 +1,13 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import {
-  Vote,
-  UserCheck,
-  Users,
-  Activity,
-  CheckCircle,
-  Shield,
-  RefreshCcw,
-  CalendarCheck,
-} from 'lucide-react';
+import { Vote, UserCheck, Users, Activity, CheckCircle, Shield, RefreshCcw, CalendarCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useApi } from '@/lib/api';
 import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
-import {
-  ActivityPanel,
-  LiveOperationsPanel,
-  ProgressOverview,
-  StatsOverview,
-  SummaryPanel,
-  type StatMetric,
-} from './DashboardWidgets';
+import { ActivityPanel, LiveOperationsPanel, ProgressOverview, StatsOverview, SummaryPanel, type StatMetric } from './DashboardWidgets';
 
 interface StatResponseItem {
   value: number;
@@ -70,22 +54,17 @@ const defaultDashboard: DashboardResponse = {
 export const EnhancedDashboard = () => {
   const { t, i18n } = useTranslation();
   const { direction, language } = useLanguage();
-  const {
-    data,
-    loading,
-    error,
-    execute: refetchDashboard,
-  } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
+  const { data, loading, error, execute: refetchDashboard } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
 
+  // 🕒 تحديث الوقت
+  const [dateTime, setDateTime] = useState(new Date());
   useEffect(() => {
-    refetchDashboard()
-      .then(() => toast({ description: t('dashboard.load_success') }))
-      .catch(() =>
-        toast({ variant: 'destructive', description: t('dashboard.load_error') })
-      );
-  }, [refetchDashboard, t]);
+    const interval = setInterval(() => setDateTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const dashboardData = data ?? defaultDashboard;
+  const formattedTime = dateTime.toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const formattedDate = dateTime.toLocaleDateString(language, { weekday: 'long', month: 'short', day: 'numeric' });
 
   // 🧮 الإحصائيات
   const statsMetrics: StatMetric[] = useMemo(() => {
@@ -97,8 +76,7 @@ export const EnhancedDashboard = () => {
     ];
 
     return config.map((stat) => {
-      const statPayload =
-        dashboardData?.stats?.[stat.key] ?? { value: 0, change: '0%', trend: 'up' };
+      const statPayload = dashboardData?.stats?.[stat.key] ?? { value: 0, change: '0%', trend: 'up' };
       return {
         key: stat.key,
         label: `dashboard.${stat.key}`,
@@ -114,26 +92,10 @@ export const EnhancedDashboard = () => {
   // ⏳ التقدم
   const progressData = useMemo(
     () => [
-      {
-        label: t('dashboard.registration'),
-        value: dashboardData?.progress?.registration ?? 0,
-        color: 'primary' as const,
-      },
-      {
-        label: t('dashboard.verification'),
-        value: dashboardData?.progress?.verification ?? 0,
-        color: 'secondary' as const,
-      },
-      {
-        label: t('dashboard.campaign'),
-        value: dashboardData?.progress?.campaign ?? 0,
-        color: 'accent' as const,
-      },
-      {
-        label: t('dashboard.voting'),
-        value: dashboardData?.progress?.voting ?? 0,
-        color: 'success' as const,
-      },
+      { label: t('dashboard.registration'), value: dashboardData?.progress?.registration ?? 0, color: 'primary' as const },
+      { label: t('dashboard.verification'), value: dashboardData?.progress?.verification ?? 0, color: 'secondary' as const },
+      { label: t('dashboard.campaign'), value: dashboardData?.progress?.campaign ?? 0, color: 'accent' as const },
+      { label: t('dashboard.voting'), value: dashboardData?.progress?.voting ?? 0, color: 'success' as const },
     ],
     [dashboardData?.progress, t]
   );
@@ -172,10 +134,7 @@ export const EnhancedDashboard = () => {
 
   // ============================ واجهة العرض ============================
   return (
-    <section
-      dir={direction}
-      className="space-y-4  "
-    >
+    <section dir={direction} className="space-y-4">
       {/* 🎯 الرأس */}
       <motion.header
         initial={{ opacity: 0, y: 14 }}
@@ -186,27 +145,17 @@ export const EnhancedDashboard = () => {
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-4">
             <Badge className="w-fit bg-[#E7B10A] text-[#1C3F60] shadow-sm">
-              {language === 'ar'
-                ? 'لوحة التحكم المتقدمة'
-                : 'Advanced electoral operations'}
+              {language === 'ar' ? 'لوحة التحكم المتقدمة' : 'Advanced electoral operations'}
             </Badge>
-            <h1 className="text-3xl font-semibold sm:text-4xl">
-              {t('dashboard.welcome')}
-            </h1>
-            <p className="max-w-xl text-sm text-white/80 sm:text-base">
-              {t('dashboard.subtitle')}
-            </p>
+            <h1 className="text-3xl font-semibold sm:text-4xl">{t('dashboard.welcome')}</h1>
+            <p className="max-w-xl text-sm text-white/80 sm:text-base">{t('dashboard.subtitle')}</p>
             <div className="flex flex-wrap items-center gap-3 text-xs text-white/70">
               <span className="flex items-center gap-2">
                 <CalendarCheck className="h-4 w-4" />
-                {new Intl.DateTimeFormat(i18n.language, {
-                  dateStyle: 'full',
-                }).format(new Date())}
+                {new Intl.DateTimeFormat(i18n.language, { dateStyle: 'full' }).format(new Date())}
               </span>
               <span className="rounded-full border border-white/25 px-3 py-1">
-                {language === 'ar'
-                  ? 'جاهز للعرض التجريبي v1.0.0'
-                  : 'Demo-ready release v1.0.0'}
+                {language === 'ar' ? 'جاهز للعرض التجريبي v1.0.0' : 'Demo-ready release v1.0.0'}
               </span>
             </div>
           </div>
@@ -217,10 +166,7 @@ export const EnhancedDashboard = () => {
               refetchDashboard()
                 .then(() => toast({ description: t('dashboard.load_success') }))
                 .catch(() =>
-                  toast({
-                    variant: 'destructive',
-                    description: t('dashboard.load_error'),
-                  })
+                  toast({ variant: 'destructive', description: t('dashboard.load_error') })
                 )
             }
             disabled={loading}
@@ -245,7 +191,8 @@ export const EnhancedDashboard = () => {
             overall={dashboardData?.progress?.overall ?? 0}
             remaining={dashboardData?.progress?.remaining ?? 0}
             heading={t('dashboard.election_progress')}
-            description={t('dashboard.overall_progress')} overallLabel={''} remainingLabel={''}          />
+            description={t('dashboard.overall_progress')}
+          />
         </div>
         <ActivityPanel
           activities={activities}
@@ -284,11 +231,7 @@ export const EnhancedDashboard = () => {
         />
       </div>
 
-      {error && (
-        <p className="text-sm font-medium text-destructive">
-          {t('dashboard.load_error')}
-        </p>
-      )}
+      {error && <p className="text-sm font-medium text-destructive">{t('dashboard.load_error')}</p>}
     </section>
   );
 };

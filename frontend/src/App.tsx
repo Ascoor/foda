@@ -10,7 +10,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Login } from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
-import  EnhancedDashboard  from "@/modules/dashboard/EnhancedDashboard";
+import  {EnhancedDashboard}  from "@/modules/dashboard/EnhancedDashboard";
 import { ElectionsList } from "@/modules/elections/List";
 import { ElectionDetails } from "@/modules/elections/Details";
 import { GeoAreasDashboard } from "@/modules/geo-areas/Dashboard";
