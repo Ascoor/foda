@@ -1,11 +1,25 @@
-import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BarChart3 } from 'lucide-react';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  type TooltipProps,
+} from 'recharts';
+import type { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
+
+import { useThemePalette, type ColorToken, type ThemePalette } from '@/hooks/useThemePalette';
 
 interface ProgressItem {
   label: string;
   value: number;
-  color: 'primary' | 'secondary' | 'accent' | 'success';
+  color: ColorToken;
 }
 
 interface ProgressChartProps {
@@ -14,99 +28,120 @@ interface ProgressChartProps {
   remaining: number;
 }
 
-const colorClasses = {
-  primary: 'bg-gradient-to-r from-primary to-primary-glow',
-  secondary: 'bg-gradient-to-r from-secondary to-secondary-glow',
-  accent: 'bg-gradient-to-r from-accent to-accent-glow',
-  success: 'bg-gradient-to-r from-success to-success'
+interface ProgressTooltipProps extends TooltipProps<ValueType, NameType> {
+  palette: ThemePalette;
+}
+
+const ProgressTooltip = ({ active, payload, label, palette }: ProgressTooltipProps) => {
+  if (!active || !payload || payload.length === 0) {
+    return null;
+  }
+
+  const [entry] = payload;
+  const stage = (entry.payload as { color: ColorToken }).color;
+  const color = palette.tokens[stage];
+  const value = typeof entry.value === 'number' ? entry.value : Number(entry.value);
+
+  return (
+    <div
+      className="rounded-xl border px-3 py-2 text-xs shadow-lg"
+      style={{
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        color: palette.foreground,
+      }}
+    >
+      <p className="font-semibold">{label}</p>
+      <p
+        className="mt-1 text-sm font-semibold"
+        style={{ color: color.base }}
+      >
+        {`${Math.round(value)}%`}
+      </p>
+    </div>
+  );
 };
 
 export const ProgressChart = ({ data, overall, remaining }: ProgressChartProps) => {
   const { t } = useTranslation();
+  const palette = useThemePalette();
+
+  const chartData = useMemo(
+    () =>
+      data.map((item) => ({
+        label: item.label,
+        value: item.value,
+        color: item.color,
+      })),
+    [data],
+  );
 
   return (
-    <div className="glass-card h-full">
-      <div className="flex items-center gap-3 mb-6">
-        <BarChart3 className="h-6 w-6 text-primary" />
-        <h2 className="text-xl font-semibold">{t('dashboard.election_progress')}</h2>
-      </div>
+    <div className="space-y-6">
+      <div className="rounded-3xl border border-[hsla(var(--border)/0.35)] bg-[hsl(var(--surface))] p-5 shadow-sm transition-colors dark:border-[hsla(var(--border)/0.25)] dark:bg-[hsla(var(--surface)/0.65)]">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="h-5 w-5 text-[hsl(var(--primary))]" aria-hidden="true" />
+            <h2 className="text-base font-semibold text-foreground">
+              {t('dashboard.election_progress', { defaultValue: 'Election progress' })}
+            </h2>
+          </div>
+          <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[hsla(var(--primary)/0.12)] px-3 py-1 font-medium text-[hsl(var(--primary))]">
+              {t('dashboard.overall_progress', { defaultValue: 'Overall progress' })}: {Math.round(overall)}%
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full bg-[hsla(var(--secondary)/0.12)] px-3 py-1 font-medium text-[hsl(var(--secondary))]">
+              {t('dashboard.remaining_label', { defaultValue: 'Remaining' })}: {Math.round(remaining)}
+            </span>
+          </div>
+        </div>
 
-      <div className="space-y-6">
-        {data.map((item, index) => (
-          <motion.div
-            key={item.label}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
-            className="space-y-2"
-          >
-            {/* التسمية والقيمة */}
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-foreground">
-                {t(item.label)}
-              </span>
-              <span className="text-sm font-bold text-primary">
-                {item.value}%
-              </span>
-            </div>
-
-            {/* شريط التقدم */}
-            <div className="relative h-3 bg-muted/30 rounded-full overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${item.value}%` }}
-                transition={{ 
-                  delay: index * 0.2 + 0.5,
-                  duration: 1,
-                  ease: 'easeOut'
-                }}
-                className={`h-full rounded-full ${colorClasses[item.color as keyof typeof colorClasses]} relative`}
+        <div className="relative mt-6 h-64 w-full">
+          {chartData.length ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                margin={{ top: 12, right: 8, left: -12, bottom: 4 }}
+                barSize={48}
               >
-                {/* تأثير توهج متحرك */}
-                <motion.div
-                  animate={{ 
-                    x: ['-100%', '100%'],
-                    opacity: [0, 1, 0]
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: 'easeInOut',
-                    delay: index * 0.3
-                  }}
-                  className="absolute inset-0 bg-white/30 skew-x-12"
+                <CartesianGrid stroke={palette.grid} vertical={false} strokeDasharray="3 6" />
+                <XAxis
+                  dataKey="label"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: palette.mutedForeground, fontSize: 12 }}
                 />
-              </motion.div>
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  domain={[0, 100]}
+                  tickFormatter={(value) => `${value}%`}
+                  tick={{ fill: palette.mutedForeground, fontSize: 11 }}
+                />
+                <Tooltip
+                  cursor={{ fill: palette.mutedSoft }}
+                  content={<ProgressTooltip palette={palette} />}
+                />
+                <Bar dataKey="value" radius={[18, 18, 18, 18]}>
+                  {chartData.map((entry) => {
+                    const colors = palette.tokens[entry.color];
+                    return (
+                      <Cell
+                        key={entry.label}
+                        fill={colors.soft}
+                        stroke={colors.base}
+                        strokeWidth={2}
+                      />
+                    );
+                  })}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
+              {t('common.no_data', { defaultValue: 'No data available' })}
             </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* ملخص الأرقام */}
-      <div className="mt-8 pt-6 border-t border-white/10">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1 }}
-              className="text-2xl font-bold text-gradient-primary"
-            >
-              {overall}%
-            </motion.div>
-            <p className="text-xs text-muted-foreground">{t('dashboard.overall_progress')}</p>
-          </div>
-          <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1.2 }}
-              className="text-2xl font-bold text-gradient-secondary"
-            >
-              {remaining}
-            </motion.div>
-            <p className="text-xs text-muted-foreground">{t('dashboard.days_remaining')}</p>
-          </div>
+          )}
         </div>
       </div>
     </div>
