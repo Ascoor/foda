@@ -37,29 +37,37 @@ const activityIconMap: Record<string, typeof CheckCircle> = {
   agent_onboarded: Shield,
 };
 
-
-
+const defaultDashboard: DashboardResponse = {
+  stats: {},
+  activities: [],
+  progress: {
+    registration: 0,
+    verification: 0,
+    campaign: 0,
+    voting: 0,
+    overall: 0,
+    remaining: 0,
+  },
+  turnout: [],
+};
 
 export const EnhancedDashboard = () => {
   const { t, i18n } = useTranslation();
   const { direction, language } = useLanguage();
   const { data, loading, error, execute: refetchDashboard } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
+
+  // 🕒 تحديث الوقت
+  const [dateTime, setDateTime] = useState(new Date());
   const dashboardData: DashboardResponse = data ?? defaultDashboard;
 
   useEffect(() => {
     refetchDashboard().catch(() => {
       /* Initial fetch errors are handled by the component UI */
     });
-  }, [refetchDashboard]);
+  }, [refetchDashboard]); 
 
-  // 🕒 تحديث الوقت
-  const [dateTime, setDateTime] = useState(new Date());
-  useEffect(() => {
-    const interval = setInterval(() => setDateTime(new Date()), 1000);
-    return () => clearInterval(interval);
-  }, []);
-
- 
+  const formattedTime = dateTime.toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  const formattedDate = dateTime.toLocaleDateString(language, { weekday: 'long', month: 'short', day: 'numeric' });
   const statsMetrics: StatMetric[] = useMemo(() => {
     const config = [
       { key: 'total_elections', icon: Vote, color: 'primary' as const },
@@ -67,7 +75,7 @@ export const EnhancedDashboard = () => {
       { key: 'total_candidates', icon: Users, color: 'accent' as const },
       { key: 'committees_count', icon: Activity, color: 'success' as const },
     ];
-  
+
     return config.map((stat) => {
       const statPayload = data?.stats?.[stat.key] ?? { value: 0, change: '0%', trend: 'up' };
       return {
@@ -81,7 +89,7 @@ export const EnhancedDashboard = () => {
       };
     });
   }, [data]);
-  
+
   // ⏳ التقدم
   const progressData = useMemo(
     () => [
@@ -158,9 +166,7 @@ export const EnhancedDashboard = () => {
             onClick={() =>
               refetchDashboard()
                 .then(() => toast({ description: t('dashboard.load_success') }))
-                .catch(() =>
-                  toast({ variant: 'destructive', description: t('dashboard.load_error') })
-                )
+                .catch(() => toast({ variant: 'destructive', description: t('dashboard.load_error') }))
             }
             disabled={loading}
           >
@@ -176,20 +182,18 @@ export const EnhancedDashboard = () => {
       {/* 🧩 التقدم والأنشطة */}
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="xl:col-span-2">
-        <ProgressOverview
-  data={progressData}
-  loading={loading}
-  error={error}
-  onRetry={() => refetchDashboard()}
-  overall={data?.progress?.overall ?? 0}
-  remaining={data?.progress?.remaining ?? 0}
-  heading={t('dashboard.election_progress')}
-  description={t('dashboard.overall_progress')}
-  overallLabel={t('dashboard.overall_progress_label')} 
-  
-  remainingLabel={t('dashboard.remaining_label')}      
-/>
-
+          <ProgressOverview
+            data={progressData}
+            loading={loading}
+            error={error}
+            onRetry={() => refetchDashboard()}
+            overall={data?.progress?.overall ?? 0}
+            remaining={data?.progress?.remaining ?? 0}
+            heading={t('dashboard.election_progress')}
+            description={t('dashboard.overall_progress')}
+            overallLabel={t('dashboard.overall_progress_label')}
+            remainingLabel={t('dashboard.remaining_label')}
+          />
         </div>
         <ActivityPanel
           activities={activities}
@@ -205,15 +209,11 @@ export const EnhancedDashboard = () => {
           loading={loading}
           heading={t('dashboard.voter_turnout')}
           description={
-            language === 'ar'
-              ? 'راقب التغطية الميدانية لحظياً'
-              : 'Monitor field coverage in real time'
+            language === 'ar' ? 'راقب التغطية الميدانية لحظياً' : 'Monitor field coverage in real time'
           }
         />
         <SummaryPanel
-          headline={
-            language === 'ar' ? 'مؤشرات التقدم العامة' : 'Overall progress insights'
-          }
+          headline={language === 'ar' ? 'مؤشرات التقدم العامة' : 'Overall progress insights'}
           description={
             language === 'ar'
               ? 'تحليلات مجمعة لأداء الفريق الميداني'
