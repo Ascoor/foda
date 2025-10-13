@@ -7,9 +7,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Ignore node_modules
+node_modules/
+
+# Ignore build folders
+/dist
+/build
+/dist-ssr
+
+# Ignore temporary files
+*.swp
+
+# Ignore local configurations
 *.local
 
 # Editor directories and files
