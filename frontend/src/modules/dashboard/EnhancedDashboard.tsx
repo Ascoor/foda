@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Vote, UserCheck, Users, Activity, CheckCircle, Shield, RefreshCcw, CalendarCheck } from 'lucide-react';
@@ -37,19 +37,8 @@ const activityIconMap: Record<string, typeof CheckCircle> = {
   agent_onboarded: Shield,
 };
 
-const defaultDashboard: DashboardResponse = {
-  stats: {},
-  activities: [],
-  progress: {
-    registration: 0,
-    verification: 0,
-    campaign: 0,
-    voting: 0,
-    overall: 0,
-    remaining: 0,
-  },
-  turnout: [],
-};
+
+
 
 export const EnhancedDashboard = () => {
   const { t, i18n } = useTranslation();
@@ -63,10 +52,7 @@ export const EnhancedDashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const formattedTime = dateTime.toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  const formattedDate = dateTime.toLocaleDateString(language, { weekday: 'long', month: 'short', day: 'numeric' });
-
-  // 🧮 الإحصائيات
+ 
   const statsMetrics: StatMetric[] = useMemo(() => {
     const config = [
       { key: 'total_elections', icon: Vote, color: 'primary' as const },
@@ -74,9 +60,9 @@ export const EnhancedDashboard = () => {
       { key: 'total_candidates', icon: Users, color: 'accent' as const },
       { key: 'committees_count', icon: Activity, color: 'success' as const },
     ];
-
+  
     return config.map((stat) => {
-      const statPayload = dashboardData?.stats?.[stat.key] ?? { value: 0, change: '0%', trend: 'up' };
+      const statPayload = data?.stats?.[stat.key] ?? { value: 0, change: '0%', trend: 'up' };
       return {
         key: stat.key,
         label: `dashboard.${stat.key}`,
@@ -87,35 +73,35 @@ export const EnhancedDashboard = () => {
         color: stat.color,
       };
     });
-  }, [dashboardData]);
-
+  }, [data]);
+  
   // ⏳ التقدم
   const progressData = useMemo(
     () => [
-      { label: t('dashboard.registration'), value: dashboardData?.progress?.registration ?? 0, color: 'primary' as const },
-      { label: t('dashboard.verification'), value: dashboardData?.progress?.verification ?? 0, color: 'secondary' as const },
-      { label: t('dashboard.campaign'), value: dashboardData?.progress?.campaign ?? 0, color: 'accent' as const },
-      { label: t('dashboard.voting'), value: dashboardData?.progress?.voting ?? 0, color: 'success' as const },
+      { label: t('dashboard.registration'), value: data?.progress?.registration ?? 0, color: 'primary' as const },
+      { label: t('dashboard.verification'), value: data?.progress?.verification ?? 0, color: 'secondary' as const },
+      { label: t('dashboard.campaign'), value: data?.progress?.campaign ?? 0, color: 'accent' as const },
+      { label: t('dashboard.voting'), value: data?.progress?.voting ?? 0, color: 'success' as const },
     ],
-    [dashboardData, t]
+    [data, t]
   );
 
   // 🕓 الأنشطة
   const activities = useMemo(
     () =>
-      (dashboardData?.activities ?? []).map((activity) => ({
+      (data?.activities ?? []).map((activity) => ({
         ...activity,
         icon: activityIconMap[activity.type] ?? CheckCircle,
       })),
-    [dashboardData]
+    [data]
   );
 
   // 📈 متوسط المشاركة
   const averageTurnout = useMemo(() => {
-    const turnoutArray = dashboardData?.turnout ?? [];
+    const turnoutArray = data?.turnout ?? [];
     if (!turnoutArray.length) return 0;
     return turnoutArray.reduce((sum, v) => sum + v, 0) / turnoutArray.length;
-  }, [dashboardData]);
+  }, [data]);
 
   const refreshLabel = language === 'ar' ? 'تحديث الآن' : 'Refresh insights';
 
@@ -183,16 +169,20 @@ export const EnhancedDashboard = () => {
       {/* 🧩 التقدم والأنشطة */}
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="xl:col-span-2">
-          <ProgressOverview
-            data={progressData}
-            loading={loading}
-            error={error}
-            onRetry={() => refetchDashboard()}
-            overall={dashboardData?.progress?.overall ?? 0}
-            remaining={dashboardData?.progress?.remaining ?? 0}
-            heading={t('dashboard.election_progress')}
-            description={t('dashboard.overall_progress')}
-          />
+        <ProgressOverview
+  data={progressData}
+  loading={loading}
+  error={error}
+  onRetry={() => refetchDashboard()}
+  overall={data?.progress?.overall ?? 0}
+  remaining={data?.progress?.remaining ?? 0}
+  heading={t('dashboard.election_progress')}
+  description={t('dashboard.overall_progress')}
+  overallLabel={t('dashboard.overall_progress_label')} 
+  
+  remainingLabel={t('dashboard.remaining_label')}      
+/>
+
         </div>
         <ActivityPanel
           activities={activities}
@@ -223,11 +213,11 @@ export const EnhancedDashboard = () => {
               : 'Aggregated insights for field execution'
           }
           overallLabel={t('dashboard.overall_progress')}
-          overallValue={dashboardData?.progress?.overall ?? 0}
+          overallValue={data?.progress?.overall ?? 0}
           turnoutLabel={t('dashboard.voter_turnout')}
           turnoutValue={averageTurnout}
           remainingLabel={t('dashboard.days_remaining')}
-          remainingValue={dashboardData?.progress?.remaining ?? 0}
+          remainingValue={data?.progress?.remaining ?? 0}
         />
       </div>
 
