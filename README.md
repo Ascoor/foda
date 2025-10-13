@@ -127,6 +127,11 @@ DB_PASSWORD=
 SANCTUM_STATEFUL_DOMAINS=localhost:8080
 ```
 
+## 📚 Additional Documentation
+- **PROJECT_PLAN.md** — unified roadmap, phase status, and next actions for delivery.
+- **README_UNIFIED.md** — bilingual operations guide (Arabic/English).
+- **README_AR.md** — Arabic platform overview and Elections360 context.
+
 ## 🎯 Core Features
 
 ### 1. Authentication & Authorization
