@@ -1,3 +1,4 @@
+// tailwind.config.js
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 import tailwindcssAnimate from "tailwindcss-animate";
@@ -61,28 +62,30 @@ const glassPlugin = plugin(({ addComponents }) => {
 });
 
 const glassmorphismPlugin = plugin(({ addComponents }) => {
-  const glassBase = {
+  const baseGlass = {
     background: "var(--glass-background)",
     border: "1px solid var(--glass-border)",
-    borderRadius: "var(--radius-lg)",
     boxShadow: "var(--glass-shadow)",
-    backdropFilter: "saturate(180%) blur(20px)",
+    backdropFilter: "var(--glass-backdrop)",
     transition: "var(--transition-glass)",
     position: "relative",
   };
-
   addComponents({
-    ".glass": glassBase,
+    ".glass": {
+      ...baseGlass,
+      borderRadius: "var(--radius-xl)",
+    },
     ".glass-card": {
-      ...glassBase,
-      padding: "clamp(var(--spacing-md), 1.25vw + var(--spacing-sm), var(--spacing-xl))",
+      ...baseGlass,
       borderRadius: "var(--radius-2xl)",
+      padding: "clamp(var(--spacing-md), 1.25vw + var(--spacing-sm), var(--spacing-xl))",
       "&:hover": {
         transform: "translateY(-2px) scale(1.01)",
         boxShadow: "var(--glass-shadow), var(--hover-glow)",
       },
     },
     ".glass-button": {
+      ...baseGlass,
       display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
@@ -91,19 +94,12 @@ const glassmorphismPlugin = plugin(({ addComponents }) => {
       paddingInline: "clamp(var(--spacing-sm), 2vw, var(--spacing-lg))",
       paddingBlock: "var(--spacing-2xs)",
       borderRadius: "var(--radius-md)",
-      background:
-        "linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05))",
-      border: "1px solid rgba(255, 255, 255, 0.25)",
-      boxShadow: "var(--shadow-soft)",
-      position: "relative",
       overflow: "hidden",
-      transition: "var(--transition-smooth)",
-      backdropFilter: "blur(18px)",
-      fontWeight: "var(--font-weight-medium)",
+      fontWeight: "500",
       "&::before": {
         content: "''",
         position: "absolute",
-        insetBlock: 0,
+        insetBlock: "0",
         insetInlineStart: "-100%",
         width: "100%",
         background:
@@ -115,8 +111,8 @@ const glassmorphismPlugin = plugin(({ addComponents }) => {
       },
       "&:hover": {
         background: "var(--hover-background)",
-        transform: "translateY(-2px)",
         boxShadow: "var(--hover-glow)",
+        transform: "translateY(-2px)",
       },
     },
   });
@@ -130,7 +126,6 @@ const config: Config = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  prefix: "",
   theme: {
     container: {
       center: true,

@@ -10,7 +10,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Login } from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
-import { Dashboard } from "@/modules/dashboard/Dashboard";
+import  EnhancedDashboard  from "@/modules/dashboard/EnhancedDashboard";
 import { ElectionsList } from "@/modules/elections/List";
 import { ElectionDetails } from "@/modules/elections/Details";
 import { GeoAreasDashboard } from "@/modules/geo-areas/Dashboard";
@@ -55,7 +55,7 @@ const App = () => (
                   <Route path="/login" element={<Login />} />
                   <Route element={<ProtectedRoute />}>
                     <Route element={<MainLayoutWrapper />}>
-     <Route path="/dashboard" element={<Dashboard />} />
+     <Route path="/dashboard" element={<EnhancedDashboard />} />
 
                     <Route path="/elections" element={<ElectionsList />} />
                     <Route path="/elections/:id" element={<ElectionDetails />} />

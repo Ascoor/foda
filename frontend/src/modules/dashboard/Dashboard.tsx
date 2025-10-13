@@ -1,1 +1,1 @@
-export { EnhancedDashboard as Dashboard } from './EnhancedDashboard';
+export EnhancedDashboard  from './EnhancedDashboard';
