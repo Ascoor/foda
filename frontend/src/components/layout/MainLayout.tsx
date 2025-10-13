@@ -83,13 +83,12 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
       dir={direction}
       className={cn(
         'relative min-h-screen w-full transition-colors duration-500',
-        theme === 'dark'
-          ? 'dark bg-[#0b1a2a] text-slate-100'
-          : 'bg-slate-50 text-slate-900'
+        'bg-[hsl(var(--background))] text-[hsl(var(--foreground))]'
       )}
       style={{
         ...layoutVariables, // إضافة المتغيرات المخصصة هنا
       }}
+      data-theme={theme}
     >
       {/* ✅ الشريط الجانبي */}
 

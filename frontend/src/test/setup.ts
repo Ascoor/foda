@@ -5,15 +5,22 @@ import { vi } from 'vitest';
 
 i18n.changeLanguage('en');
 
+const mockUseLanguage = vi.hoisted(() => vi.fn());
+
 vi.mock('@/contexts/LanguageContext', () => ({
-  useLanguage: () => ({
-    language: 'en',
-    direction: 'ltr',
-    toggleLanguage: vi.fn(),
-    setLanguage: vi.fn(),
-  }),
+  useLanguage: mockUseLanguage,
   LanguageProvider: ({ children }: any) => children,
 }));
+
+mockUseLanguage.mockReturnValue({
+  language: 'en',
+  direction: 'ltr',
+  toggleLanguage: vi.fn(),
+  setLanguage: vi.fn(),
+  t: (key: string) => key,
+});
+
+(globalThis as any).__mockUseLanguage = mockUseLanguage;
 
 class ResizeObserver {
   observe() {}
