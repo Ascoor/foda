@@ -60,6 +60,21 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Asset management
+
+- All static media that should be processed by Vite now lives in [`src/assets`](./src/assets). Use module imports (`import hero from '@/assets/img/landing.webp'`) instead of referencing `/public` paths so bundling and cache busting work automatically.
+- Public-only files that must keep their original names (for example `favicon.ico`) can stay in [`public/`](./public).
+
+## Testing
+
+Run component tests with:
+
+```sh
+npm test
+```
+
+Vitest is preconfigured with React Testing Library. Add new test files next to the components under `src/components/**/__tests__`.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/644ee328-cc94-4636-965e-4af0e13fcb5c) and click on Share -> Publish.

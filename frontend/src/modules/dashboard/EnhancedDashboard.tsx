@@ -11,7 +11,7 @@ import {
   RefreshCcw,
   CalendarCheck,
 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useApi } from '@/lib/api';
 import { toast } from '@/hooks/use-toast';

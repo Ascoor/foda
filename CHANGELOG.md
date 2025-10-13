@@ -1,9 +1,9 @@
 # Changelog
 
-## [2025-10-11] Documentation Consolidation
-- Replaced `FODA_PLAN.md` and `FODA_PROGRESS_REPORT.md` with a unified `PROJECT_PLAN.md` covering roadmap, KPIs, and risks.
-- Updated `README.md`, `README_AR.md`, and `README_UNIFIED.md` to point to the new consolidated plan.
-- Clarified documentation navigation for bilingual stakeholders.
+## [2025-02-15] Frontend maintenance sweep
+- Consolidated static media under `src/assets` and updated modules to consume bundled imports for reliable cache busting.
+- Replaced legacy CSS helpers with Tailwind plugin utilities and trimmed unused `App.css` styles.
+- Reduced external font payload to core Inter/Noto families and documented the asset/testing workflow.
 
 ## [2025-10-10] Progress Review Update
 - Added `FODA_PROGRESS_REPORT.md` summarizing stage progress, KPIs, والمخاطر الحالية.

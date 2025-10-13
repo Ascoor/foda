@@ -86,31 +86,65 @@
 }
 
 @layer components {
-  .glass-button {
-    @apply inline-flex items-center justify-center font-medium;
-    gap: var(--spacing-xs);
-    min-height: 2.75rem;
-    padding-inline: clamp(var(--spacing-sm), 2vw, var(--spacing-lg));
-    padding-block: var(--spacing-2xs);
-    border-radius: var(--radius-md);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05));
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: var(--shadow-soft);
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition-smooth);
-    backdrop-filter: blur(18px);
+  .page-shell {
+    width: min(100%, var(--layout-max-width));
+    margin-inline: auto;
+    padding-inline: var(--container-padding-inline);
   }
 
-  .glass-button:focus {
-    outline: 2px solid var(--primary-glow);
-    box-shadow: var(--shadow-glow);
+  .layout-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+    padding-block: var(--spacing-xl);
   }
 
-  .glass-button:hover {
-    background: var(--hover-background);
-    transform: translateY(-2px);
-    box-shadow: var(--hover-glow);
+  .page-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    flex: 1;
+    width: 100%;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: var(--spacing-lg);
+  }
+
+  /* Glassmorphism helpers are provided via Tailwind plugin utilities */
+
+  .badge-soft {
+    @apply inline-flex items-center gap-2 rounded-full border border-transparent bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground;
+  }
+
+  .glow-border {
+    box-shadow: var(--neon-glow);
+  }
+
+  .glow-border-secondary {
+    box-shadow: var(--neon-glow-secondary);
+  }
+
+  .glow-border-accent {
+    box-shadow: var(--neon-glow-accent);
+  }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-muted/30 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary/50 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/70;
   }
 }
 

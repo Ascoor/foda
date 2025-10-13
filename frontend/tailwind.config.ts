@@ -1,5 +1,64 @@
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
+import plugin from "tailwindcss/plugin";
+
+const glassPlugin = plugin(({ addComponents }) => {
+  const baseGlass = {
+    background: "var(--glass-background)",
+    border: "1px solid var(--glass-border)",
+    boxShadow: "var(--glass-shadow)",
+    backdropFilter: "var(--glass-backdrop)",
+    transition: "var(--transition-glass)",
+    position: "relative",
+  } as const;
+
+  addComponents({
+    ".glass": {
+      ...baseGlass,
+      borderRadius: "var(--radius-xl)",
+    },
+    ".glass-card": {
+      ...baseGlass,
+      borderRadius: "var(--radius-2xl)",
+      padding: "clamp(var(--spacing-md), 1.25vw + var(--spacing-sm), var(--spacing-xl))",
+      "&:hover": {
+        transform: "translateY(-2px) scale(1.01)",
+        boxShadow: "var(--glass-shadow), var(--hover-glow)",
+      },
+    },
+    ".glass-button": {
+      ...baseGlass,
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "var(--spacing-xs)",
+      minHeight: "2.75rem",
+      paddingInline: "clamp(var(--spacing-sm), 2vw, var(--spacing-lg))",
+      paddingBlock: "var(--spacing-2xs)",
+      borderRadius: "var(--radius-md)",
+      overflow: "hidden",
+      fontWeight: "500",
+      "&::before": {
+        content: "''",
+        position: "absolute",
+        insetBlock: "0",
+        insetInlineStart: "-100%",
+        width: "100%",
+        background:
+          "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent)",
+        transition: "inset-inline-start 0.5s ease",
+      },
+      "&:hover::before": {
+        insetInlineStart: "100%",
+      },
+      "&:hover": {
+        background: "var(--hover-background)",
+        boxShadow: "var(--hover-glow)",
+        transform: "translateY(-2px)",
+      },
+    },
+  });
+});
 
 const config: Config = {
   darkMode: ["class"],
@@ -134,7 +193,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [tailwindcssAnimate, glassPlugin],
 };
 
 export default config;
