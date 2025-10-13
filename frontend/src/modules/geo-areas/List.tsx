@@ -24,7 +24,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { StatusBadge } from '@/components/ui/status-badge';
-import { DataTableSkeleton, EmptyState } from '@/components/ui/DataTableSkeleton';
+import { DataTableSkeleton, EmptyState } from '@/components/ui/data-table-skeleton';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { GeoArea } from './types';
 import { fetchGeoAreas } from './api';
