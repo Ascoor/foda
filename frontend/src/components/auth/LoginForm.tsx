@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/input';
 import { useAuth } from '@/contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
 
@@ -12,7 +12,7 @@ import { Loader2 } from 'lucide-react';
  */
 export const LoginForm = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // تم استخدام navigate هنا
   const { login } = useAuth();
 
   const [email, setEmail] = useState('');
@@ -30,13 +30,13 @@ export const LoginForm = () => {
     setError(null);
     setLoading(true);
     try {
-      await login(email, password);
-      navigate('/dashboard');
-    } catch (err) {
-      if (err.response?.status === 401) {
-        setError(t('auth.invalid_credentials'));
+      await login(email, password); // استخدام login
+      navigate('/dashboard'); // استخدام navigate هنا بعد تسجيل الدخول الناجح
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message); // التعامل مع الخطأ بشكل آمن
       } else {
-        setError(t('auth.login_error'));
+        setError('An unknown error occurred');
       }
     } finally {
       setLoading(false);
