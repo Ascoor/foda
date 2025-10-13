@@ -1,3 +1,10 @@
+import landingHero from "@/assets/img/landing.webp";
+import partner1Logo from "@/assets/img/partner-1.svg";
+import partner2Logo from "@/assets/img/partner-2.svg";
+import partner3Logo from "@/assets/img/partner-3.svg";
+import partner4Logo from "@/assets/img/partner-4.svg";
+import partner5Logo from "@/assets/img/partner-5.svg";
+
 export interface HeroSlide {
   id: string;
   title: string;
@@ -34,7 +41,7 @@ export const heroSlides: HeroSlide[] = [
     title: "منصة إدارة الحملات الانتخابية",
     description:
       "منصة موحدة لإدارة المتطوعين، المرشحين، الناخبين، والبيانات الميدانية مع تحليلات فورية وتقارير دقيقة.",
-    media: "/img/landing.webp",
+    media: landingHero,
     badge: "منصة متكاملة",
     ctaLabel: "استعرض الجولة التعريفية",
     ctaVideo: "https://www.youtube.com/watch?v=21X5lGlDOfg",
@@ -44,7 +51,7 @@ export const heroSlides: HeroSlide[] = [
     title: "قرارات تعتمد على البيانات",
     description:
       "لوحات تحكم تفاعلية تساعدك على قراءة الأنماط الانتخابية وتحديد أولويات الحملة في ثوانٍ.",
-    media: "/img/landing.webp",
+    media: landingHero,
     badge: "تحليلات لحظية",
     ctaLabel: "اكتشف نماذج التقارير",
     ctaVideo: "https://www.youtube.com/watch?v=5qap5aO4i9A",
@@ -54,7 +61,7 @@ export const heroSlides: HeroSlide[] = [
     title: "تنسيق الفرق الميدانية بسهولة",
     description:
       "جدولة المهام، تتبع الملاحظات، وإدارة المتطوعين من تطبيق واحد يدعم اللغة العربية بالكامل.",
-    media: "/img/landing.webp",
+    media: landingHero,
     badge: "جاهز للميدان",
     ctaLabel: "شاهد كيفية إدارة الفرق",
     ctaVideo: "https://www.youtube.com/watch?v=hHW1oY26kxQ",
@@ -89,11 +96,11 @@ export const testimonials: Testimonial[] = [
 ];
 
 export const partners: Partner[] = [
-  { id: "p1", name: "Election Pulse", logo: "/img/partner-1.svg" },
-  { id: "p2", name: "Insights Lab", logo: "/img/partner-2.svg" },
-  { id: "p3", name: "FieldOps", logo: "/img/partner-3.svg" },
-  { id: "p4", name: "Atlas Maps", logo: "/img/partner-4.svg" },
-  { id: "p5", name: "Civic Data", logo: "/img/partner-5.svg" },
+  { id: "p1", name: "Election Pulse", logo: partner1Logo },
+  { id: "p2", name: "Insights Lab", logo: partner2Logo },
+  { id: "p3", name: "FieldOps", logo: partner3Logo },
+  { id: "p4", name: "Atlas Maps", logo: partner4Logo },
+  { id: "p5", name: "Civic Data", logo: partner5Logo },
 ];
 
 export const featureTree: FeatureNode = {

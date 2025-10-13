@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { DataTableSkeleton, EmptyState } from '@/components/ui/DataTableSkeleton';
+import { DataTableSkeleton, EmptyState } from '@/components/ui/data-table-skeleton';
 import { safeArray } from '@/lib/utils';
 import { Voter, VoterFormData } from './types';
 import { fetchVoters, deleteVoter, createVoter, updateVoter } from './api';

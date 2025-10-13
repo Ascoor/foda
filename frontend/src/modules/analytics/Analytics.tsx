@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CalendarDays, GaugeCircle, Signal, Sparkles, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { SafeDataRenderer } from '@/components/ui/SafeDataRenderer';
+import { SafeDataRenderer } from '@/components/ui/safe-data-renderer';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { toast } from 'sonner';

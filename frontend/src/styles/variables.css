@@ -1,8 +1,8 @@
 @layer base {
   :root {
     /* Typography */
-    --font-family-base: 'Inter', 'DM Sans', 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-family-rtl: 'Noto Kufi Arabic', 'Tajawal', 'Cairo', 'Poppins', system-ui, sans-serif;
+    --font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-family-rtl: 'Noto Kufi Arabic', 'Cairo', system-ui, sans-serif;
     --font-weight-regular: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;

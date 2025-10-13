@@ -4,7 +4,7 @@ import { Plus, Search, Eye, Edit, Trash2, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AssignDialog } from '@/components/ui/AssignDialog';
+import { AssignDialog } from '@/components/ui/assign-dialog';
 import { Volunteer, VolunteerFilters } from './types';
 import { fetchVolunteers, deleteVolunteer, assignVolunteer, mockCommittees } from './api';
 import { VolunteerForm } from './VolunteerForm';

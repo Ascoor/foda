@@ -133,66 +133,7 @@
     gap: var(--spacing-lg);
   }
 
-  .glass {
-    background: var(--glass-background);
-    border: 1px solid var(--glass-border);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--glass-shadow);
-    backdrop-filter: saturate(180%) blur(20px);
-    transition: var(--transition-glass);
-    position: relative;
-  }
-
-  .glass-card {
-    @apply glass;
-    padding: clamp(var(--spacing-md), 1.25vw + var(--spacing-sm), var(--spacing-xl));
-    border-radius: var(--radius-2xl);
-  }
-
-  .glass-card:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: var(--glass-shadow), var(--hover-glow);
-  }
-
-  .glass-button {
-    @apply inline-flex items-center justify-center font-medium;
-    gap: var(--spacing-xs);
-    min-height: 2.75rem;
-    padding-inline: clamp(var(--spacing-sm), 2vw, var(--spacing-lg));
-    padding-block: var(--spacing-2xs);
-    border-radius: var(--radius-md);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.12),
-      rgba(255, 255, 255, 0.05)
-    );
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: var(--shadow-soft);
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition-smooth);
-    backdrop-filter: blur(18px);
-  }
-
-  .glass-button::before {
-    content: '';
-    position: absolute;
-    inset-block: 0;
-    inset-inline-start: -100%;
-    width: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-    transition: inset-inline-start 0.5s ease;
-  }
-
-  .glass-button:hover::before {
-    inset-inline-start: 100%;
-  }
-
-  .glass-button:hover {
-    background: var(--hover-background);
-    transform: translateY(-2px);
-    box-shadow: var(--hover-glow);
-  }
+  /* Glassmorphism helpers are provided via Tailwind plugin utilities */
 
   .badge-soft {
     @apply inline-flex items-center gap-2 rounded-full border border-transparent bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground;
