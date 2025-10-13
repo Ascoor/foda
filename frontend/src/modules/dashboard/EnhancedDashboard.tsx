@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Vote, UserCheck, Users, Activity, CheckCircle, RefreshCcw, CalendarCheck } from 'lucide-react';
+import { Vote, UserCheck, Users, Activity, CheckCircle, CalendarCheck, RefreshCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useApi } from '@/lib/api';
@@ -9,7 +9,7 @@ import { toast } from '@/hooks/use-toast';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { ActivityPanel, LiveOperationsPanel, ProgressOverview, StatsOverview, SummaryPanel } from './DashboardWidgets';
 
-// Define Activity type
+// تعريف الأنواع للأنشطة (Activity)
 interface Activity {
   id: number;
   type: string;
@@ -17,7 +17,17 @@ interface Activity {
   time: string;
 }
 
-type Color = 'primary' | 'secondary' | 'accent' | 'success';  // Define a union type for color
+// تعريف الأنواع للأنشطة التي تحتوي على `icon`
+interface ActivityItem {
+  id: number;
+  type: string;
+  title: string;
+  time: string;
+  icon: React.ComponentType<LucideProps>; // إضافة الخاصية icon من نوع React.ComponentType
+}
+
+// تعريف أنواع الألوان الممكنة
+type Color = 'primary' | 'secondary' | 'accent' | 'success';
 
 const EnhancedDashboard = () => {
   const { t, i18n } = useTranslation();
@@ -63,15 +73,17 @@ const EnhancedDashboard = () => {
   ], [dashboardData.progress, t]);
 
   // 🕓 الأنشطة
-  const activities: Activity[] = useMemo(() => (dashboardData.activities ?? []).map((activity: Activity) => ({
+  const activities: ActivityItem[] = useMemo(() => (dashboardData.activities ?? []).map((activity: Activity) => ({
     ...activity,
-    icon: CheckCircle,
+    icon: CheckCircle,  // تأكد من أن كل نشاط يحتوي على `icon`
   })), [dashboardData.activities]);
 
   // 📈 متوسط المشاركة
   const averageTurnout = useMemo(() => {
     const turnoutArray = dashboardData.turnout;
-    return turnoutArray.length ? turnoutArray.reduce((sum: number, v: number) => sum + v, 0) / turnoutArray.length : 0;
+    return turnoutArray.length
+      ? turnoutArray.reduce((sum: number, v: number) => sum + v, 0) / turnoutArray.length
+      : 0;
   }, [dashboardData.turnout]);
 
   const refreshLabel = language === 'ar' ? 'تحديث الآن' : 'Refresh insights';
