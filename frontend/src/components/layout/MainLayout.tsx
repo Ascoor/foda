@@ -1,11 +1,4 @@
-import {
-  type ReactNode,
-  type CSSProperties,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, useMemo, useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
@@ -15,13 +8,9 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { useWindowSize } from '@/hooks/use-window-size';
 import { cn } from '@/lib/utils';
 
-interface MainLayoutProps {
-  children: ReactNode;
-}
-
 const DESKTOP_BREAKPOINT = 1024;
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export const MainLayout = ({ children }: { children: ReactNode }) => {
   const { direction } = useLanguage();
   const { theme } = useTheme();
   const { width } = useWindowSize();
@@ -75,16 +64,17 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         ...(direction === 'rtl'
           ? { paddingRight: paddingValue }
           : { paddingLeft: paddingValue }),
-      } satisfies CSSProperties;
+      } as React.CSSProperties; // إضافة النوع كـ React.CSSProperties
     },
     [direction, sidebarWidth],
   );
 
   const layoutVariables = useMemo(
-    () =>
-      ({
-        '--sidebar-width': `${sidebarWidth}px`,
-      }) satisfies CSSProperties,
+    () => ({
+      '--sidebar-width': `${sidebarWidth}px`,
+      '--layout-header-height': '4.25rem',  // خصائص CSS مخصصة
+      '--layout-footer-height': '3.5rem',  // خصائص CSS مخصصة
+    } as React.CSSProperties), // إضافة النوع كـ React.CSSProperties
     [sidebarWidth],
   );
 
@@ -98,13 +88,10 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           : 'bg-slate-50 text-slate-900'
       )}
       style={{
-        '--layout-header-height': '4.25rem',
-        '--layout-footer-height': '3.5rem',
-        ...layoutVariables,
+        ...layoutVariables, // إضافة المتغيرات المخصصة هنا
       }}
     >
       {/* ✅ الشريط الجانبي */}
-
 
       {/* ✅ الهيكل الرئيسي */}
       <div className="flex min-h-screen flex-col" style={paddingStyle}>
@@ -119,7 +106,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         {/* ✅ المحتوى */}
         <main
           ref={contentRef}
-          className="relative  overflow-y-auto scrollbar-stable"
+          className="relative overflow-y-auto scrollbar-stable"
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -154,7 +141,6 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
         </main>
 
         {/* ✅ الفوتر */}
-
       </div>
     </div>
   );
