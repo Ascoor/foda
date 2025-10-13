@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\V1\ExternalDataController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SmsController;
+use App\Http\Controllers\Api\V1\LiveDataController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
