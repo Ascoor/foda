@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\AutomationController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SmsController;
+use App\Http\Controllers\Api\V1\LiveDataController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
@@ -96,6 +97,12 @@ Route::prefix('v1')->group(function () {
         Route::post('voters/import', [VoterController::class, 'import']);
         Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
+
+        Route::prefix('live')->group(function () {
+            Route::get('elections/{election}', [LiveDataController::class, 'election']);
+            Route::get('geo', [LiveDataController::class, 'geo']);
+            Route::get('maps/geocode', [LiveDataController::class, 'geocode']);
+        });
     });
     Route::middleware('auth:sanctum')->prefix('ec')->group(function () {
         Route::apiResource('elections', ECElectionController::class);

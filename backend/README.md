@@ -97,3 +97,50 @@ POST /api/v1/sms
     "scheduled_for": "2024-08-03T10:00:00Z"
 }
 ```
+
+## Live Data & External Integrations
+
+The backend can stream live election and geospatial data by connecting to third-party APIs. Configure the following environment variables in `.env` to enable the integrations:
+
+| Variable | Description |
+|----------|-------------|
+| `ELECTION_API_BASE_URL` | Base URL for the election results provider. |
+| `ELECTION_API_KEY` | Bearer token used to authenticate election API requests. |
+| `ELECTION_API_TIMEOUT` | Timeout (in seconds) for election API HTTP requests. |
+| `ELECTION_API_CACHE_TTL` | Cache duration (in seconds) for election results. |
+| `GEO_API_BASE_URL` | Base URL of the geospatial data provider. |
+| `GEO_API_KEY` | API key header for the geospatial service. |
+| `GEO_API_TIMEOUT` | Timeout (in seconds) for geospatial requests. |
+| `GEO_API_CACHE_TTL` | Cache duration (in seconds) for geospatial responses. |
+| `GOOGLE_MAPS_BASE_URL` | Google Maps API base URL (defaults to the public endpoint). |
+| `GOOGLE_MAPS_API_KEY` | Google Maps API key used for geocoding. |
+| `GOOGLE_MAPS_TIMEOUT` | Timeout (in seconds) for Google Maps requests. |
+| `GOOGLE_MAPS_CACHE_TTL` | Cache duration (in seconds) for Google Maps results. |
+
+### Live Data API
+
+Authenticated users can query real-time information via the `/api/v1/live` namespace:
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/v1/live/elections/{election}?broadcast=1` | Fetch the latest results for an election and broadcast them to listeners. |
+| GET | `/api/v1/live/geo` | Retrieve live geospatial metrics (supports optional `lat`, `lng`, `radius`, `region`, and `level` query parameters). |
+| GET | `/api/v1/live/maps/geocode?address=...` | Geocode an address using the configured Google Maps credentials. |
+
+Include `refresh=1` in the elections endpoint to force a cache refresh before broadcasting.
+
+### Live Broadcasting
+
+Election updates are streamed over Laravel Echo using the `elections.live.{electionId}` channel. The `ElectionResultsUpdated` event broadcasts the payload:
+
+```json
+{
+    "event": "ElectionResultsUpdated",
+    "data": {
+        "election_id": "42",
+        "results": {"candidate_a": 12345}
+    }
+}
+```
+
+Clients connected through Laravel Echo or any compatible WebSocket implementation will receive real-time updates whenever the results are refreshed.
