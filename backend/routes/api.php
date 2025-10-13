@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\V1\FinanceController;
 use App\Http\Controllers\Api\V1\ExpenseCategoryController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\AutomationController;
+use App\Http\Controllers\Api\V1\ExternalDataController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SmsController;
@@ -96,6 +97,13 @@ Route::prefix('v1')->group(function () {
         Route::post('voters/import', [VoterController::class, 'import']);
         Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
+
+        Route::prefix('integrations')->group(function () {
+            Route::get('geo-areas', [ExternalDataController::class, 'geoAreas']);
+            Route::get('elections/summary', [ExternalDataController::class, 'electionSummary']);
+            Route::get('elections/live-results', [ExternalDataController::class, 'liveResults']);
+            Route::get('maps/configuration', [ExternalDataController::class, 'mapConfiguration']);
+        });
     });
     Route::middleware('auth:sanctum')->prefix('ec')->group(function () {
         Route::apiResource('elections', ECElectionController::class);
