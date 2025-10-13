@@ -1,5 +1,68 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 import tailwindcssAnimate from "tailwindcss-animate";
+
+const glassmorphismPlugin = plugin(({ addComponents }) => {
+  const glassBase = {
+    background: "var(--glass-background)",
+    border: "1px solid var(--glass-border)",
+    borderRadius: "var(--radius-lg)",
+    boxShadow: "var(--glass-shadow)",
+    backdropFilter: "saturate(180%) blur(20px)",
+    transition: "var(--transition-glass)",
+    position: "relative",
+  };
+
+  addComponents({
+    ".glass": glassBase,
+    ".glass-card": {
+      ...glassBase,
+      padding: "clamp(var(--spacing-md), 1.25vw + var(--spacing-sm), var(--spacing-xl))",
+      borderRadius: "var(--radius-2xl)",
+      "&:hover": {
+        transform: "translateY(-2px) scale(1.01)",
+        boxShadow: "var(--glass-shadow), var(--hover-glow)",
+      },
+    },
+    ".glass-button": {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "var(--spacing-xs)",
+      minHeight: "2.75rem",
+      paddingInline: "clamp(var(--spacing-sm), 2vw, var(--spacing-lg))",
+      paddingBlock: "var(--spacing-2xs)",
+      borderRadius: "var(--radius-md)",
+      background:
+        "linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.05))",
+      border: "1px solid rgba(255, 255, 255, 0.25)",
+      boxShadow: "var(--shadow-soft)",
+      position: "relative",
+      overflow: "hidden",
+      transition: "var(--transition-smooth)",
+      backdropFilter: "blur(18px)",
+      fontWeight: "var(--font-weight-medium)",
+      "&::before": {
+        content: "''",
+        position: "absolute",
+        insetBlock: 0,
+        insetInlineStart: "-100%",
+        width: "100%",
+        background:
+          "linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent)",
+        transition: "inset-inline-start 0.5s ease",
+      },
+      "&:hover::before": {
+        insetInlineStart: "100%",
+      },
+      "&:hover": {
+        background: "var(--hover-background)",
+        transform: "translateY(-2px)",
+        boxShadow: "var(--hover-glow)",
+      },
+    },
+  });
+});
 
 const config: Config = {
   darkMode: ["class"],
@@ -134,7 +197,7 @@ const config: Config = {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [tailwindcssAnimate, glassmorphismPlugin],
 };
 
 export default config;
