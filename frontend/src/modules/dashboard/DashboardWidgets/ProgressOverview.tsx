@@ -45,7 +45,7 @@ export const ProgressOverview = ({
       <Button
         variant="secondary"
         size="icon"
-        className="rounded-xl border border-[#1C3F60]/20 bg-white/70 text-[#1C3F60] shadow-sm hover:bg-[#E7B10A]/20 hover:text-[#1C3F60] dark:border-white/20 dark:bg-white/10 dark:text-white"
+        className="rounded-xl border border-[hsla(var(--primary)/0.25)] bg-[hsla(var(--surface)/0.85)] text-[hsl(var(--primary))] shadow-sm transition-colors hover:bg-[hsla(var(--primary)/0.08)] hover:text-[hsl(var(--primary))] dark:border-[hsla(var(--border)/0.3)] dark:bg-[hsla(var(--background)/0.55)] dark:text-[hsl(var(--primary-foreground))]"
         onClick={onRetry}
         disabled={loading}
         aria-label={heading}
@@ -53,7 +53,7 @@ export const ProgressOverview = ({
         <RefreshCcw className="h-4 w-4" />
       </Button>
     </CardHeader>
-    <CardContent>
+    <CardContent className="space-y-6">
       {loading ? (
         <Skeleton className="h-72 w-full rounded-3xl" />
       ) : error ? (
@@ -65,14 +65,18 @@ export const ProgressOverview = ({
         <ProgressChart data={data} overall={overall} remaining={remaining} />
       )}
     </CardContent>
-    <CardFooter className="flex flex-col gap-4 border-t border-[#1C3F60]/10 py-4 text-sm text-muted-foreground dark:border-white/10 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <span className="font-semibold text-foreground">{overallLabel}: </span>
-        <span>{Math.round(overall)}%</span>
+    <CardFooter className="flex flex-col gap-4 rounded-b-[var(--radius-xl)] border-t border-[hsla(var(--border)/0.25)] bg-[hsla(var(--surface)/0.5)] py-6 text-sm text-muted-foreground backdrop-blur-sm sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-3">
+        <span className="inline-flex items-center rounded-lg bg-[hsla(var(--primary)/0.15)] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[hsl(var(--primary))]">
+          {overallLabel}
+        </span>
+        <span className="text-lg font-semibold text-foreground">{Math.round(overall)}%</span>
       </div>
-      <div>
-        <span className="font-semibold text-foreground">{remainingLabel}: </span>
-        <span>{Math.round(remaining)}%</span>
+      <div className="flex items-center gap-3">
+        <span className="inline-flex items-center rounded-lg bg-[hsla(var(--accent)/0.15)] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[hsl(var(--accent))]">
+          {remainingLabel}
+        </span>
+        <span className="text-lg font-semibold text-foreground">{Math.round(remaining)}</span>
       </div>
     </CardFooter>
   </Card>
