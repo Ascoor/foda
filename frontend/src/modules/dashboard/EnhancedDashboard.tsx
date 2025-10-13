@@ -87,7 +87,7 @@ export const EnhancedDashboard = () => {
         color: stat.color,
       };
     });
-  }, [dashboardData?.stats]);
+  }, [dashboardData]);
 
   // ⏳ التقدم
   const progressData = useMemo(
@@ -97,7 +97,7 @@ export const EnhancedDashboard = () => {
       { label: t('dashboard.campaign'), value: dashboardData?.progress?.campaign ?? 0, color: 'accent' as const },
       { label: t('dashboard.voting'), value: dashboardData?.progress?.voting ?? 0, color: 'success' as const },
     ],
-    [dashboardData?.progress, t]
+    [dashboardData, t]
   );
 
   // 🕓 الأنشطة
@@ -107,7 +107,7 @@ export const EnhancedDashboard = () => {
         ...activity,
         icon: activityIconMap[activity.type] ?? CheckCircle,
       })),
-    [dashboardData?.activities]
+    [dashboardData]
   );
 
   // 📈 متوسط المشاركة
@@ -115,7 +115,7 @@ export const EnhancedDashboard = () => {
     const turnoutArray = dashboardData?.turnout ?? [];
     if (!turnoutArray.length) return 0;
     return turnoutArray.reduce((sum, v) => sum + v, 0) / turnoutArray.length;
-  }, [dashboardData?.turnout]);
+  }, [dashboardData]);
 
   const refreshLabel = language === 'ar' ? 'تحديث الآن' : 'Refresh insights';
 
