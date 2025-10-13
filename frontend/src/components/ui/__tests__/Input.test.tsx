@@ -1,6 +1,32 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { Input } from '../input'
+import { COLOR_TOKENS, SUPPORTING_TOKENS } from '@/styles/colorTokens'
+
+let styleElement: HTMLStyleElement
+
+beforeAll(() => {
+  styleElement = document.createElement('style')
+  styleElement.setAttribute('data-test', 'input-color-utilities')
+  styleElement.innerHTML = `
+    :root {
+      --background: ${COLOR_TOKENS.background.hsl};
+      --input: ${SUPPORTING_TOKENS.input.hsl};
+      --muted-foreground: ${SUPPORTING_TOKENS.textMuted.hsl};
+    }
+
+    .bg-background { background-color: ${COLOR_TOKENS.background.hex}; }
+    .border-input { border-color: ${SUPPORTING_TOKENS.input.hex}; }
+    .placeholder\\:text-muted-foreground::placeholder { color: ${SUPPORTING_TOKENS.textMuted.hex}; }
+  `
+  document.head.appendChild(styleElement)
+})
+
+afterAll(() => {
+  if (styleElement.parentNode) {
+    styleElement.parentNode.removeChild(styleElement)
+  }
+})
 
 describe('Input', () => {
   it('renders with the default styling and Arabic placeholder', () => {
@@ -10,6 +36,7 @@ describe('Input', () => {
     expect(input).toBeInTheDocument()
     expect(input.placeholder).toBe('أدخل الاسم الكامل')
     expect(input.className).toContain('rounded-lg')
+    expect(window.getComputedStyle(input).borderColor).toBe('rgb(224, 224, 224)')
   })
 
   it('merges custom classes for English forms', () => {

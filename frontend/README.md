@@ -5,8 +5,9 @@ This document summarizes the current workflow for building the FODA election man
 ## UI and performance guidelines
 
 - **Tailwind glassmorphism utilities**: reusable classes such as `glass`, `glass-card`, and `glass-button` are provided through a custom Tailwind CSS plugin (`glassmorphismPlugin`). They automatically consume the design tokens defined in `src/styles/variables.css`, so avoid redefining these classes in component-level styles.
-- **Font loading**: the project now requests only the `Inter` and `Noto Kufi Arabic` families from Google Fonts with the most commonly used weights (400, 600, 700). This keeps Arabic and English typography aligned while reducing font requests during the initial paint.
-- **Design tokens**: continue relying on CSS variables in `src/styles/variables.css` for colors, spacing, and typography. This ensures consistent rendering between RTL and LTR layouts.
+- **Font loading**: Google Fonts are linked once in `index.html`, requesting the shared `Inter` and `Noto Kufi Arabic` families with the weights we actually use (400, 500, 600, 700). This avoids runtime `@import` calls and keeps Arabic and English typography aligned without extra round trips.
+- **Design tokens**: continue relying on CSS variables in `src/styles/variables.css` for colors, spacing, and typography. Primary, secondary, and accent hues now mirror the shared palette defined in `src/styles/colorTokens.ts`, ensuring consistent rendering between RTL and LTR layouts.
+- **Palette source of truth**: when introducing new UI elements, import from `src/styles/colorTokens.ts` to keep unit tests and CSS variables synchronized. The accompanying Vitest suite (`src/styles/__tests__/tokens.test.ts`) guards against accidental palette drift.
 
 ## Asset management
 

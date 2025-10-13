@@ -24,11 +24,11 @@
 
 @keyframes pulse-glow {
   from {
-    box-shadow: 0 0 20px rgba(69, 243, 255, 0.4);
+    box-shadow: 0 0 20px rgba(87, 51, 255, 0.3);
   }
 
   to {
-    box-shadow: 0 0 30px rgba(69, 243, 255, 0.8), 0 0 40px rgba(69, 243, 255, 0.4);
+    box-shadow: 0 0 30px rgba(87, 51, 255, 0.6), 0 0 40px rgba(51, 255, 135, 0.25);
   }
 }
 

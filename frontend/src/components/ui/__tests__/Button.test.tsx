@@ -1,6 +1,30 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Button } from '../Button'
+import { Button } from '../button'
+import { COLOR_TOKENS } from '@/styles/colorTokens'
+
+let styleElement: HTMLStyleElement
+
+beforeAll(() => {
+  styleElement = document.createElement('style')
+  styleElement.setAttribute('data-test', 'color-utilities')
+  styleElement.innerHTML = `
+    :root {
+      --primary: ${COLOR_TOKENS.primary.hsl};
+      --primary-foreground: 0 0% 100%;
+    }
+
+    .bg-primary { background-color: ${COLOR_TOKENS.primary.hex}; }
+    .text-primary-foreground { color: #ffffff; }
+  `
+  document.head.appendChild(styleElement)
+})
+
+afterAll(() => {
+  if (styleElement.parentNode) {
+    styleElement.parentNode.removeChild(styleElement)
+  }
+})
 
 describe('Button', () => {
   it('renders the default button with Arabic text and primary styles', () => {
@@ -10,6 +34,7 @@ describe('Button', () => {
     expect(button).toBeInTheDocument()
     expect(button.className).toContain('bg-primary')
     expect(button.className).toContain('h-11')
+    expect(window.getComputedStyle(button).backgroundColor).toBe('rgb(255, 87, 51)')
   })
 
   it('merges custom classes with the glass variant', () => {

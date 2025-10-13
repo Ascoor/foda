@@ -1,18 +1,11 @@
 @layer base {
   :root {
     color-scheme: light;
-    --gradient-glow: linear-gradient(135deg, #ff7e5f, #feb47b); /* Example gradient */
   }
 
   .dark {
     color-scheme: dark;
-    --gradient-glow-dark: linear-gradient(135deg, #1e3c72, #2a5298); /* Dark theme gradient */
   }
-
-  body {
-    background-image: var(--gradient-glow);
-  }
-
 
   body {
     @apply bg-background text-foreground antialiased;
@@ -23,6 +16,7 @@
     line-height: var(--line-height-base);
     letter-spacing: -0.01em;
     scroll-behavior: smooth;
+    background-color: hsl(var(--background));
     background-image: var(--gradient-glow);
     background-attachment: fixed;
     scrollbar-gutter: stable both-edges;
@@ -50,7 +44,10 @@
     width: 100%;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: inherit;
     font-weight: var(--font-weight-semibold);
     line-height: var(--line-height-tight);
