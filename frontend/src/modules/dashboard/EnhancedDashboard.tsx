@@ -85,7 +85,10 @@ export const EnhancedDashboard = () => {
       );
   }, [refetchDashboard, t]);
 
-  const dashboardData = data ?? defaultDashboard;
+  const dashboardData = useMemo<DashboardResponse>(
+    () => data ?? defaultDashboard,
+    [data]
+  );
 
   // 🧮 الإحصائيات
   const statsMetrics: StatMetric[] = useMemo(() => {
@@ -109,7 +112,7 @@ export const EnhancedDashboard = () => {
         color: stat.color,
       };
     });
-  }, [dashboardData?.stats]);
+  }, [dashboardData]);
 
   // ⏳ التقدم
   const progressData = useMemo(
@@ -135,7 +138,7 @@ export const EnhancedDashboard = () => {
         color: 'success' as const,
       },
     ],
-    [dashboardData?.progress, t]
+    [dashboardData, t]
   );
 
   // 🕓 الأنشطة
@@ -145,7 +148,7 @@ export const EnhancedDashboard = () => {
         ...activity,
         icon: activityIconMap[activity.type] ?? CheckCircle,
       })),
-    [dashboardData?.activities]
+    [dashboardData]
   );
 
   // 📈 متوسط المشاركة
@@ -153,7 +156,7 @@ export const EnhancedDashboard = () => {
     const turnoutArray = dashboardData?.turnout ?? [];
     if (!turnoutArray.length) return 0;
     return turnoutArray.reduce((sum, v) => sum + v, 0) / turnoutArray.length;
-  }, [dashboardData?.turnout]);
+  }, [dashboardData]);
 
   const refreshLabel = language === 'ar' ? 'تحديث الآن' : 'Refresh insights';
 
