@@ -44,6 +44,13 @@ export const EnhancedDashboard = () => {
   const { t, i18n } = useTranslation();
   const { direction, language } = useLanguage();
   const { data, loading, error, execute: refetchDashboard } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
+  const dashboardData: DashboardResponse = data ?? defaultDashboard;
+
+  useEffect(() => {
+    refetchDashboard().catch(() => {
+      /* Initial fetch errors are handled by the component UI */
+    });
+  }, [refetchDashboard]);
 
   // 🕒 تحديث الوقت
   const [dateTime, setDateTime] = useState(new Date());
