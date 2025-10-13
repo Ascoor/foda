@@ -68,10 +68,9 @@ export const LoginForm = () => {
         {t('auth.login')}
       </h1>
       <p className="sr-only" aria-live="polite">
-        {loading ? t('common.loading') : ''}
+        {loading ? (t('common.loading') || 'Loading...') : ''}
       </p>
       {error && <p className="text-destructive text-sm" role="alert">{error}</p>}
-
       <div>
         <label className="block mb-1" htmlFor="email">
           {t('auth.email')}
@@ -83,13 +82,11 @@ export const LoginForm = () => {
           disabled={loading}
           aria-invalid={email.length > 0 && !isEmailValid}
           aria-describedby="email-help"
-          className={`border ${email.length > 0 && !isEmailValid ? 'border-red-500' : 'border-primary'}`}
         />
         <span id="email-help" className="block mt-1 text-xs text-muted-foreground">
-          {!isEmailValid && email.length > 0 ? t('auth.email_invalid') : '\u00A0'}
+          {!isEmailValid && email.length > 0 ? t('auth.email_invalid') || 'Enter a valid email' : '\u00A0'}
         </span>
       </div>
-
       <div>
         <label className="block mb-1" htmlFor="password">
           {t('auth.password')}
@@ -102,16 +99,15 @@ export const LoginForm = () => {
           disabled={loading}
         />
       </div>
-
       <Button
         type="submit"
-        className={`w-full bg-gradient-primary text-white relative ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-        disabled={!canSubmit || loading}
+        className="w-full bg-gradient-primary text-white relative"
+        disabled={!canSubmit}
       >
         {loading ? (
           <span className="flex items-center justify-center gap-2">
             <Loader2 className="h-4 w-4 animate-spin" />
-            {t('common.loading')}
+            {t('common.loading') || 'Loading...'}
           </span>
         ) : (
           t('auth.login')
