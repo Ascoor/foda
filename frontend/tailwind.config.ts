@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 import tailwindcssAnimate from "tailwindcss-animate";
-import plugin from "tailwindcss/plugin";
 
 const glassPlugin = plugin(({ addComponents }) => {
   const baseGlass = {
@@ -191,6 +190,8 @@ const config: Config = {
           foreground: "hsl(var(--card-foreground))",
           glass: "hsl(var(--card-glass))",
         },
+        textPrimary: "hsl(var(--text-primary))",
+        textSecondary: "hsl(var(--text-secondary))",
       },
       backgroundImage: {
         "gradient-primary": "var(--gradient-primary)",
