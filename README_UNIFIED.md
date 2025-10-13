@@ -34,7 +34,7 @@ foda/
 ├── start.sh                   # Unified startup script
 ├── README.md                  # English documentation
 ├── README_AR.md               # Arabic documentation
-├── DEVELOPMENT_PLAN.md        # Development roadmap
+├── PROJECT_PLAN.md            # Unified roadmap & progress
 └── CRUD_API_REVIEW.md         # API documentation
 ```
 
@@ -235,7 +235,7 @@ VITE_API_URL=http://localhost:8000/api/v1
 
 ## 📈 خطة التطوير
 
-راجع ملف `DEVELOPMENT_PLAN.md` للحصول على خطة التطوير الشاملة والتفصيلية.
+للاطلاع على خارطة الطريق الموحدة والتقدم الحالي، راجع ملف `PROJECT_PLAN.md`.
 
 ### المراحل القادمة
 1. **المرحلة 2**: خرائط حية وتقارير لحظية
@@ -272,7 +272,7 @@ VITE_API_URL=http://localhost:8000/api/v1
 ### الوثائق المتاحة
 - `README.md`: الوثائق الإنجليزية
 - `README_AR.md`: الوثائق العربية
-- `DEVELOPMENT_PLAN.md`: خطة التطوير
+- `PROJECT_PLAN.md`: الخطة الموحدة والتقدم
 - `CRUD_API_REVIEW.md`: وثائق API
 
 ### المساعدة
