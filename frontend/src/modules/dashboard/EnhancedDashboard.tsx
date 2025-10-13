@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Vote, UserCheck, Users, Activity, CheckCircle, TrendingUp, Calendar } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Vote, UserCheck, Users, Activity, TrendingUp } from 'lucide-react';
 import { SafeDataRenderer } from '@/components/ui/SafeDataRenderer';
-import { StatsCard } from '@/modules/dashboard/components/StatsCard';
 import { ProgressChart } from '@/modules/dashboard/components/ProgressChart';
 import { ActivityFeed } from '@/modules/dashboard/components/ActivityFeed';
 import { LiveOperationsMap } from '@/modules/dashboard/components/LiveOperationsMap';
 import { ActivitiesTimeline } from '@/modules/activities/ActivitiesTimeline';
 import { useApi } from '@/lib/api';   
-import { safeArray } from '@/lib/safeData';
+import { safeArray, safeNumber } from '@/lib/safeData';
 import { toast } from '@/hooks/use-toast';
 
 interface DashboardData {
@@ -137,12 +134,40 @@ export const EnhancedDashboard: React.FC = () => {
       .catch(() => toast({ variant: 'destructive', description: t('dashboard.load_error') }));
   }, [refetchDashboard, t]);
   
-  const safeDashboardData = dashboardData || {
-    stats: {},
-    activities: [],
-    progress: { registration: 0, verification: 0, campaign: 0, voting: 0, overall: 0, remaining: 0 },
-    turnout: []
-  };
+  const safeStats = useMemo(() => {
+    const stats = dashboardData?.stats;
+    if (!stats || typeof stats !== 'object') {
+      return {} as Record<string, Partial<DashboardData['stats'][string]>>;
+    }
+
+    return stats;
+  }, [dashboardData?.stats]);
+
+  const safeProgress = useMemo(
+    () => ({
+      registration: safeNumber(dashboardData?.progress?.registration),
+      verification: safeNumber(dashboardData?.progress?.verification),
+      campaign: safeNumber(dashboardData?.progress?.campaign),
+      voting: safeNumber(dashboardData?.progress?.voting),
+      overall: safeNumber(dashboardData?.progress?.overall),
+      remaining: safeNumber(dashboardData?.progress?.remaining)
+    }),
+    [dashboardData?.progress]
+  );
+
+  const safeActivities = useMemo(() => {
+    return safeArray(dashboardData?.activities).map((activity, index) => {
+      const normalized = activity as Partial<DashboardData['activities'][number]> | undefined;
+
+      return {
+        id: typeof normalized?.id === 'number' ? normalized.id : index,
+        type: typeof normalized?.type === 'string' ? normalized.type : 'activity',
+        title: typeof normalized?.title === 'string' ? normalized.title : t('dashboard.activity_placeholder', { defaultValue: 'Activity update' }),
+        time: typeof normalized?.time === 'string' ? normalized.time : '',
+        icon: Vote
+      };
+    });
+  }, [dashboardData?.activities, t]);
   
   const statsConfig = [
     { key: 'total_elections', icon: Vote, color: 'primary' as const, title: t('dashboard.total_elections') },
@@ -152,16 +177,32 @@ export const EnhancedDashboard: React.FC = () => {
   ];
   
   const progressData = [
-    { label: t('dashboard.registration'), value: safeDashboardData.progress.registration, color: 'primary' as const },
-    { label: t('dashboard.verification'), value: safeDashboardData.progress.verification, color: 'secondary' as const },
-    { label: t('dashboard.campaign'), value: safeDashboardData.progress.campaign, color: 'accent' as const },
-    { label: t('dashboard.voting'), value: safeDashboardData.progress.voting, color: 'success' as const },
+    { label: t('dashboard.registration'), value: safeProgress.registration, color: 'primary' as const },
+    { label: t('dashboard.verification'), value: safeProgress.verification, color: 'secondary' as const },
+    { label: t('dashboard.campaign'), value: safeProgress.campaign, color: 'accent' as const },
+    { label: t('dashboard.voting'), value: safeProgress.voting, color: 'success' as const },
   ];
-  
-  const activities = safeArray(safeDashboardData.activities).map(activity => ({
-    ...activity,
-    icon: Vote // You can map specific icons based on activity type
-  }));
+
+  const getStatDetails = (key: string) => {
+    const stat = safeStats[key];
+
+    if (!stat || typeof stat !== 'object') {
+      return {
+        value: 0,
+        change: undefined,
+        trend: undefined as 'up' | 'down' | undefined
+      };
+    }
+
+    const candidateTrend = (stat as { trend?: unknown }).trend;
+    const normalizedTrend = candidateTrend === 'up' || candidateTrend === 'down' ? candidateTrend : undefined;
+
+    return {
+      value: safeNumber((stat as { value?: unknown }).value),
+      change: typeof (stat as { change?: unknown }).change === 'string' ? (stat as { change?: string }).change : undefined,
+      trend: normalizedTrend
+    };
+  };
   
   return (
     <div className="space-y-6">
@@ -186,23 +227,27 @@ export const EnhancedDashboard: React.FC = () => {
       
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsConfig.map((stat, index) => (
-          <motion.div
-            key={stat.key}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <KPICard
-              title={stat.title}
-              value={safeDashboardData.stats[stat.key]?.value || 0}
-              change={safeDashboardData.stats[stat.key]?.change}
-              trend={safeDashboardData.stats[stat.key]?.trend}
-              icon={stat.icon}
-              color={stat.color}
-            />
-          </motion.div>
-        ))}
+        {statsConfig.map((stat, index) => {
+          const details = getStatDetails(stat.key);
+
+          return (
+            <motion.div
+              key={stat.key}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+            >
+              <KPICard
+                title={stat.title}
+                value={details.value}
+                change={details.change}
+                trend={details.trend}
+                icon={stat.icon}
+                color={stat.color}
+              />
+            </motion.div>
+          );
+        })}
       </div>
       
       {/* Main Content Grid */}
@@ -222,10 +267,10 @@ export const EnhancedDashboard: React.FC = () => {
             loadingMessage={t('dashboard.loading_progress')}
           >
             {(data) => (
-              <ProgressChart 
-                data={data} 
-                overall={safeDashboardData.progress.overall} 
-                remaining={safeDashboardData.progress.remaining} 
+              <ProgressChart
+                data={data}
+                overall={safeProgress.overall}
+                remaining={safeProgress.remaining}
               />
             )}
           </SafeDataRenderer>
@@ -238,7 +283,7 @@ export const EnhancedDashboard: React.FC = () => {
           transition={{ delay: 0.5 }}
         >
           <SafeDataRenderer
-            data={activities}
+            data={safeActivities}
             loading={dashboardLoading}
             error={dashboardError}
             onRetry={refetchDashboard}
