@@ -37,5 +37,16 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (ExternalApiException $exception, $request) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => $exception->getMessage(),
+                    'service' => $exception->getService(),
+                    'status' => $exception->getStatus(),
+                    'details' => $exception->getDetails(),
+                ], $exception->getStatus() ?? 502);
+            }
+        });
     }
 }
