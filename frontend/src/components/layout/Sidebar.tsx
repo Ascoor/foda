@@ -68,10 +68,10 @@ export const Sidebar = ({
       : "bg-[hsla(var(--surface-secondary)/0.55)]";
 
   const navBaseClass =
-    "group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)] hover:shadow-[0_0_14px_rgba(125,106,255,0.35)]";
+    "group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]";
 
   const navActiveClass =
-    "bg-[hsla(var(--primary)/0.22)] text-[hsl(var(--foreground))] font-semibold ring-1 ring-[hsla(var(--primary)/0.45)] opacity-100 shadow-[0_0_18px_rgba(125,106,255,0.45)]";
+    "bg-[hsla(var(--primary)/0.18)] text-[hsl(var(--foreground))] font-semibold ring-1 ring-[hsla(var(--primary)/0.35)] opacity-100 shadow-sm";
 
   const iconButtonClass =
     "flex items-center justify-center rounded-xl text-[hsl(var(--foreground))] opacity-80 transition-colors hover:bg-[hsla(var(--primary)/0.12)] hover:opacity-100";
@@ -81,6 +81,7 @@ export const Sidebar = ({
 
   const footerTextClass = "px-4 pb-6 text-center text-xs text-[hsl(var(--foreground))] opacity-60";
 
+
   const desktopShellClass =
     theme === "dark"
       ? "shadow-[0_0_45px_rgba(125,106,255,0.35)] backdrop-blur-2xl bg-gradient-to-br from-slate-950/95 via-slate-900/90 to-slate-950/95 ring-1 ring-[hsla(var(--primary)/0.25)]"
@@ -89,9 +90,7 @@ export const Sidebar = ({
   const mobileShellClass =
     theme === "dark"
       ? "shadow-[0_0_35px_rgba(125,106,255,0.35)] backdrop-blur-2xl bg-gradient-to-br from-slate-950/95 via-slate-900/90 to-slate-950/92 ring-1 ring-[hsla(var(--primary)/0.2)]"
-      : "shadow-2xl backdrop-blur-xl";
-
-  // 🧩 صلاحيات المستخدم
+      : "shadow-2xl backdrop-blur-xl";  // 🧩 صلاحيات المستخدم
   const availableRoles = useMemo(() => {
     const rawRoles = user?.roleNames ?? user?.roles?.map((r) => r.name) ?? [];
     return new Set(rawRoles.map((r) => r.toLowerCase()));
@@ -161,7 +160,7 @@ export const Sidebar = ({
             cn(
               navBaseClass,
               (isActive || isPathActive(item.path)) && navActiveClass,
-              isRTL ? "flex-row-reverse" : "flex-row",
+              isRTL ? "flex-row" : "flex-row-reverse",
               isMobileVariant && "text-base"
             )
           }
@@ -197,7 +196,7 @@ export const Sidebar = ({
                         navBaseClass,
                         "font-semibold",
                         (isActive || isPathActive(section.path!)) && navActiveClass,
-                        isRTL ? "flex-row-reverse" : "flex-row",
+                        isRTL ? "flex-row" : "flex-row-reverse",
                         collapsed && "justify-center px-0"
                       )
                     }
@@ -241,15 +240,15 @@ export const Sidebar = ({
                       whileTap={{ scale: 0.98 }}
                       className={cn(
                         "group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
-                        "text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)] hover:shadow-[0_0_16px_rgba(125,106,255,0.35)]",
+                        "text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
                         isOpen && navActiveClass,
-                        isRTL ? "flex-row-reverse" : "flex-row"
+                        isRTL ? "flex-row" : "flex-row-reverse"
                       )}
                     >
                       <span
                         className={cn(
                           "flex items-center gap-2",
-                          isRTL ? "flex-row-reverse" : "flex-row"
+                          isRTL ? "flex-row" : "flex-row-reverse"
                         )}
                       >
                         {SectionIcon && <SectionIcon className="h-5 w-5" />}
@@ -396,9 +395,9 @@ export const Sidebar = ({
         <aside
           dir={direction}
           className={cn(
-            "fixed top-0 z-40 hidden h-full flex-col transition-[width] duration-300 ease-in-out md:flex",
+            "fixed top-0 z-40 hidden h-full flex-col shadow-2xl transition-[width] duration-300 ease-in-out md:flex",
             desktopShellClass,
-            sidebarSurfaceClass,
+                        sidebarSurfaceClass,
             isRTL ? "right-0 border-l" : "left-0 border-r",
             sidebarBorderClass,
           )}
@@ -474,8 +473,7 @@ export const Sidebar = ({
                 dir={direction}
                 className={cn(
                   "relative flex h-full w-full flex-col",
-                  mobileShellClass,
-                  sidebarMobileSurfaceClass,
+                  mobileShellClass,                  sidebarMobileSurfaceClass,
                 )}
                 initial={{ x: isRTL ? 80 : -80, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
