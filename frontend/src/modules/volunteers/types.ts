@@ -1,18 +1,23 @@
-export interface Volunteer {
-  id: string;
-  name: string;
-  role: string;
-  committee_id?: string | null;
-  committee_name?: string;
-}
+import type { Volunteer as VolunteerEntity, VolunteerStatus } from '@/types';
+
+export type Volunteer = VolunteerEntity;
+export type VolunteerListItem = VolunteerEntity;
 
 export interface VolunteerFormData {
-  name: string;
-  role: string;
-  committee_id?: string | null;
+  full_name: string;
+  email?: string | null;
+  phone?: string | null;
+  status?: VolunteerStatus;
+  election_uuid?: string;
+  assigned_committee_uuid?: string | null;
+  skills?: string[];
+  availability?: VolunteerEntity['availability'];
+  notes?: string | null;
 }
 
 export interface VolunteerFilters {
-  role?: string;
-  committee_id?: string;
+  status?: VolunteerStatus;
+  assigned_committee_uuid?: string;
+  skills?: string[];
+  search?: string;
 }

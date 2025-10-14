@@ -40,6 +40,12 @@
 - ⚠️ Need automated lint/test coverage reports before Phase 3 commences.
 - ⚠️ Security policies drafted but not yet implemented in code or infrastructure.
 
+## Frontend Synchronization Phase
+Ensures React data models stay aligned with Laravel backend structure.
+- Automate OpenAPI type generation to prevent schema drift.
+- Run `npm run sync:schema` after every Laravel `schema:sync` execution.
+- Track discrepancies in `/frontend/logs/sync.log` for auditing.
+
 ## Next Steps | الخطوات التالية
 - Publish shared API contract schemas and distribute to frontend/backend leads.
 - Draft CI workflow (GitHub Actions) to run linting, unit tests, and build artifacts per commit.

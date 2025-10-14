@@ -1,48 +1,60 @@
-import { Volunteer, VolunteerFormData, VolunteerFilters } from './types';
+import { request } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/endpoints';
+import type { Volunteer } from '@/types';
+import type { VolunteerFilters, VolunteerFormData } from './types';
 
-export const mockVolunteers: Volunteer[] = [
-  { id: '1', name: 'Volunteer A', role: 'support', committee_id: '1', committee_name: 'Committee 001' },
-  { id: '2', name: 'Volunteer B', role: 'logistics', committee_id: null }
-];
-
-export const mockCommittees = [
-  { id: '1', name: 'Committee 001' },
-  { id: '2', name: 'Committee 002' }
-];
-
-export const fetchVolunteers = async (filters?: VolunteerFilters): Promise<Volunteer[]> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  let data = [...mockVolunteers];
-  if (filters?.role) data = data.filter(v => v.role === filters.role);
-  if (filters?.committee_id) data = data.filter(v => v.committee_id === filters.committee_id);
-  return data;
+type PaginatedResponse<T> = {
+  data: T[];
+  meta?: {
+    total: number;
+    per_page: number;
+    current_page: number;
+  };
 };
 
-export const createVolunteer = async (data: VolunteerFormData): Promise<Volunteer> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const volunteer: Volunteer = { ...data, id: Math.random().toString(36).slice(2, 9) };
-  mockVolunteers.push(volunteer);
-  return volunteer;
+const VOLUNTEERS_ENDPOINT = API_ENDPOINTS.crm.volunteers;
+
+export const fetchVolunteers = async (
+  filters: VolunteerFilters & { page?: number; per_page?: number } = {},
+) =>
+  request<PaginatedResponse<Volunteer>>(
+    {
+      url: VOLUNTEERS_ENDPOINT,
+      method: 'get',
+      params: filters,
+    },
+    { useCache: true },
+  );
+
+export const createVolunteer = async (data: VolunteerFormData) => {
+  const response = await request<{ data: Volunteer }>({
+    url: VOLUNTEERS_ENDPOINT,
+    method: 'post',
+    data,
+  });
+  return response.data;
 };
 
-export const updateVolunteer = async (id: string, data: Partial<VolunteerFormData>): Promise<Volunteer> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const volunteer = mockVolunteers.find(v => v.id === id);
-  if (!volunteer) throw new Error('Volunteer not found');
-  Object.assign(volunteer, data);
-  return volunteer;
+export const updateVolunteer = async (uuid: string, data: Partial<VolunteerFormData>) => {
+  const response = await request<{ data: Volunteer }>({
+    url: `${VOLUNTEERS_ENDPOINT}/${uuid}`,
+    method: 'put',
+    data,
+  });
+  return response.data;
 };
 
-export const deleteVolunteer = async (id: string): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
+export const deleteVolunteer = async (uuid: string) => {
+  await request({ url: `${VOLUNTEERS_ENDPOINT}/${uuid}`, method: 'delete' });
 };
 
-export const assignVolunteer = async (id: string, committeeId: string): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const volunteer = mockVolunteers.find(v => v.id === id);
-  if (volunteer) {
-    volunteer.committee_id = committeeId;
-    const committee = mockCommittees.find(c => c.id === committeeId);
-    volunteer.committee_name = committee?.name;
-  }
+export const assignVolunteer = async (
+  uuid: string,
+  committee_uuid: string,
+): Promise<void> => {
+  await request({
+    url: `${VOLUNTEERS_ENDPOINT}/${uuid}/assign`,
+    method: 'post',
+    data: { committee_uuid },
+  });
 };
