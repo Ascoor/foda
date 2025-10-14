@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Concerns\HandlesIndexRequests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTeamRequest;
 use App\Http\Requests\UpdateTeamRequest;
@@ -12,9 +13,18 @@ use Illuminate\Http\Request;
 
 class TeamController extends Controller
 {
-    public function index()
+    use HandlesIndexRequests;
+
+    public function index(Request $request)
     {
-        $teams = Team::with(['area', 'supervisor', 'volunteers'])->withCount('volunteers')->get();
+        $teams = $this->handleIndex(
+            $request,
+            Team::with(['area', 'supervisor', 'volunteers'])->withCount('volunteers'),
+            ['name'],
+            ['name', 'area_id', 'supervisor_id'],
+            ['name'],
+            ['name', 'volunteers_count']
+        );
 
         return TeamResource::collection($teams);
     }

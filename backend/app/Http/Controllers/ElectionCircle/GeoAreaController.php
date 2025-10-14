@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\ElectionCircle;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ElectionCircle\Traits\HandlesIndexRequests;
+use App\Http\Controllers\Concerns\HandlesIndexRequests;
 use App\Models\ElectionCircle\GeoArea;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
