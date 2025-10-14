@@ -5,9 +5,13 @@
 **الواجهة الأمامية:** React + TypeScript + TailwindCSS  
 **الخرائط:** Leaflet + OpenStreetMap  
 **الوقت الفعلي:** Laravel WebSockets / Pusher  
-**التحليلات:** Recharts / D3.js  
+**التحليلات:** Recharts / D3.js
 
 ---
+
+## 📚 وثائق التطوير
+
+تم توحيد جميع وثائق التطوير والتسليم داخل مجلد [`docs/`](docs/README.md). ابدأ بالملف [`DEVELOPMENT_OVERVIEW.md`](docs/DEVELOPMENT_OVERVIEW.md) للحصول على ملخص واحد للبنية، وخطوات التشغيل، وخارطة الطريق، وأولويات الأمان. تم حفظ المستندات التفصيلية القديمة داخل [`docs/archive/`](docs/archive) للرجوع إليها عند الحاجة.
 
 ## 🎯 نظرة عامة
 

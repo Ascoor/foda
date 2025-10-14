@@ -2,6 +2,10 @@
 
 A comprehensive election management system built with React + TypeScript frontend and Laravel backend.
 
+## 📚 Documentation
+
+All technical and delivery guides now live under [`docs/`](docs/README.md). Start with [`DEVELOPMENT_OVERVIEW.md`](docs/DEVELOPMENT_OVERVIEW.md) for a unified view of the stack, workflows, roadmap, and operational priorities. Historical deep dives (audits, execution plans, and legacy READMEs) are preserved inside [`docs/archive/`](docs/archive).
+
 ## 🏗️ Architecture Overview
 
 ### Frontend (React + TypeScript + Vite)
