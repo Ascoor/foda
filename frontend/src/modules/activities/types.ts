@@ -1,3 +1,5 @@
+import type { Activity, ActivityStatus, ActivityType } from '@/types';
+
 export interface ActivityMeta {
   current_page: number;
   last_page: number;
@@ -5,31 +7,20 @@ export interface ActivityMeta {
   total: number;
 }
 
-export interface ActivityArea {
-  id?: number;
-  name?: string;
-}
-
-export interface ActivityTimelineItem {
-  id: number;
-  type: string;
-  status: string | null;
-  title: string;
-  description: string | null;
-  support_score: number | null;
-  reported_at: string | null;
-  created_at: string;
-  area?: ActivityArea | null;
-}
+export type ActivityListItem = Activity & {
+  support_score?: number | null;
+};
 
 export interface ActivitiesResponse {
-  data: ActivityTimelineItem[];
+  data: ActivityListItem[];
   meta: ActivityMeta;
 }
 
 export interface ActivityFilters {
-  area_id?: number;
-  status?: string;
-  type?: string;
+  campaign_uuid?: string;
+  status?: ActivityStatus;
+  type?: ActivityType;
+  geo_area_uuid?: string;
   page?: number;
+  per_page?: number;
 }

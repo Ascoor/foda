@@ -1,20 +1,20 @@
-export interface Agent {
-  id: string;
-  name: string;
-  mobile: string;
-  role: string;
-  committee_id?: string | null;
-  committee_name?: string;
-}
+import type { Agent } from '@/types';
+
+export type AgentListItem = Agent;
 
 export interface AgentFormData {
-  name: string;
-  mobile: string;
-  role: string;
-  committee_id?: string | null;
+  full_name: string;
+  code: string;
+  status: Agent['status'];
+  contact_number?: string | null;
+  email?: string | null;
+  assignment: Partial<Agent['assignment']>;
+  notes?: string | null;
 }
 
 export interface AgentFilters {
-  role?: string;
-  committee_id?: string;
+  status?: Agent['status'];
+  geo_area_uuid?: string;
+  committee_uuid?: string;
+  search?: string;
 }

@@ -1,28 +1,28 @@
-import { request } from '../../lib/api';
-import { Observation, ObservationFormData, ObservationFilters } from './types';
+import { request } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/endpoints';
+import type { Observation } from './types';
+import type { ObservationFilters, ObservationFormData } from './types';
 
-// TODO: remove mock committees once backend endpoint is wired for the form
-export const mockCommittees = [
-  { id: '1', name: 'Committee 001' },
-  { id: '2', name: 'Committee 002' },
-];
+const OBSERVATIONS_ENDPOINT = API_ENDPOINTS.field.observations;
+
+export const mockCommittees = [{ id: 'placeholder', name: 'Committee 001' }];
 
 export const fetchObservations = async (
-  params: ObservationFilters = {}
+  params: ObservationFilters = {},
 ): Promise<Observation[]> => {
-  const { data } = await request<{ data: Observation[] }>({
-    url: '/ec/observations',
+  const response = await request<{ data: Observation[] }>({
+    url: OBSERVATIONS_ENDPOINT,
     method: 'get',
     params,
   });
-  return data;
+  return response.data;
 };
 
 export const createObservation = async (
-  payload: ObservationFormData
+  payload: ObservationFormData,
 ): Promise<Observation> => {
   const { data } = await request<{ data: Observation }>({
-    url: '/ec/observations',
+    url: OBSERVATIONS_ENDPOINT,
     method: 'post',
     data: payload,
   });
@@ -30,17 +30,17 @@ export const createObservation = async (
 };
 
 export const updateObservation = async (
-  id: string,
-  payload: Partial<ObservationFormData>
+  identifier: string | number,
+  payload: Partial<ObservationFormData>,
 ): Promise<Observation> => {
   const { data } = await request<{ data: Observation }>({
-    url: `/ec/observations/${id}`,
+    url: `${OBSERVATIONS_ENDPOINT}/${identifier}`,
     method: 'put',
     data: payload,
   });
   return data;
 };
 
-export const deleteObservation = async (id: string): Promise<void> => {
-  await request({ url: `/ec/observations/${id}`, method: 'delete' });
+export const deleteObservation = async (identifier: string | number): Promise<void> => {
+  await request({ url: `${OBSERVATIONS_ENDPOINT}/${identifier}`, method: 'delete' });
 };

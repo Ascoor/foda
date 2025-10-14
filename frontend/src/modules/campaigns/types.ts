@@ -1,13 +1,15 @@
-export interface Campaign {
-  id: string;
-  name: string;
-  message: string;
-  sent: number;
-  delivered: number;
-  created_at: string;
-}
+import type { Campaign as CampaignEntity, CampaignStatus } from '@/types';
+
+export type Campaign = CampaignEntity;
 
 export interface CampaignFormData {
   name: string;
-  message: string;
+  description?: string | null;
+  status?: CampaignStatus;
+  starts_at: string;
+  ends_at: string;
+  owner_uuid: string;
+  goals: CampaignEntity['goals'];
+  budget?: number | null;
+  tags?: string[];
 }

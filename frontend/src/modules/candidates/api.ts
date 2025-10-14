@@ -1,36 +1,54 @@
-import { request } from '../../lib/api';
-import { Candidate, CandidateFormData, CandidateFilters } from './types';
+import { request } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/endpoints';
+import type { Candidate, CandidateFormData, CandidateFilters } from './types';
 
-export const fetchCandidates = async (params: CandidateFilters & { page?: number; per_page?: number; search?: string } = {}) => {
-  return request<{ data: Candidate[]; total: number }>({
-    url: '/ec/candidates',
-    method: 'get',
-    params,
-  }, { useCache: true });
+type PaginatedResponse<T> = {
+  data: T[];
+  meta?: {
+    total: number;
+    per_page: number;
+    current_page: number;
+  };
 };
 
-export const fetchCandidate = async (id: string) => {
-  return request<Candidate>({ url: `/ec/candidates/${id}`, method: 'get' }, { useCache: true });
-};
+const CANDIDATES_ENDPOINT = API_ENDPOINTS.elections.candidates;
+
+export const fetchCandidates = async (
+  params: CandidateFilters & { page?: number; per_page?: number; search?: string } = {},
+) =>
+  request<PaginatedResponse<Candidate>>(
+    {
+      url: CANDIDATES_ENDPOINT,
+      method: 'get',
+      params,
+    },
+    { useCache: true },
+  );
+
+export const fetchCandidate = async (uuid: string) =>
+  request<{ data: Candidate }>(
+    { url: `${CANDIDATES_ENDPOINT}/${uuid}`, method: 'get' },
+    { useCache: true },
+  );
 
 export const createCandidate = async (payload: CandidateFormData) => {
   const res = await request<{ data: Candidate }>({
-    url: '/ec/candidates',
+    url: CANDIDATES_ENDPOINT,
     method: 'post',
     data: payload,
   });
   return res.data;
 };
 
-export const updateCandidate = async (id: string, payload: CandidateFormData) => {
+export const updateCandidate = async (uuid: string, payload: CandidateFormData) => {
   const res = await request<{ data: Candidate }>({
-    url: `/ec/candidates/${id}`,
+    url: `${CANDIDATES_ENDPOINT}/${uuid}`,
     method: 'put',
     data: payload,
   });
   return res.data;
 };
 
-export const deleteCandidate = async (id: string) => {
-  await request({ url: `/ec/candidates/${id}`, method: 'delete' });
+export const deleteCandidate = async (uuid: string) => {
+  await request({ url: `${CANDIDATES_ENDPOINT}/${uuid}`, method: 'delete' });
 };

@@ -1,20 +1,29 @@
+export type CandidateType = 'individual' | 'list';
+export type CandidateStatus = 'active' | 'withdrawn' | 'disqualified';
+
 export interface Candidate {
-  id: string;
-  name: string;
-  party: string;
-  type: 'individual' | 'list';
-  status: 'active' | 'withdrawn';
+  id: number;
+  uuid: string;
+  full_name: string;
+  party?: string | null;
+  type: CandidateType;
+  status: CandidateStatus;
+  campaign_uuid?: string | null;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CandidateFormData {
-  name: string;
-  party: string;
-  type: 'individual' | 'list';
-  status: 'active' | 'withdrawn';
+  full_name: string;
+  party?: string | null;
+  type: CandidateType;
+  status?: CandidateStatus;
+  campaign_uuid?: string | null;
 }
 
 export interface CandidateFilters {
-  type?: 'individual' | 'list';
-  status?: 'active' | 'withdrawn';
+  type?: CandidateType;
+  status?: CandidateStatus;
   party?: string;
+  campaign_uuid?: string;
 }

@@ -1,37 +1,25 @@
-export interface Voter {
-  id: string;
-  full_name: string;
-  national_id: string;
-  birth_date: string;
-  gender: 'male' | 'female';
-  mobile: string;
-  email?: string;
-  address?: string;
-  area_id?: string;
-  committee_id?: string | null;
-  registered_date?: string;
-  status?: 'active' | 'inactive' | 'suspended';
-  area_name?: string;
-  committee_name?: string;
-}
+import type { Voter, VoterStatus } from '@/types';
+
+export type VoterListItem = Voter;
 
 export interface VoterFormData {
   full_name: string;
   national_id: string;
+  gender: Voter['gender'];
   birth_date: string;
-  gender: 'male' | 'female';
-  mobile: string;
-  email?: string;
-  address?: string;
+  election_uuid: string;
+  geo_area_uuid?: string | null;
+  committee_uuid?: string | null;
+  status?: VoterStatus;
+  contact: Partial<Voter['contact']>;
+  tags?: string[];
 }
 
 export interface VoterFilters {
-  area_id?: string;
-  committee_id?: string;
-  gender?: 'male' | 'female';
-  status?: 'active' | 'inactive' | 'suspended';
-  age_range?: {
-    min: number;
-    max: number;
-  };
+  status?: VoterStatus;
+  geo_area_uuid?: string;
+  committee_uuid?: string;
+  gender?: Voter['gender'];
+  search?: string;
+  tags?: string[];
 }
