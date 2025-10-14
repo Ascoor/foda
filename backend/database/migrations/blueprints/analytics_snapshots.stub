@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'table' => 'analytics_snapshots',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'campaign_id' => ['type' => 'foreignId', 'nullable' => true],
+        'metric_key' => ['type' => 'string', 'length' => 120],
+        'snapshot_date' => ['type' => 'date'],
+        'payload' => ['type' => 'json'],
+        'forecast_value' => ['type' => 'decimal', 'precision' => 12, 'scale' => 2, 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['campaign_id', 'metric_key', 'snapshot_date'], 'name' => 'analytics_snapshots_unique_idx'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['campaign_id'],
+            'references' => ['id'],
+            'on' => 'campaigns',
+            'onDelete' => 'cascade',
+        ],
+    ],
+    'soft_deletes' => false,
+];

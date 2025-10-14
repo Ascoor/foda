@@ -1,0 +1,26 @@
+<?php
+
+return [
+    'table' => 'users',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'name' => ['type' => 'string', 'length' => 255],
+        'email' => ['type' => 'string', 'length' => 255],
+        'password' => ['type' => 'string', 'length' => 255],
+        'remember_token' => ['type' => 'string', 'length' => 100, 'nullable' => true],
+        'role_id' => ['type' => 'foreignId', 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['email'], 'name' => 'users_email_unique'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['role_id'],
+            'references' => ['id'],
+            'on' => 'roles',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+    'pii' => ['email'],
+];
