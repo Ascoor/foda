@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'table' => 'campaigns',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'election_id' => ['type' => 'foreignId'],
+        'name' => ['type' => 'string', 'length' => 255],
+        'slug' => ['type' => 'string', 'length' => 150],
+        'description' => ['type' => 'text', 'nullable' => true],
+        'status' => ['type' => 'string', 'length' => 50, 'default' => 'planning'],
+        'budget' => ['type' => 'decimal', 'precision' => 12, 'scale' => 2, 'default' => 0],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['slug'], 'name' => 'campaigns_slug_unique'],
+        ['type' => 'index', 'columns' => ['election_id'], 'name' => 'campaigns_election_id_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['election_id'],
+            'references' => ['id'],
+            'on' => 'elections',
+            'onDelete' => 'cascade',
+        ],
+    ],
+    'soft_deletes' => true,
+];
