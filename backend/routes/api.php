@@ -47,7 +47,7 @@ use App\Http\Controllers\ElectionCircle\SettingController as ECSettingController
 |
 */
 
-Route::prefix('v1')->group(function () {
+$apiRoutes = function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register'])->middleware(['auth:sanctum', 'role:admin']);
     Route::post('forgot-password', [PasswordController::class, 'forgot']);
@@ -121,4 +121,10 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('campaigns', ECCampaignController::class);
         Route::apiResource('settings', ECSettingController::class);
     });
+};
+
+$apiRoutes();
+
+Route::prefix('v1')->group(function () use ($apiRoutes) {
+    $apiRoutes();
 });
