@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\ElectionCircle;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\ElectionCircle\Traits\HandlesIndexRequests;
+use App\Http\Controllers\Concerns\HandlesIndexRequests;
 use App\Models\ElectionCircle\Candidate;
 use Illuminate\Http\Request;
 
