@@ -9,6 +9,7 @@ import { LiveOperationsMap } from '@/modules/dashboard/components/LiveOperations
 import { ActivitiesTimeline } from '@/modules/activities/ActivitiesTimeline';
 import { useApi } from '@/lib/api';   
 import { safeArray, safeNumber } from '@/lib/safeData';
+import { API_ENDPOINTS } from '@/lib/endpoints';
 import { toast } from '@/hooks/use-toast';
 
 interface DashboardData {
@@ -123,9 +124,9 @@ export const EnhancedDashboard: React.FC = () => {
     loading: dashboardLoading, 
     error: dashboardError,
     execute: refetchDashboard 
-  } = useApi<DashboardData>({ 
-    url: '/dashboard', 
-    method: 'GET' 
+  } = useApi<DashboardData>({
+    url: API_ENDPOINTS.dashboard.overview,
+    method: 'GET'
   });
   
   useEffect(() => {

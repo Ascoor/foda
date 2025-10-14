@@ -1,44 +1,41 @@
 export const API_ENDPOINTS = {
   core: {
-    users: '/api/v1/users',
     roles: '/api/v1/roles',
-    permissions: '/api/v1/permissions',
   },
   configuration: {
     settings: '/api/v1/settings',
-    notifications: '/api/v1/system-notifications',
+    notifications: '/api/v1/notifications',
   },
   elections: {
-    elections: '/api/v1/elections',
-    geoAreas: '/api/v1/geo-areas',
-    committees: '/api/v1/committees',
-    candidates: '/api/v1/candidates',
+    elections: '/api/v1/ec/elections',
+    geoAreas: '/api/v1/ec/geo-areas',
+    committees: '/api/v1/ec/committees',
+    candidates: '/api/v1/ec/candidates',
   },
   crm: {
     voters: '/api/v1/voters',
     volunteers: '/api/v1/volunteers',
-    agents: '/api/v1/agents',
-    notes: '/api/v1/voter-notes',
+    agents: '/api/v1/ec/agents',
   },
   campaigns: {
-    campaigns: '/api/v1/campaigns',
+    campaigns: '/api/v1/ec/campaigns',
     activities: '/api/v1/activities',
   },
   field: {
-    observations: '/api/v1/observations',
+    observations: '/api/v1/ec/observations',
   },
   analytics: {
-    metrics: '/api/v1/analytics/metrics',
-    snapshots: '/api/v1/analytics/snapshots',
+    metrics: '/api/v1/analytics',
+    snapshots: '/api/v1/analytics/forecast',
   },
   notifications: {
     notifications: '/api/v1/notifications',
   },
   dashboard: {
-    overview: '/api/v1/dashboard/overview',
-    tasks: '/api/v1/dashboard/tasks',
-    committeeGeo: '/api/v1/dashboard/committees/geojson',
-    recentActivityGeo: '/api/v1/dashboard/activities/recent',
+    overview: '/api/v1/dashboard',
+    heatmap: '/api/v1/home/heatmap',
+    committeeGeo: '/api/v1/committees/geo',
+    recentActivityGeo: '/api/v1/activities/recent',
   },
 } as const;
 
