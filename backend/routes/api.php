@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\MemberController;
 use App\Http\Controllers\Api\V1\VolunteerController;
+use App\Http\Controllers\Api\V1\RoleController;
 use App\Http\Controllers\Api\V1\VoterController;
 use App\Http\Controllers\Api\V1\PasswordController;
 use App\Http\Controllers\ElectionCircle\ElectionController as ECElectionController;
@@ -83,6 +84,8 @@ Route::prefix('v1')->group(function () {
         Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
         Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);
         Route::apiResource('settings', SettingController::class);
+        Route::get('roles', [RoleController::class, 'index']);
+        Route::match(['put', 'patch'], 'roles/{role}', [RoleController::class, 'update']);
         Route::get('sms/settings', [SmsController::class, 'settings']);
         Route::put('sms/settings', [SmsController::class, 'updateSettings']);
         Route::apiResource('sms', SmsController::class);
