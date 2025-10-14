@@ -1,27 +1,24 @@
-export interface Committee {
-  id: string;
-  name: string;
-  location: string;
-  geo_area_id: string;
-  geo_area_name?: string;
-  created_at?: string;
-  updated_at?: string;
-}
+import type { Committee as CommitteeEntity, CommitteeType } from '@/types';
+
+export type Committee = CommitteeEntity;
 
 export interface CommitteeFormData {
   name: string;
-  location: string;
-  geo_area_id: string;
+  type: CommitteeType;
+  election_uuid: string;
+  geo_area_uuid?: string | null;
+  chair_uuid?: string | null;
+  vice_chair_uuid?: string | null;
+  contact_email?: string | null;
+  contact_phone?: string | null;
+  notes?: string | null;
 }
 
 export interface CommitteeFilters {
   search?: string;
   page?: number;
   per_page?: number;
-  geo_area_id?: string;
-}
-
-export interface GeoArea {
-  id: string;
-  name: string;
+  election_uuid?: string;
+  geo_area_uuid?: string;
+  type?: CommitteeType;
 }

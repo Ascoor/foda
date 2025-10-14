@@ -2,6 +2,9 @@
 
 A comprehensive election management system built with React + TypeScript frontend and Laravel backend.
 
+> Version synced with backend schema as of 2025-10-14.
+
+
 ## 📚 Documentation
 
 All technical and delivery guides now live under [`docs/`](docs/README.md). Start with [`DEVELOPMENT_OVERVIEW.md`](docs/DEVELOPMENT_OVERVIEW.md) for a unified view of the stack, workflows, roadmap, and operational priorities. Historical deep dives (audits, execution plans, and legacy READMEs) are preserved inside [`docs/archive/`](docs/archive).
@@ -116,7 +119,7 @@ foda/
 
 **Frontend (.env):**
 ```env
-VITE_API_URL=http://127.0.0.1:8000/api/v1
+VITE_API_URL=http://127.0.0.1:8000
 ```
 
 **Backend (.env):**
