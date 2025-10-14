@@ -33,27 +33,48 @@
     "no_data": "No data available",
     "language": "Language"
   },
+  
   "navigation": {
     "toggleSidebar": "Toggle sidebar",
     "main": "Main navigation",
+
     "section_overview": "Overview",
     "section_election_operations": "Election Operations",
     "section_field_resources": "Field Resources",
     "section_campaign_intelligence": "Campaign Intelligence",
+    "section_monitoring_and_analytics": "Monitoring & Analytics",
+    "section_ai_and_automation": "AI & Automation",
+    "section_system_admin": "System Administration",
     "section_admin": "Administration",
+
     "dashboard": "Dashboard",
     "elections": "Elections",
     "geo_areas": "Geographic Areas",
-    "zones_mansoura": "Mansoura Zone",
     "committees": "Committees",
     "voters": "Voters",
     "candidates": "Candidates",
+    "results_center": "Results Center",
+
     "agents": "Agents",
     "volunteers": "Volunteers",
-    "observations": "Observations",
+    "observers": "Observers",
+    "field_reports": "Field Reports",
+
     "campaigns": "Campaigns",
     "automation": "Automation",
     "analytics": "Analytics",
+
+    "live_map": "Live Map",
+    "statistics": "Statistics",
+    "alerts": "Alerts",
+
+    "predictive_insights": "Predictive Insights",
+    "user_roles": "User Roles",
+    "system_logs": "System Logs",
+    "security_center": "Security Center",
+    "integrations": "Integrations",
+    "system_settings": "System Settings",
+
     "settings": "Settings"
   },
   "dashboard": {
