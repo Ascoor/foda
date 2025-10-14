@@ -292,9 +292,15 @@
   "auth": {
     "login": "تسجيل الدخول",
     "logout": "تسجيل الخروج",
+    "login_subtitle": "أدخل بيانات حسابك للوصول إلى لوحة التحكم",
     "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "email_placeholder": "example@mail.com",
+    "email_invalid": "يرجى إدخال بريد إلكتروني صالح",
     "password": "كلمة المرور",
+    "password_placeholder": "••••••••",
     "remember_me": "تذكرني",
-    "login_error": "فشل تسجيل الدخول"
+    "login_error": "فشل تسجيل الدخول",
+    "unknown_error": "حدث خطأ غير متوقع. حاول مرة أخرى لاحقاً."
   }
 }
