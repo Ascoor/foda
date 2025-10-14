@@ -13,6 +13,14 @@ import {
   BarChart3,
   Settings,
   Cpu,
+  FileText,
+  AlertTriangle,
+  Database,
+  Lock,
+  Network,
+  Layers,
+  Globe,
+  Activity,
 } from "lucide-react";
 
 export interface SidebarItemConfig {
@@ -25,22 +33,22 @@ export interface SidebarItemConfig {
 
 export interface SidebarSectionConfig {
   key: string;
-  items?: SidebarItemConfig[]; // ✅ جعلها اختيارية
+  items?: SidebarItemConfig[];
   icon?: LucideIcon;
-  path?: string; // ✅ مضاف لدعم الأقسام ذات الرابط المباشر (مثل dashboard)
+  path?: string;
   roles?: string[];
 }
 
 export const sidebarSections: SidebarSectionConfig[] = [
-  // 🟢 قسم رئيسي برابط مباشر (بدون قائمة فرعية)
+  // 🟢 لوحة القيادة (Dashboard)
   {
     key: "dashboard",
     icon: LayoutDashboard,
     path: "/dashboard",
-    roles: ["Admin", "FieldLead", "Agent"], // يمكنك تخصيص الصلاحيات أو حذفها
+    roles: ["Admin", "FieldLead", "Agent"],
   },
 
-  // 🟠 قسم العمليات الانتخابية
+  // 🟠 العمليات الانتخابية
   {
     key: "section_election_operations",
     icon: Vote,
@@ -50,53 +58,41 @@ export const sidebarSections: SidebarSectionConfig[] = [
         icon: Vote,
         path: "/elections",
         roles: ["Admin", "FieldLead"],
-        relatedKeys: [
-          "geo_areas",
-          "committees",
-          "voters",
-          "candidates",
-          "zones_mansoura",
-        ],
       },
       {
         key: "geo_areas",
         icon: MapPin,
         path: "/geo-areas",
         roles: ["Admin", "FieldLead"],
-        relatedKeys: ["elections", "zones_mansoura"],
-      },
-      {
-        key: "zones_mansoura",
-        icon: MapPin,
-        path: "/zones/mansoura",
-        roles: ["Admin", "FieldLead"],
-        relatedKeys: ["geo_areas", "committees"],
       },
       {
         key: "committees",
         icon: Users,
         path: "/committees",
         roles: ["Admin", "FieldLead"],
-        relatedKeys: ["elections", "voters"],
       },
       {
         key: "voters",
         icon: UserCheck,
         path: "/voters",
         roles: ["Admin", "FieldLead"],
-        relatedKeys: ["committees", "candidates"],
       },
       {
         key: "candidates",
         icon: Crown,
         path: "/candidates",
         roles: ["Admin", "FieldLead"],
-        relatedKeys: ["voters", "elections"],
+      },
+      {
+        key: "results_center",
+        icon: BarChart3,
+        path: "/results",
+        roles: ["Admin", "FieldLead"],
       },
     ],
   },
 
-  // 🟡 قسم الموارد الميدانية
+  // 🟡 الموارد الميدانية
   {
     key: "section_field_resources",
     icon: Shield,
@@ -106,63 +102,113 @@ export const sidebarSections: SidebarSectionConfig[] = [
         icon: Shield,
         path: "/agents",
         roles: ["Admin", "FieldLead"],
-        relatedKeys: ["volunteers", "observations"],
       },
       {
         key: "volunteers",
         icon: Heart,
         path: "/volunteers",
         roles: ["Admin", "FieldLead"],
-        relatedKeys: ["agents", "observations"],
       },
       {
-        key: "observations",
+        key: "observers",
         icon: Eye,
-        path: "/observations",
+        path: "/observers",
+        roles: ["Admin", "FieldLead"],
+      },
+      {
+        key: "field_reports",
+        icon: FileText,
+        path: "/reports",
         roles: ["Admin", "FieldLead", "Agent"],
-        relatedKeys: ["agents", "volunteers"],
       },
     ],
   },
 
-  // 🔵 قسم الحملات والتحليلات
+  // 🔵 التحليل والمراقبة
   {
-    key: "section_campaign_intelligence",
-    icon: Megaphone,
+    key: "section_monitoring_and_analytics",
+    icon: Activity,
+    items: [
+      {
+        key: "live_map",
+        icon: Globe,
+        path: "/monitoring/map",
+        roles: ["Admin", "FieldLead"],
+      },
+      {
+        key: "statistics",
+        icon: BarChart3,
+        path: "/analytics/statistics",
+        roles: ["Admin"],
+      },
+      {
+        key: "alerts",
+        icon: AlertTriangle,
+        path: "/monitoring/alerts",
+        roles: ["Admin", "FieldLead"],
+      },
+    ],
+  },
+
+  // 🧠 الذكاء والتحكم الآلي
+  {
+    key: "section_ai_and_automation",
+    icon: Cpu,
     items: [
       {
         key: "campaigns",
         icon: Megaphone,
         path: "/campaigns",
-        roles: ["Admin", "FieldLead"],
-        relatedKeys: ["automation", "analytics"],
+        roles: ["Admin"],
       },
       {
         key: "automation",
         icon: Cpu,
         path: "/automation",
         roles: ["Admin"],
-        relatedKeys: ["campaigns", "analytics"],
       },
       {
-        key: "analytics",
-        icon: BarChart3,
-        path: "/analytics",
+        key: "predictive_insights",
+        icon: Layers,
+        path: "/ai-insights",
         roles: ["Admin"],
-        relatedKeys: ["campaigns"],
       },
     ],
   },
 
-  // ⚙️ قسم الإعدادات الإدارية
+  // ⚙️ الإدارة التقنية والأمنية
   {
-    key: "section_admin",
+    key: "section_system_admin",
     icon: Settings,
     items: [
       {
-        key: "settings",
+        key: "user_roles",
+        icon: Users,
+        path: "/settings/users",
+        roles: ["Admin"],
+      },
+      {
+        key: "system_logs",
+        icon: Database,
+        path: "/settings/logs",
+        roles: ["Admin"],
+      },
+      {
+        key: "security_center",
+        icon: Lock,
+        path: "/settings/security",
+        roles: ["Admin"],
+      },
+      { 
+        key: "integrations",
+        icon: Network,
+        path: "/settings/integrations",
+        roles: ["Admin"],
+      },
+      {
+        key: "system_settings",
         icon: Settings,
-        path: "/settings",
+        path: "/settings/general",
         roles: ["Admin"],
       },
     ],
