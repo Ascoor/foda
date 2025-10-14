@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
 
@@ -11,7 +13,7 @@ import { Loader2 } from 'lucide-react';
  * Shows validation errors and redirects to dashboard on success.
  */
 export const LoginForm = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate(); // تم استخدام navigate هنا
   const { login } = useAuth();
 
@@ -19,6 +21,8 @@ export const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const direction = i18n.dir();
 
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   const isPasswordValid = password.trim().length >= 6; // Example of more complex password validation.
@@ -33,10 +37,10 @@ export const LoginForm = () => {
       await login(email, password); // استخدام login
       navigate('/dashboard'); // استخدام navigate هنا بعد تسجيل الدخول الناجح
     } catch (err: unknown) {
-      if (err instanceof Error) {
+      if (err instanceof Error && err.message.trim()) {
         setError(err.message); // التعامل مع الخطأ بشكل آمن
       } else {
-        setError('An unknown error occurred');
+        setError(t('auth.unknown_error'));
       }
     } finally {
       setLoading(false);
@@ -60,59 +64,96 @@ export const LoginForm = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="glass-card p-8 space-y-4 w-full max-w-sm"
+      className="w-full max-w-md"
       aria-busy={loading}
+      aria-live="polite"
+      noValidate
     >
-      <div className={`${loading ? 'animate-pulse' : 'opacity-0'} h-0.5 w-full rounded bg-gradient-to-r from-primary via-primary/60 to-primary`} />
-      <h1 className="text-2xl font-bold text-center text-gradient-primary">
-        {t('auth.login')}
-      </h1>
-      <p className="sr-only" aria-live="polite">
-        {loading ? (t('common.loading') || 'Loading...') : ''}
-      </p>
-      {error && <p className="text-destructive text-sm" role="alert">{error}</p>}
-      <div>
-        <label className="block mb-1" htmlFor="email">
-          {t('auth.email')}
-        </label>
-        <Input
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          disabled={loading}
-          aria-invalid={email.length > 0 && !isEmailValid}
-          aria-describedby="email-help"
-        />
-        <span id="email-help" className="block mt-1 text-xs text-muted-foreground">
-          {!isEmailValid && email.length > 0 ? t('auth.email_invalid') || 'Enter a valid email' : '\u00A0'}
-        </span>
-      </div>
-      <div>
-        <label className="block mb-1" htmlFor="password">
-          {t('auth.password')}
-        </label>
-        <Input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={loading}
-        />
-      </div>
-      <Button
-        type="submit"
-        className="w-full bg-gradient-primary text-white relative"
-        disabled={!canSubmit}
+      <Card
+        data-login-card
+        dir={direction}
+        className="relative overflow-hidden border border-primary/30 bg-background/80 shadow-[0_25px_60px_rgba(79,70,229,0.15)] backdrop-blur-xl"
       >
-        {loading ? (
-          <span className="flex items-center justify-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" />
-            {t('common.loading') || 'Loading...'}
-          </span>
-        ) : (
-          t('auth.login')
-        )}
-      </Button>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/20"
+        />
+        <CardHeader className="relative space-y-4 text-center">
+          <div
+            className={`${loading ? 'opacity-100' : 'opacity-0'} h-1 w-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent transition-opacity duration-300`}
+            aria-hidden
+          />
+          <CardTitle className="text-3xl font-bold text-gradient-primary">
+            {t('auth.login')}
+          </CardTitle>
+          <CardDescription className="text-base">
+            {t('auth.login_subtitle')}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="relative space-y-5">
+          <p className="sr-only">{loading ? t('common.loading') : ''}</p>
+          {error && (
+            <div
+              role="alert"
+              className="rounded-lg border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive"
+            >
+              {error}
+            </div>
+          )}
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-sm font-medium text-foreground">
+              {t('auth.email')}
+            </Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
+              aria-invalid={email.length > 0 && !isEmailValid}
+              aria-describedby="email-help"
+              autoComplete="email"
+              placeholder={t('auth.email_placeholder') ?? ''}
+              inputMode="email"
+              dir="ltr"
+            />
+            <span id="email-help" className="block text-xs text-muted-foreground">
+              {!isEmailValid && email.length > 0 ? t('auth.email_invalid') : '\u00A0'}
+            </span>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-sm font-medium text-foreground">
+              {t('auth.password')}
+            </Label>
+            <Input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
+              autoComplete="current-password"
+              placeholder={t('auth.password_placeholder') ?? ''}
+            />
+          </div>
+        </CardContent>
+        <CardFooter className="relative flex flex-col gap-3">
+          <Button
+            type="submit"
+            className="w-full bg-gradient-primary text-white shadow-lg shadow-primary/20"
+            disabled={!canSubmit}
+          >
+            {loading ? (
+              <span className="flex items-center justify-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {t('common.loading')}
+              </span>
+            ) : (
+              t('auth.login')
+            )}
+          </Button>
+          <p className="text-center text-xs text-muted-foreground">{t('app.tagline')}</p>
+        </CardFooter>
+      </Card>
     </form>
   );
 };
