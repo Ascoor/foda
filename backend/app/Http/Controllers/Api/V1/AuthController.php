@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -117,7 +118,13 @@ class AuthController extends Controller
 
     public function me(Request $request)
     {
-        return response()->json(new UserResource($request->user()->loadMissing('roles', 'permissions')));
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return response()->json(new UserResource($user->loadMissing('roles', 'permissions')));
     }
 
     /**

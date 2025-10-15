@@ -6,18 +6,30 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
     public function show(Request $request)
     {
-        return UserResource::make($request->user());
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return UserResource::make($user);
     }
 
     public function update(UpdateProfileRequest $request)
     {
         $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $data = $request->validated();
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
@@ -33,6 +45,11 @@ class ProfileController extends Controller
         ]);
         $path = $request->file('avatar')->store('avatars', 'public');
         $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $user->update(['avatar' => $path]);
         return UserResource::make($user);
     }
@@ -43,6 +60,11 @@ class ProfileController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
         $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $user->update(['password' => Hash::make($data['password'])]);
         return UserResource::make($user);
     }
