@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
@@ -20,6 +21,7 @@ export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const direction = i18n.dir();
@@ -34,7 +36,7 @@ export const LoginForm = () => {
     setError(null);
     setLoading(true);
     try {
-      await login(email, password); // استخدام login
+      await login(email, password, remember); // استخدام login
       navigate('/dashboard'); // استخدام navigate هنا بعد تسجيل الدخول الناجح
     } catch (err: unknown) {
       if (err instanceof Error && err.message.trim()) {
@@ -134,6 +136,17 @@ export const LoginForm = () => {
               autoComplete="current-password"
               placeholder={t('auth.password_placeholder') ?? ''}
             />
+          </div>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="remember"
+              checked={remember}
+              onCheckedChange={(value) => setRemember(value === true)}
+              disabled={loading}
+            />
+            <Label htmlFor="remember" className="text-sm text-foreground">
+              {t('auth.remember_me')}
+            </Label>
           </div>
         </CardContent>
         <CardFooter className="relative flex flex-col gap-3">
