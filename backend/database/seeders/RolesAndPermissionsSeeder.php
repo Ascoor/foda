@@ -2,25 +2,26 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
     public function run(): void
     {
+        // 🧩 1. تعريف الصلاحيات
         $permissionCatalog = [
-            'manage users' => 'إدارة المستخدمين على مستوى النظام',
+            'manage users'      => 'إدارة المستخدمين على مستوى النظام',
             'manage volunteers' => 'إدارة شبكة المتطوعين',
-            'manage settings' => 'ضبط إعدادات المنصة',
-            'manage campaigns' => 'تخطيط الحملات والإشراف عليها',
+            'manage settings'   => 'ضبط إعدادات المنصة',
+            'manage campaigns'  => 'تخطيط الحملات والإشراف عليها',
             'assign committees' => 'تعيين اللجان ومتابعتها',
-            'monitor results' => 'مراقبة النتائج لحظة بلحظة',
-            'audit activities' => 'تدقيق الأنشطة الحساسة',
-            'view analytics' => 'عرض تحليلات الأداء الرئيسية',
+            'monitor results'   => 'مراقبة النتائج لحظة بلحظة',
+            'audit activities'  => 'تدقيق الأنشطة الحساسة',
+            'view analytics'    => 'عرض تحليلات الأداء الرئيسية',
         ];
 
         foreach (array_keys($permissionCatalog) as $permission) {
@@ -30,35 +31,27 @@ class RolesAndPermissionsSeeder extends Seeder
             );
         }
 
+        // 🧩 2. تعريف الأدوار وربط الصلاحيات
         $roleDefinitions = [
-            [
-                'name' => 'admin',
-                'scope' => 'system',
+            'admin' => [
                 'label' => 'مدير النظام',
-                'description' => 'صلاحيات مطلقة لإدارة المنصة وكامل الصلاحيات المتاحة.',
                 'permissions' => array_keys($permissionCatalog),
             ],
-            [
-                'name' => 'supervisor',
-                'scope' => 'committee',
-                'label' => 'مشرف اللجنة (Legacy)',
+            'supervisor' => [
+                'label' => 'مشرف اللجنة',
                 'permissions' => [
                     'manage volunteers',
                     'assign committees',
                     'view analytics',
                 ],
             ],
-            [
-                'name' => 'volunteer',
-                'scope' => 'committee',
-                'label' => 'متطوع (Legacy)',
+            'volunteer' => [
+                'label' => 'متطوع',
                 'permissions' => [
                     'view analytics',
                 ],
             ],
-            [
-                'name' => 'مدير الحملة',
-                'scope' => 'election',
+            'campaign_manager' => [
                 'label' => 'مدير الحملة',
                 'permissions' => [
                     'manage campaigns',
@@ -67,50 +60,65 @@ class RolesAndPermissionsSeeder extends Seeder
                     'view analytics',
                 ],
             ],
+            'auditor' => [
+                'label' => 'مراقب النتائج',
+                'permissions' => [
+                    'monitor results',
+                    'audit activities',
+                    'view analytics',
+                ],
+            ],
         ];
 
         $roles = [];
-        foreach ($roleDefinitions as $definition) {
-            $role = Role::updateOrCreate(
-                ['name' => $definition['name'], 'guard_name' => 'web'],
-                [
-                    'scope' => $definition['scope'],
-                    'label' => $definition['label'],
-                ]
+        foreach ($roleDefinitions as $key => $def) {
+            $role = Role::firstOrCreate(
+                ['name' => $key, 'guard_name' => 'web']
             );
-            $role->syncPermissions($definition['permissions']);
-            $roles[$definition['name']] = $role;
+            $role->syncPermissions($def['permissions']);
+            $roles[$key] = $role;
         }
 
-        // إنشاء المستخدمين الرئيسيين
-        $adminUser = User::firstOrCreate(
-            ['email' => 'admin@example.com'],
+        // 🧩 3. إنشاء مستخدمين رئيسيين وربطهم بالأدوار
+        $users = [
             [
                 'name' => 'Admin',
+                'email' => 'admin@example.com',
                 'password' => Hash::make('password'),
-                'status' => 'active',
-            ]
-        );
-        $adminUser->syncRoles([$roles['admin'], $roles['مدير الحملة'] ?? null]);
-
-        $supervisorUser = User::firstOrCreate(
-            ['email' => 'supervisor@example.com'],
+                'roles' => ['admin', 'campaign_manager'],
+            ],
             [
                 'name' => 'Supervisor',
+                'email' => 'supervisor@example.com',
                 'password' => Hash::make('password'),
-                'status' => 'active',
-            ]
-        );
-        $supervisorUser->syncRoles([$roles['supervisor'] ?? null]);
-
-        $volunteerUser = User::firstOrCreate(
-            ['email' => 'volunteer@example.com'],
+                'roles' => ['supervisor'],
+            ],
             [
                 'name' => 'Volunteer',
+                'email' => 'volunteer@example.com',
                 'password' => Hash::make('password'),
-                'status' => 'active',
-            ]
-        );
-        $volunteerUser->syncRoles([$roles['volunteer'] ?? null]);
+                'roles' => ['volunteer'],
+            ],
+            [
+                'name' => 'Auditor',
+                'email' => 'auditor@example.com',
+                'password' => Hash::make('password'),
+                'roles' => ['auditor'],
+            ],
+        ];
+
+        foreach ($users as $data) {
+            $user = User::firstOrCreate(
+                ['email' => $data['email']],
+                [
+                    'name' => $data['name'],
+                    'password' => $data['password'],
+                    'status' => 'active',
+                ]
+            );
+            $user->syncRoles(array_map(fn($r) => $roles[$r] ?? null, $data['roles']));
+        }
+
+        $this->command->info('✅ Roles, permissions, and default users seeded successfully!');
     }
 }
