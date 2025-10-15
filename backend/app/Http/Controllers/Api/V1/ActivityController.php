@@ -9,6 +9,7 @@ use App\Models\Activity;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Collection;
@@ -45,6 +46,12 @@ class ActivityController extends Controller
 
     public function store(Request $request)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $validated = $request->validate([
             'area_id' => ['nullable', 'integer', 'exists:areas,id'],
             'committee_id' => ['nullable', 'integer', 'exists:committees,id'],
@@ -60,7 +67,7 @@ class ActivityController extends Controller
         ]);
 
         $activity = Activity::create(array_merge($validated, [
-            'created_by' => $request->user()?->id,
+            'created_by' => $user->id,
         ]));
 
         $activity->load(['area', 'committee', 'creator']);
@@ -68,6 +75,8 @@ class ActivityController extends Controller
         Cache::forget('analytics.v1.overview');
         Cache::forget('activities.recent.50');
         Cache::forget('activities.recent.100');
+        Cache::forget(sprintf('activities.recent.%d.%d', $user->id, 50));
+        Cache::forget(sprintf('activities.recent.%d.%d', $user->id, 100));
 
         broadcast(new ActivityCreated($activity))->toOthers();
 
@@ -111,13 +120,20 @@ class ActivityController extends Controller
 
     public function recent(Request $request)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $limit = max(1, min(200, $request->integer('limit', 50)));
 
-        $cacheKey = sprintf('activities.recent.%d', $limit);
+        $cacheKey = sprintf('activities.recent.%d.%d', $user->id, $limit);
 
-        $featuresResolver = function () use ($limit) {
+        $featuresResolver = function () use ($limit, $user) {
             return Activity::query()
                 ->with('area')
+                ->where('created_by', $user->id)
                 ->whereNotNull('latitude')
                 ->whereNotNull('longitude')
                 ->orderByDesc('reported_at')
