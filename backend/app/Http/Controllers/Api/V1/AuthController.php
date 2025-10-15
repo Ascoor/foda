@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -34,23 +35,31 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Invalid credentials',
-            ], 401);
+        $credentials = $request->validated();
+        $remember = $request->boolean('remember');
+
+        if (!Auth::attempt([
+            'email' => $credentials['email'],
+            'password' => $credentials['password'],
+        ], $remember)) {
+            throw ValidationException::withMessages([
+                'email' => ['بيانات الدخول غير صحيحة.'],
+            ]);
         }
 
         $user = $request->user();
+
+        $user->tokens()->delete();
+
+        $tokenName = $remember ? 'remember_token' : 'access_token';
+        $expiresAt = now()->addDays($remember ? 30 : 1);
+        $token = $user->createToken($tokenName, ['*'], $expiresAt);
+
         $user->update(['last_login_at' => now()]);
-        $token = $user->createToken('api-token')->plainTextToken;
 
         return response()->json([
-            'status' => 'success',
-            'data' => [
-                'user' => new UserResource($user->load('roles', 'permissions')),
-                'token' => $token,
-            ],
+            'token' => $token->plainTextToken,
+            'user' => new UserResource($user->load('roles', 'permissions')),
         ]);
     }
 
@@ -103,18 +112,12 @@ class AuthController extends Controller
             $token->delete();
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Logged out',
-        ]);
+        return response()->json(['message' => 'تم تسجيل الخروج بنجاح']);
     }
 
     public function me(Request $request)
     {
-        return response()->json([
-            'status' => 'success',
-            'data' => new UserResource($request->user()->loadMissing('roles', 'permissions')),
-        ]);
+        return response()->json(new UserResource($request->user()->loadMissing('roles', 'permissions')));
     }
 
     /**
