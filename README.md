@@ -119,7 +119,13 @@ foda/
 
 **Frontend (.env):**
 ```env
-VITE_API_URL=http://127.0.0.1:8000
+# Optionally override the full API endpoint
+# VITE_API_URL=http://127.0.0.1:8000/api/v1
+
+# Compose the API URL from these pieces when VITE_API_URL is blank
+VITE_API_BASE_URL=http://127.0.0.1:8000
+VITE_API_PREFIX=api
+VITE_API_VERSION=v1
 ```
 
 **Backend (.env):**

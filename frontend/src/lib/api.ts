@@ -7,8 +7,35 @@ export const setAuthToken = (token: string | null) => {
   authToken = token;
 };
 
+const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '');
+const trimSlashes = (value: string) => value.replace(/^\/+/, '').replace(/\/+$/, '');
+
+const resolveBaseUrl = () => {
+  const directUrl = import.meta.env.VITE_API_URL?.trim();
+  if (directUrl) {
+    return trimTrailingSlash(directUrl);
+  }
+
+  const baseHost = trimTrailingSlash(
+    (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim() ||
+      'http://127.0.0.1:8000',
+  );
+  const prefix = (import.meta.env.VITE_API_PREFIX as string | undefined)?.trim();
+  const version = (import.meta.env.VITE_API_VERSION as string | undefined)?.trim();
+
+  const segments = [prefix, version]
+    .map((segment) => (segment ? trimSlashes(segment) : ''))
+    .filter(Boolean);
+
+  if (!segments.length) {
+    return baseHost;
+  }
+
+  return `${baseHost}/${segments.join('/')}`;
+};
+
 const api: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000',
+  baseURL: resolveBaseUrl(),
   headers: {
     Accept: 'application/json',
   },

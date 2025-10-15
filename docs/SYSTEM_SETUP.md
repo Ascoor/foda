@@ -11,7 +11,7 @@
    - Docker Desktop (optional but recommended) and mkcert for local HTTPS.
 2. **Environment Configuration**
    - Copy `.env.example` to `.env` in `backend/` and `frontend/`.
-   - Set `APP_URL`, `FRONTEND_URL`, `VITE_API_URL`, database credentials, and Redis host.
+   - Set `APP_URL`, `FRONTEND_URL`, database credentials, Redis host, and the frontend `VITE_API_*` variables (either `VITE_API_URL` or the base/prefix/version trio).
 3. **Dependency Installation**
    - Backend: `composer install && php artisan key:generate`.
    - Frontend: `npm install` (or `pnpm install`) within `frontend/`.
