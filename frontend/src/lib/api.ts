@@ -7,7 +7,7 @@ export const setAuthToken = (token: string | null) => {
   authToken = token;
 };
 
-const rawBaseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000';
+const rawBaseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 const { resolvedBaseURL, apiPrefix } = (() => {
   try {
