@@ -14,10 +14,16 @@ class NotificationController extends Controller
 {
     public function index(Request $request)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $perPage = max(1, $request->integer('per_page', 25));
 
         try {
-            $query = Notification::query()->latest();
+            $query = $user->notifications()->latest();
 
             if ($type = $request->string('type')->lower()) {
                 $query->where('type', $type);
@@ -46,8 +52,18 @@ class NotificationController extends Controller
         return NotificationResource::collection($notifications);
     }
 
-    public function markAsRead(Notification $notification): NotificationResource
+    public function markAsRead(Request $request, Notification $notification)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($notification->user_id !== $user->id) {
+            return response()->json(['error' => 'Notification not found'], Response::HTTP_NOT_FOUND);
+        }
+
         $notification->markAsRead();
 
         return new NotificationResource($notification->fresh());
@@ -55,7 +71,13 @@ class NotificationController extends Controller
 
     public function markAll(Request $request): Response
     {
-        $query = Notification::query();
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $query = $user->notifications();
 
         if ($type = $request->string('type')->lower()) {
             $query->where('type', $type);

@@ -5,6 +5,13 @@ let authToken: string | null = null;
 
 export const setAuthToken = (token: string | null) => {
   authToken = token;
+
+  if (token) {
+    api.defaults.headers.common = api.defaults.headers.common || {};
+    api.defaults.headers.common.Authorization = `Bearer ${token}`;
+  } else if (api.defaults.headers.common) {
+    delete (api.defaults.headers.common as Record<string, unknown>).Authorization;
+  }
 };
 
 const rawBaseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/v1';
