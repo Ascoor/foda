@@ -121,7 +121,7 @@ export const AuthProvider = ({ children }: Props) => {
       }
 
       setAuthToken(activeToken);
-      const response = await api.get('api/v1/me');
+      const response = await api.get('/api/v1/me');
       const nextUser = normalizeUser(response.data);
       setUser(nextUser);
       return nextUser;
@@ -133,7 +133,7 @@ export const AuthProvider = ({ children }: Props) => {
     async (email: string, password: string, remember = false) => {
       setIsFetchingUser(true);
       try {
-        const response = await api.post('api/v1/login', { email, password, remember });
+        const response = await api.post('/api/v1/login', { email, password, remember });
         const body = response.data;
         const newToken: string | undefined =
           body?.token ||
@@ -161,7 +161,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   const logout = useCallback(async () => {
     try {
-      await api.post('api/v1/logout');
+      await api.post('/api/v1/logout');
     } catch (error) {
       console.error('Failed to revoke token during logout', error);
     } finally {
