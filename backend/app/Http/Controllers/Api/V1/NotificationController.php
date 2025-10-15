@@ -20,16 +20,22 @@ class NotificationController extends Controller
             return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $perPage = max(1, $request->integer('per_page', 25));
+        // per_page كعدد صحيح
+        $perPage = (int) $request->input('per_page', 50);
 
         try {
             $query = $user->notifications()->latest();
 
-            if ($type = $request->string('type')->lower()) {
+            // التحقق من النوع كـ string
+            $type = strtolower((string) $request->input('type', ''));
+
+            if (!empty($type)) {
                 $query->where('type', $type);
             }
 
-            if ($request->boolean('unread')) {
+            // التحقق من unread كـ boolean
+            $unread = filter_var($request->input('unread', false), FILTER_VALIDATE_BOOLEAN);
+            if ($unread) {
                 $query->whereNull('read_at');
             }
 
@@ -41,7 +47,7 @@ class NotificationController extends Controller
                 items: [],
                 total: 0,
                 perPage: $perPage,
-                currentPage: max(1, $request->integer('page', 1)),
+                currentPage: max(1, (int) $request->input('page', 1)),
                 options: [
                     'path' => $request->url(),
                     'query' => $request->query(),
@@ -79,7 +85,9 @@ class NotificationController extends Controller
 
         $query = $user->notifications();
 
-        if ($type = $request->string('type')->lower()) {
+        // استخدم input بدل string()
+        $type = strtolower((string) $request->input('type', ''));
+        if (!empty($type)) {
             $query->where('type', $type);
         }
 

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Area;
 use App\Models\Voter;
+use App\Models\Committee;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -26,6 +27,8 @@ class VoterFactory extends Factory
             'email' => $this->faker->optional(0.4)->safeEmail(),
             'phone' => '05' . $this->faker->numerify('########'),
             'area_id' => $this->resolveAreaId(),
+            'committee_id' => $this->resolveCommitteeId(),
+        
             'address' => $this->faker->randomElement($districts) . '، ' . $this->faker->city(),
             'sex' => $this->faker->randomElement(['male', 'female']),
             'birthdate' => $this->faker->dateTimeBetween('-65 years', '-18 years'),
@@ -41,11 +44,12 @@ class VoterFactory extends Factory
     protected function resolveAreaId(): int
     {
         $existing = Area::query()->inRandomOrder()->value('id');
+        return $existing ?: Area::factory()->create()->id;
+    }
 
-        if ($existing) {
-            return $existing;
-        }
-
-        return Area::factory()->create()->id;
+    protected function resolveCommitteeId(): int
+    {
+        $existing = Committee::query()->inRandomOrder()->value('id');
+        return $existing ?: Committee::factory()->create()->id;
     }
 }

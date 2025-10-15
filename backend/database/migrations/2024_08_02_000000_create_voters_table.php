@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('voters', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('committee_id');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->foreignId('area_id')->constrained('areas');
