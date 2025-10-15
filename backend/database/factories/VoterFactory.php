@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Area;
 use App\Models\Voter;
-use App\Models\Committee;
+use App\Models\ElectionCircle\Committee;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
