@@ -1,4 +1,9 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from 'axios';
 import { useState, useCallback, useEffect, useRef } from 'react';
 
 let authToken: string | null = null;
@@ -38,6 +43,10 @@ const api: AxiosInstance = axios.create({
   },
 });
 
+axios.defaults.baseURL = rawBaseURL;
+axios.defaults.headers.common = axios.defaults.headers.common || {};
+axios.defaults.headers.common.Accept = 'application/json';
+
 const ensureLeadingSlash = (value: string) => (value.startsWith('/') ? value : `/${value}`);
 
 const joinWithPrefix = (suffix: string) => {
@@ -63,14 +72,24 @@ const normalizeUrl = (url?: string) => {
   return joinWithPrefix(url);
 };
 
-api.interceptors.request.use((config) => {
+const withAuthorizationHeader = <T extends AxiosRequestConfig | InternalAxiosRequestConfig>(
+  config: T,
+): T => {
   const token =
     authToken || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
-  if (token && config.headers) {
-    config.headers.Authorization = `Bearer ${token}`;
+
+  if (token) {
+    config.headers = config.headers || {};
+    (config.headers as Record<string, unknown>).Authorization = `Bearer ${token}`;
+  } else if (config.headers && 'Authorization' in config.headers) {
+    delete (config.headers as Record<string, unknown>).Authorization;
   }
+
   return config;
-});
+};
+
+axios.interceptors.request.use(withAuthorizationHeader);
+api.interceptors.request.use(withAuthorizationHeader);
 
 api.interceptors.response.use(
   (response) => response,
