@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Download, RefreshCcw, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from './hooks';
+import { useDashboardStore, themePalettes } from './store';
 
 const actions = [
   { id: 'reportsCTA', icon: Download, intent: 'primary' },
@@ -11,7 +11,8 @@ const actions = [
 ];
 
 export const FloatingActions = () => {
-  const { theme, palette } = useTheme();
+  const { theme } = useDashboardStore();
+  const palette = themePalettes[theme] || themePalettes.day;
   const { t } = useTranslation();
 
   const getActionClass = (intent) => {
@@ -21,9 +22,7 @@ export const FloatingActions = () => {
       case 'accent':
         return 'bg-gradient-to-tr from-indigo-500 to-purple-500 text-white shadow-lg shadow-purple-500/40';
       default:
-        return theme === 'night'
-          ? 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-xl border border-white/30'
-          : 'bg-white/80 text-slate-700 hover:bg-white shadow-md border border-white/70';
+        return 'bg-white/20 text-white hover:bg-white/30 backdrop-blur-xl border border-white/30';
     }
   };
 

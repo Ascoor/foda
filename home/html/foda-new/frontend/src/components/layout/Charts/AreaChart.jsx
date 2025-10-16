@@ -1,10 +1,11 @@
 import React from 'react';
 import { ResponsiveContainer, AreaChart as RechartsAreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../hooks';
+import { useDashboardStore, themePalettes } from '../store';
 
 export const AreaChart = ({ data, xKey = 'name', areaKeys = ['turnout', 'participation'] }) => {
-  const { theme, palette } = useTheme();
+  const { theme } = useDashboardStore();
+  const palette = themePalettes[theme] || themePalettes.day;
   const { t } = useTranslation();
 
   const [primaryKey, secondaryKey] = areaKeys;

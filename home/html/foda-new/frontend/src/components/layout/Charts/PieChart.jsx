@@ -1,12 +1,13 @@
 import React, { useMemo } from 'react';
 import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../hooks';
+import { useDashboardStore, themePalettes } from '../store';
 
 const defaultColors = ['primary', 'secondary', 'tertiary'];
 
 export const PieChart = ({ data, valueKey = 'value', nameKey = 'name', colors }) => {
-  const { theme, palette } = useTheme();
+  const { theme } = useDashboardStore();
+  const palette = themePalettes[theme] || themePalettes.day;
   const { t } = useTranslation();
 
   const slices = useMemo(() => data || [], [data]);

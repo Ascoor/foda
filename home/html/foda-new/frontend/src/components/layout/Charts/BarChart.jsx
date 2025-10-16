@@ -1,10 +1,11 @@
 import React from 'react';
 import { ResponsiveContainer, BarChart as RechartsBarChart, Bar, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../hooks';
+import { useDashboardStore, themePalettes } from '../store';
 
 export const BarChart = ({ data, dataKey = 'votes', xKey = 'party' }) => {
-  const { theme, palette } = useTheme();
+  const { theme } = useDashboardStore();
+  const palette = themePalettes[theme] || themePalettes.day;
   const { t } = useTranslation();
 
   return (

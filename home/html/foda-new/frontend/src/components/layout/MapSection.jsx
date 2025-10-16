@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from './hooks';
+import { useDashboardStore, themePalettes } from './store';
 import { mapCenters } from './data';
 
 import 'leaflet/dist/leaflet.css';
@@ -18,7 +18,8 @@ L.Icon.Default.mergeOptions({
 });
 
 export const MapSection = ({ centers = mapCenters }) => {
-  const { theme, palette } = useTheme();
+  const { theme } = useDashboardStore();
+  const palette = themePalettes[theme] || themePalettes.day;
   const { t } = useTranslation();
   const [isClient, setIsClient] = useState(false);
 
@@ -27,15 +28,13 @@ export const MapSection = ({ centers = mapCenters }) => {
   }, []);
 
   if (!isClient) {
-    const skeletonClass = theme === 'night' ? 'bg-white/10' : 'bg-white/60 shadow-sm';
     return (
-      <div className={`h-[320px] w-full rounded-3xl ${skeletonClass} animate-pulse`} />
+      <div className="w-full h-[320px] rounded-3xl bg-white/5 animate-pulse" />
     );
   }
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}

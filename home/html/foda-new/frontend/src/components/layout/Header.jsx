@@ -1,41 +1,50 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, Search, Bell, SunMedium, MoonStar, Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import GlassCard from './GlassCard';
-import { useLanguage, useSidebar, useTheme } from './hooks';
+import { useDashboardStore, themePalettes } from './store';
+import { initDashboardI18n } from './i18n';
+
+initDashboardI18n();
 
 export const Header = () => {
-  const { theme, palette, toggleTheme } = useTheme();
-  const { language, toggleLanguage } = useLanguage();
-  const { toggleSidebar } = useSidebar();
-  const { t } = useTranslation();
-  const isRTL = language === 'ar';
+  const { theme, toggleTheme, language, setLanguage, toggleSidebar } = useDashboardStore();
+  const palette = themePalettes[theme] || themePalettes.day;
+  const { t, i18n } = useTranslation();
 
   const controlButtonClass = theme === 'night'
-    ? 'p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-xl border border-white/20'
-    : 'p-2.5 rounded-full bg-white/80 text-slate-700 hover:bg-white shadow-sm transition-colors backdrop-blur-xl border border-white/60';
-  const searchPadding = isRTL ? 'pr-12 pl-4' : 'pl-12 pr-4';
+    ? 'p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors'
+    : 'p-2.5 rounded-full bg-white/80 text-slate-700 hover:bg-white shadow-sm transition-colors';
   const searchClass = theme === 'night'
-    ? `w-full ${searchPadding} py-2.5 rounded-full bg-white/10 focus:outline-none focus:ring-2 focus:ring-teal-200/60 placeholder:text-slate-300 text-sm`
-    : `w-full ${searchPadding} py-2.5 rounded-full bg-white/70 text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-300/60 text-sm shadow-sm`;
-  const searchIconPlacement = isRTL ? 'right-4' : 'left-4';
-  const searchIconColor = theme === 'night' ? 'text-slate-200/80' : 'text-slate-500';
+    ? 'w-full pl-12 pr-4 py-2.5 rounded-full bg-white/20 focus:outline-none focus:ring-2 focus:ring-teal-200/60 placeholder:text-slate-300 text-sm'
+    : 'w-full pl-12 pr-4 py-2.5 rounded-full bg-white/80 text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-300/60 text-sm shadow-sm';
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      const root = document.documentElement;
+      root.dataset.theme = theme;
+      root.classList.toggle('dark', theme === 'night');
+    }
+  }, [theme]);
+
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    }
+    if (i18n.language !== language) {
+      i18n.changeLanguage(language);
+    }
+  }, [language, i18n]);
 
   return (
     <motion.header
       initial={{ y: -40, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.7, ease: 'easeOut' }}
-      className="pointer-events-none fixed top-6 left-1/2 z-40 w-full px-4 sm:px-6"
-      style={{ transform: 'translateX(-50%)' }}
+      className={`fixed top-0 inset-x-0 z-40 px-6 lg:px-10 py-4 ${palette.text}`}
     >
-      <GlassCard
-        as={motion.div}
-        layout
-        whileHover={{ scale: 1.01 }}
-        transition={{ type: 'spring', stiffness: 140, damping: 18 }}
-        className={`pointer-events-auto mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4 gap-4 ${palette.text}`}
+      <div
+        className={`w-full flex items-center justify-between rounded-3xl ${palette.card} px-6 py-4 gap-4`}
       >
         <div className="flex items-center gap-4">
           <button
@@ -55,9 +64,9 @@ export const Header = () => {
           </div>
         </div>
 
-        <div className="hidden flex-1 items-center gap-3 md:flex max-w-md">
+        <div className="flex-1 hidden md:flex items-center gap-3 max-w-md">
           <div className="relative w-full">
-            <Search className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 ${searchIconColor} ${searchIconPlacement}`} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               type="search"
               placeholder={t('search') || 'Search'}
@@ -77,7 +86,7 @@ export const Header = () => {
           </button>
           <button
             type="button"
-            onClick={toggleLanguage}
+            onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')}
             className={controlButtonClass}
             aria-label={t('toggleLanguage')}
           >
@@ -92,7 +101,7 @@ export const Header = () => {
             <span className="absolute -top-0.5 -right-0.5 inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
           </button>
         </div>
-      </GlassCard>
+      </div>
     </motion.header>
   );
 };

@@ -1,10 +1,11 @@
 import React from 'react';
 import { ResponsiveContainer, LineChart as RechartsLineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../hooks';
+import { useDashboardStore, themePalettes } from '../store';
 
 export const LineChart = ({ data, dataKey = 'rate', xKey = 'month' }) => {
-  const { theme, palette } = useTheme();
+  const { theme } = useDashboardStore();
+  const palette = themePalettes[theme] || themePalettes.day;
   const { t } = useTranslation();
 
   return (
