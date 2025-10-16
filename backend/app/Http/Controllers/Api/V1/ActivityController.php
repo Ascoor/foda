@@ -28,19 +28,19 @@ class ActivityController extends Controller
 
         $activities = Activity::query()
             ->with(['area', 'committee', 'creator'])
-            ->forType($request->string('type')->toString())
-            ->forStatus($request->string('status')->toString())
-            ->forRegion($request->integer('area_id'))
+            ->forType((string) $request->input('type', ''))
+            ->forStatus((string) $request->input('status', ''))
+            ->forRegion((int) $request->input('area_id', 0))
             ->when($request->filled('from') || $request->filled('to'), function ($query) use ($request) {
-                $from = $request->filled('from') ? Carbon::parse($request->string('from')->toString())->startOfDay() : null;
-                $to = $request->filled('to') ? Carbon::parse($request->string('to')->toString())->endOfDay() : null;
+                $from = $request->filled('from') ? Carbon::parse((string) $request->input('from', ''))->startOfDay() : null;
+                $to = $request->filled('to') ? Carbon::parse((string) $request->input('to', ''))->endOfDay() : null;
                 $query->betweenDates($from, $to);
             })
             ->orderByDesc('reported_at')
             ->orderByDesc('created_at');
 
         return ActivityResource::collection(
-            $activities->paginate($request->integer('per_page', 15))->withQueryString()
+            $activities->paginate((int) $request->input('per_page', 15))->withQueryString()
         );
     }
 
@@ -126,7 +126,7 @@ class ActivityController extends Controller
             return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $limit = max(1, min(200, $request->integer('limit', 50)));
+        $limit = max(1, min(200, (int) $request->input('limit', 50)));
 
         $cacheKey = sprintf('activities.recent.%d.%d', $user->id, $limit);
 

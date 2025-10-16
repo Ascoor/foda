@@ -37,7 +37,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         $credentials = $request->validated();
-        $remember = $request->boolean('remember');
+        $remember = (bool) $request->input('remember', false);
 
         if (!Auth::attempt([
             'email' => $credentials['email'],

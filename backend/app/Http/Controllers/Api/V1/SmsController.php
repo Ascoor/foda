@@ -63,7 +63,7 @@ class SmsController extends Controller
         $data = $request->validated();
         $sms->update($data);
 
-        if ($request->boolean('resend') || (!$sms->scheduled_for && $sms->status !== 'sent')) {
+        if ((bool) $request->input('resend', false) || (!$sms->scheduled_for && $sms->status !== 'sent')) {
             $service->send($sms);
         }
 

@@ -21,11 +21,11 @@ class LiveDataController extends Controller
 
     public function election(Request $request, string $electionId): JsonResponse
     {
-        $results = $request->boolean('refresh')
+        $results = (bool) $request->input('refresh', false)
             ? $this->electionData->refreshLiveResults($electionId)
             : $this->electionData->getLiveResults($electionId);
 
-        if ($request->boolean('broadcast', true)) {
+        if ((bool) $request->input('broadcast', true)) {
             ElectionResultsUpdated::dispatch($electionId, $results);
         }
 
