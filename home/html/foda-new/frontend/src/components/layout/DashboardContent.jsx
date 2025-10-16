@@ -40,7 +40,7 @@ export const DashboardContent = ({
       <motion.main
         initial="initial"
         animate="animate"
-        className="relative z-10 pt-28 pb-20 px-6 lg:px-10"
+        className="relative z-10 pt-36 sm:pt-40 pb-20 pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-48 lg:pr-12 transition-all duration-500"
       >
         <div className="max-w-7xl mx-auto flex flex-col gap-10">
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
