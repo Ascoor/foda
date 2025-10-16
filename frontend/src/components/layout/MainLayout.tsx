@@ -55,9 +55,7 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
     () => `calc(100vh - var(--layout-header-height) - var(--layout-footer-height))`,
     [],
   );
-
-  const horizontalOffset = isMobile ? 0 : isRTL ? -28 : 28;
-  const exitHorizontalOffset = isMobile ? 0 : isRTL ? -20 : 20;
+ 
   // ✅ التبديل التلقائي عند تغير حجم الشاشة
   useEffect(() => {
     if (!isMobile) {
