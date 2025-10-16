@@ -95,7 +95,7 @@ class AnalyticsController extends Controller
 
     public function forecast(Request $request)
     {
-        $futureDays = max(1, min((int) $request->integer('days', 7), 30));
+        $futureDays = max(1, min((int) $request->input('days', 7), 30));
 
         $cacheKey = sprintf('analytics.v1.forecast.%d', $futureDays);
 
