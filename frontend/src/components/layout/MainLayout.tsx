@@ -1,4 +1,5 @@
-import { ReactNode, useMemo, useState, useEffect, useRef } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
@@ -43,8 +44,17 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
 
   const pageKey = `${location.pathname}${location.search}`;
   const isRTL = direction === 'rtl';
-  const horizontalOffset = isMobile ? 0 : isRTL ? -28 : 28;
-  const exitHorizontalOffset = isMobile ? 0 : isRTL ? -20 : 20;
+  const horizontalOffset = useMemo(() => {
+    if (isMobile) return 0;
+    return isRTL ? -32 : 32;
+  }, [isMobile, isRTL]);
+
+  const verticalOffset = useMemo(() => (isMobile ? 24 : 12), [isMobile]);
+
+  const contentMinHeight = useMemo(
+    () => `calc(100vh - var(--layout-header-height) - var(--layout-footer-height))`,
+    [],
+  );
 
   // ✅ التبديل التلقائي عند تغير حجم الشاشة
   useEffect(() => {
@@ -57,27 +67,29 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
   }, [isMobile]);
 
   // ✅ محاذاة padding للغة RTL / LTR
-  const paddingStyle = useMemo(
-    () => {
-      const paddingValue = `${sidebarWidth}px`;
-      return {
-        paddingInlineStart: paddingValue,
-        transition: 'padding-inline-start 0.3s ease',
-        ...(direction === 'rtl'
-          ? { paddingRight: paddingValue }
-          : { paddingLeft: paddingValue }),
-      } as React.CSSProperties; // إضافة النوع كـ React.CSSProperties
-    },
-    [direction, sidebarWidth],
-  );
+  const paddingStyle = useMemo(() => {
+    const paddingValue = `${sidebarWidth}px`;
+    const baseStyle: CSSProperties = {
+      paddingInlineStart: paddingValue,
+      transition: 'padding-inline-start 0.3s ease',
+    };
+
+    if (direction === 'rtl') {
+      baseStyle.paddingRight = paddingValue;
+    } else {
+      baseStyle.paddingLeft = paddingValue;
+    }
+
+    return baseStyle;
+  }, [direction, sidebarWidth]);
 
   const layoutVariables = useMemo(
     () => ({
       '--sidebar-width': `${sidebarWidth}px`,
-      '--layout-header-height': '4.25rem',  // خصائص CSS مخصصة
-      '--layout-footer-height': '3.5rem',  // خصائص CSS مخصصة
-    } as React.CSSProperties), // إضافة النوع كـ React.CSSProperties
-    [sidebarWidth],
+      '--layout-header-height': '4.25rem', // خصائص CSS مخصصة
+      '--layout-footer-height': shouldRenderFooter ? '3.5rem' : '0rem', // خصائص CSS مخصصة
+    } as CSSProperties),
+    [shouldRenderFooter, sidebarWidth],
   );
 
   return (
@@ -107,7 +119,8 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
         {/* ✅ المحتوى */}
         <main
           ref={contentRef}
-          className="relative overflow-y-auto scrollbar-stable"
+          className="relative flex-1 overflow-x-hidden overflow-y-auto scrollbar-stable"
+          style={{ minHeight: contentMinHeight }}
         >
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
@@ -118,7 +131,7 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
                   : {
                       opacity: 0,
                       x: horizontalOffset,
-                      y: isMobile ? 24 : 12,
+                      y: verticalOffset,
                       filter: 'blur(10px)',
                     }
               }
@@ -128,13 +141,14 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
                   ? { opacity: 0 }
                   : {
                       opacity: 0,
-                      x: exitHorizontalOffset,
-                      y: isMobile ? 16 : 8,
+                      x: horizontalOffset,
+                      y: Math.max(verticalOffset - 8, 0),
                       filter: 'blur(8px)',
                     }
               }
               transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              className="flex min-h-full flex-col gap-6 p-4 sm:p-6"
+              className="flex min-h-full w-full flex-col gap-6 p-4 sm:p-6"
+              style={{ minHeight: '100%' }}
             >
               {children}
             </motion.div>
