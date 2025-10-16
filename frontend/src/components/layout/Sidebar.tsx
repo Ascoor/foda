@@ -68,7 +68,7 @@ export const Sidebar = ({
       : "bg-[hsla(var(--surface-secondary)/0.55)]";
 
   const navBaseClass =
-    "group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]";
+    "group flex flex-row items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]";
 
   const navActiveClass =
     "bg-[hsla(var(--primary)/0.18)] text-[hsl(var(--foreground))] font-semibold ring-1 ring-[hsla(var(--primary)/0.35)] opacity-100 shadow-sm";
@@ -160,7 +160,7 @@ export const Sidebar = ({
             cn(
               navBaseClass,
               (isActive || isPathActive(item.path)) && navActiveClass,
-              isRTL ? "flex-row" : "flex-row-reverse",
+ 
               isMobileVariant && "text-base"
             )
           }
@@ -196,7 +196,7 @@ export const Sidebar = ({
                         navBaseClass,
                         "font-semibold",
                         (isActive || isPathActive(section.path!)) && navActiveClass,
-                        isRTL ? "flex-row" : "flex-row-reverse",
+                        
                         collapsed && "justify-center px-0"
                       )
                     }
@@ -239,16 +239,15 @@ export const Sidebar = ({
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       className={cn(
-                        "group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
+                        "group flex flex-row w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
                         "text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
                         isOpen && navActiveClass,
-                        isRTL ? "flex-row" : "flex-row-reverse"
+                     
                       )}
                     >
                       <span
                         className={cn(
-                          "flex items-center gap-2",
-                          isRTL ? "flex-row" : "flex-row-reverse"
+                          "flex  flex-row items-center gap-2", 
                         )}
                       >
                         {SectionIcon && <SectionIcon className="h-5 w-5" />}
@@ -348,7 +347,7 @@ export const Sidebar = ({
                 className={cn(
                   "flex w-full items-center justify-between px-4 py-3 text-base font-semibold text-[hsl(var(--foreground))]",
                   "opacity-85 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
-                  isRTL ? "flex-row-reverse" : "flex-row"
+       
                 )}
               >
                 <span className="flex items-center gap-3">
@@ -413,9 +412,9 @@ export const Sidebar = ({
           >
             <div
               className={cn(
-                "flex items-center gap-3",
+                "flex items-center flex-row gap-3",
                 collapsed && "gap-0",
-                isRTL && !collapsed && "flex-row-reverse"
+     collapsed && "flex-row-reverse"
               )}
             >
               <div className={brandBadgeClass}>
@@ -483,13 +482,13 @@ export const Sidebar = ({
                 <div
                   className={cn(
                     "flex items-center justify-between px-4 py-4",
-                    isRTL ? "flex-row-reverse" : "flex-row"
+ 
                   )}
                 >
                   <div
                     className={cn(
-                      "flex items-center gap-3",
-                      isRTL ? "flex-row-reverse" : "flex-row"
+                      "flex flex-row items-center gap-3",
+ 
                     )}
                   >
                     <div className={brandBadgeClass}>

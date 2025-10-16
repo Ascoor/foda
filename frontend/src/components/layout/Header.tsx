@@ -45,9 +45,8 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
   const { width } = useWindowSize();
   const navigate = useNavigate();
   const isMobile = width < 768;
-  const isRTL = direction === "rtl";
 
-  // 🕒 الساعة الرقمية الذكية
+  // 🕒 تحديث الساعة
   const [dateTime, setDateTime] = useState(new Date());
   useEffect(() => {
     const interval = setInterval(() => setDateTime(new Date()), 1000);
@@ -65,43 +64,34 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
     day: "numeric",
   });
 
+  // 🎨 الأنماط العامة للأزرار
   const surfaceControlClass =
     theme === "dark"
-      ? "bg-[hsla(var(--color-surface)/0.45)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.65)]"
-      : "bg-[hsla(var(--color-surface)/0.75)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.95)] shadow-sm";
+      ? "bg-[hsla(var(--color-surface)/0.4)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.6)]"
+      : "bg-[hsla(var(--color-surface)/0.85)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/1)] shadow-sm";
 
-  const themeToggleLabel = language === "ar"
-    ? theme === "light" ? "تفعيل الوضع الداكن" : "تفعيل الوضع الفاتح"
-    : theme === "light" ? "Switch to dark mode" : "Switch to light mode";
-
-  const languageToggleLabel = language === "ar" ? "تغيير اللغة" : "Toggle language";
-
-  const userMenuLabel = language === "ar" ? "قائمة المستخدم" : "User menu";
-
+  // 🚪 تسجيل الخروج
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
     try {
       await logout();
-    } finally {
       navigate("/", { replace: true });
+    } finally {
       setIsLoggingOut(false);
     }
   };
 
+  // 🌙 تبديل الوضع الليلي
   const themeToggle = (
     <Button
       key="theme"
       variant="ghost"
       size="icon"
-      aria-label={themeToggleLabel}
       onClick={toggleTheme}
-      className={cn(
-        "relative rounded-full p-2 transition-all hover:scale-105",
-        surfaceControlClass,
-      )}
+      aria-label="Toggle theme"
+      className={cn("rounded-full p-2 transition-all hover:scale-105", surfaceControlClass)}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
@@ -121,47 +111,35 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
     </Button>
   );
 
+  // 🌐 تبديل اللغة
   const languageToggle = (
     <Button
       key="language"
       variant="ghost"
       size="icon"
-      aria-label={languageToggleLabel}
+      aria-label="Toggle language"
       onClick={toggleLanguage}
-      className={cn(
-        "rounded-full p-2 transition-all hover:scale-105",
-        surfaceControlClass,
-      )}
+      className={cn("rounded-full p-2 transition-all hover:scale-105", surfaceControlClass)}
     >
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={language}
-          initial={{ rotateY: 180, opacity: 0 }}
-          animate={{ rotateY: 0, opacity: 1 }}
-          exit={{ rotateY: -180, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Globe
-            className={cn(
-              "h-5 w-5",
-              language === "ar" ? "text-[hsl(var(--accent))]" : "text-[hsl(var(--primary))]",
-            )}
-          />
-        </motion.div>
-      </AnimatePresence>
+      <Globe
+        className={cn(
+          "h-5 w-5 transition-colors",
+          language === "ar"
+            ? "text-[hsl(var(--accent))]"
+            : "text-[hsl(var(--primary))]"
+        )}
+      />
     </Button>
   );
 
+  // 🔔 الإشعارات
   const notificationsToggle = (
     <Button
       key="notifications"
       variant="ghost"
       size="icon"
-      aria-label={language === "ar" ? "الإشعارات" : "Notifications"}
-      className={cn(
-        "relative rounded-full p-2 hover:scale-105 transition-all",
-        surfaceControlClass,
-      )}
+      aria-label="Notifications"
+      className={cn("relative rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
     >
       <Bell className="h-5 w-5" />
       {unreadCount > 0 && (
@@ -172,46 +150,47 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
     </Button>
   );
 
+  // 👤 قائمة المستخدم
   const userMenu = (
     <DropdownMenu key="user">
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
           size="icon"
-          aria-label={userMenuLabel}
-          className={cn(
-            "rounded-full p-2 hover:scale-105 transition-all",
-            surfaceControlClass,
-          )}
+          aria-label="User menu"
+          className={cn("rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
         >
           <User className="h-5 w-5" />
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
-        align={isRTL ? "start" : "end"}
-        sideOffset={8}
+        align={direction === "rtl" ? "start" : "end"}
+        side="bottom"
+        sideOffset={10}
         className={cn(
-          "min-w-[180px] rounded-2xl border p-2 backdrop-blur-lg shadow-lg",
+          "min-w-[180px] rounded-2xl border p-2 z-50 backdrop-blur-lg shadow-lg",
           "border-[hsla(var(--border)/0.2)] text-[hsl(var(--foreground))]",
           theme === "dark"
             ? "bg-[hsla(var(--color-surface)/0.92)]"
-            : "bg-[hsla(var(--color-surface)/0.97)]",
+            : "bg-[hsla(var(--color-surface)/0.97)]"
         )}
       >
         <DropdownMenuItem className="flex items-center gap-2">
           <UserCircle className="h-4 w-4" />
           {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
         </DropdownMenuItem>
+
         <DropdownMenuItem className="flex items-center gap-2">
           <Settings className="h-4 w-4" />
           {language === "ar" ? "الإعدادات" : "Settings"}
         </DropdownMenuItem>
+
         <DropdownMenuItem
           className="flex items-center gap-2 text-destructive"
           disabled={isLoggingOut}
-          onSelect={(event) => {
-            event.preventDefault();
+          onSelect={(e) => {
+            e.preventDefault();
             void handleLogout();
           }}
         >
@@ -221,16 +200,15 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
               ? "جاري تسجيل الخروج..."
               : "Logging out..."
             : language === "ar"
-              ? "تسجيل الخروج"
-              : "Logout"}
+            ? "تسجيل الخروج"
+            : "Logout"}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 
-  const orderedControls = isRTL
-    ? [userMenu, notificationsToggle, languageToggle, themeToggle]
-    : [themeToggle, languageToggle, notificationsToggle, userMenu];
+  // ✅ ترتيب ثابت لجميع اللغات (من اليمين إلى اليسار بصريًا)
+  const orderedControls = [userMenu, themeToggle, languageToggle, notificationsToggle];
 
   return (
     <motion.header
@@ -243,35 +221,27 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
         "sticky top-0 z-50 w-full border-b backdrop-blur-xl transition-all duration-300",
         theme === "dark"
           ? "border-[hsla(var(--border)/0.35)] bg-[hsla(var(--color-surface)/0.9)] text-[hsl(var(--foreground))]"
-          : "border-[hsla(var(--border)/0.25)] bg-[hsla(var(--color-surface)/0.85)] text-[hsl(var(--foreground))]",
+          : "border-[hsla(var(--border)/0.25)] bg-[hsla(var(--color-surface)/0.85)] text-[hsl(var(--foreground))]"
       )}
     >
       <div className="mx-auto flex h-[var(--layout-header-height)] w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
-        {/* ================== Left Section ================== */}
-        <div
-          className={cn(
-            "flex items-center gap-4",
-            isRTL ? "flex-row-reverse" : "flex-row",
-          )}
-        >
-          {/* Sidebar Toggle (mobile) */}
+        {/* 📱 زر القائمة الجانبية (للموبايل فقط) */}
+        <div className="flex items-center gap-3">
           {isMobile && (
             <Button
               variant="ghost"
               size="icon"
               aria-label={language === "ar" ? "فتح القائمة الجانبية" : "Open sidebar"}
-              className={cn(
-                "rounded-2xl p-2 shadow-md transition-colors",
-                surfaceControlClass,
-              )}
+              className={cn("rounded-2xl p-2 shadow-md transition-colors", surfaceControlClass)}
               onClick={onToggleSidebar}
             >
               <Menu className="h-5 w-5" />
             </Button>
           )}
         </div>
-        {/* ================== Center Section (Clock) ================== */}
-        <div className="hidden sm:flex flex-col items-center  justify-center select-none text-center">
+
+        {/* ⏰ الساعة في المنتصف */}
+        <div className="hidden sm:flex flex-col items-center justify-center select-none text-center">
           <span className="text-[0.8rem] text-muted-foreground uppercase tracking-wide">
             {formattedDate}
           </span>
@@ -280,10 +250,15 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
           </span>
         </div>
 
-        {/* ================== Right Section ================== */}
-        <div className="flex items-center gap-2 sm:gap-3" dir={direction}>
-          {orderedControls.map((control) => control)}
-        </div>
+        {/* ⚙️ عناصر التحكم */}
+        <div
+  className={cn(
+    "flex items-center gap-2 sm:gap-3 flex-row-reverse"
+  )}
+>
+  {orderedControls.map((control) => control)}
+</div>
+
       </div>
     </motion.header>
   );

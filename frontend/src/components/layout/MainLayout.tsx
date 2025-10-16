@@ -56,6 +56,8 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
     [],
   );
 
+  const horizontalOffset = isMobile ? 0 : isRTL ? -28 : 28;
+  const exitHorizontalOffset = isMobile ? 0 : isRTL ? -20 : 20;
   // ✅ التبديل التلقائي عند تغير حجم الشاشة
   useEffect(() => {
     if (!isMobile) {
@@ -131,7 +133,7 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
                   : {
                       opacity: 0,
                       x: horizontalOffset,
-                      y: verticalOffset,
+                      y: isMobile ? 24 : 12,
                       filter: 'blur(10px)',
                     }
               }
@@ -142,7 +144,7 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
                   : {
                       opacity: 0,
                       x: horizontalOffset,
-                      y: Math.max(verticalOffset - 8, 0),
+                      y: isMobile ? 16 : 8,
                       filter: 'blur(8px)',
                     }
               }
