@@ -67,7 +67,12 @@ export const useDashboardStore = create((set, get) => ({
     }
     set({ language: value });
   },
+  toggleLanguage: () => {
+    const next = get().language === 'ar' ? 'en' : 'ar';
+    get().setLanguage(next);
+  },
   toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+  setSidebarOpen: (open) => set({ sidebarOpen: Boolean(open) }),
   setFilter: (key, value) => set((state) => ({
     filters: { ...state.filters, [key]: value }
   }))
