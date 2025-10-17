@@ -37,6 +37,8 @@ import { BarbaTransitionProvider } from "@/components/transition/BarbaTransition
  
 import "@/i18n";
 import { AuthRedirect } from "./pages/AuthRedirect";
+import FloatingLandingPage from "@/nextgen/pages/LandingPage";
+import FloatingDashboard from "@/nextgen/pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -51,7 +53,9 @@ const App = () => (
             <BrowserRouter>
               <BarbaTransitionProvider>
                 <Routes>
-                  <Route path="/" element={<AuthRedirect />} />
+                  <Route path="/" element={<FloatingLandingPage />} />
+                  <Route path="/experience" element={<FloatingDashboard />} />
+                  <Route path="/app" element={<AuthRedirect />} />
                   <Route path="/login" element={<Login />} />
                   <Route element={<ProtectedRoute />}>
                     <Route element={<MainLayoutWrapper />}>
