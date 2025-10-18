@@ -66,12 +66,7 @@ const glassmorphismPlugin = plugin(({ addComponents }) => {
 const config: Config = {
   darkMode: ["class"],
 
-  content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./index.html"],
 
   theme: {
     container: {
