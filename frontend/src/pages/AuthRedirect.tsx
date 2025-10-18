@@ -1,7 +1,7 @@
 // src/pages/AuthRedirect.tsx
 import { useAuth } from '@/contexts/AuthContext';
 import { useEffect } from 'react';
-import LandingPage from './Landing';
+import FloatingLandingPage from '@features/marketing/pages/LandingPage';
 import { useNavigate } from 'react-router-dom';
 
 export const AuthRedirect = () => {
@@ -16,5 +16,5 @@ export const AuthRedirect = () => {
 
   if (loading) return null; // أو spinner
 
-  return <LandingPage />;
+  return <FloatingLandingPage />;
 };

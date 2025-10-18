@@ -13,8 +13,8 @@ import { Badge } from './badge';
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 import { SafeDataRenderer } from './SafeDataRenderer';
-import { fetchGeoAreas, deleteGeoArea } from '@/modules/geo-areas/api';
-import { GeoArea } from '@/modules/geo-areas/types';
+import { fetchGeoAreas, deleteGeoArea } from '@features/geo-areas/api';
+import { GeoArea } from '@features/geo-areas/types';
 import { safeArray, safeNumber } from '@/lib/safeData';
 import { toast } from '@/hooks/use-toast';
 

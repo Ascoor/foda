@@ -17,7 +17,7 @@
 
 ## مثال للاستخدام
 ```tsx
-import { Settings } from '@/modules/settings';
+import { Settings } from '@features/settings';
 
 export const SettingsPage = () => {
   return <Settings />;
