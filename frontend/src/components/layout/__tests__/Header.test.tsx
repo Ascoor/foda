@@ -35,7 +35,7 @@ vi.mock('@/contexts/NotificationContext', () => ({
   }),
 }));
 
-vi.mock('@/hooks/use-window-size', () => ({
+vi.mock('@/hooks/useWindowSize', () => ({
   useWindowSize: () => ({ width: 1280, height: 720 }),
 }));
 
