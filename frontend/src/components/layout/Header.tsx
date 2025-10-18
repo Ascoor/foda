@@ -18,13 +18,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { cn } from "@/lib/utils";
-import { useWindowSize } from "@/hooks/use-window-size";
-import { useNavigate } from "react-router-dom";
+import { useWindowSize } from "@/hooks/useWindowSize";
 
 const SPRING_TRANSITION = {
   type: "spring",
@@ -34,14 +34,21 @@ const SPRING_TRANSITION = {
 
 interface HeaderProps {
   layoutId?: string;
-  onToggleSidebar: () => void;
+  onToggleSidebar?: () => void;
+  variant?: "dashboard" | "public";
 }
 
-export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
+export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: HeaderProps) => {
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, direction } = useLanguage();
-  const { unreadCount } = useNotifications();
-  const { user, logout } = useAuth();
+  let unreadCount = 0;
+  try {
+    const notifications = useNotifications();
+    unreadCount = notifications.unreadCount;
+  } catch (error) {
+    unreadCount = 0;
+  }
+  const { user, logout, isAuthenticated } = useAuth();
   const { width } = useWindowSize();
   const navigate = useNavigate();
   const isMobile = width < 768;
@@ -133,82 +140,97 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
   );
 
   // 🔔 الإشعارات
-  const notificationsToggle = (
-    <Button
-      key="notifications"
-      variant="ghost"
-      size="icon"
-      aria-label="Notifications"
-      className={cn("relative rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
-    >
-      <Bell className="h-5 w-5" />
-      {unreadCount > 0 && (
-        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white shadow-md">
-          {unreadCount}
-        </span>
-      )}
-    </Button>
-  );
+  const notificationsToggle =
+    variant === "dashboard" && isAuthenticated ? (
+      <Button
+        key="notifications"
+        variant="ghost"
+        size="icon"
+        aria-label="Notifications"
+        className={cn("relative rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
+      >
+        <Bell className="h-5 w-5" />
+        {unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white shadow-md">
+            {unreadCount}
+          </span>
+        )}
+      </Button>
+    ) : null;
 
   // 👤 قائمة المستخدم
-  const userMenu = (
-    <DropdownMenu key="user">
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="User menu"
-          className={cn("rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
-        >
-          <User className="h-5 w-5" />
-        </Button>
-      </DropdownMenuTrigger>
+  const userMenu =
+    variant === "dashboard" && isAuthenticated ? (
+      <DropdownMenu key="user">
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="User menu"
+            className={cn("rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
+          >
+            <User className="h-5 w-5" />
+          </Button>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent
-        align={direction === "rtl" ? "start" : "end"}
-        side="bottom"
-        sideOffset={10}
-        className={cn(
-          "min-w-[180px] rounded-2xl border p-2 z-50 backdrop-blur-lg shadow-lg",
-          "border-[hsla(var(--border)/0.2)] text-[hsl(var(--foreground))]",
-          theme === "dark"
-            ? "bg-[hsla(var(--color-surface)/0.92)]"
-            : "bg-[hsla(var(--color-surface)/0.97)]"
-        )}
+        <DropdownMenuContent
+          align={direction === "rtl" ? "start" : "end"}
+          side="bottom"
+          sideOffset={10}
+          className={cn(
+            "min-w-[180px] rounded-2xl border p-2 z-50 backdrop-blur-lg shadow-lg",
+            "border-[hsla(var(--border)/0.2)] text-[hsl(var(--foreground))]",
+            theme === "dark"
+              ? "bg-[hsla(var(--color-surface)/0.92)]"
+              : "bg-[hsla(var(--color-surface)/0.97)]"
+          )}
+        >
+          <DropdownMenuItem className="flex items-center gap-2">
+            <UserCircle className="h-4 w-4" />
+            {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
+          </DropdownMenuItem>
+
+          <DropdownMenuItem className="flex items-center gap-2">
+            <Settings className="h-4 w-4" />
+            {language === "ar" ? "الإعدادات" : "Settings"}
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            className="flex items-center gap-2 text-destructive"
+            disabled={isLoggingOut}
+            onSelect={(e) => {
+              e.preventDefault();
+              if (!isAuthenticated) return;
+              void handleLogout();
+            }}
+          >
+            <LogOut className="h-4 w-4" />
+            {isLoggingOut
+              ? language === "ar"
+                ? "جاري تسجيل الخروج..."
+                : "Logging out..."
+              : language === "ar"
+              ? "تسجيل الخروج"
+              : "Logout"}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ) : null;
+
+  const loginControl =
+    variant !== "dashboard" && !isAuthenticated ? (
+      <Button
+        key="login"
+        asChild
+        className={cn("rounded-full px-5", surfaceControlClass, "font-semibold")}
       >
-        <DropdownMenuItem className="flex items-center gap-2">
-          <UserCircle className="h-4 w-4" />
-          {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
-        </DropdownMenuItem>
+        <Link to="/auth/login">{language === "ar" ? "تسجيل الدخول" : "Sign in"}</Link>
+      </Button>
+    ) : null;
 
-        <DropdownMenuItem className="flex items-center gap-2">
-          <Settings className="h-4 w-4" />
-          {language === "ar" ? "الإعدادات" : "Settings"}
-        </DropdownMenuItem>
-
-        <DropdownMenuItem
-          className="flex items-center gap-2 text-destructive"
-          disabled={isLoggingOut}
-          onSelect={(e) => {
-            e.preventDefault();
-            void handleLogout();
-          }}
-        >
-          <LogOut className="h-4 w-4" />
-          {isLoggingOut
-            ? language === "ar"
-              ? "جاري تسجيل الخروج..."
-              : "Logging out..."
-            : language === "ar"
-            ? "تسجيل الخروج"
-            : "Logout"}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-
-  // ✅ ترتيب ثابت لجميع اللغات (من اليمين إلى اليسار بصريًا)
-  const orderedControls = [userMenu, themeToggle, languageToggle, notificationsToggle];
+  const controls = [userMenu, themeToggle, languageToggle, notificationsToggle, loginControl].filter(
+    Boolean,
+  ) as JSX.Element[];
 
   return (
     <motion.header
@@ -227,7 +249,7 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
       <div className="mx-auto flex h-[var(--layout-header-height)] w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
         {/* 📱 زر القائمة الجانبية (للموبايل فقط) */}
         <div className="flex items-center gap-3">
-          {isMobile && (
+          {isMobile && onToggleSidebar && variant === "dashboard" && (
             <Button
               variant="ghost"
               size="icon"
@@ -252,12 +274,12 @@ export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
 
         {/* ⚙️ عناصر التحكم */}
         <div
-  className={cn(
-    "flex items-center gap-2 sm:gap-3 flex-row-reverse"
-  )}
->
-  {orderedControls.map((control) => control)}
-</div>
+          className={cn(
+            "flex items-center gap-2 sm:gap-3 flex-row-reverse",
+          )}
+        >
+          {controls.map((control) => control)}
+        </div>
 
       </div>
     </motion.header>

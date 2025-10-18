@@ -6,7 +6,7 @@ import { Sidebar } from './Sidebar';
 import { Header } from './Header'; 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useWindowSize } from '@/hooks/use-window-size';
+import { useWindowSize } from '@/hooks/useWindowSize';
 import { cn } from '@/lib/utils';
 
 const DESKTOP_BREAKPOINT = 1024;
