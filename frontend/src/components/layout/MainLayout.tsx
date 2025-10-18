@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 
 import { AuroraBackground } from "@features/marketing/components/ui/AuroraBackground";
 import { Header } from "@/components/layout/Header";
-import { Sidebar } from "@shared/layout/Sidebar";
+import { Sidebar } from "@/shared/layout/Sidebar";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useWindowSize } from "@/hooks/useWindowSize";
