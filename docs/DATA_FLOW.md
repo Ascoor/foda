@@ -6,28 +6,29 @@
 
 ## Structure / Modules | الهيكلية
 1. **User Interaction Layer**
-   - UI components trigger TanStack Query mutations or fetches through the `lib/api` client.
-   - Form validation handled client-side with Zod before network calls.
+   - UI modules and hooks trigger Axios requests through `frontend/src/lib/api.ts`, optionally memoised via TanStack Query wrappers.
+   - Forms lean on Zod schemas for synchronous client validation before dispatching mutations.
 2. **Transport Layer**
-   - HTTPS requests authenticated via Sanctum tokens stored in HTTP-only cookies.
-   - All API calls target `/api/v1/*` endpoints with locale headers (`Accept-Language`).
+   - HTTPS calls send Sanctum bearer tokens stored in local storage/session, injected by the shared Axios interceptors.
+   - Requests target `/api/v1/*` endpoints with JSON accept headers; locale headers are opt-in per feature.
 3. **Application Layer**
-   - Laravel controllers validate requests via FormRequest classes and authorize via policies.
-   - Services and Actions encapsulate domain logic, emitting Events for side-effects (audit logs, notifications).
+   - Laravel controllers validate payloads inline using `$request->validate()` or dedicated FormRequest classes (e.g., `HomeRequest`) and enforce permissions with policies + middleware.
+   - Controllers offload heavy domain logic to services inside `App\Services`, which compose repositories, caching, and events.
 4. **Persistence Layer**
-   - Eloquent models interact with MySQL/PostgreSQL using transactions where cross-entity operations occur.
-   - Observer classes maintain data integrity (e.g., syncing counts, cascading status updates).
+   - Eloquent models encapsulate query scopes and relationships (e.g., `Activity::forType`, `Activity::betweenDates`, `Team::volunteers`).
+   - Transactions wrap multi-model writes when services touch committees, voters, or finance ledgers simultaneously.
+   - Caching via `Cache::remember()` accelerates analytics dashboards; invalidation occurs in controllers/events after writes.
 5. **Outbound Integrations**
-   - Queue jobs dispatched for heavy operations (report generation, SMS/email, geo-sync).
-   - Webhooks prepared for third-party monitoring dashboards.
+   - SMS, external data fetches, and webhook stubs live under `App\Services\External` and are orchestrated via dedicated service classes.
+   - Queue jobs are scaffolded for high-latency tasks (notifications, exports) and require worker activation in deployment scripts.
 
 ## Current Status | الحالة الحالية
-- ✅ Base HTTP client wrappers exist but require review for consistent error normalization.
-- ⚠️ Audit log events are defined conceptually; implementation pending in backend observers.
-- ⚠️ Webhook sender skeleton missing; placeholders identified in integration plan.
+- ✅ Axios client and caching helpers (`frontend/src/lib/api.ts`) are wired and actively used by dashboard modules.
+- ⚠️ Error envelopes vary between controllers; consolidate responses into `{ code, message, details }`.
+- ⚠️ Audit logging and webhook dispatchers are still TODO; skeleton events exist without downstream listeners.
 
 ## Next Steps | الخطوات التالية
-- Finalize shared DTO schemas in `frontend/src/lib/contracts` and mirror them with Laravel API Resources.
-- Implement standardized error envelope `{code,message,details}` across controllers.
-- Extend queue workers to process notification jobs and document retry strategies.
-- Add sequence diagrams (login, election update, report export) under `docs/diagrams/data-flow/`.
+- Publish DTO schemas (`frontend/src/types` & Laravel API Resources) to prevent drift between stacks.
+- Normalize error envelopes (`{ code, message, details }`) and document them in the shared API client.
+- Extend queue workers + retry strategies for SMS/notification flows and capture them in deployment scripts.
+- Add sequence diagrams (login, activity ingestion, finance approval) under `docs/diagrams/data-flow/`.
