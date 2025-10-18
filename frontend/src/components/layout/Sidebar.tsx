@@ -1,47 +1,55 @@
-import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+ 
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { sidebarTranslations } from "@/i18n/sidebar";
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import { useNavigate,NavLink, useLocation } from 'react-router-dom';
 import { sidebarSections } from "@/config/sidebar-sections";
-
+ 
+import { useLanguage } from "@/contexts/LanguageContext";
 export const Sidebar = () => {
-  const { language, direction } = useLanguage();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const location = useLocation();
-  const [expanded, setExpanded] = useState(true);
-
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const { language, direction } = useLanguage();
   const t = (key: string) =>
     sidebarTranslations[language][key as keyof typeof sidebarTranslations["en"]] ?? key;
 
   const isActive = (path?: string) =>
     !!path && location.pathname.startsWith(path);
-
   return (
     <motion.aside
-      dir={direction}
-      initial={{ x: direction === "rtl" ? 100 : -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.4 }}
-      className={cn(
-        "fixed top-0 z-40 h-screen bg-[hsla(var(--surface)/0.85)] backdrop-blur-xl border-r border-[hsla(var(--border)/0.15)] shadow-lg flex flex-col transition-all duration-300",
-        expanded ? "w-64" : "w-20",
-        direction === "rtl" ? "right-0 border-l border-r-0" : "left-0"
-      )}
-    >
-      <div className="flex items-center justify-between px-4 py-4 border-b border-[hsla(var(--border)/0.1)]">
-        <span className="font-bold text-lg text-foreground">
-          {expanded ? (language === "ar" ? "لوحة التحكم" : "Dashboard") : "☰"}
-        </span>
-        <button
-          onClick={() => setExpanded((p) => !p)}
-          className="p-2 text-muted-foreground rounded-full hover:bg-[hsla(var(--primary)/0.15)]"
-        >
-          {expanded ? (direction === "rtl" ? "⟩" : "⟨") : (direction === "rtl" ? "⟨" : "⟩")}
-        </button>
-      </div>
-
-      <nav className="flex-1 overflow-y-auto py-3 space-y-4">
+    initial={{ x: -120, opacity: 0, scale: 0.9 }}
+    animate={{ 
+      x: 0, 
+      opacity: 1, 
+      scale: 1,
+      width: isExpanded ? 240 : 72 
+    }}
+    transition={{ type: 'spring', stiffness: 160, damping: 18 }}
+    onMouseEnter={() => setIsExpanded(true)}
+    onMouseLeave={() => setIsExpanded(false)}
+    className="fixed ltr:left-4 rtl:right-4 top-28 bottom-8 z-40 rounded-[32px] border border-border/30 p-5"
+    style={{ 
+      background: 'linear-gradient(135deg, hsl(var(--card) / 0.8), hsl(var(--card) / 0.7))',
+      backdropFilter: 'blur(20px) saturate(180%)',
+      boxShadow: 'var(--shadow-neomorph-raised), 0 8px 32px hsla(var(--primary) / 0.08)',
+      WebkitBackdropFilter: 'blur(20px) saturate(180%)'
+    }}
+  >
+    {/* Carved edge effect */}
+    <div 
+      className="absolute inset-0 rounded-[32px] pointer-events-none"
+      style={{ boxShadow: 'inset 3px 3px 8px hsla(0, 0%, 0%, 0.08), inset -3px -3px 8px hsla(255, 255%, 255%, 0.05)' }}
+    />
+    
+    {/* Side glow for dark mode */}
+    <div className="absolute ltr:right-0 rtl:left-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-primary/30 to-transparent opacity-0 dark:opacity-100" />
+    
+    <nav className="h-full flex flex-col gap-3 relative z-10 overflow-y-auto">
+ 
         {sidebarSections.map((section) => (
           <div key={section.key}>
             {section.items ? (
@@ -49,7 +57,7 @@ export const Sidebar = () => {
                 <p
                   className={cn(
                     "px-5 mb-2 text-[11px] uppercase font-semibold tracking-wider text-muted-foreground",
-                    expanded ? "block" : "hidden"
+                    isExpanded ? "block" : "hidden"
                   )}
                 >
                   {t(section.key)}
@@ -68,7 +76,7 @@ export const Sidebar = () => {
                     }
                   >
                     <item.icon className="h-4 w-4 shrink-0" />
-                    {expanded && <span>{t(item.key)}</span>}
+                    {isExpanded && <span>{t(item.key)}</span>}
                   </NavLink>
                 ))}
               </>
@@ -85,7 +93,7 @@ export const Sidebar = () => {
                 }
               >
                 {section.icon && <section.icon className="h-4 w-4 shrink-0" />}
-                {expanded && <span>{t(section.key)}</span>}
+                {isExpanded && <span>{t(section.key)}</span>}
               </NavLink>
             )}
           </div>

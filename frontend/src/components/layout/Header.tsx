@@ -277,52 +277,22 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
 
   return (
     <motion.header
-      layoutId={layoutId}
-      dir={direction}
-      initial={{ opacity: 0, y: -16, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={SPRING_TRANSITION}
-      className={cn(
-        "sticky top-0 z-50 w-full border-b border-transparent/20",
-        "px-2 pb-3 pt-2 sm:px-4",
-        "[--glass-bg:linear-gradient(135deg,hsla(var(--card)/0.72),hsla(var(--card)/0.6))]",
-      )}
-    >
-
-      <motion.div
-        animate={{ height: containerHeight }}
-        transition={SPRING_TRANSITION}
-        onMouseEnter={() => !isMobile && setIsHovered(true)}
-        onMouseLeave={() => !isMobile && setIsHovered(false)}
-        className={cn(
-          "relative mx-auto flex w-full max-w-[1480px] items-center justify-between gap-4 overflow-hidden rounded-[30px] border",
-          theme === "dark"
-            ? "border-[hsla(var(--border)/0.25)]"
-            : "border-[hsla(var(--border)/0.15)]",
-        )}
-        style={{
-          background: "var(--glass-bg)",
-          backdropFilter: "blur(22px) saturate(180%)",
-          WebkitBackdropFilter: "blur(22px) saturate(180%)",
-          boxShadow:
-            theme === "dark"
-              ? "0 20px 60px hsla(var(--primary)/0.18)"
-              : "0 18px 45px hsla(var(--primary)/0.12)",
-        }}
-      >
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-80 dark:opacity-40" />
-          <div className="absolute -bottom-px left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-
-        </div>
-
-        <div
-          className={cn(
-            "relative z-10 flex h-full flex-1 items-center justify-between gap-4 px-4",
-            direction === "rtl" ? "flex-row-reverse" : "flex-row",
-          )}
-        >
-          <div className="flex items-center gap-3">
+    layout
+    initial={{ opacity: 0, y: -40 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.7, ease: "easeOut" }}
+    className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
+  >
+    <div className="flex items-center gap-3">
+      <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
+        <Flame className="size-5" />
+      </div>
+      <div className="leading-tight">
+        <p className="text-xs uppercase tracking-[0.35em] text-slate-600 dark:text-slate-300">Aurora Election</p>
+        <h1 className="text-lg font-semibold text-slate-900 dark:text-white">Floating Command Center</h1>
+      </div>
+    </div>
+    <div className="flex items-center gap-2">
             {isMobile && onToggleSidebar && variant === "dashboard" && (
               <Button
                 variant="ghost"
@@ -410,8 +380,8 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
               ))}
             </AnimatePresence>
           </div>
-        </div>
-      </motion.div>
+ 
+ 
     </motion.header>
   );
 };
