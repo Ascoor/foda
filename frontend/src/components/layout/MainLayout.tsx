@@ -1,33 +1,67 @@
-import { useEffect } from "react";
-import { motion } from "framer-motion";
-import { AuroraBackground } from "@/components/ui/AuroraBackground";
- import "@/components/layout/i18n";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { Header } from "@/components/layout/Header";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Outlet } from "react-router-dom";
 
+import { AuroraBackground } from "@/nextgen/components/ui/AuroraBackground";
+import { Header } from "@/components/layout/Header";
+import { Sidebar } from "@/components/layout/Sidebar";
+import { useWindowSize } from "@/hooks/useWindowSize";
+
+const DESKTOP_BREAKPOINT = 1024;
+
 export const MainLayout = () => {
-  
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "night");
-  }, [theme]);
+  const { width } = useWindowSize();
+  const isDesktop = width >= DESKTOP_BREAKPOINT;
+  const [sidebarOpen, setSidebarOpen] = useState(isDesktop);
 
   useEffect(() => {
-    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
-  }, [language]);
+    setSidebarOpen(isDesktop);
+  }, [isDesktop]);
+
+  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
 
   return (
     <AuroraBackground>
-      <div className="relative flex min-h-screen flex-col gap-8 pb-24">
-        <Header />
-        <motion.div
-          layout
-          className={`relative mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 md:px-0 lg:flex-row ${language === "ar" ? "lg:flex-row-reverse" : ""}`}
-        >
-          <Sidebar /> 
-        </motion.div>
-          <Outlet />
-          </div>
-          </AuroraBackground>
+      <div className="relative flex min-h-screen flex-col gap-6 pb-16">
+        <Header onToggleSidebar={toggleSidebar} />
+
+        <div className="relative mx-auto flex w-full max-w-6xl flex-1 gap-6 px-4 md:px-0">
+          {isDesktop ? (
+            <Sidebar
+              isOpen={sidebarOpen}
+              onToggleCollapse={toggleSidebar}
+            />
+          ) : (
+            <AnimatePresence>
+              {sidebarOpen && (
+                <>
+                  <motion.button
+                    type="button"
+                    aria-label="Close sidebar"
+                    className="fixed inset-0 z-20 bg-black/25 backdrop-blur-sm"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={toggleSidebar}
+                  />
+                  <Sidebar
+                    isOpen
+                    isMobile
+                    onToggleCollapse={toggleSidebar}
+                  />
+                </>
+              )}
+            </AnimatePresence>
+          )}
+
+          <motion.main
+            layout
+            className="relative z-10 flex-1 pb-10 pt-6"
+          >
+            <Outlet />
+          </motion.main>
+        </div>
+      </div>
+    </AuroraBackground>
   );
 };
