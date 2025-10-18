@@ -1,5 +1,19 @@
 import type { LucideIcon } from "lucide-react";
-import { LayoutDashboard, Users, FileText, Megaphone, Settings } from "lucide-react";
+import {
+  LayoutDashboard,
+  Vote,
+  MapPin,
+  Users,
+  UserCheck,
+  Crown,
+  Shield,
+  Heart,
+  Eye,
+  Megaphone,
+  BarChart3,
+  Settings,
+  Cpu,
+} from "lucide-react";
 
 export interface SidebarItemConfig {
   key: string;
@@ -11,36 +25,146 @@ export interface SidebarItemConfig {
 
 export interface SidebarSectionConfig {
   key: string;
-  items?: SidebarItemConfig[];
+  items?: SidebarItemConfig[]; // ✅ جعلها اختيارية
   icon?: LucideIcon;
-  path?: string;
+  path?: string; // ✅ مضاف لدعم الأقسام ذات الرابط المباشر (مثل dashboard)
   roles?: string[];
 }
 
 export const sidebarSections: SidebarSectionConfig[] = [
+  // 🟢 قسم رئيسي برابط مباشر (بدون قائمة فرعية)
   {
-    key: "dashboard_home",
+    key: "dashboard",
     icon: LayoutDashboard,
     path: "/dashboard",
+    roles: ["Admin", "FieldLead", "Agent"], // يمكنك تخصيص الصلاحيات أو حذفها
   },
+
+  // 🟠 قسم العمليات الانتخابية
   {
-    key: "people_management",
-    icon: Users,
-    path: "/dashboard/users",
+    key: "section_election_operations",
+    icon: Vote,
+    items: [
+      {
+        key: "elections",
+        icon: Vote,
+        path: "/elections",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: [
+          "geo_areas",
+          "committees",
+          "voters",
+          "candidates",
+          "zones_mansoura",
+        ],
+      },
+      {
+        key: "geo_areas",
+        icon: MapPin,
+        path: "/geo-areas",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["elections", "zones_mansoura"],
+      },
+      {
+        key: "zones_mansoura",
+        icon: MapPin,
+        path: "/zones/mansoura",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["geo_areas", "committees"],
+      },
+      {
+        key: "committees",
+        icon: Users,
+        path: "/committees",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["elections", "voters"],
+      },
+      {
+        key: "voters",
+        icon: UserCheck,
+        path: "/voters",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["committees", "candidates"],
+      },
+      {
+        key: "candidates",
+        icon: Crown,
+        path: "/candidates",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["voters", "elections"],
+      },
+    ],
   },
+
+  // 🟡 قسم الموارد الميدانية
   {
-    key: "reports_center",
-    icon: FileText,
-    path: "/dashboard/reports",
+    key: "section_field_resources",
+    icon: Shield,
+    items: [
+      {
+        key: "agents",
+        icon: Shield,
+        path: "/agents",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["volunteers", "observations"],
+      },
+      {
+        key: "volunteers",
+        icon: Heart,
+        path: "/volunteers",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["agents", "observations"],
+      },
+      {
+        key: "observations",
+        icon: Eye,
+        path: "/observations",
+        roles: ["Admin", "FieldLead", "Agent"],
+        relatedKeys: ["agents", "volunteers"],
+      },
+    ],
   },
+
+  // 🔵 قسم الحملات والتحليلات
   {
-    key: "campaigns_suite",
+    key: "section_campaign_intelligence",
     icon: Megaphone,
-    path: "/dashboard/campaigns",
+    items: [
+      {
+        key: "campaigns",
+        icon: Megaphone,
+        path: "/campaigns",
+        roles: ["Admin", "FieldLead"],
+        relatedKeys: ["automation", "analytics"],
+      },
+      {
+        key: "automation",
+        icon: Cpu,
+        path: "/automation",
+        roles: ["Admin"],
+        relatedKeys: ["campaigns", "analytics"],
+      },
+      {
+        key: "analytics",
+        icon: BarChart3,
+        path: "/analytics",
+        roles: ["Admin"],
+        relatedKeys: ["campaigns"],
+      },
+    ],
   },
+
+  // ⚙️ قسم الإعدادات الإدارية
   {
-    key: "settings",
+    key: "section_admin",
     icon: Settings,
-    path: "/dashboard/settings",
+    items: [
+      {
+        key: "settings",
+        icon: Settings,
+        path: "/settings",
+        roles: ["Admin"],
+      },
+    ],
   },
 ];
