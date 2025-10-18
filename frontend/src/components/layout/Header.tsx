@@ -248,92 +248,95 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
 
   const controls = direction === "rtl" ? controlsBase.reverse() : controlsBase;
   const brandLabel = language === "ar" ? "لوحة التحكم" : "Dashboard";
-
   return (
-    <motion.header
-      layout
-      initial={{ opacity: 0, y: -40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      dir={direction}
-      className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
-    >
-      {/* 🟣 الشعار والاسم */}
-      <div className="flex items-center gap-3">
-        <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
-          <Flame className="size-5" />
-        </div>
-
-        {isMobile && onToggleSidebar && variant === "dashboard" && (
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={language === "ar" ? "القائمة الجانبية" : "Open sidebar"}
-            className={cn("rounded-2xl p-0.5 shadow-sm", surfaceButtonClass)}
-            onClick={onToggleSidebar}
-          >
-            <Menu className="h-5 w-5" />
-          </Button>
-        )}
-
-        <motion.div
-          layout
-          transition={SPRING_TRANSITION}
-          className={cn(
-            "flex items-center gap-3 rounded-2xl px-3 py-2",
-            theme === "dark"
-              ? "bg-[hsla(var(--surface-secondary)/0.3)]"
-              : "bg-[hsla(var(--surface)/0.45)]"
-          )}
-        >
-          <motion.span
-            className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.85)] to-[hsl(var(--accent)/0.75)] text-[hsl(var(--primary-foreground))] shadow-lg"
-            transition={{ type: "spring", stiffness: 200, damping: 18 }}
-          >
-            <Vote className="h-5 w-5" />
-          </motion.span>
-          <div className="hidden min-w-[9rem] flex-col text-xs font-medium text-muted-foreground sm:flex">
-            <span className="text-sm font-semibold tracking-wide text-foreground">{brandLabel}</span>
-            <span>{formattedDate}</span>
+    <>
+      <motion.header
+        layout
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        dir={direction}
+        className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
+      >
+        {/* 🟣 الشعار والاسم */}
+        <div className="flex items-center gap-3">
+          <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
+            <Flame className="size-5" />
           </div>
-        </motion.div>
-      </div>
-
-      {/* 🟢 عناصر التحكم */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        {!isMobile && variant === "dashboard" && (
-          <motion.div
-            key="clock"
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="hidden text-right sm:flex sm:flex-col"
-          >
-            <span className="font-mono text-base font-semibold tracking-tight text-foreground">
-              {formattedTime}
-            </span>
-            <span className="text-xs text-muted-foreground">
-              {language === "ar" ? "التوقيت المحلي" : "Local time"}
-            </span>
-          </motion.div>
-        )}
-
-        <AnimatePresence initial={false} mode="popLayout">
-          {controls.map((control, index) => (
-            <motion.div
-              key={control.key ?? index}
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
+  
+          {isMobile && onToggleSidebar && variant === "dashboard" && (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={language === "ar" ? "القائمة الجانبية" : "Open sidebar"}
+              className={cn("rounded-2xl p-0.5 shadow-sm", surfaceButtonClass)}
+              onClick={onToggleSidebar}
             >
-              {control}
+              <Menu className="h-5 w-5" />
+            </Button>
+          )}
+  
+          <motion.div
+            layout
+            transition={SPRING_TRANSITION}
+            className={cn(
+              "flex items-center gap-3 rounded-2xl px-3 py-2",
+              theme === "dark"
+                ? "bg-[hsla(var(--surface-secondary)/0.3)]"
+                : "bg-[hsla(var(--surface)/0.45)]"
+            )}
+          >
+            <motion.span
+              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.85)] to-[hsl(var(--accent)/0.75)] text-[hsl(var(--primary-foreground))] shadow-lg"
+              transition={{ type: "spring", stiffness: 200, damping: 18 }}
+            >
+              <Vote className="h-5 w-5" />
+            </motion.span>
+            <div className="hidden min-w-[9rem] flex-col text-xs font-medium text-muted-foreground sm:flex">
+              <span className="text-sm font-semibold tracking-wide text-foreground">{brandLabel}</span>
+              <span>{formattedDate}</span>
+            </div>
+          </motion.div>
+        </div>
+  
+        {/* 🟢 عناصر التحكم */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {!isMobile && variant === "dashboard" && (
+            <motion.div
+              key="clock"
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="hidden text-right sm:flex sm:flex-col"
+            >
+              <span className="font-mono text-base font-semibold tracking-tight text-foreground">
+                {formattedTime}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {language === "ar" ? "التوقيت المحلي" : "Local time"}
+              </span>
             </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
+          )}
+  
+          <AnimatePresence initial={false} mode="popLayout">
+            {controls.map((control, index) => (
+              <motion.div
+                key={control.key ?? index}
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+              >
+                {control}
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
       </motion.header>
+  
+      {/* Notification Drawer should be inside the fragment */}
       <NotificationDrawer />
     </>
   );
+  
 };
