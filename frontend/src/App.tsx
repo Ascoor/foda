@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -10,7 +10,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Login } from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
-import  {EnhancedDashboard}  from "@/modules/dashboard/EnhancedDashboard";
+import { EnhancedDashboard } from "@/modules/dashboard/EnhancedDashboard";
 import { ElectionsList } from "@/modules/elections/List";
 import { ElectionDetails } from "@/modules/elections/Details";
 import { GeoAreasDashboard } from "@/modules/geo-areas/Dashboard";
@@ -32,9 +32,6 @@ import { CampaignsList } from "@/modules/campaigns/CampaignsList";
 import { AutomationDashboard } from "@/modules/automation/AutomationDashboard";
 import { NotificationProvider } from "@/contexts/NotificationContext";
 import { BarbaTransitionProvider } from "@/components/transition/BarbaTransitionProvider";
- 
-
- 
 import "@/i18n";
 import { AuthRedirect } from "./pages/AuthRedirect";
 import FloatingLandingPage from "@/nextgen/pages/LandingPage";
@@ -59,29 +56,26 @@ const App = () => (
                   <Route path="/login" element={<Login />} />
                   <Route element={<ProtectedRoute />}>
                     <Route element={<MainLayoutWrapper />}>
-     <Route path="/dashboard" element={<EnhancedDashboard />} />
-
-                    <Route path="/elections" element={<ElectionsList />} />
-                    <Route path="/elections/:id" element={<ElectionDetails />} />
-                    <Route path="/geo-areas" element={<GeoAreasDashboard />} />
-                    <Route path="/geo-areas/:id" element={<GeoAreaDetails />} />
-                    <Route path="/committees" element={<CommitteesList />} />
-                    <Route path="/committees/:id" element={<CommitteeDetails />} />
-                    <Route path="/voters" element={<VotersList />} />
-                    <Route path="/voters/:id" element={<VoterDetails />} />
-                    <Route path="/candidates" element={<CandidatesList />} />
-                    <Route path="/candidates/:id" element={<CandidateDetails />} />
-                    <Route path="/agents" element={<AgentsList />} />
-                    <Route path="/volunteers" element={<VolunteersList />} />
-
-                    <Route path="/observations" element={<ObservationsList />} />
-                    <Route path="/campaigns" element={<CampaignsList />} />
-                    <Route path="/automation" element={<AutomationDashboard />} />
-                    <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
-                    <Route path="/zones/mansoura" element={<ZoneDashboard />} />
-                    <Route path="/settings" element={<Settings />} />
-
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                      <Route path="/dashboard" element={<EnhancedDashboard />} />
+                      <Route path="/elections" element={<ElectionsList />} />
+                      <Route path="/elections/:id" element={<ElectionDetails />} />
+                      <Route path="/geo-areas" element={<GeoAreasDashboard />} />
+                      <Route path="/geo-areas/:id" element={<GeoAreaDetails />} />
+                      <Route path="/committees" element={<CommitteesList />} />
+                      <Route path="/committees/:id" element={<CommitteeDetails />} />
+                      <Route path="/voters" element={<VotersList />} />
+                      <Route path="/voters/:id" element={<VoterDetails />} />
+                      <Route path="/candidates" element={<CandidatesList />} />
+                      <Route path="/candidates/:id" element={<CandidateDetails />} />
+                      <Route path="/agents" element={<AgentsList />} />
+                      <Route path="/volunteers" element={<VolunteersList />} />
+                      <Route path="/observations" element={<ObservationsList />} />
+                      <Route path="/campaigns" element={<CampaignsList />} />
+                      <Route path="/automation" element={<AutomationDashboard />} />
+                      <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
+                      <Route path="/zones/mansoura" element={<ZoneDashboard />} />
+                      <Route path="/settings" element={<Settings />} />
+                      {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                       <Route path="*" element={<NotFound />} />
                     </Route>
                   </Route>
@@ -105,9 +99,7 @@ const MainLayoutWrapper = () => {
         data-barba-namespace={namespace}
         className="min-h-screen"
       >
-        <MainLayout>
-          <Outlet />
-        </MainLayout>
+        <MainLayout />
       </div>
     </NotificationProvider>
   );
