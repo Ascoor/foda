@@ -51,6 +51,11 @@
       --glow-primary: 0 0 30px hsla(165, 70%, 55%, 0.35);
       --glow-accent: 0 0 35px hsla(200, 75%, 65%, 0.4);
       --glow-ambient: 0 0 45px hsla(145, 35%, 70%, 0.25);
+
+      /* 🪟 Glassmorphism Essentials */
+      --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --blur-bg: blur(20px) saturate(180%);
+      --glass-bg: hsla(var(--card) / 0.75);
     }
   
     .dark {
@@ -79,6 +84,11 @@
       --glow-primary: 0 0 30px hsla(215, 70%, 58%, 0.4);
       --glow-accent: 0 0 35px hsla(270, 65%, 68%, 0.4);
       --glow-ambient: 0 0 60px hsla(215, 70%, 58%, 0.2);
+
+      /* 🪟 Glassmorphism Essentials */
+      --shadow-glass: 0 16px 48px rgba(0, 0, 0, 0.45);
+      --blur-bg: blur(24px) saturate(190%);
+      --glass-bg: hsla(var(--card) / 0.55);
       
       /* 🪟 Glass Layers */
       --glass-background: rgba(15, 20, 30, 0.85);
@@ -156,10 +166,10 @@
      ================================================================ */
   @layer components {
     .glass {
-      background: var(--glass-background, rgba(255,255,255,0.15));
-      backdrop-filter: blur(20px) saturate(180%);
+      background: var(--glass-bg, var(--glass-background, rgba(255,255,255,0.15)));
+      backdrop-filter: var(--blur-bg, blur(20px) saturate(180%));
       border: 1px solid var(--glass-border, rgba(255,255,255,0.25));
-      box-shadow: var(--glass-shadow, 0 8px 32px rgba(0,0,0,0.1));
+      box-shadow: var(--shadow-glass, var(--glass-shadow, 0 8px 32px rgba(0,0,0,0.1)));
       position: relative;
       transition: all 0.5s ease;
     }

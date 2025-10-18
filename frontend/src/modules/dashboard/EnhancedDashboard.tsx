@@ -56,7 +56,7 @@ const AnimatedCounter = ({
   return <span>{count.toLocaleString()}</span>;
 };
 
-const KPICard = ({ 
+const KPICard = ({
   title, 
   value, 
   change, 
@@ -81,7 +81,8 @@ const KPICard = ({
   return (
     <motion.div
       whileHover={{ scale: 1.02, y: -2 }}
-      className="glass-card group cursor-pointer relative overflow-hidden"
+      className="glass-card group relative cursor-pointer overflow-hidden"
+      style={{ boxShadow: "var(--shadow-glass)" }}
     >
       <div className="flex items-center justify-between mb-4">
         <div className={`
@@ -110,7 +111,7 @@ const KPICard = ({
       </div>
       
       {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
     </motion.div>
   );
 };
@@ -206,28 +207,38 @@ export const EnhancedDashboard: React.FC = () => {
   };
   
   return (
-    <div className="space-y-6">
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="relative z-20 mx-auto flex w-full max-w-7xl flex-col gap-8 p-6 pb-24 md:p-10"
+    >
       {/* Hero Welcome Section */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }} 
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10"
+        transition={{ delay: 0.1 }}
+        className="glass-card bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 text-center"
+        style={{ boxShadow: "var(--shadow-glass)" }}
       >
-        <div className="text-center py-8">
-          <motion.h1 
-            className="text-4xl font-bold mb-2 neon-text bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
+        <div className="py-8">
+          <motion.h1
+            className="bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-bold text-transparent md:text-5xl"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 200 }}
           >
             {t('dashboard.welcome')}
           </motion.h1>
-          <p className="text-muted-foreground text-lg">{t('dashboard.subtitle')}</p>
+          <p className="mt-3 text-lg text-muted-foreground">{t('dashboard.subtitle')}</p>
         </div>
       </motion.div>
-      
+
       {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <motion.div
+        layout
+        className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
+      >
         {statsConfig.map((stat, index) => {
           const details = getStatDetails(stat.key);
 
@@ -236,7 +247,7 @@ export const EnhancedDashboard: React.FC = () => {
               key={stat.key}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: 0.15 + index * 0.05 }}
             >
               <KPICard
                 title={stat.title}
@@ -249,69 +260,85 @@ export const EnhancedDashboard: React.FC = () => {
             </motion.div>
           );
         })}
-      </div>
-      
+      </motion.div>
+
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Progress Chart */}
-        <motion.div 
-          initial={{ opacity: 0, x: -20 }} 
-          animate={{ opacity: 1, x: 0 }} 
-          transition={{ delay: 0.4 }}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
           className="lg:col-span-2"
         >
-          <SafeDataRenderer
-            data={progressData}
-            loading={dashboardLoading}
-            error={dashboardError}
-            onRetry={refetchDashboard}
-            loadingMessage={t('dashboard.loading_progress')}
+          <motion.div
+            layout
+            className="glass-card h-full"
+            style={{ boxShadow: "var(--shadow-glass)" }}
           >
-            {(data) => (
-              <ProgressChart
-                data={data}
-                overall={safeProgress.overall}
-                remaining={safeProgress.remaining}
-              />
-            )}
-          </SafeDataRenderer>
+            <SafeDataRenderer
+              data={progressData}
+              loading={dashboardLoading}
+              error={dashboardError}
+              onRetry={refetchDashboard}
+              loadingMessage={t('dashboard.loading_progress')}
+            >
+              {(data) => (
+                <ProgressChart
+                  data={data}
+                  overall={safeProgress.overall}
+                  remaining={safeProgress.remaining}
+                />
+              )}
+            </SafeDataRenderer>
+          </motion.div>
         </motion.div>
-        
+
         {/* Activity Feed */}
-        <motion.div 
-          initial={{ opacity: 0, x: 20 }} 
-          animate={{ opacity: 1, x: 0 }} 
-          transition={{ delay: 0.5 }}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.35 }}
         >
-          <SafeDataRenderer
-            data={safeActivities}
-            loading={dashboardLoading}
-            error={dashboardError}
-            onRetry={refetchDashboard}
-            loadingMessage={t('dashboard.loading_activities')}
+          <motion.div
+            layout
+            className="glass-card h-full"
+            style={{ boxShadow: "var(--shadow-glass)" }}
           >
-            {(data) => <ActivityFeed activities={data} />}
-          </SafeDataRenderer>
+            <SafeDataRenderer
+              data={safeActivities}
+              loading={dashboardLoading}
+              error={dashboardError}
+              onRetry={refetchDashboard}
+              loadingMessage={t('dashboard.loading_activities')}
+            >
+              {(data) => <ActivityFeed activities={data} />}
+            </SafeDataRenderer>
+          </motion.div>
         </motion.div>
       </div>
-      
+
       {/* Live Map */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
+        transition={{ delay: 0.45 }}
+        className="glass-card"
+        style={{ boxShadow: "var(--shadow-glass)" }}
       >
         <LiveOperationsMap />
       </motion.div>
 
       {/* Activity Timeline */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
+        transition={{ delay: 0.55 }}
+        className="glass-card"
+        style={{ boxShadow: "var(--shadow-glass)" }}
       >
         <ActivitiesTimeline />
       </motion.div>
-    </div>
+    </motion.section>
   );
 };
