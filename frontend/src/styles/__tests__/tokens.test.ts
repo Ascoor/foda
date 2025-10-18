@@ -5,7 +5,7 @@ import path from 'path'
 import { COLOR_TOKENS, SUPPORTING_TOKENS } from '../colorTokens'
 
 const readCss = () => {
-  const filePath = path.resolve(__dirname, '..', 'variables.css')
+  const filePath = path.resolve(__dirname, '..', '..', 'theme', 'theme.css')
   return fs.readFileSync(filePath, 'utf-8')
 }
 

@@ -25,6 +25,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNotifications } from "@/contexts/NotificationContext";
+import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
@@ -265,14 +266,15 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
   const brandLabel = language === "ar" ? "لوحة التحكم" : "Dashboard";
 
   return (
-    <motion.header
-      layout
-      initial={{ opacity: 0, y: -40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      dir={direction}
-      className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
-    >
+    <>
+      <motion.header
+        layout
+        initial={{ opacity: 0, y: -40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        dir={direction}
+        className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
+      >
       <div className="flex items-center gap-3">
         <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
           <Flame className="size-5" />
@@ -347,6 +349,8 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
           ))}
         </AnimatePresence>
       </div>
-    </motion.header>
+      </motion.header>
+      <NotificationDrawer />
+    </>
   );
 };

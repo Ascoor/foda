@@ -1,0 +1,377 @@
+/* ==========================================================================
+   Election Dashboard Identity System (Unified)
+   Glassmorphism + Mountain Depth + Neomorphic Glow
+   Supports: Light/Dark + RTL/LTR
+   ========================================================================= */
+
+@layer base {
+  :root {
+    /* 🌄 MOUNTAIN DAY MODE */
+    --background: 145 35% 88%;
+    --background-secondary: 145 30% 92%;
+    --foreground: 210 25% 15%;
+
+    --card: 145 25% 95%;
+    --card-foreground: 210 25% 20%;
+    --popover: var(--card);
+    --popover-foreground: var(--card-foreground);
+
+    --surface: 145 30% 90%;
+    --surface-secondary: 145 25% 92%;
+    --surface-accent: 160 30% 88%;
+
+    --primary: 165 60% 42%; /* Emerald Hill */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 165 70% 55%;
+
+    --secondary: 28 90% 56%; /* Warm Terracotta */
+    --secondary-foreground: 28 90% 16%;
+    --secondary-glow: 28 95% 70%;
+
+    --accent: 200 70% 45%; /* Sky Blue */
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 200 75% 65%;
+
+    /* Legacy palette compatibility */
+    --color-primary: 11 100% 60%;
+    --color-secondary: 131 100% 60%;
+    --color-accent: 251 100% 60%;
+    --color-background: 0 0% 96%;
+    --text-primary: 0 0% 20%;
+    --text-secondary: 0 0% 47%;
+    --text-muted: 0 0% 60%;
+
+    --success: 140 60% 40%;
+    --warning: 45 95% 55%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --muted: 145 25% 80%;
+    --muted-foreground: 210 20% 40%;
+    --support-border: 0 0% 82%;
+    --support-input: 0 0% 88%;
+    --support-success: 142 76% 36%;
+    --support-warning: 45 100% 52%;
+    --support-destructive: 0 85% 55%;
+
+    --border: 145 20% 75%;
+    --input: 145 20% 75%;
+    --ring: 165 60% 42%;
+
+    --radius: 1.75rem;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.5rem;
+    --radius-2xl: 2rem;
+    --radius-full: 9999px;
+
+    /* Typography */
+    --font-family-base: 'Inter', 'DM Sans', 'Poppins', system-ui, -apple-system, sans-serif;
+    --font-family-rtl: 'Noto Kufi Arabic', 'Tajawal', 'Cairo', sans-serif;
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    --font-size-5xl: 3rem;
+
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.6;
+
+    /* Spacing Scale */
+    --spacing-2xs: 0.375rem;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 2.5rem;
+    --spacing-3xl: 3rem;
+    --spacing-4xl: 4rem;
+
+    /* Layout Dimensions */
+    --layout-max-width: 1280px;
+    --container-padding: clamp(1rem, 2.5vw, 2.75rem);
+    --header-height: 4rem;
+    --footer-height: 3.5rem;
+    --sidebar-width-expanded: 16rem;
+    --sidebar-width-collapsed: 5rem;
+    --sidebar-width: var(--sidebar-width-expanded);
+
+    /* Icon Sizing */
+    --icon-size-xs: 1rem;
+    --icon-size-sm: 1.25rem;
+    --icon-size-md: 1.5rem;
+    --icon-size-lg: 1.75rem;
+    --icon-size-xl: 2rem;
+
+    /* Shadows & Glow */
+    --shadow-soft: 0 4px 12px hsla(200, 25%, 18%, 0.08);
+    --shadow-elegant: 0 10px 40px -10px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 50px hsl(var(--primary-glow) / 0.4);
+    --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
+    --shadow-neomorph-raised: 8px 8px 16px hsla(145, 25%, 75%, 0.4), -8px -8px 16px hsla(0, 0%, 100%, 0.9);
+    --shadow-neomorph-inset: inset 6px 6px 12px hsla(145, 25%, 75%, 0.3), inset -6px -6px 12px hsla(0, 0%, 100%, 0.7);
+    --shadow-depth: 0 12px 32px hsla(200, 25%, 18%, 0.15);
+
+    /* Glassmorphism */
+    --glass-background: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.35);
+    --glass-shadow: var(--shadow-glass);
+    --glass-backdrop: blur(20px);
+
+    /* Interactions */
+    --hover-background: rgba(69, 195, 255, 0.12);
+    --active-background: rgba(165, 60%, 42%, 0.15);
+    --hover-glow: 0 0 16px rgba(69, 195, 255, 0.3);
+
+    /* Gradients */
+    --gradient-mountain-base: linear-gradient(135deg, hsl(145, 35%, 88%) 0%, hsl(160, 45%, 85%) 50%, hsl(175, 50%, 80%) 100%);
+    --gradient-mountain-depth: radial-gradient(ellipse at top, hsla(145, 30%, 90%, 0.8), hsla(160, 30%, 82%, 0.6) 50%, transparent);
+    --gradient-mountain-fog: linear-gradient(to bottom, hsla(145, 25%, 95%, 0) 0%, hsla(145, 25%, 95%, 0.3) 40%, hsla(145, 25%, 95%, 0.6) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
+    --gradient-glass: linear-gradient(135deg, rgba(69, 195, 255, 0.12), rgba(40, 180, 160, 0.08));
+    --gradient-glow: radial-gradient(ellipse at top, hsl(var(--secondary) / 0.25), transparent 65%);
+
+    /* Motion & Transitions */
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all var(--transition-normal);
+    --transition-glass: backdrop-filter var(--transition-normal), background-color var(--transition-normal);
+    --easing-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    --easing-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --easing-ease: ease-in-out;
+
+    /* Z-Index Scale */
+    --z-base: 0;
+    --z-dropdown: 1000;
+    --z-sticky: 1100;
+    --z-modal: 1200;
+    --z-popover: 1300;
+    --z-toast: 1400;
+    --z-tooltip: 1500;
+  }
+
+  .dark {
+    /* 🌌 MOUNTAIN NIGHT MODE */
+    --background: 230 40% 10%;
+    --background-secondary: 230 35% 14%;
+    --foreground: 210 45% 95%;
+
+    --card: 230 35% 14%;
+    --card-foreground: 210 45% 95%;
+    --popover: var(--card);
+    --popover-foreground: var(--card-foreground);
+
+    --surface: 230 35% 12%;
+    --surface-secondary: 230 30% 16%;
+    --surface-accent: 240 35% 18%;
+
+    --primary: 215 70% 58%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 215 70% 70%;
+
+    --secondary: 270 65% 58%;
+    --secondary-foreground: 270 65% 15%;
+    --secondary-glow: 270 65% 68%;
+
+    --accent: 30 100% 60%;
+    --accent-foreground: 0 0% 12%;
+    --accent-glow: 30 100% 70%;
+
+    --success: 142 76% 36%;
+    --warning: 45 90% 55%;
+    --destructive: 0 65% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    --muted: 228 22% 24%;
+    --muted-foreground: 0 0% 78%;
+
+    --border: 228 20% 26%;
+    --input: 228 20% 28%;
+    --ring: var(--primary);
+
+    --shadow-soft: 0 4px 12px hsla(220, 65%, 62%, 0.15);
+    --shadow-elegant: 0 12px 48px -12px hsla(215, 70%, 58%, 0.3);
+    --shadow-glow: 0 0 60px hsla(215, 70%, 58%, 0.3);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.6);
+    --shadow-neomorph-raised: 10px 10px 20px hsla(230, 40%, 5%, 0.6), -10px -10px 20px hsla(215, 70%, 28%, 0.15);
+    --shadow-neomorph-inset: inset 6px 6px 12px hsla(230, 35%, 8%, 0.55), inset -6px -6px 12px hsla(215, 65%, 32%, 0.25);
+    --shadow-depth: 0 12px 32px hsla(220, 65%, 62%, 0.25);
+
+    --glass-background: rgba(15, 20, 30, 0.85);
+    --glass-border: rgba(69, 243, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(69, 243, 255, 0.1);
+    --glass-backdrop: blur(18px);
+
+    --hover-background: rgba(69, 195, 255, 0.2);
+    --active-background: rgba(215, 70%, 58%, 0.25);
+    --hover-glow: 0 0 16px rgba(69, 243, 255, 0.35);
+
+    --gradient-mountain-base: linear-gradient(135deg, hsl(230, 40%, 10%) 0%, hsl(240, 45%, 14%) 50%, hsl(255, 50%, 16%) 100%);
+    --gradient-mountain-depth: radial-gradient(ellipse at top, hsla(215, 70%, 28%, 0.3), hsla(240, 45%, 20%, 0.4) 50%, transparent);
+    --gradient-mountain-fog: linear-gradient(to bottom, hsla(230, 35%, 12%, 0) 0%, hsla(240, 35%, 12%, 0.4) 40%, hsla(255, 35%, 14%, 0.7) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 87, 51, 0.25), rgba(87, 51, 255, 0.15));
+    --gradient-glow: radial-gradient(ellipse at top, hsl(var(--primary) / 0.35), transparent 65%);
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-family-base);
+    scroll-behavior: smooth;
+    transition: background 0.6s ease, color 0.6s ease;
+  }
+
+  [dir="rtl"] {
+    direction: rtl;
+    font-family: var(--font-family-rtl);
+  }
+
+  [dir="ltr"] {
+    direction: ltr;
+    font-family: var(--font-family-base);
+  }
+
+  /* Background Mountain Layers */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: var(--gradient-mountain-base);
+    z-index: -3;
+    transition: background 0.6s ease;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: var(--gradient-mountain-depth);
+    z-index: -2;
+    transition: background 0.6s ease;
+  }
+}
+
+@layer components {
+  .glass {
+    background: var(--glass-background, rgba(255, 255, 255, 0.15));
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border, rgba(255, 255, 255, 0.25));
+    box-shadow: var(--glass-shadow, 0 8px 32px rgba(0, 0, 0, 0.1));
+    position: relative;
+    transition: all 0.5s ease;
+  }
+
+  .glass-card {
+    @apply glass rounded-3xl p-6 transition-all duration-500;
+  }
+
+  .glass-card:hover {
+    box-shadow: var(--glass-shadow), var(--glow-primary);
+    transform: translateY(-3px) scale(1.02);
+  }
+
+  .glass-button {
+    @apply glass rounded-xl px-6 py-3 transition-all duration-300;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .glass-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s;
+  }
+
+  .glass-button:hover::before {
+    left: 100%;
+  }
+
+  .glass-button:hover {
+    background: var(--hover-background, rgba(255, 255, 255, 0.05));
+    transform: translateY(-2px);
+    box-shadow: var(--glow-accent);
+  }
+
+  .glow-border {
+    box-shadow: var(--glow-primary);
+  }
+
+  .glow-border-accent {
+    box-shadow: var(--glow-accent);
+  }
+
+  .glow-border-ambient {
+    box-shadow: var(--glow-ambient);
+  }
+
+  .neon-text {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
+  }
+
+  .mountain-fog::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-mountain-fog);
+    pointer-events: none;
+    z-index: 1;
+  }
+}
+
+@layer utilities {
+  .text-gradient-primary {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+
+  .text-gradient-secondary {
+    @apply bg-gradient-secondary bg-clip-text text-transparent;
+  }
+
+  .rtl\:mr-auto[dir="rtl"] {
+    margin-right: auto;
+  }
+
+  .rtl\:ml-auto[dir="rtl"] {
+    margin-left: auto;
+  }
+
+  .ltr\:ml-auto[dir="ltr"] {
+    margin-left: auto;
+  }
+
+  .ltr\:mr-auto[dir="ltr"] {
+    margin-right: auto;
+  }
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
