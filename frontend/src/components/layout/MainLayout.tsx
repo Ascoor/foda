@@ -1,15 +1,18 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
+
+import { Header } from './Header';
 import { Sidebar } from './Sidebar';
-import { Header } from './Header'; 
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useWindowSize } from '@/hooks/useWindowSize';
 import { cn } from '@/lib/utils';
 
 const DESKTOP_BREAKPOINT = 1024;
+const SIDEBAR_COLLAPSED_WIDTH = 88;
+const SIDEBAR_EXPANDED_WIDTH = 296;
 
 export const MainLayout = ({ children }: { children: ReactNode }) => {
   const { direction } = useLanguage();
@@ -21,11 +24,13 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
 
   // ✅ الحالات (states)
   const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(() =>
+    width < DESKTOP_BREAKPOINT ? 0 : SIDEBAR_COLLAPSED_WIDTH,
+  );
 
   // ✅ تحديد وضع الموبايل أو الديسكتوب
   const isMobile = width < DESKTOP_BREAKPOINT;
-  const sidebarWidth = isMobile ? 0 : collapsed ? 80 : 272;
 
   const hideFooterRoutes = useMemo(() => ['/dashboard'], []);
   const shouldRenderFooter = useMemo(
@@ -62,22 +67,33 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
       setMobileSidebarOpen(false);
       return;
     }
-    // تعطيل الطي في الموبايل
     setCollapsed(false);
   }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarWidth(0);
+      return;
+    }
+
+    setSidebarWidth(collapsed ? SIDEBAR_COLLAPSED_WIDTH : SIDEBAR_EXPANDED_WIDTH);
+  }, [collapsed, isMobile]);
 
   // ✅ محاذاة padding للغة RTL / LTR
   const paddingStyle = useMemo(() => {
     const paddingValue = `${sidebarWidth}px`;
     const baseStyle: CSSProperties = {
-      paddingInlineStart: paddingValue,
-      transition: 'padding-inline-start 0.3s ease',
+      transition: 'padding-inline-start 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
     };
 
     if (direction === 'rtl') {
+      baseStyle.paddingInlineStart = undefined;
       baseStyle.paddingRight = paddingValue;
+      baseStyle.paddingLeft = '0px';
     } else {
+      baseStyle.paddingInlineStart = paddingValue;
       baseStyle.paddingLeft = paddingValue;
+      baseStyle.paddingRight = '0px';
     }
 
     return baseStyle;
@@ -96,7 +112,7 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
     <div
       dir={direction}
       className={cn(
-        'relative min-h-screen w-full transition-colors duration-500',
+        'relative min-h-screen w-full overflow-hidden transition-colors duration-500',
         'bg-[hsl(var(--background))] text-[hsl(var(--foreground))]'
       )}
       style={{
@@ -104,7 +120,10 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
       }}
       data-theme={theme}
     >
-      {/* ✅ الشريط الجانبي */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_hsla(var(--primary)/0.12),_transparent_65%)]" />
+        <div className="absolute -top-32 left-1/2 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_hsla(var(--accent)/0.16),_transparent_70%)] blur-3xl" />
+      </div>
 
       {/* ✅ الهيكل الرئيسي */}
       <div className="flex min-h-screen flex-col" style={paddingStyle}>
@@ -115,6 +134,7 @@ export const MainLayout = ({ children }: { children: ReactNode }) => {
           isMobile={isMobile}
           isMobileSidebarOpen={isMobileSidebarOpen}
           setMobileSidebarOpen={setMobileSidebarOpen}
+          onWidthChange={setSidebarWidth}
         />
         {/* ✅ المحتوى */}
         <main
