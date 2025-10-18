@@ -153,7 +153,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       setAuthToken(activeToken);
 
       try {
-        const response = await api.get("/api/auth/me");
+        const response = await api.get("/api/v1/me");
         const nextUser = normalizeUser(response.data);
         setUser(nextUser);
       } catch (error) {
@@ -169,7 +169,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     async (credentials: LoginData) => {
       setLoading(true);
       try {
-        const response = await api.post("/api/auth/login", credentials);
+        const response = await api.post("/api/v1/login", credentials);
         const token = extractToken(response.data);
         if (token) {
           setAuthToken(token);
@@ -196,7 +196,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     async (data: RegisterData) => {
       setLoading(true);
       try {
-        const response = await api.post("/api/auth/register", data);
+        const response = await api.post("/api/v1/register", data);
         const token = extractToken(response.data);
 
         if (token) {
@@ -223,7 +223,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = useCallback(async () => {
     setLoading(true);
     try {
-      await api.post("/api/auth/logout");
+      await api.post("/api/v1/logout");
     } catch (error) {
       console.warn("Failed to call logout endpoint", error);
     } finally {
