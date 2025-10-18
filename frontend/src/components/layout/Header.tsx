@@ -22,21 +22,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-<<<<<<< HEAD
-import { Link, useNavigate } from "react-router-dom";
-import { useTheme } from "@/contexts/ThemeContext";
-=======
 import { useAuth } from "@/contexts/AuthContext";
->>>>>>> origin/new
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNotifications } from "@/contexts/NotificationContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
-<<<<<<< HEAD
-import { useWindowSize } from "@/hooks/useWindowSize";
-=======
->>>>>>> origin/new
 
 const SPRING_TRANSITION = {
   type: "spring",
@@ -53,17 +44,6 @@ interface HeaderProps {
 export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: HeaderProps) => {
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, direction } = useLanguage();
-<<<<<<< HEAD
-  let unreadCount = 0;
-  try {
-    const notifications = useNotifications();
-    unreadCount = notifications.unreadCount;
-  } catch (error) {
-    unreadCount = 0;
-  }
-  const { user, logout, isAuthenticated } = useAuth();
-=======
->>>>>>> origin/new
   const { width } = useWindowSize();
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
@@ -171,113 +151,6 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
       variant="ghost"
       size="icon"
       onClick={toggleLanguage}
-<<<<<<< HEAD
-      className={cn("rounded-full p-2 transition-all hover:scale-105", surfaceControlClass)}
-    >
-      <Globe
-        className={cn(
-          "h-5 w-5 transition-colors",
-          language === "ar"
-            ? "text-[hsl(var(--accent))]"
-            : "text-[hsl(var(--primary))]"
-        )}
-      />
-    </Button>
-  );
-
-  // 🔔 الإشعارات
-  const notificationsToggle =
-    variant === "dashboard" && isAuthenticated ? (
-      <Button
-        key="notifications"
-        variant="ghost"
-        size="icon"
-        aria-label="Notifications"
-        className={cn("relative rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
-      >
-        <Bell className="h-5 w-5" />
-        {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white shadow-md">
-            {unreadCount}
-          </span>
-        )}
-      </Button>
-    ) : null;
-
-  // 👤 قائمة المستخدم
-  const userMenu =
-    variant === "dashboard" && isAuthenticated ? (
-      <DropdownMenu key="user">
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="User menu"
-            className={cn("rounded-full p-2 hover:scale-105 transition-all", surfaceControlClass)}
-          >
-            <User className="h-5 w-5" />
-          </Button>
-        </DropdownMenuTrigger>
-
-        <DropdownMenuContent
-          align={direction === "rtl" ? "start" : "end"}
-          side="bottom"
-          sideOffset={10}
-          className={cn(
-            "min-w-[180px] rounded-2xl border p-2 z-50 backdrop-blur-lg shadow-lg",
-            "border-[hsla(var(--border)/0.2)] text-[hsl(var(--foreground))]",
-            theme === "dark"
-              ? "bg-[hsla(var(--color-surface)/0.92)]"
-              : "bg-[hsla(var(--color-surface)/0.97)]"
-          )}
-        >
-          <DropdownMenuItem className="flex items-center gap-2">
-            <UserCircle className="h-4 w-4" />
-            {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
-          </DropdownMenuItem>
-
-          <DropdownMenuItem className="flex items-center gap-2">
-            <Settings className="h-4 w-4" />
-            {language === "ar" ? "الإعدادات" : "Settings"}
-          </DropdownMenuItem>
-
-          <DropdownMenuItem
-            className="flex items-center gap-2 text-destructive"
-            disabled={isLoggingOut}
-            onSelect={(e) => {
-              e.preventDefault();
-              if (!isAuthenticated) return;
-              void handleLogout();
-            }}
-          >
-            <LogOut className="h-4 w-4" />
-            {isLoggingOut
-              ? language === "ar"
-                ? "جاري تسجيل الخروج..."
-                : "Logging out..."
-              : language === "ar"
-              ? "تسجيل الخروج"
-              : "Logout"}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ) : null;
-
-  const loginControl =
-    variant !== "dashboard" && !isAuthenticated ? (
-      <Button
-        key="login"
-        asChild
-        className={cn("rounded-full px-5", surfaceControlClass, "font-semibold")}
-      >
-        <Link to="/auth/login">{language === "ar" ? "تسجيل الدخول" : "Sign in"}</Link>
-      </Button>
-    ) : null;
-
-  const controls = [userMenu, themeToggle, languageToggle, notificationsToggle, loginControl].filter(
-    Boolean,
-  ) as JSX.Element[];
-=======
       aria-label={languageAriaLabel}
       className={cn(
         "relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]",
@@ -401,7 +274,6 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
 
   const containerHeight = isMobile ? 64 : isHovered ? 88 : 72;
   const brandLabel = language === "ar" ? "لوحة التحكم" : "Dashboard";
->>>>>>> origin/new
 
   return (
     <motion.header
@@ -416,22 +288,7 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
         "[--glass-bg:linear-gradient(135deg,hsla(var(--card)/0.72),hsla(var(--card)/0.6))]",
       )}
     >
-<<<<<<< HEAD
-      <div className="mx-auto flex h-[var(--layout-header-height)] w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
-        {/* 📱 زر القائمة الجانبية (للموبايل فقط) */}
-        <div className="flex items-center gap-3">
-          {isMobile && onToggleSidebar && variant === "dashboard" && (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={language === "ar" ? "فتح القائمة الجانبية" : "Open sidebar"}
-              className={cn("rounded-2xl p-2 shadow-md transition-colors", surfaceControlClass)}
-              onClick={onToggleSidebar}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          )}
-=======
+
       <motion.div
         animate={{ height: containerHeight }}
         transition={SPRING_TRANSITION}
@@ -456,18 +313,11 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-80 dark:opacity-40" />
           <div className="absolute -bottom-px left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
->>>>>>> origin/new
+
         </div>
 
         <div
           className={cn(
-<<<<<<< HEAD
-            "flex items-center gap-2 sm:gap-3 flex-row-reverse",
-          )}
-        >
-          {controls.map((control) => control)}
-        </div>
-=======
             "relative z-10 flex h-full flex-1 items-center justify-between gap-4 px-4",
             direction === "rtl" ? "flex-row-reverse" : "flex-row",
           )}
@@ -486,7 +336,6 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
                 </span>
               </Button>
             )}
->>>>>>> origin/new
 
             <motion.div
               layout
@@ -548,7 +397,7 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
               </motion.div>
             )}
             <AnimatePresence initial={false} mode="popLayout">
-            {controls.map((control, index) => (
+              {controls.map((control, index) => (
                 <motion.div
                   key={control.key ?? index}
                   initial={{ opacity: 0, y: -8 }}
