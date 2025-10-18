@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-type ThemeMode = "day" | "night";
-type Language = "ar" | "en";
+export type ThemeMode = "day" | "night";
+export type Language = "ar" | "en";
 
 type FloatingState = {
   theme: ThemeMode;
