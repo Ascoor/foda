@@ -123,8 +123,27 @@ $apiRoutes = function () {
     });
 };
 
-$apiRoutes();
-
 Route::prefix('v1')->group(function () use ($apiRoutes) {
     $apiRoutes();
 });
+
+Route::any('{path?}', function (Request $request, ?string $path = null) {
+    $path = $path ? ltrim($path, '/') : '';
+
+    if ($path === '') {
+        return redirect(url('api/v1'), 307);
+    }
+
+    if ($path === 'v1' || strpos($path, 'v1/') === 0) {
+        abort(404);
+    }
+
+    $targetUrl = url('api/v1/' . $path);
+    $queryString = $request->getQueryString();
+
+    if ($queryString) {
+        $targetUrl .= '?' . $queryString;
+    }
+
+    return redirect($targetUrl, 307);
+})->where('path', '.*');
