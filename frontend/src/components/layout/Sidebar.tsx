@@ -71,17 +71,6 @@ export const Sidebar = ({
   const brandLabel = language === "ar" ? "فودا برو" : "Foda Pro";
   const versionLabel = language === "ar" ? "الإصدار 1.0.0" : "Version 1.0.0";
 
-  useEffect(() => {
-    setOpenSections((prev) => {
-      const next: Record<string, boolean> = {};
-      filteredSections.forEach((section) => {
-        const hasActive = section.items?.some((item) => isPathActive(item.path));
-        next[section.key] = hasActive || prev[section.key] || false;
-      });
-      return next;
-    });
-  }, [filteredSections, isPathActive]);
-
   const availableRoles = useMemo(() => {
     const rawRoles = user?.roleNames ?? user?.roles?.map((role) => role.name) ?? [];
     return new Set(rawRoles.map((role) => role.toLowerCase()));
@@ -109,6 +98,17 @@ export const Sidebar = ({
     (path: string) => location.pathname === path || location.pathname.startsWith(`${path}/`),
     [location.pathname],
   );
+
+  useEffect(() => {
+    setOpenSections((prev) => {
+      const next: Record<string, boolean> = {};
+      filteredSections.forEach((section) => {
+        const hasActive = section.items?.some((item) => isPathActive(item.path));
+        next[section.key] = hasActive || prev[section.key] || false;
+      });
+      return next;
+    });
+  }, [filteredSections, isPathActive]);
 
   const toggleSection = (key: string) =>
     setOpenSections((prev) => ({
