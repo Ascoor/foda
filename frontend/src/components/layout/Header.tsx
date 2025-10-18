@@ -24,6 +24,7 @@ import {
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useNotifications } from "@/contexts/NotificationContext";
+import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useWindowSize } from "@/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
@@ -331,6 +332,8 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
           ))}
         </AnimatePresence>
       </div>
-    </motion.header>
+      </motion.header>
+      <NotificationDrawer />
+    </>
   );
 };
