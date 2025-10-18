@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Outlet } from "react-router-dom";
 
-import { AuroraBackground } from "@/nextgen/components/ui/AuroraBackground";
+import { AuroraBackground } from "@features/marketing/components/ui/AuroraBackground";
 import { Header } from "@/components/layout/Header";
 import { Sidebar } from "@/shared/layout/Sidebar";
 import { useTheme } from "@/contexts/ThemeContext";
