@@ -22,7 +22,7 @@ export const MainLayout = () => {
 
   return (
     <AuroraBackground>
-      <div className="relative flex min-h-screen flex-col gap-6 pb-16">
+      <div className="relative flex min-h-screen flex-col gap-2 pb-16">
         <Header onToggleSidebar={toggleSidebar} />
 
         <div className="relative mx-auto flex w-full max-w-6xl flex-1 gap-6 px-4 md:px-0">

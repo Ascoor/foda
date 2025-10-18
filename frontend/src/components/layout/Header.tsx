@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Bell,
+  Flame,
   Globe,
   LogOut,
   Menu,
@@ -14,7 +15,6 @@ import {
   Vote,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -49,23 +49,19 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
   const { user, logout, isAuthenticated } = useAuth();
 
   const isMobile = width < 768;
-  const [now, setNow] = useState(() => new Date());
+  const [now, setNow] = useState(new Date());
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  let unreadCount = 0;
-  let openNotificationsDrawer: (() => void) | undefined;
-  try {
-    const notifications = useNotifications();
-    unreadCount = notifications.unreadCount;
-    openNotificationsDrawer = () => notifications.setDrawerOpen(true);
-  } catch (error) {
-    unreadCount = 0;
-  }
-
+  // 🧭 Apply direction (RTL / LTR) dynamically
   useEffect(() => {
-    const timer = window.setInterval(() => setNow(new Date()), 1000);
-    return () => window.clearInterval(timer);
+    document.documentElement.dir = direction;
+  }, [direction]);
+
+  // ⏰ Update time every second
+  useEffect(() => {
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
   }, []);
 
   const formattedTime = useMemo(
@@ -88,6 +84,17 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
     [language, now],
   );
 
+  // 🧩 Notifications
+  let unreadCount = 0;
+  let openNotificationsDrawer: (() => void) | undefined;
+  try {
+    const notifications = useNotifications();
+    unreadCount = notifications.unreadCount;
+    openNotificationsDrawer = () => notifications.setDrawerOpen(true);
+  } catch {
+    unreadCount = 0;
+  }
+
   const surfaceButtonClass =
     theme === "dark"
       ? "bg-[hsla(var(--color-surface)/0.32)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.45)]"
@@ -104,13 +111,15 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
     }
   };
 
-  const themeAriaLabel = language === "ar"
-    ? theme === "light"
-      ? "تفعيل الوضع الليلي"
-      : "تفعيل الوضع الفاتح"
-    : theme === "light"
-      ? "Switch to dark mode"
-      : "Switch to light mode";
+  // 🌗 Theme + Language Buttons
+  const themeAriaLabel =
+    language === "ar"
+      ? theme === "light"
+        ? "تفعيل الوضع الليلي"
+        : "تفعيل الوضع الفاتح"
+      : theme === "light"
+        ? "Switch to dark mode"
+        : "Switch to light mode";
 
   const languageAriaLabel = language === "ar" ? "تغيير اللغة" : "Toggle language";
 
@@ -121,10 +130,7 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
       size="icon"
       onClick={toggleTheme}
       aria-label={themeAriaLabel}
-      className={cn(
-        "relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]",
-        surfaceButtonClass,
-      )}
+      className={cn("relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]", surfaceButtonClass)}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
@@ -152,10 +158,7 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
       size="icon"
       onClick={toggleLanguage}
       aria-label={languageAriaLabel}
-      className={cn(
-        "relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]",
-        surfaceButtonClass,
-      )}
+      className={cn("relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]", surfaceButtonClass)}
     >
       <span className="flex h-10 w-10 items-center justify-center">
         <Globe
@@ -176,10 +179,7 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
         size="icon"
         aria-label="Notifications"
         onClick={() => openNotificationsDrawer?.()}
-        className={cn(
-          "relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]",
-          surfaceButtonClass,
-        )}
+        className={cn("relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]", surfaceButtonClass)}
       >
         <span className="flex h-10 w-10 items-center justify-center">
           <Bell className="h-5 w-5" />
@@ -206,10 +206,7 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
             variant="ghost"
             size="icon"
             aria-label="User menu"
-            className={cn(
-              "relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]",
-              surfaceButtonClass,
-            )}
+            className={cn("relative rounded-full p-0.5 transition-all duration-300 hover:scale-[1.03]", surfaceButtonClass)}
           >
             <span className="flex h-10 w-10 items-center justify-center">
               <User className="h-5 w-5" />
@@ -238,8 +235,8 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
           <DropdownMenuItem
             className="flex items-center gap-2 rounded-2xl px-3 py-2 text-destructive"
             disabled={isLoggingOut}
-            onSelect={(event) => {
-              event.preventDefault();
+            onSelect={(e) => {
+              e.preventDefault();
               if (!isAuthenticated) return;
               void handleLogout();
             }}
@@ -259,129 +256,97 @@ export const Header = ({ layoutId, onToggleSidebar, variant = "dashboard" }: Hea
 
   const loginControl =
     variant !== "dashboard" && !isAuthenticated ? (
-      <Button
-        key="login"
-        asChild
-        className={cn("rounded-full px-5 font-semibold", surfaceButtonClass)}
-      >
+      <Button key="login" asChild className={cn("rounded-full px-5 font-semibold", surfaceButtonClass)}>
         <Link to="/auth/login">{language === "ar" ? "تسجيل الدخول" : "Sign in"}</Link>
       </Button>
     ) : null;
 
-  const controls = [userMenu, notificationsToggle, themeToggle, languageToggle, loginControl].filter(
-    Boolean,
-  ) as JSX.Element[];
-
-  const containerHeight = isMobile ? 64 : isHovered ? 88 : 72;
+  const controls = [userMenu, notificationsToggle, themeToggle, languageToggle, loginControl].filter(Boolean) as JSX.Element[];
   const brandLabel = language === "ar" ? "لوحة التحكم" : "Dashboard";
 
   return (
     <motion.header
-    layout
-    initial={{ opacity: 0, y: -40 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.7, ease: "easeOut" }}
-    className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
-  >
-    <div className="flex items-center gap-3">
-      <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
-        <Flame className="size-5" />
-      </div>
-      <div className="leading-tight">
-        <p className="text-xs uppercase tracking-[0.35em] text-slate-600 dark:text-slate-300">Aurora Election</p>
-        <h1 className="text-lg font-semibold text-slate-900 dark:text-white">Floating Command Center</h1>
-      </div>
-    </div>
-    <div className="flex items-center gap-2">
-            {isMobile && onToggleSidebar && variant === "dashboard" && (
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label={language === "ar" ? "فتح القائمة الجانبية" : "Open sidebar"}
-                className={cn("rounded-2xl p-0.5 shadow-sm", surfaceButtonClass)}
-                onClick={onToggleSidebar}
-              >
-                <span className="flex h-10 w-10 items-center justify-center">
-                  <Menu className="h-5 w-5" />
-                </span>
-              </Button>
-            )}
+      layout
+      initial={{ opacity: 0, y: -40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      dir={direction}
+      className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
+    >
+      <div className="flex items-center gap-3">
+        <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
+          <Flame className="size-5" />
+        </div>
 
-            <motion.div
-              layout
-              transition={SPRING_TRANSITION}
-              className={cn(
-                "flex items-center gap-3 rounded-2xl px-3 py-2",
-                theme === "dark"
-                  ? "bg-[hsla(var(--surface-secondary)/0.3)]"
-                  : "bg-[hsla(var(--surface)/0.45)]",
-              )}
+        <div className="flex items-center gap-2">
+          {isMobile && onToggleSidebar && variant === "dashboard" && (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={language === "ar" ? "فتح القائمة الجانبية" : "Open sidebar"}
+              className={cn("rounded-2xl p-0.5 shadow-sm", surfaceButtonClass)}
+              onClick={onToggleSidebar}
             >
-              <motion.span
-                className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.85)] to-[hsl(var(--accent)/0.75)] text-[hsl(var(--primary-foreground))] shadow-lg"
-                animate={{ rotate: isHovered ? 6 : 0 }}
-                transition={{ type: "spring", stiffness: 200, damping: 18 }}
-              >
-                <Vote className="h-5 w-5" />
-              </motion.span>
-              <div className="hidden min-w-[9rem] flex-col text-xs font-medium text-muted-foreground sm:flex">
-                <span className="text-sm font-semibold tracking-wide text-foreground">{brandLabel}</span>
-                <span>{formattedDate}</span>
-              </div>
-            </motion.div>
-          </div>
-
-          {variant === "dashboard" && !isMobile && (
-            <motion.div
-              className="relative hidden flex-1 items-center lg:flex"
-              animate={{ width: isHovered ? "100%" : "60%", opacity: isHovered ? 1 : 0.92 }}
-              transition={SPRING_TRANSITION}
-            >
-              <Search className="absolute inset-y-0 left-3 my-auto h-4 w-4 text-muted-foreground rtl:left-auto rtl:right-3" />
-              <input
-                type="search"
-                placeholder={language === "ar" ? "ابحث عبر التقارير والفرق" : "Search reports, teams..."}
-                className={cn(
-                  "h-11 w-full rounded-[20px] border px-10 text-sm font-medium outline-none transition",
-                  "border-[hsla(var(--border)/0.18)] bg-[hsla(var(--surface)/0.55)]",
-                  "focus:border-[hsla(var(--primary)/0.45)] focus:ring-2 focus:ring-[hsla(var(--primary)/0.35)]",
-                  direction === "rtl" && "text-right",
-                )}
-              />
-            </motion.div>
+              <Menu className="h-5 w-5" />
+            </Button>
           )}
 
-          <div className="flex items-center gap-2 sm:gap-3">
-            {variant === "dashboard" && !isMobile && (
-              <motion.div
-                key="clock"
-                initial={{ opacity: 0, y: -6 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 }}
-                className="hidden text-right sm:flex sm:flex-col"
-              >
-                <span className="font-mono text-base font-semibold tracking-tight text-foreground">
-                  {formattedTime}
-                </span>
-                <span className="text-xs text-muted-foreground">{language === "ar" ? "التوقيت المحلي" : "Local time"}</span>
-              </motion.div>
+          <motion.div
+            layout
+            transition={SPRING_TRANSITION}
+            className={cn(
+              "flex items-center gap-3 rounded-2xl px-3 py-2",
+              theme === "dark"
+                ? "bg-[hsla(var(--surface-secondary)/0.3)]"
+                : "bg-[hsla(var(--surface)/0.45)]",
             )}
-            <AnimatePresence initial={false} mode="popLayout">
-              {controls.map((control, index) => (
-                <motion.div
-                  key={control.key ?? index}
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {control}
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
- 
- 
+          >
+            <motion.span
+              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.85)] to-[hsl(var(--accent)/0.75)] text-[hsl(var(--primary-foreground))] shadow-lg"
+              animate={{ rotate: isHovered ? 6 : 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 18 }}
+            >
+              <Vote className="h-5 w-5" />
+            </motion.span>
+            <div className="hidden min-w-[9rem] flex-col text-xs font-medium text-muted-foreground sm:flex">
+              <span className="text-sm font-semibold tracking-wide text-foreground">{brandLabel}</span>
+              <span>{formattedDate}</span>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 sm:gap-3">
+        {variant === "dashboard" && !isMobile && (
+          <motion.div
+            key="clock"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: 0.1 }}
+            className="hidden text-right sm:flex sm:flex-col"
+          >
+            <span className="font-mono text-base font-semibold tracking-tight text-foreground">
+              {formattedTime}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {language === "ar" ? "التوقيت المحلي" : "Local time"}
+            </span>
+          </motion.div>
+        )}
+        <AnimatePresence initial={false} mode="popLayout">
+          {controls.map((control, index) => (
+            <motion.div
+              key={control.key ?? index}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.2 }}
+            >
+              {control}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </motion.header>
   );
 };
