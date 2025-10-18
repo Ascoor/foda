@@ -1,17 +1,21 @@
 # 🗳️ نظام إدارة الحملات الانتخابية - Elections360
 
-**إصدار:** 1.0
-**الواجهة الخلفية:** Laravel 11 + MySQL
-**الواجهة الأمامية:** React + TypeScript + TailwindCSS
+**إصدار المستودع:** 2025.03
+**الواجهة الخلفية:** Laravel 10.49 + PHP 8.1 + MySQL
+**الواجهة الأمامية:** React 18 + TypeScript + Vite + TailwindCSS (shadcn/ui)
 **الخرائط:** Leaflet + OpenStreetMap
-**الوقت الفعلي:** Laravel WebSockets / Pusher
-**التحليلات:** Recharts / D3.js
+**الوقت الفعلي:** Laravel Echo + Pusher (تحت الإعداد)
+**التحليلات:** Recharts + D3.js
 
 ---
 
 ## 📚 وثائق التطوير
 
-تم توحيد جميع وثائق التطوير والتسليم داخل مجلد [`docs/`](docs/README.md). ابدأ بالملف [`DEVELOPMENT_OVERVIEW.md`](docs/DEVELOPMENT_OVERVIEW.md) للحصول على ملخص واحد للبنية، وخطوات التشغيل، وخارطة الطريق، وأولويات الأمان. تم حفظ المستندات التفصيلية القديمة داخل [`docs/archive/`](docs/archive) للرجوع إليها عند الحاجة.
+تم توحيد جميع وثائق التطوير والتسليم داخل مجلد [`docs/`](.). ابدأ بالملفات التالية للحصول على صورة مكتملة:
+- [`ARCHITECTURE.md`](ARCHITECTURE.md): نظرة تقنية على التراكيب الأساسية.
+- [`DATA_FLOW.md`](DATA_FLOW.md): مسارات البيانات بين الواجهة الأمامية وLaravel.
+- [`APP_LOGIC_REVIEW.md`](APP_LOGIC_REVIEW.md): تحليل منظم لمنطق التطبيق والسيناريوهات التشغيلية.
+- [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md): خارطة الطريق ومراحل التنفيذ.
 
 ## 🎯 نظرة عامة
 
@@ -31,13 +35,13 @@
 
 | المكون | التقنية | الوظيفة |
 |--------|-----------|-----------|
-| **الواجهة الخلفية (Backend)** | Laravel 11 | واجهة برمجة التطبيقات RESTful API وإدارة الصلاحيات والأمان |
+| **الواجهة الخلفية (Backend)** | Laravel 10 + PHP 8.1 | واجهة برمجة التطبيقات RESTful API وإدارة الصلاحيات والأمان |
 | **قاعدة البيانات (Database)** | MySQL 8 | تخزين البيانات المنظمة (ناخبين، لجان، مندوبين، تقارير) |
-| **الواجهة الأمامية (Frontend)** | React + TypeScript + Tailwind | لوحة تحكم متفاعلة وديناميكية |
-| **الاتصال اللحظي (Realtime)** | Laravel WebSockets / Pusher | بث مباشر للتقارير وحركة المندوبين |
+| **الواجهة الأمامية (Frontend)** | React 18 + Vite + Tailwind | لوحة تحكم متفاعلة وديناميكية |
+| **الاتصال اللحظي (Realtime)** | Laravel Echo / Pusher (قيد الإعداد) | بث مباشر للتقارير وحركة المندوبين |
 | **الخرائط التفاعلية (Maps)** | Leaflet + OSM | عرض وتقطيع المناطق الجغرافية |
-| **التحليلات (Analytics)** | Recharts / D3.js | عرض المخططات والتحليلات الفورية |
-| **الأمان (Security)** | Laravel Sanctum / JWT | مصادقة آمنة وصلاحيات متعددة المستويات |
+| **التحليلات (Analytics)** | Recharts + D3.js | عرض المخططات والتحليلات الفورية |
+| **الأمان (Security)** | Laravel Sanctum + Spatie Permission | مصادقة آمنة وصلاحيات متعددة المستويات |
 | **المتطوعين والميدان (Mobile)** | React Native (لاحقًا) | واجهة خفيفة للمندوبين الميدانيين |
 
 ---
