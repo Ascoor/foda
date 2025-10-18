@@ -54,7 +54,7 @@ const App = () => (
                   <Route path="/experience" element={<FloatingDashboard />} />
                   <Route path="/app" element={<AuthRedirect />} />
                   <Route path="/login" element={<Login />} />
-                  <Route element={<ProtectedRoute />}>
+                  <Route element={<ProtectedRoute />}> 
                     <Route element={<MainLayoutWrapper />}>
                       <Route path="/dashboard" element={<EnhancedDashboard />} />
                       <Route path="/elections" element={<ElectionsList />} />
