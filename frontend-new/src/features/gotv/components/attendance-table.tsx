@@ -9,14 +9,17 @@ const priorityStyles: Record<GotvVoter["priority"], string> = {
 type AttendanceTableProps = {
   voters: GotvVoter[];
   onToggle: (id: string, hasVoted: boolean) => void;
+  isLoading?: boolean;
 };
 
-export const AttendanceTable = ({ voters, onToggle }: AttendanceTableProps) => (
+export const AttendanceTable = ({ voters, onToggle, isLoading = false }: AttendanceTableProps) => (
   <section className="rounded-3xl bg-white shadow-lg dark:bg-slate-900">
     <header className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
       <div>
         <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Turnout list</h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400">Mark voters as soon as they arrive at the polls.</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">
+          Mark voters as soon as they arrive at the polls.
+        </p>
       </div>
     </header>
 
@@ -27,34 +30,62 @@ export const AttendanceTable = ({ voters, onToggle }: AttendanceTableProps) => (
             <th className="px-6 py-3">Voter</th>
             <th className="px-6 py-3">Precinct</th>
             <th className="px-6 py-3">Priority</th>
+            <th className="px-6 py-3">Turnout</th>
             <th className="px-6 py-3">Contact</th>
             <th className="px-6 py-3">Has voted?</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-          {voters.map((voter) => (
-            <tr key={voter.id} className="transition hover:bg-slate-50 dark:hover:bg-slate-800/60">
-              <td className="px-6 py-4 text-slate-900 dark:text-slate-100">{voter.fullName}</td>
-              <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{voter.precinct}</td>
-              <td className="px-6 py-4">
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${priorityStyles[voter.priority]}`}>
-                  {voter.priority}
-                </span>
-              </td>
-              <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">{voter.phone ?? "—"}</td>
-              <td className="px-6 py-4">
-                <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                  <input
-                    type="checkbox"
-                    checked={voter.hasVoted}
-                    onChange={(event) => onToggle(voter.id, event.target.checked)}
-                    className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
-                  />
-                  {voter.hasVoted ? "Checked in" : "Waiting"}
-                </label>
+          {isLoading ? (
+            <tr>
+              <td
+                colSpan={6}
+                className="px-6 py-12 text-center text-sm text-slate-500 dark:text-slate-400"
+              >
+                Syncing turnout data…
               </td>
             </tr>
-          ))}
+          ) : voters.length === 0 ? (
+            <tr>
+              <td
+                colSpan={6}
+                className="px-6 py-12 text-center text-sm text-slate-500 dark:text-slate-400"
+              >
+                No voters in the queue right now.
+              </td>
+            </tr>
+          ) : (
+            voters.map((voter) => (
+              <tr key={voter.id} className="transition hover:bg-slate-50 dark:hover:bg-slate-800/60">
+                <td className="px-6 py-4 text-slate-900 dark:text-slate-100">{voter.fullName}</td>
+                <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{voter.precinct}</td>
+                <td className="px-6 py-4">
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${priorityStyles[voter.priority]}`}
+                  >
+                    {voter.priority}
+                  </span>
+                </td>
+                <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">
+                  {typeof voter.attendanceRate === "number"
+                    ? `${Math.round(voter.attendanceRate * 100)}%`
+                    : "—"}
+                </td>
+                <td className="px-6 py-4 text-xs text-slate-500 dark:text-slate-400">{voter.phone ?? "—"}</td>
+                <td className="px-6 py-4">
+                  <label className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <input
+                      type="checkbox"
+                      checked={voter.hasVoted}
+                      onChange={(event) => onToggle(voter.id, event.target.checked)}
+                      className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
+                    />
+                    {voter.hasVoted ? "Checked in" : "Waiting"}
+                  </label>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

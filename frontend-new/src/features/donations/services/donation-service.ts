@@ -1,4 +1,7 @@
-export type DonationMethod = "cash" | "card" | "check" | "online";
+import { apiClient, ApiResponse } from "@/shared/api/config";
+import { DonationDTO, DonationTotalsDTO } from "@/shared/api/dtos";
+
+export type DonationMethod = DonationDTO["method"];
 
 export type Donation = {
   id: string;
@@ -11,44 +14,42 @@ export type Donation = {
 
 export type CreateDonationInput = Omit<Donation, "id">;
 
-const createId = () => Math.random().toString(36).slice(2, 9);
+type DonationListResponse = ApiResponse<DonationDTO[]>;
+type DonationResponse = ApiResponse<DonationDTO>;
+type DonationTotalsResponse = ApiResponse<DonationTotalsDTO>;
 
-let donations: Donation[] = [
-  {
-    id: createId(),
-    donorName: "North Ridge PAC",
-    amount: 250,
-    method: "check",
-    date: "2024-08-16",
-    notes: "Pick up deposit from campaign office",
-  },
-  {
-    id: createId(),
-    donorName: "Layla Hassan",
-    amount: 50,
-    method: "online",
-    date: "2024-08-15",
-  },
-];
+const mapDonation = (dto: DonationDTO): Donation => ({
+  id: String(dto.id),
+  donorName: dto.donor_name,
+  amount: dto.amount,
+  method: dto.method,
+  date: dto.donated_at,
+  notes: dto.notes ?? undefined,
+});
 
-const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
+const serializeDonation = (input: CreateDonationInput) => ({
+  donor_name: input.donorName,
+  amount: input.amount,
+  method: input.method,
+  donated_at: input.date,
+  notes: input.notes,
+});
 
 export const donationService = {
   async list() {
-    return clone(donations);
+    const { data } = await apiClient.get<DonationListResponse>("/donations");
+    return (data.data ?? []).map(mapDonation);
   },
   async create(input: CreateDonationInput) {
-    const donation: Donation = { ...input, id: createId() };
-    donations = [donation, ...donations];
-    return clone(donation);
+    const { data } = await apiClient.post<DonationResponse>(
+      "/donations",
+      serializeDonation(input),
+    );
+
+    return data.data ? mapDonation(data.data) : undefined;
   },
   async totals() {
-    const total = donations.reduce((sum, donation) => sum + donation.amount, 0);
-    const average = donations.length > 0 ? total / donations.length : 0;
-    return {
-      total,
-      average,
-      count: donations.length,
-    };
+    const { data } = await apiClient.get<DonationTotalsResponse>("/donations/summary");
+    return data.data ?? { total: 0, average: 0, count: 0 };
   },
 };

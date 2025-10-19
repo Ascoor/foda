@@ -1,4 +1,7 @@
-export type VolunteerStatus = "active" | "inactive" | "training";
+import { apiClient, ApiResponse } from "@/shared/api/config";
+import { VolunteerDTO } from "@/shared/api/dtos";
+
+export type VolunteerStatus = VolunteerDTO["status"];
 
 export type Volunteer = {
   id: string;
@@ -15,69 +18,52 @@ export type Volunteer = {
 
 export type CreateVolunteerInput = Omit<Volunteer, "id">;
 
-const createId = () => Math.random().toString(36).slice(2, 9);
+type VolunteerListResponse = ApiResponse<VolunteerDTO[]>;
+type VolunteerResponse = ApiResponse<VolunteerDTO>;
 
-const mockVolunteers: Volunteer[] = [
-  {
-    id: createId(),
-    fullName: "Maya Al-Hassan",
-    phone: "555-980-2231",
-    email: "maya.alhassan@example.com",
-    neighborhood: "North Ridge",
-    status: "active",
-    skills: ["door knocking", "data entry"],
-    availability: "Weekdays 5-8pm",
-    hoursThisWeek: 6,
-    assignedTasks: ["Canvassing shift", "Data cleanup"],
-  },
-  {
-    id: createId(),
-    fullName: "Zaid Kareem",
-    phone: "555-412-7788",
-    neighborhood: "Riverfront",
-    status: "training",
-    skills: ["phone banking"],
-    availability: "Weekends",
-    hoursThisWeek: 3,
-    assignedTasks: ["Phone bank onboarding"],
-  },
-  {
-    id: createId(),
-    fullName: "Hana Youssef",
-    email: "hana.youssef@example.com",
-    neighborhood: "Downtown",
-    status: "inactive",
-    skills: ["community outreach"],
-    availability: "On call",
-    hoursThisWeek: 0,
-    assignedTasks: [],
-  },
-];
+const mapVolunteer = (dto: VolunteerDTO): Volunteer => ({
+  id: String(dto.id),
+  fullName: dto.full_name,
+  phone: dto.phone,
+  email: dto.email,
+  neighborhood: dto.neighborhood,
+  status: dto.status,
+  skills: dto.skills ?? [],
+  availability: dto.availability ?? "",
+  hoursThisWeek: dto.hours_this_week ?? 0,
+  assignedTasks: dto.assigned_tasks ?? [],
+});
 
-let volunteers = [...mockVolunteers];
-
-const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
+const serializeVolunteer = (input: CreateVolunteerInput) => ({
+  full_name: input.fullName,
+  phone: input.phone,
+  email: input.email,
+  neighborhood: input.neighborhood,
+  status: input.status,
+  skills: input.skills,
+  availability: input.availability,
+  hours_this_week: input.hoursThisWeek,
+  assigned_tasks: input.assignedTasks,
+});
 
 export const volunteerService = {
   async list() {
-    return clone(volunteers);
+    const { data } = await apiClient.get<VolunteerListResponse>("/volunteers");
+    return (data.data ?? []).map(mapVolunteer);
   },
   async create(input: CreateVolunteerInput) {
-    const volunteer: Volunteer = { ...input, id: createId() };
-    volunteers = [...volunteers, volunteer];
-    return clone(volunteer);
-  },
-  async updateStatus(id: string, status: VolunteerStatus) {
-    volunteers = volunteers.map((volunteer) =>
-      volunteer.id === id
-        ? {
-            ...volunteer,
-            status,
-          }
-        : volunteer,
+    const { data } = await apiClient.post<VolunteerResponse>(
+      "/volunteers",
+      serializeVolunteer(input),
     );
 
-    const updated = volunteers.find((volunteer) => volunteer.id === id);
-    return updated ? clone(updated) : undefined;
+    return data.data ? mapVolunteer(data.data) : undefined;
+  },
+  async updateStatus(id: string, status: VolunteerStatus) {
+    const { data } = await apiClient.patch<VolunteerResponse>(`/volunteers/${id}`, {
+      status,
+    });
+
+    return data.data ? mapVolunteer(data.data) : undefined;
   },
 };

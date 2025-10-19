@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { I18nextProvider } from "react-i18next";
 import { AuthProvider } from "@/shared/contexts/auth-context";
 import { LanguageProvider } from "@/shared/contexts/language-context";
+import { NotificationProvider } from "@/shared/contexts/notification-context";
 import { ThemeProvider } from "@/shared/contexts/theme-context";
 import i18n from "@/i18n/config";
 
@@ -17,7 +18,9 @@ export const AppProviders = ({ children }: AppProvidersProps) => (
     <I18nextProvider i18n={i18n}>
       <LanguageProvider>
         <ThemeProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            <NotificationProvider>{children}</NotificationProvider>
+          </AuthProvider>
         </ThemeProvider>
       </LanguageProvider>
     </I18nextProvider>
