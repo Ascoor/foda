@@ -1,19 +1,19 @@
 export const COLOR_TOKENS = {
-  primary: { hex: "#FF5733", hsl: "11 100% 60%" },
-  secondary: { hex: "#33FF57", hsl: "131 100% 60%" },
-  accent: { hex: "#5733FF", hsl: "251 100% 60%" },
-  background: { hex: "#F5F5F5", hsl: "0 0% 96%" },
-  textPrimary: { hex: "#333333", hsl: "0 0% 20%" },
-  textSecondary: { hex: "#777777", hsl: "0 0% 47%" },
+  primary: { hex: "#2563EB", hsl: "221 83% 53%" },
+  secondary: { hex: "#7C3AED", hsl: "262 83% 58%" },
+  accent: { hex: "#FACC15", hsl: "48 96% 53%" },
+  background: { hex: "#F3F4F6", hsl: "220 14% 96%" },
+  textPrimary: { hex: "#0F172A", hsl: "222 47% 11%" },
+  textSecondary: { hex: "#4B5768", hsl: "215 16% 35%" },
 } as const;
 
 export const SUPPORTING_TOKENS = {
-  textMuted: { hex: "#999999", hsl: "0 0% 60%" },
-  border: { hex: "#D1D1D1", hsl: "0 0% 82%" },
-  input: { hex: "#E0E0E0", hsl: "0 0% 88%" },
-  success: { hex: "#1FAA59", hsl: "142 76% 36%" },
-  warning: { hex: "#FFB347", hsl: "45 100% 52%" },
-  destructive: { hex: "#FF4D4F", hsl: "0 85% 55%" },
+  textMuted: { hex: "#7E8A9A", hsl: "215 12% 55%" },
+  border: { hex: "#CFD4DE", hsl: "220 18% 84%" },
+  input: { hex: "#E0E4EB", hsl: "220 20% 90%" },
+  success: { hex: "#16A34A", hsl: "142 76% 36%" },
+  warning: { hex: "#F59E0B", hsl: "38 92% 50%" },
+  destructive: { hex: "#DC2626", hsl: "0 72% 51%" },
 } as const;
 
 export type PaletteToken = keyof typeof COLOR_TOKENS;

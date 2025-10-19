@@ -23,7 +23,12 @@ export default defineConfig(({ mode }) => ({
       "@theme": path.resolve(__dirname, "./src/theme"),
     },
   },
- 
+
+  build: {
+    copyPublicDir: true,
+    assetsInclude: ["**/assets/brand/**"],
+  },
+
   test: {
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',

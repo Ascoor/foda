@@ -111,20 +111,31 @@ export const Sidebar = ({
       }}
       transition={{ ...SPRING_TRANSITION, duration: 0.4 }}
       className={containerClasses}
+      style={{
+        backgroundImage: `linear-gradient(135deg, rgba(37, 99, 235, ${isMobile ? 0.22 : 0.16}), rgba(124, 58, 237, ${isMobile ? 0.24 : 0.18})), url('/assets/brand/pattern-bg.svg')`,
+        backgroundBlendMode: "overlay",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
       {/* 🟣 Header */}
       <div className="flex items-center justify-between gap-2 pb-4">
         <div className="flex items-center gap-2">
-          <div className="flex size-9 items-center justify-center rounded-2xl bg-[hsla(var(--primary)/0.15)] text-[hsl(var(--primary))]">
-            <span className="text-sm font-semibold">AE</span>
+          <div className="flex size-12 items-center justify-center rounded-3xl bg-white/70 p-1.5 shadow-[0_10px_24px_rgba(37,99,235,0.22)] backdrop-blur dark:bg-slate-900/75">
+            <img
+              src="/assets/brand/foda-icon.svg"
+              alt="Foda emblem"
+              className="h-full w-full"
+              loading="lazy"
+            />
           </div>
           {isOpen && (
-            <div className="leading-tight">
-              <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
-                Aurora Election
+            <div className="leading-tight text-foreground">
+              <p className="bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#FACC15] bg-clip-text text-[11px] font-semibold uppercase tracking-[0.28em] text-transparent">
+                {language === "ar" ? "فوده مننا" : "Foda Minnna"}
               </p>
               <p className="text-sm font-semibold text-foreground">
-                {headerLabel}
+                {language === "ar" ? "منصة الحملات الذكية" : headerLabel}
               </p>
             </div>
           )}

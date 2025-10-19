@@ -1,0 +1,38 @@
+{
+  "brand": {
+    "name": "Foda Elections | فوده مننا",
+    "description": "Glassmorphism-ready civic tech palette balancing trust, innovation, and human warmth.",
+    "primary": {
+      "hex": "#2563EB",
+      "hsl": "221 83% 53%",
+      "role": "Integrity blue — anchors actions and primary CTAs"
+    },
+    "secondary": {
+      "hex": "#7C3AED",
+      "hsl": "262 83% 58%",
+      "role": "Visionary violet — innovation, data visualizations"
+    },
+    "accent": {
+      "hex": "#FACC15",
+      "hsl": "48 96% 53%",
+      "role": "Civic gold — optimism, highlights, vote confirmation"
+    },
+    "surfaces": {
+      "light": {
+        "hex": "#F3F4F6",
+        "hsl": "220 14% 96%",
+        "role": "Neutral daylight glass surfaces"
+      },
+      "dark": {
+        "hex": "#0F172A",
+        "hsl": "222 47% 11%",
+        "role": "Confident night canvas"
+      }
+    },
+    "support": {
+      "success": "#16A34A",
+      "warning": "#F59E0B",
+      "danger": "#DC2626"
+    }
+  }
+}

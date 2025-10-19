@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Foda Elections emblem</title>
+  <desc id="desc">Gradient ballot circle with golden check mark for Foda Elections.</desc>
+  <defs>
+    <linearGradient id="iconGradient" x1="20" y1="16" x2="108" y2="112" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#7C3AED" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.35" />
+      </feComponentTransfer>
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#glow)">
+    <circle cx="64" cy="64" r="52" fill="url(#iconGradient)" />
+    <circle cx="64" cy="64" r="44" fill="rgba(243, 244, 246, 0.18)" />
+    <path d="M88 48.5c-5.6-8.7-15.4-14.5-26.5-14.5-17.1 0-31 13.9-31 31 0 17.1 13.9 31 31 31 11.6 0 21.7-6.2 27-15.5l-10.4-5.5c-3.4 6.5-10.2 10.8-18.1 10.8-11.2 0-20.3-9.1-20.3-20.3s9.1-20.3 20.3-20.3c6.5 0 12.3 3 16.1 7.8L88 48.5Z" fill="rgba(15, 23, 42, 0.18)" />
+    <path d="M80.4 54.2 59.3 78.4l-9.7-9.1a3.4 3.4 0 0 0-4.8 4.8l12.3 11.5a3.4 3.4 0 0 0 5-.4l21.8-26.8a3.4 3.4 0 0 0-5.5-4.2Z" fill="#FACC15" />
+    <circle cx="92" cy="44" r="6" fill="#FACC15" />
+  </g>
+</svg>
