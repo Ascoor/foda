@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Bell,
-  Flame,
   Globe,
   LogOut,
   Menu,
@@ -11,7 +10,6 @@ import {
   Sun,
   User,
   UserCircle,
-  Vote,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@shared/ui/button";
@@ -283,11 +281,22 @@ export const Header = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
         dir={direction}
-        className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
+        className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(37,99,235,0.25)] backdrop-blur-2xl dark:bg-slate-900/60 dark:shadow-[0_20px_60px_rgba(124,58,237,0.35)]"
       >
         <div className="flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
-            <Flame className="size-5" />
+          <div className="flex items-center gap-3 rounded-3xl bg-white/65 px-4 py-2 shadow-inner shadow-white/50 backdrop-blur dark:bg-slate-900/70">
+            <img
+              src="/assets/brand/foda-icon.svg"
+              alt="Foda Elections emblem"
+              className="h-10 w-10 drop-shadow-[0_10px_18px_rgba(37,99,235,0.35)]"
+              loading="lazy"
+            />
+            <img
+              src="/assets/brand/foda-logo.svg"
+              alt="Foda Elections | فوده مننا"
+              className="hidden h-12 w-auto sm:block"
+              loading="lazy"
+            />
           </div>
         </div>
 
@@ -312,21 +321,28 @@ export const Header = ({
             className={cn(
               "flex items-center gap-3 rounded-2xl px-3 py-2",
               theme === "dark"
-                ? "bg-[hsla(var(--surface-secondary)/0.3)]"
-                : "bg-[hsla(var(--surface)/0.45)]",
+                ? "bg-slate-900/70"
+                : "bg-white/70",
+              "shadow-[0_12px_32px_rgba(15,23,42,0.08)] backdrop-blur-lg",
             )}
           >
             <motion.span
-              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.85)] to-[hsl(var(--accent)/0.75)] text-[hsl(var(--primary-foreground))] shadow-lg"
+              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2563EB] via-[#3B82F6] to-[#7C3AED] text-white shadow-[0_12px_24px_rgba(59,130,246,0.45)]"
               transition={{ type: "spring", stiffness: 200, damping: 18 }}
             >
-              <Vote className="h-5 w-5" />
+              <img
+                src="/assets/brand/foda-icon.svg"
+                alt="Foda emblem"
+                className="h-6 w-6"
+                loading="lazy"
+              />
             </motion.span>
-            <div className="hidden min-w-[9rem] flex-col text-xs font-medium text-muted-foreground sm:flex">
-              <span className="text-sm font-semibold tracking-wide text-foreground">
-                {brandLabel}
+            <div className="hidden min-w-[9rem] flex-col text-xs font-medium sm:flex">
+              <span className="bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#FACC15] bg-clip-text text-sm font-semibold uppercase tracking-[0.18em] text-transparent">
+                {language === "ar" ? "منصة فوده الانتخابية" : "Foda Civic Platform"}
               </span>
-              <span>{formattedDate}</span>
+              <span className="text-sm font-semibold text-foreground">{brandLabel}</span>
+              <span className="text-[11px] text-muted-foreground">{formattedDate}</span>
             </div>
           </motion.div>
         </div>

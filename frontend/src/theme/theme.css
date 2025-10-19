@@ -6,57 +6,57 @@
 
 @layer base {
   :root {
-    /* 🌄 MOUNTAIN DAY MODE */
-    --background: 145 35% 88%;
-    --background-secondary: 145 30% 92%;
-    --foreground: 210 25% 15%;
+    /* 🌄 CIVIC LIGHT MODE */
+    --background: 220 14% 96%;
+    --background-secondary: 220 16% 92%;
+    --foreground: 222 47% 11%;
 
-    --card: 145 25% 95%;
-    --card-foreground: 210 25% 20%;
+    --card: 220 17% 97%;
+    --card-foreground: 222 47% 14%;
     --popover: var(--card);
     --popover-foreground: var(--card-foreground);
 
-    --surface: 145 30% 90%;
-    --surface-secondary: 145 25% 92%;
-    --surface-accent: 160 30% 88%;
+    --surface: 220 16% 94%;
+    --surface-secondary: 220 18% 92%;
+    --surface-accent: 223 20% 88%;
 
-    --primary: 165 60% 42%; /* Emerald Hill */
+    --primary: 221 83% 53%; /* Integrity Blue */
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 165 70% 55%;
+    --primary-glow: 221 90% 60%;
 
-    --secondary: 28 90% 56%; /* Warm Terracotta */
-    --secondary-foreground: 28 90% 16%;
-    --secondary-glow: 28 95% 70%;
+    --secondary: 262 83% 58%; /* Visionary Violet */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-glow: 262 90% 66%;
 
-    --accent: 200 70% 45%; /* Sky Blue */
-    --accent-foreground: 0 0% 100%;
-    --accent-glow: 200 75% 65%;
+    --accent: 48 96% 53%; /* Civic Gold */
+    --accent-foreground: 222 47% 11%;
+    --accent-glow: 48 96% 60%;
 
     /* Legacy palette compatibility */
-    --color-primary: 11 100% 60%;
-    --color-secondary: 131 100% 60%;
-    --color-accent: 251 100% 60%;
-    --color-background: 0 0% 96%;
-    --text-primary: 0 0% 20%;
-    --text-secondary: 0 0% 47%;
-    --text-muted: 0 0% 60%;
+    --color-primary: 221 83% 53%;
+    --color-secondary: 262 83% 58%;
+    --color-accent: 48 96% 53%;
+    --color-background: 220 14% 96%;
+    --text-primary: 222 47% 11%;
+    --text-secondary: 215 16% 35%;
+    --text-muted: 215 12% 55%;
 
-    --success: 140 60% 40%;
-    --warning: 45 95% 55%;
-    --destructive: 0 70% 55%;
+    --success: 142 76% 36%;
+    --warning: 38 92% 50%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --muted: 145 25% 80%;
-    --muted-foreground: 210 20% 40%;
-    --support-border: 0 0% 82%;
-    --support-input: 0 0% 88%;
+    --muted: 220 16% 88%;
+    --muted-foreground: 215 15% 42%;
+    --support-border: 220 18% 86%;
+    --support-input: 220 20% 90%;
     --support-success: 142 76% 36%;
-    --support-warning: 45 100% 52%;
-    --support-destructive: 0 85% 55%;
+    --support-warning: 38 92% 50%;
+    --support-destructive: 0 72% 51%;
 
-    --border: 145 20% 75%;
-    --input: 145 20% 75%;
-    --ring: 165 60% 42%;
+    --border: 220 18% 84%;
+    --input: 220 20% 88%;
+    --ring: 221 83% 53%;
 
     --radius: 1.75rem;
     --radius-sm: 0.5rem;
@@ -118,33 +118,33 @@
     --icon-size-xl: 2rem;
 
     /* Shadows & Glow */
-    --shadow-soft: 0 4px 12px hsla(200, 25%, 18%, 0.08);
-    --shadow-elegant: 0 10px 40px -10px hsl(var(--primary) / 0.25);
-    --shadow-glow: 0 0 50px hsl(var(--primary-glow) / 0.4);
-    --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
-    --shadow-neomorph-raised: 8px 8px 16px hsla(145, 25%, 75%, 0.4), -8px -8px 16px hsla(0, 0%, 100%, 0.9);
-    --shadow-neomorph-inset: inset 6px 6px 12px hsla(145, 25%, 75%, 0.3), inset -6px -6px 12px hsla(0, 0%, 100%, 0.7);
-    --shadow-depth: 0 12px 32px hsla(200, 25%, 18%, 0.15);
+    --shadow-soft: 0 4px 12px hsla(222, 46%, 26%, 0.08);
+    --shadow-elegant: 0 10px 40px -10px hsl(221 83% 53% / 0.2);
+    --shadow-glow: 0 0 50px hsl(221 90% 60% / 0.4);
+    --shadow-glass: 0 8px 32px rgba(37, 99, 235, 0.2);
+    --shadow-neomorph-raised: 8px 8px 16px hsla(222, 20%, 76%, 0.35), -8px -8px 16px hsla(0, 0%, 100%, 0.9);
+    --shadow-neomorph-inset: inset 6px 6px 12px hsla(222, 20%, 76%, 0.3), inset -6px -6px 12px hsla(0, 0%, 100%, 0.6);
+    --shadow-depth: 0 12px 32px hsla(222, 46%, 26%, 0.15);
 
     /* Glassmorphism */
     --glass-background: rgba(255, 255, 255, 0.65);
-    --glass-border: rgba(255, 255, 255, 0.35);
+    --glass-border: rgba(255, 255, 255, 0.4);
     --glass-shadow: var(--shadow-glass);
-    --glass-backdrop: blur(20px);
+    --glass-backdrop: blur(24px);
 
     /* Interactions */
-    --hover-background: rgba(69, 195, 255, 0.12);
-    --active-background: rgba(165, 60%, 42%, 0.15);
-    --hover-glow: 0 0 16px rgba(69, 195, 255, 0.3);
+    --hover-background: rgba(37, 99, 235, 0.12);
+    --active-background: rgba(124, 58, 237, 0.18);
+    --hover-glow: 0 0 18px rgba(59, 130, 246, 0.32);
 
     /* Gradients */
-    --gradient-mountain-base: linear-gradient(135deg, hsl(145, 35%, 88%) 0%, hsl(160, 45%, 85%) 50%, hsl(175, 50%, 80%) 100%);
-    --gradient-mountain-depth: radial-gradient(ellipse at top, hsla(145, 30%, 90%, 0.8), hsla(160, 30%, 82%, 0.6) 50%, transparent);
-    --gradient-mountain-fog: linear-gradient(to bottom, hsla(145, 25%, 95%, 0) 0%, hsla(145, 25%, 95%, 0.3) 40%, hsla(145, 25%, 95%, 0.6) 100%);
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--accent)));
-    --gradient-glass: linear-gradient(135deg, rgba(69, 195, 255, 0.12), rgba(40, 180, 160, 0.08));
-    --gradient-glow: radial-gradient(ellipse at top, hsl(var(--secondary) / 0.25), transparent 65%);
+    --gradient-mountain-base: linear-gradient(135deg, hsl(220, 14%, 96%) 0%, hsl(221, 25%, 92%) 45%, hsl(223, 30%, 88%) 100%);
+    --gradient-mountain-depth: radial-gradient(ellipse at top, hsla(221, 45%, 88%, 0.7), hsla(224, 48%, 82%, 0.5) 50%, transparent);
+    --gradient-mountain-fog: linear-gradient(to bottom, hsla(220, 20%, 96%, 0) 0%, hsla(220, 20%, 96%, 0.35) 40%, hsla(220, 20%, 96%, 0.65) 100%);
+    --gradient-primary: linear-gradient(135deg, hsl(221 83% 53%), hsl(262 83% 58%));
+    --gradient-secondary: linear-gradient(135deg, hsl(262 83% 58%), hsl(48 96% 53%));
+    --gradient-glass: linear-gradient(135deg, rgba(37, 99, 235, 0.12), rgba(124, 58, 237, 0.12));
+    --gradient-glow: radial-gradient(ellipse at top, hsl(221 83% 53% / 0.25), transparent 65%);
 
     /* Motion & Transitions */
     --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -167,66 +167,66 @@
   }
 
   .dark {
-    /* 🌌 MOUNTAIN NIGHT MODE */
-    --background: 230 40% 10%;
-    --background-secondary: 230 35% 14%;
-    --foreground: 210 45% 95%;
+    /* 🌌 CIVIC NIGHT MODE */
+    --background: 222 47% 11%;
+    --background-secondary: 222 43% 16%;
+    --foreground: 220 33% 94%;
 
-    --card: 230 35% 14%;
-    --card-foreground: 210 45% 95%;
+    --card: 222 43% 16%;
+    --card-foreground: 220 33% 94%;
     --popover: var(--card);
     --popover-foreground: var(--card-foreground);
 
-    --surface: 230 35% 12%;
-    --surface-secondary: 230 30% 16%;
-    --surface-accent: 240 35% 18%;
+    --surface: 222 43% 14%;
+    --surface-secondary: 223 45% 18%;
+    --surface-accent: 224 45% 22%;
 
-    --primary: 215 70% 58%;
+    --primary: 221 83% 62%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 215 70% 70%;
+    --primary-glow: 221 87% 70%;
 
-    --secondary: 270 65% 58%;
-    --secondary-foreground: 270 65% 15%;
-    --secondary-glow: 270 65% 68%;
+    --secondary: 262 83% 62%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-glow: 262 88% 70%;
 
-    --accent: 30 100% 60%;
-    --accent-foreground: 0 0% 12%;
-    --accent-glow: 30 100% 70%;
+    --accent: 48 96% 60%;
+    --accent-foreground: 222 47% 11%;
+    --accent-glow: 48 96% 68%;
 
-    --success: 142 76% 36%;
-    --warning: 45 90% 55%;
-    --destructive: 0 65% 50%;
-    --destructive-foreground: 0 0% 98%;
+    --success: 142 70% 45%;
+    --warning: 38 92% 58%;
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 0 0% 96%;
 
-    --muted: 228 22% 24%;
-    --muted-foreground: 0 0% 78%;
+    --muted: 224 36% 26%;
+    --muted-foreground: 220 30% 78%;
 
-    --border: 228 20% 26%;
-    --input: 228 20% 28%;
+    --border: 223 38% 28%;
+    --input: 223 38% 28%;
     --ring: var(--primary);
 
-    --shadow-soft: 0 4px 12px hsla(220, 65%, 62%, 0.15);
-    --shadow-elegant: 0 12px 48px -12px hsla(215, 70%, 58%, 0.3);
-    --shadow-glow: 0 0 60px hsla(215, 70%, 58%, 0.3);
-    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.6);
-    --shadow-neomorph-raised: 10px 10px 20px hsla(230, 40%, 5%, 0.6), -10px -10px 20px hsla(215, 70%, 28%, 0.15);
-    --shadow-neomorph-inset: inset 6px 6px 12px hsla(230, 35%, 8%, 0.55), inset -6px -6px 12px hsla(215, 65%, 32%, 0.25);
-    --shadow-depth: 0 12px 32px hsla(220, 65%, 62%, 0.25);
+    --shadow-soft: 0 4px 12px hsla(221, 65%, 48%, 0.22);
+    --shadow-elegant: 0 12px 48px -12px hsla(221, 83%, 62%, 0.3);
+    --shadow-glow: 0 0 60px hsla(221, 83%, 62%, 0.28);
+    --shadow-glass: 0 8px 32px rgba(8, 15, 30, 0.7);
+    --shadow-neomorph-raised: 10px 10px 20px hsla(222, 40%, 8%, 0.65), -10px -10px 20px hsla(221, 55%, 32%, 0.18);
+    --shadow-neomorph-inset: inset 6px 6px 12px hsla(222, 40%, 8%, 0.6), inset -6px -6px 12px hsla(221, 55%, 32%, 0.25);
+    --shadow-depth: 0 12px 32px hsla(221, 65%, 48%, 0.28);
 
-    --glass-background: rgba(15, 20, 30, 0.85);
-    --glass-border: rgba(69, 243, 255, 0.2);
-    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(69, 243, 255, 0.1);
-    --glass-backdrop: blur(18px);
+    --glass-background: rgba(15, 23, 42, 0.78);
+    --glass-border: rgba(148, 163, 184, 0.25);
+    --glass-shadow: 0 8px 32px rgba(2, 6, 23, 0.55), 0 0 24px rgba(37, 99, 235, 0.18);
+    --glass-backdrop: blur(20px);
 
-    --hover-background: rgba(69, 195, 255, 0.2);
-    --active-background: rgba(215, 70%, 58%, 0.25);
-    --hover-glow: 0 0 16px rgba(69, 243, 255, 0.35);
+    --hover-background: rgba(37, 99, 235, 0.25);
+    --active-background: rgba(124, 58, 237, 0.28);
+    --hover-glow: 0 0 22px rgba(124, 58, 237, 0.4);
 
-    --gradient-mountain-base: linear-gradient(135deg, hsl(230, 40%, 10%) 0%, hsl(240, 45%, 14%) 50%, hsl(255, 50%, 16%) 100%);
-    --gradient-mountain-depth: radial-gradient(ellipse at top, hsla(215, 70%, 28%, 0.3), hsla(240, 45%, 20%, 0.4) 50%, transparent);
-    --gradient-mountain-fog: linear-gradient(to bottom, hsla(230, 35%, 12%, 0) 0%, hsla(240, 35%, 12%, 0.4) 40%, hsla(255, 35%, 14%, 0.7) 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(255, 87, 51, 0.25), rgba(87, 51, 255, 0.15));
-    --gradient-glow: radial-gradient(ellipse at top, hsl(var(--primary) / 0.35), transparent 65%);
+    --gradient-mountain-base: linear-gradient(135deg, hsl(222, 47%, 11%) 0%, hsl(223, 45%, 16%) 50%, hsl(224, 48%, 22%) 100%);
+    --gradient-mountain-depth: radial-gradient(ellipse at top, hsla(221, 65%, 42%, 0.25), hsla(262, 65%, 46%, 0.35) 55%, transparent);
+    --gradient-mountain-fog: linear-gradient(to bottom, hsla(222, 43%, 14%, 0) 0%, hsla(222, 43%, 16%, 0.45) 40%, hsla(222, 45%, 18%, 0.75) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(124, 58, 237, 0.18));
+    --gradient-glow: radial-gradient(ellipse at top, hsl(262 83% 62% / 0.35), transparent 65%);
   }
 
   body {

@@ -10,6 +10,7 @@ import {
 import { request } from "@shared/lib/api";
 import { getEcho } from "@shared/lib/echo";
 import { toast } from "sonner";
+import { useLanguage } from "@shared/contexts/LanguageContext";
 
 export type NotificationType = "performance" | "field" | "risk" | "other";
 
@@ -53,6 +54,7 @@ interface PaginatedNotificationResponse {
 }
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
+  const { language } = useLanguage();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<NotificationFilter>("all");
@@ -149,6 +151,40 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       channel.stopListening(".App\\Events\\NotificationCreated", handler);
     };
   }, [prependNotification]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const storageKey = "foda-brand-identity-refresh";
+    if (window.localStorage.getItem(storageKey) === "done") {
+      return;
+    }
+
+    const now = new Date().toISOString();
+    const notification: NotificationItem = {
+      id: Number.MIN_SAFE_INTEGER,
+      type: "other",
+      category: "brand-refresh",
+      title:
+        language === "ar"
+          ? "تم تحديث هوية التطبيق!"
+          : "Brand Identity Updated!",
+      message:
+        language === "ar"
+          ? "تم إطلاق الهوية الجديدة Foda Elections | فوده مننا بألوان مميزة وشعار جديد 🎨"
+          : "The new Foda Elections | Foda Minnna brand identity is now live! 🎨",
+      priority: "low",
+      meta: { source: "brand-refresh", tone: "success" },
+      read_at: null,
+      created_at: now,
+      is_high_priority: false,
+    };
+
+    prependNotification(notification);
+    window.localStorage.setItem(storageKey, "done");
+  }, [language, prependNotification]);
 
   const markAsRead = useCallback(async (id: number) => {
     await request<{ data: NotificationItem }>({

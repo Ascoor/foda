@@ -1,0 +1,38 @@
+<svg width="1440" height="1024" viewBox="0 0 1440 1024" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Foda Elections glassmorphism pattern</title>
+  <desc id="desc">Layered geometric motif with ballot squares and circular pulses to complement the Foda Elections brand.</desc>
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F3F4F6" />
+      <stop offset="100%" stop-color="#E0E7FF" />
+    </linearGradient>
+    <linearGradient id="accentStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.35" />
+    </linearGradient>
+    <pattern id="tile" width="240" height="240" patternUnits="userSpaceOnUse" patternTransform="rotate(2)">
+      <rect x="16" y="16" width="208" height="208" rx="44" fill="white" opacity="0.04" />
+      <rect x="32" y="32" width="176" height="176" rx="32" fill="#2563EB" opacity="0.08" />
+      <rect x="56" y="56" width="128" height="128" rx="28" fill="#7C3AED" opacity="0.06" />
+      <path d="M140 96H108c-4.4 0-8 3.6-8 8v32c0 4.4 3.6 8 8 8h32c4.4 0 8-3.6 8-8V104c0-4.4-3.6-8-8-8Zm-6 12-24 24" stroke="#2563EB" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35" />
+      <path d="m114 123 6 6 12-18" stroke="#FACC15" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.6" />
+      <circle cx="180" cy="68" r="18" fill="#FACC15" opacity="0.15" />
+      <circle cx="64" cy="172" r="22" fill="#2563EB" opacity="0.12" />
+      <circle cx="64" cy="172" r="32" stroke="url(#accentStroke)" stroke-width="3" opacity="0.45" />
+      <path d="M56 88h64" stroke="url(#accentStroke)" stroke-width="6" stroke-linecap="round" opacity="0.25" />
+      <path d="M96 48v64" stroke="url(#accentStroke)" stroke-width="6" stroke-linecap="round" opacity="0.18" />
+    </pattern>
+    <radialGradient id="spotLight" cx="0" cy="0" r="1" gradientTransform="translate(0.25 0.2) scale(0.8)">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.7" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="eveningGlow" cx="0" cy="0" r="1" gradientTransform="translate(0.75 0.85) scale(0.9)">
+      <stop offset="0%" stop-color="#7C3AED" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#7C3AED" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+  <rect width="1440" height="1024" fill="url(#bgGradient)" />
+  <rect width="1440" height="1024" fill="url(#tile)" opacity="0.22" />
+  <rect width="1440" height="1024" fill="url(#spotLight)" opacity="0.45" />
+  <rect width="1440" height="1024" fill="url(#eveningGlow)" opacity="0.6" />
+</svg>

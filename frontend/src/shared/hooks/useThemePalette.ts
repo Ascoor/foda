@@ -25,16 +25,16 @@ export interface ThemePalette {
 const TOKEN_KEYS: ColorToken[] = ["primary", "secondary", "accent", "success"];
 
 const FALLBACK_COLORS: Record<string, RgbColor> = {
-  primary: hslToRgbColor(11, 100, 60),
-  secondary: hslToRgbColor(131, 100, 60),
-  accent: hslToRgbColor(251, 100, 60),
+  primary: hslToRgbColor(221, 83, 53),
+  secondary: hslToRgbColor(262, 83, 58),
+  accent: hslToRgbColor(48, 96, 53),
   success: hslToRgbColor(142, 76, 36),
-  surface: hslToRgbColor(0, 0, 100),
-  background: hslToRgbColor(0, 0, 96),
-  border: hslToRgbColor(0, 0, 82),
-  muted: hslToRgbColor(0, 0, 90),
-  "muted-foreground": hslToRgbColor(0, 0, 45),
-  foreground: hslToRgbColor(0, 0, 20),
+  surface: hslToRgbColor(220, 16, 94),
+  background: hslToRgbColor(220, 14, 96),
+  border: hslToRgbColor(220, 18, 84),
+  muted: hslToRgbColor(220, 16, 88),
+  "muted-foreground": hslToRgbColor(215, 15, 42),
+  foreground: hslToRgbColor(222, 47, 11),
 };
 
 function hslToRgbColor(h: number, s: number, l: number): RgbColor {
