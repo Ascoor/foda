@@ -1,0 +1,18 @@
+{
+  "appName": "Campaign Control Center",
+  "language": "Language",
+  "switchLanguage": "Switch language",
+  "switchTheme": "Toggle theme",
+  "theme": "Theme",
+  "notifications": "Notifications",
+  "guest": "Guest",
+  "account": "Account",
+  "settings": "Settings",
+  "logout": "Log out",
+  "dashboard": "Dashboard",
+  "voters": "Voters",
+  "volunteers": "Volunteers",
+  "donations": "Donations",
+  "reports": "Reports",
+  "map": "Campaign Map"
+}
