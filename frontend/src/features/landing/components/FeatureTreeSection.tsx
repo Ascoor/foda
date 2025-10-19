@@ -34,9 +34,12 @@ export const FeatureTreeSection = ({ tree }: FeatureTreeSectionProps) => {
         <span className="rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.3em] text-blue-200">
           عرض تفصيلي
         </span>
-        <h2 className="mt-6 text-3xl font-bold md:text-4xl">خريطة وظائف المنصة</h2>
+        <h2 className="mt-6 text-3xl font-bold md:text-4xl">
+          خريطة وظائف المنصة
+        </h2>
         <p className="mt-4 text-base text-white/70 md:text-lg">
-          تصور شجري يجمع مراحل التخطيط، إدارة المتطوعين، العمليات، والتحليلات في مخطط واحد يساعد فرقك على فهم الترابط.
+          تصور شجري يجمع مراحل التخطيط، إدارة المتطوعين، العمليات، والتحليلات في
+          مخطط واحد يساعد فرقك على فهم الترابط.
         </p>
       </div>
 
@@ -69,14 +72,24 @@ export const FeatureTreeSection = ({ tree }: FeatureTreeSectionProps) => {
           })}
 
           <defs>
-            <linearGradient id="treeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <linearGradient
+              id="treeGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
               <stop offset="0%" stopColor="#60a5fa" />
               <stop offset="100%" stopColor="#c084fc" />
             </linearGradient>
           </defs>
 
           {nodes.map((node) => (
-            <g key={node.id} transform={`translate(${node.x + 120}, ${node.y})`} data-tree-node>
+            <g
+              key={node.id}
+              transform={`translate(${node.x + 120}, ${node.y})`}
+              data-tree-node
+            >
               <rect
                 width={220}
                 height={120}

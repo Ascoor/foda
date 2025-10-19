@@ -1,6 +1,6 @@
-import type { BaseEntity, Nullable } from './common';
+import type { BaseEntity, Nullable } from "./common";
 
-export type CommitteeType = 'central' | 'regional' | 'local';
+export type CommitteeType = "central" | "regional" | "local";
 
 export interface Committee extends BaseEntity {
   name: string;

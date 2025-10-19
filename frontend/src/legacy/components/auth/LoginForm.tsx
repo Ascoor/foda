@@ -1,13 +1,20 @@
-import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@shared/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@shared/ui/card';
-import { Checkbox } from '@shared/ui/checkbox';
-import { Input } from '@shared/ui/input';
-import { Label } from '@shared/ui/label';
-import { useAuth } from '@shared/contexts/AuthContext';
-import { Loader2 } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@shared/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@shared/ui/card";
+import { Checkbox } from "@shared/ui/checkbox";
+import { Input } from "@shared/ui/input";
+import { Label } from "@shared/ui/label";
+import { useAuth } from "@shared/contexts/AuthContext";
+import { Loader2 } from "lucide-react";
 
 /**
  * Reusable login form component.
@@ -18,8 +25,8 @@ export const LoginForm = () => {
   const navigate = useNavigate(); // تم استخدام navigate هنا
   const { login } = useAuth();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,12 +44,12 @@ export const LoginForm = () => {
     setLoading(true);
     try {
       await login({ email, password, remember }); // استخدام login
-      navigate('/dashboard'); // استخدام navigate هنا بعد تسجيل الدخول الناجح
+      navigate("/dashboard"); // استخدام navigate هنا بعد تسجيل الدخول الناجح
     } catch (err: unknown) {
       if (err instanceof Error && err.message.trim()) {
         setError(err.message); // التعامل مع الخطأ بشكل آمن
       } else {
-        setError(t('auth.unknown_error'));
+        setError(t("auth.unknown_error"));
       }
     } finally {
       setLoading(false);
@@ -52,15 +59,15 @@ export const LoginForm = () => {
   useEffect(() => {
     if (error) {
       if (!isEmailValid) {
-        document.getElementById('email')?.focus();
+        document.getElementById("email")?.focus();
       } else if (!isPasswordValid) {
-        document.getElementById('password')?.focus();
+        document.getElementById("password")?.focus();
       }
     }
   }, [error, isEmailValid, isPasswordValid]);
 
   useEffect(() => {
-    document.getElementById('email')?.focus();
+    document.getElementById("email")?.focus();
   }, []);
 
   return (
@@ -82,18 +89,18 @@ export const LoginForm = () => {
         />
         <CardHeader className="relative space-y-4 text-center">
           <div
-            className={`${loading ? 'opacity-100' : 'opacity-0'} h-1 w-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent transition-opacity duration-300`}
+            className={`${loading ? "opacity-100" : "opacity-0"} h-1 w-full rounded-full bg-gradient-to-r from-primary via-secondary to-accent transition-opacity duration-300`}
             aria-hidden
           />
           <CardTitle className="text-3xl font-bold text-gradient-primary">
-            {t('auth.login')}
+            {t("auth.login")}
           </CardTitle>
           <CardDescription className="text-base">
-            {t('auth.login_subtitle')}
+            {t("auth.login_subtitle")}
           </CardDescription>
         </CardHeader>
         <CardContent className="relative space-y-5">
-          <p className="sr-only">{loading ? t('common.loading') : ''}</p>
+          <p className="sr-only">{loading ? t("common.loading") : ""}</p>
           {error && (
             <div
               role="alert"
@@ -103,8 +110,11 @@ export const LoginForm = () => {
             </div>
           )}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-medium text-foreground">
-              {t('auth.email')}
+            <Label
+              htmlFor="email"
+              className="text-sm font-medium text-foreground"
+            >
+              {t("auth.email")}
             </Label>
             <Input
               id="email"
@@ -115,17 +125,25 @@ export const LoginForm = () => {
               aria-invalid={email.length > 0 && !isEmailValid}
               aria-describedby="email-help"
               autoComplete="email"
-              placeholder={t('auth.email_placeholder') ?? ''}
+              placeholder={t("auth.email_placeholder") ?? ""}
               inputMode="email"
               dir="ltr"
             />
-            <span id="email-help" className="block text-xs text-muted-foreground">
-              {!isEmailValid && email.length > 0 ? t('auth.email_invalid') : '\u00A0'}
+            <span
+              id="email-help"
+              className="block text-xs text-muted-foreground"
+            >
+              {!isEmailValid && email.length > 0
+                ? t("auth.email_invalid")
+                : "\u00A0"}
             </span>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-sm font-medium text-foreground">
-              {t('auth.password')}
+            <Label
+              htmlFor="password"
+              className="text-sm font-medium text-foreground"
+            >
+              {t("auth.password")}
             </Label>
             <Input
               id="password"
@@ -134,7 +152,7 @@ export const LoginForm = () => {
               onChange={(e) => setPassword(e.target.value)}
               disabled={loading}
               autoComplete="current-password"
-              placeholder={t('auth.password_placeholder') ?? ''}
+              placeholder={t("auth.password_placeholder") ?? ""}
             />
           </div>
           <div className="flex items-center gap-2">
@@ -145,7 +163,7 @@ export const LoginForm = () => {
               disabled={loading}
             />
             <Label htmlFor="remember" className="text-sm text-foreground">
-              {t('auth.remember_me')}
+              {t("auth.remember_me")}
             </Label>
           </div>
         </CardContent>
@@ -158,13 +176,15 @@ export const LoginForm = () => {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                {t('common.loading')}
+                {t("common.loading")}
               </span>
             ) : (
-              t('auth.login')
+              t("auth.login")
             )}
           </Button>
-          <p className="text-center text-xs text-muted-foreground">{t('app.tagline')}</p>
+          <p className="text-center text-xs text-muted-foreground">
+            {t("app.tagline")}
+          </p>
         </CardFooter>
       </Card>
     </form>

@@ -23,7 +23,7 @@ export const usePartnersAnimation = (sectionRef: RefObject<HTMLElement>) => {
             trigger: element,
             start: "top 80%",
           },
-        }
+        },
       );
     }, element);
 

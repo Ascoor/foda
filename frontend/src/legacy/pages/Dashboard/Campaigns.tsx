@@ -66,7 +66,8 @@ const CampaignsPage = () => (
     <div className="space-y-2">
       <h1 className="text-3xl font-semibold text-foreground">إدارة الحملات</h1>
       <p className="text-muted-foreground">
-        متابعة الحملات الجارية، التخطيط للأنشطة القادمة، وتحليل التغطية الجغرافية.
+        متابعة الحملات الجارية، التخطيط للأنشطة القادمة، وتحليل التغطية
+        الجغرافية.
       </p>
     </div>
 
@@ -84,14 +85,21 @@ const CampaignsPage = () => (
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">الجدول الزمني للحملات</h2>
-          <p className="text-sm text-muted-foreground">استعرض نقاط التحول الأساسية خلال الأسبوع الحالي</p>
+          <h2 className="text-lg font-semibold text-foreground">
+            الجدول الزمني للحملات
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            استعرض نقاط التحول الأساسية خلال الأسبوع الحالي
+          </p>
         </div>
       </div>
 
       <div className="mt-6 space-y-5">
         {timeline.map((item) => (
-          <div key={item.title} className="rounded-2xl border border-[hsla(var(--border)/0.12)] bg-[hsla(var(--surface-secondary)/0.35)] p-5">
+          <div
+            key={item.title}
+            className="rounded-2xl border border-[hsla(var(--border)/0.12)] bg-[hsla(var(--surface-secondary)/0.35)] p-5"
+          >
             <div className="flex flex-wrap items-center justify-between gap-3">
               <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 {item.date}
@@ -100,8 +108,12 @@ const CampaignsPage = () => (
                 مجدول
               </span>
             </div>
-            <h3 className="mt-3 text-base font-semibold text-foreground">{item.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{item.description}</p>
+            <h3 className="mt-3 text-base font-semibold text-foreground">
+              {item.title}
+            </h3>
+            <p className="mt-2 text-sm text-muted-foreground">
+              {item.description}
+            </p>
           </div>
         ))}
       </div>

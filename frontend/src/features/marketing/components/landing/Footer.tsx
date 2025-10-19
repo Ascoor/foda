@@ -6,9 +6,14 @@ export const Footer = () => {
   const { language, setLanguage, toggleTheme } = useFloatingExperienceStore();
 
   return (
-    <footer id="contact" className="relative mt-24 bg-white/40 py-8 text-center text-sm text-slate-600 backdrop-blur-2xl dark:bg-slate-900/60 dark:text-slate-300">
+    <footer
+      id="contact"
+      className="relative mt-24 bg-white/40 py-8 text-center text-sm text-slate-600 backdrop-blur-2xl dark:bg-slate-900/60 dark:text-slate-300"
+    >
       <div className="mx-auto flex w-[94%] max-w-5xl flex-col items-center gap-4 md:flex-row md:justify-between">
-        <p className="font-semibold text-slate-700 dark:text-slate-200">{t("footerTagline")}</p>
+        <p className="font-semibold text-slate-700 dark:text-slate-200">
+          {t("footerTagline")}
+        </p>
         <div className="flex items-center gap-4 text-xs">
           <button
             onClick={() => setLanguage(language === "ar" ? "en" : "ar")}
@@ -24,7 +29,9 @@ export const Footer = () => {
           </button>
         </div>
       </div>
-      <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">© {new Date().getFullYear()} Aurora Election Labs</p>
+      <p className="mt-4 text-xs text-slate-500 dark:text-slate-400">
+        © {new Date().getFullYear()} Aurora Election Labs
+      </p>
     </footer>
   );
 };

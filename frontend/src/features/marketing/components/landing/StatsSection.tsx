@@ -15,7 +15,7 @@ const StatBubble = ({ label, value, suffix = "" }: StatBubbleProps) => {
   const animatedValue = useSpring(0, { stiffness: 80, damping: 20 });
   const rounded = useTransform(animatedValue, (latest) => Math.floor(latest));
   const formatted = useTransform(rounded, (latest) =>
-    new Intl.NumberFormat(language === "ar" ? "ar-EG" : "en-US").format(latest)
+    new Intl.NumberFormat(language === "ar" ? "ar-EG" : "en-US").format(latest),
   );
 
   useEffect(() => {
@@ -39,8 +39,12 @@ const StatBubble = ({ label, value, suffix = "" }: StatBubbleProps) => {
         <motion.span className="text-4xl font-bold text-slate-900 dark:text-white">
           {formatted}
         </motion.span>
-        <span className="ml-1 text-2xl font-semibold text-cyan-600 dark:text-cyan-300">{suffix}</span>
-        <p className="mt-2 text-sm font-semibold text-slate-600 dark:text-slate-300">{label}</p>
+        <span className="ml-1 text-2xl font-semibold text-cyan-600 dark:text-cyan-300">
+          {suffix}
+        </span>
+        <p className="mt-2 text-sm font-semibold text-slate-600 dark:text-slate-300">
+          {label}
+        </p>
       </div>
     </motion.div>
   );

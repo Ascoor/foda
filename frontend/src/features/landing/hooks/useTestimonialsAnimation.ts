@@ -2,7 +2,9 @@ import type { RefObject } from "react";
 import { useEffect } from "react";
 import { gsap, registerGsap, ScrollTrigger } from "@shared/lib/gsap";
 
-export const useTestimonialsAnimation = (sectionRef: RefObject<HTMLElement>) => {
+export const useTestimonialsAnimation = (
+  sectionRef: RefObject<HTMLElement>,
+) => {
   useEffect(() => {
     const element = sectionRef.current;
     if (!element) return;
@@ -23,7 +25,7 @@ export const useTestimonialsAnimation = (sectionRef: RefObject<HTMLElement>) => 
             trigger: element,
             start: "top 75%",
           },
-        }
+        },
       );
     }, element);
 

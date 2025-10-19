@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Search, User, X } from 'lucide-react';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { Search, User, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@shared/ui/dialog';
-import { Button } from '@shared/ui/button';
-import { Input } from '@shared/ui/input';
-import { Badge } from '@shared/ui/badge';
-import { useLanguage } from '@shared/contexts/LanguageContext';
+} from "@shared/ui/dialog";
+import { Button } from "@shared/ui/button";
+import { Input } from "@shared/ui/input";
+import { Badge } from "@shared/ui/badge";
+import { useLanguage } from "@shared/contexts/LanguageContext";
 
 interface AssignDialogProps {
   isOpen: boolean;
@@ -33,23 +33,23 @@ export const AssignDialog = ({
   title,
   onAssign,
   items = [],
-  multiSelect = false
+  multiSelect = false,
 }: AssignDialogProps) => {
   const { t } = useTranslation();
   const { direction } = useLanguage();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const filteredItems = items.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredItems = items.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const handleSelect = (id: string) => {
     if (multiSelect) {
-      setSelectedIds(prev =>
+      setSelectedIds((prev) =>
         prev.includes(id)
-          ? prev.filter(selectedId => selectedId !== id)
-          : [...prev, id]
+          ? prev.filter((selectedId) => selectedId !== id)
+          : [...prev, id],
       );
     } else {
       setSelectedIds([id]);
@@ -59,13 +59,13 @@ export const AssignDialog = ({
   const handleAssign = () => {
     onAssign(selectedIds);
     setSelectedIds([]);
-    setSearchTerm('');
+    setSearchTerm("");
     onClose();
   };
 
   const handleClose = () => {
     setSelectedIds([]);
-    setSearchTerm('');
+    setSearchTerm("");
     onClose();
   };
 
@@ -81,12 +81,14 @@ export const AssignDialog = ({
         <div className="space-y-4">
           {/* Search */}
           <div className="relative">
-            <Search className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground ${direction === 'rtl' ? 'right-3' : 'left-3'}`} />
+            <Search
+              className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground ${direction === "rtl" ? "right-3" : "left-3"}`}
+            />
             <Input
-              placeholder={t('common.search')}
+              placeholder={t("common.search")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={`glass border-white/20 ${direction === 'rtl' ? 'pr-10' : 'pl-10'}`}
+              className={`glass border-white/20 ${direction === "rtl" ? "pr-10" : "pl-10"}`}
             />
           </div>
 
@@ -95,12 +97,12 @@ export const AssignDialog = ({
             {selectedIds.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
+                animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 className="flex flex-wrap gap-2 p-3 bg-primary/5 rounded-lg border border-primary/20"
               >
-                {selectedIds.map(id => {
-                  const item = items.find(i => i.id === id);
+                {selectedIds.map((id) => {
+                  const item = items.find((i) => i.id === id);
                   return item ? (
                     <Badge
                       key={id}
@@ -124,7 +126,7 @@ export const AssignDialog = ({
             <AnimatePresence>
               {filteredItems.map((item, index) => {
                 const isSelected = selectedIds.includes(item.id);
-                
+
                 return (
                   <motion.div
                     key={item.id}
@@ -136,20 +138,26 @@ export const AssignDialog = ({
                     className={`
                       flex items-center gap-3 p-3 rounded-lg cursor-pointer
                       transition-all duration-200 border
-                      ${isSelected
-                        ? 'bg-primary/10 border-primary/30 shadow-glow'
-                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20'
+                      ${
+                        isSelected
+                          ? "bg-primary/10 border-primary/30 shadow-glow"
+                          : "bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20"
                       }
                     `}
                   >
-                    <div className={`
+                    <div
+                      className={`
                       w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center
-                      ${isSelected
-                        ? 'from-primary to-primary-glow shadow-glow'
-                        : 'from-muted/20 to-muted/10'
+                      ${
+                        isSelected
+                          ? "from-primary to-primary-glow shadow-glow"
+                          : "from-muted/20 to-muted/10"
                       }
-                    `}>
-                      <User className={`h-5 w-5 ${isSelected ? 'text-white' : 'text-muted-foreground'}`} />
+                    `}
+                    >
+                      <User
+                        className={`h-5 w-5 ${isSelected ? "text-white" : "text-muted-foreground"}`}
+                      />
                     </div>
 
                     <div className="flex-1">
@@ -198,14 +206,14 @@ export const AssignDialog = ({
               onClick={handleClose}
               className="flex-1 glass-button"
             >
-              {t('common.cancel')}
+              {t("common.cancel")}
             </Button>
             <Button
               onClick={handleAssign}
               disabled={selectedIds.length === 0}
               className="flex-1 bg-gradient-primary text-white shadow-glow disabled:opacity-50 disabled:shadow-none"
             >
-              {t('common.confirm')} ({selectedIds.length})
+              {t("common.confirm")} ({selectedIds.length})
             </Button>
           </div>
         </div>

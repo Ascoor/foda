@@ -1,7 +1,7 @@
-import { request } from '@shared/lib/api';
-import { API_ENDPOINTS } from '@shared/lib/endpoints';
-import type { Election } from '@/types';
-import type { ElectionFormData, ElectionFilters } from './types';
+import { request } from "@shared/lib/api";
+import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import type { Election } from "@/types";
+import type { ElectionFormData, ElectionFilters } from "./types";
 
 type PaginatedResponse<T> = {
   data: T[];
@@ -18,7 +18,7 @@ export const fetchElections = async (params: ElectionFilters = {}) =>
   request<PaginatedResponse<Election>>(
     {
       url: ELECTIONS_ENDPOINT,
-      method: 'get',
+      method: "get",
       params,
     },
     { useCache: true },
@@ -26,28 +26,31 @@ export const fetchElections = async (params: ElectionFilters = {}) =>
 
 export const fetchElection = async (uuid: string) =>
   request<{ data: Election }>(
-    { url: `${ELECTIONS_ENDPOINT}/${uuid}`, method: 'get' },
+    { url: `${ELECTIONS_ENDPOINT}/${uuid}`, method: "get" },
     { useCache: true },
   );
 
 export const createElection = async (payload: ElectionFormData) => {
   const data = await request<{ data: Election }>({
     url: ELECTIONS_ENDPOINT,
-    method: 'post',
+    method: "post",
     data: payload,
   });
   return data.data;
 };
 
-export const updateElection = async (uuid: string, payload: ElectionFormData) => {
+export const updateElection = async (
+  uuid: string,
+  payload: ElectionFormData,
+) => {
   const data = await request<{ data: Election }>({
     url: `${ELECTIONS_ENDPOINT}/${uuid}`,
-    method: 'put',
+    method: "put",
     data: payload,
   });
   return data.data;
 };
 
 export const deleteElection = async (uuid: string) => {
-  await request({ url: `${ELECTIONS_ENDPOINT}/${uuid}`, method: 'delete' });
+  await request({ url: `${ELECTIONS_ENDPOINT}/${uuid}`, method: "delete" });
 };

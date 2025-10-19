@@ -1,20 +1,20 @@
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { CommitteeFormData, GeoArea } from './types';
-import { fetchGeoAreas } from './api';
-import { useQuery } from '@tanstack/react-query';
-import { Input } from '@shared/ui/input';
-import { Button } from '@shared/ui/button';
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { CommitteeFormData, GeoArea } from "./types";
+import { fetchGeoAreas } from "./api";
+import { useQuery } from "@tanstack/react-query";
+import { Input } from "@shared/ui/input";
+import { Button } from "@shared/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@shared/ui/select';
+} from "@shared/ui/select";
 
 const schema = z.object({
   name: z.string().min(1),
@@ -37,7 +37,7 @@ export const CommitteeForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
   });
 
   const { data: areas } = useQuery<{ data: GeoArea[] }>({
-    queryKey: ['geo-areas'],
+    queryKey: ["geo-areas"],
     queryFn: fetchGeoAreas,
   });
 
@@ -45,8 +45,8 @@ export const CommitteeForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
       <div>
         <Input
-          placeholder={t('committees.committee_name')}
-          {...form.register('name')}
+          placeholder={t("committees.committee_name")}
+          {...form.register("name")}
           className="glass"
         />
         {form.formState.errors.name && (
@@ -58,8 +58,8 @@ export const CommitteeForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Input
-          placeholder={t('committees.location')}
-          {...form.register('location')}
+          placeholder={t("committees.location")}
+          {...form.register("location")}
           className="glass"
         />
         {form.formState.errors.location && (
@@ -71,11 +71,11 @@ export const CommitteeForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Select
-          defaultValue={form.watch('geo_area_id')}
-          onValueChange={(val) => form.setValue('geo_area_id', val)}
+          defaultValue={form.watch("geo_area_id")}
+          onValueChange={(val) => form.setValue("geo_area_id", val)}
         >
           <SelectTrigger className="glass">
-            <SelectValue placeholder={t('committees.area')} />
+            <SelectValue placeholder={t("committees.area")} />
           </SelectTrigger>
           <SelectContent>
             {areas?.data?.map((area: GeoArea) => (
@@ -93,12 +93,20 @@ export const CommitteeForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
       </div>
 
       <div className="flex gap-2">
-        <Button type="submit" className="glass-button bg-gradient-primary text-white">
-          {t('common.save')}
+        <Button
+          type="submit"
+          className="glass-button bg-gradient-primary text-white"
+        >
+          {t("common.save")}
         </Button>
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} className="glass-button">
-            {t('common.cancel')}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            className="glass-button"
+          >
+            {t("common.cancel")}
           </Button>
         )}
       </div>

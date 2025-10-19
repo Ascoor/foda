@@ -1,6 +1,6 @@
-import type { BaseEntity } from './common';
+import type { BaseEntity } from "./common";
 
-export type AnalyticsScope = 'organization' | 'campaign' | 'election';
+export type AnalyticsScope = "organization" | "campaign" | "election";
 
 export interface AnalyticsSnapshot extends BaseEntity {
   scope: AnalyticsScope;

@@ -35,7 +35,7 @@ const defaultOptions: Required<TreeLayoutOptions> = {
 
 export const computeTreeLayout = (
   root: TreeNode,
-  options: TreeLayoutOptions = {}
+  options: TreeLayoutOptions = {},
 ): TreeLayout => {
   const config: LayoutState = {
     nodes: [],
@@ -44,7 +44,10 @@ export const computeTreeLayout = (
     options: { ...defaultOptions, ...options },
   };
 
-  const traverse = (node: TreeNode, depth: number): { min: number; max: number; center: number } => {
+  const traverse = (
+    node: TreeNode,
+    depth: number,
+  ): { min: number; max: number; center: number } => {
     if (!node.children || node.children.length === 0) {
       const position = config.column;
       config.column += 1;

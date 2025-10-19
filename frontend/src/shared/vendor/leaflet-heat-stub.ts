@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import L from "leaflet";
 
 type HeatLayer = {
   addTo: (map: L.Map) => HeatLayer;
@@ -17,12 +17,15 @@ const noopLayer: HeatLayer = {
 };
 
 if (!(L as unknown as { heatLayer?: typeof noopLayer }).heatLayer) {
-  (L as unknown as { heatLayer: (...args: any[]) => HeatLayer }).heatLayer = () => {
-    if (import.meta.env.DEV) {
-      console.info('leaflet.heat plugin not available; rendering fallback heat layer.');
-    }
-    return noopLayer;
-  };
+  (L as unknown as { heatLayer: (...args: unknown[]) => HeatLayer }).heatLayer =
+    () => {
+      if (import.meta.env.DEV) {
+        console.info(
+          "leaflet.heat plugin not available; rendering fallback heat layer.",
+        );
+      }
+      return noopLayer;
+    };
 }
 
 export {};

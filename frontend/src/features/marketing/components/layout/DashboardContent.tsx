@@ -33,18 +33,27 @@ const overviewCards = [
 
 export const DashboardContent = () => (
   <motion.main layout className="relative flex-1 space-y-8">
-    <section id="analytics" className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+    <section
+      id="analytics"
+      className="grid gap-6 md:grid-cols-2 xl:grid-cols-3"
+    >
       {overviewCards.map(({ title, value, change, icon: Icon, gradient }) => (
         <GlassCard key={title} className="overflow-hidden">
           <div className="flex items-center justify-between">
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-300">{title}</p>
-              <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{value}</h3>
+              <p className="text-sm font-semibold text-slate-500 dark:text-slate-300">
+                {title}
+              </p>
+              <h3 className="text-3xl font-bold text-slate-900 dark:text-white">
+                {value}
+              </h3>
               <span className="inline-flex items-center rounded-full bg-white/60 px-3 py-1 text-xs font-semibold text-emerald-600 shadow-sm dark:bg-slate-800/60 dark:text-emerald-300">
                 {change}
               </span>
             </div>
-            <div className={`rounded-3xl bg-gradient-to-br ${gradient} p-5 text-white shadow-[0_0_35px_rgba(59,130,246,0.35)]`}>
+            <div
+              className={`rounded-3xl bg-gradient-to-br ${gradient} p-5 text-white shadow-[0_0_35px_rgba(59,130,246,0.35)]`}
+            >
               <Icon className="size-8" />
             </div>
           </div>

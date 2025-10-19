@@ -1,24 +1,24 @@
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { VoterFormData } from './types';
-import { Input } from '@shared/ui/input';
-import { Button } from '@shared/ui/button';
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { VoterFormData } from "./types";
+import { Input } from "@shared/ui/input";
+import { Button } from "@shared/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@shared/ui/select';
+} from "@shared/ui/select";
 
 const schema = z.object({
   full_name: z.string().min(1),
   national_id: z.string().min(1),
   birth_date: z.string().min(1),
-  gender: z.enum(['male', 'female']),
+  gender: z.enum(["male", "female"]),
   mobile: z.string().min(1),
   email: z.string().email().optional(),
   address: z.string().optional(),
@@ -42,8 +42,8 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
       <div>
         <Input
-          placeholder={t('voters.full_name')}
-          {...form.register('full_name')}
+          placeholder={t("voters.full_name")}
+          {...form.register("full_name")}
           className="glass"
         />
         {form.formState.errors.full_name && (
@@ -55,8 +55,8 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Input
-          placeholder={t('voters.national_id')}
-          {...form.register('national_id')}
+          placeholder={t("voters.national_id")}
+          {...form.register("national_id")}
           className="glass"
         />
         {form.formState.errors.national_id && (
@@ -69,9 +69,9 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
       <div>
         <Input
           type="date"
-          placeholder={t('voters.birth_date')}
-          {...form.register('birth_date')}
-          className={`glass ${direction === 'rtl' ? 'text-right' : ''}`}
+          placeholder={t("voters.birth_date")}
+          {...form.register("birth_date")}
+          className={`glass ${direction === "rtl" ? "text-right" : ""}`}
         />
         {form.formState.errors.birth_date && (
           <p className="text-destructive text-sm">
@@ -82,15 +82,21 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Select
-          defaultValue={form.watch('gender')}
-          onValueChange={(val) => form.setValue('gender', val as VoterFormData['gender'])}
+          defaultValue={form.watch("gender")}
+          onValueChange={(val) =>
+            form.setValue("gender", val as VoterFormData["gender"])
+          }
         >
           <SelectTrigger className="glass">
-            <SelectValue placeholder={t('voters.gender')} />
+            <SelectValue placeholder={t("voters.gender")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="male">{t('voters.gender_options.male')}</SelectItem>
-            <SelectItem value="female">{t('voters.gender_options.female')}</SelectItem>
+            <SelectItem value="male">
+              {t("voters.gender_options.male")}
+            </SelectItem>
+            <SelectItem value="female">
+              {t("voters.gender_options.female")}
+            </SelectItem>
           </SelectContent>
         </Select>
         {form.formState.errors.gender && (
@@ -102,8 +108,8 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Input
-          placeholder={t('voters.phone')}
-          {...form.register('mobile')}
+          placeholder={t("voters.phone")}
+          {...form.register("mobile")}
           className="glass"
         />
         {form.formState.errors.mobile && (
@@ -115,8 +121,8 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Input
-          placeholder={t('voters.email')}
-          {...form.register('email')}
+          placeholder={t("voters.email")}
+          {...form.register("email")}
           className="glass"
         />
         {form.formState.errors.email && (
@@ -128,8 +134,8 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Input
-          placeholder={t('voters.address')}
-          {...form.register('address')}
+          placeholder={t("voters.address")}
+          {...form.register("address")}
           className="glass"
         />
         {form.formState.errors.address && (
@@ -140,12 +146,20 @@ export const VoterForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
       </div>
 
       <div className="flex gap-2">
-        <Button type="submit" className="glass-button bg-gradient-primary text-white">
-          {t('common.save')}
+        <Button
+          type="submit"
+          className="glass-button bg-gradient-primary text-white"
+        >
+          {t("common.save")}
         </Button>
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} className="glass-button">
-            {t('common.cancel')}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            className="glass-button"
+          >
+            {t("common.cancel")}
           </Button>
         )}
       </div>

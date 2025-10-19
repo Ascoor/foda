@@ -27,7 +27,9 @@ export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const container = document.querySelector<HTMLElement>("[data-barba='container']");
+    const container = document.querySelector<HTMLElement>(
+      "[data-barba='container']",
+    );
     if (!container) {
       return;
     }

@@ -1,6 +1,6 @@
-import { Component, ReactNode } from 'react';
-import { Alert, AlertTitle, AlertDescription } from '@shared/ui/alert';
-import { logError } from '@shared/lib/logging';
+import { Component, ReactNode, type ErrorInfo } from "react";
+import { Alert, AlertTitle, AlertDescription } from "@shared/ui/alert";
+import { logError } from "@shared/lib/logging";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -11,14 +11,17 @@ interface ErrorBoundaryState {
   error?: Error;
 }
 
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   state: ErrorBoundaryState = { hasError: false };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, errorInfo: any) {
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     logError(error.message, errorInfo);
     console.error(error);
   }

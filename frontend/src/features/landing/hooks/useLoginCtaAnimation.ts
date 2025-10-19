@@ -22,7 +22,7 @@ export const useLoginCtaAnimation = (sectionRef: RefObject<HTMLElement>) => {
             trigger: element,
             start: "top 75%",
           },
-        }
+        },
       );
     }, element);
 

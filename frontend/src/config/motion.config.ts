@@ -3,7 +3,7 @@
  * Framer Motion configurations for consistent animations
  */
 
-import type { Variants, Transition } from 'framer-motion';
+import type { Variants, Transition } from "framer-motion";
 
 // Easing curves
 export const easings = {
@@ -27,12 +27,12 @@ export const transitions = {
     ease: easings.smooth,
   } as Transition,
   spring: {
-    type: 'spring',
+    type: "spring",
     stiffness: 300,
     damping: 30,
   } as Transition,
   bounce: {
-    type: 'spring',
+    type: "spring",
     stiffness: 400,
     damping: 20,
   } as Transition,
@@ -108,8 +108,8 @@ export const motionVariants = {
   // Card hover effects
   cardHover: {
     rest: { scale: 1, y: 0 },
-    hover: { 
-      scale: 1.02, 
+    hover: {
+      scale: 1.02,
       y: -4,
       transition: transitions.fast,
     },
@@ -117,13 +117,13 @@ export const motionVariants = {
 
   // Glass effect on hover
   glassHover: {
-    rest: { 
-      backdropFilter: 'blur(20px)',
-      boxShadow: '0 8px 32px rgba(31, 38, 135, 0.37)',
+    rest: {
+      backdropFilter: "blur(20px)",
+      boxShadow: "0 8px 32px rgba(31, 38, 135, 0.37)",
     },
-    hover: { 
-      backdropFilter: 'blur(24px)',
-      boxShadow: '0 12px 40px rgba(31, 38, 135, 0.5)',
+    hover: {
+      backdropFilter: "blur(24px)",
+      boxShadow: "0 12px 40px rgba(31, 38, 135, 0.5)",
       transition: transitions.normal,
     },
   } as Variants,
@@ -145,13 +145,13 @@ export const motionVariants = {
   // Modal/Dialog animations
   modal: {
     initial: { scale: 0.95, opacity: 0 },
-    animate: { 
-      scale: 1, 
+    animate: {
+      scale: 1,
       opacity: 1,
       transition: transitions.spring,
     },
-    exit: { 
-      scale: 0.95, 
+    exit: {
+      scale: 0.95,
       opacity: 0,
       transition: transitions.fast,
     },
@@ -165,15 +165,15 @@ export const motionVariants = {
 
   // Drawer animations
   drawer: {
-    initial: { x: '100%' },
+    initial: { x: "100%" },
     animate: { x: 0 },
-    exit: { x: '100%' },
+    exit: { x: "100%" },
   } as Variants,
 
   drawerRTL: {
-    initial: { x: '-100%' },
+    initial: { x: "-100%" },
     animate: { x: 0 },
-    exit: { x: '-100%' },
+    exit: { x: "-100%" },
   } as Variants,
 
   // Notification animations
@@ -193,15 +193,15 @@ export const motionVariants = {
 // Utility function to get directional variants
 export const getDirectionalVariant = (
   variantName: keyof typeof motionVariants,
-  isRTL: boolean
+  isRTL: boolean,
 ): Variants => {
-  if (variantName === 'sidebar') {
+  if (variantName === "sidebar") {
     return isRTL ? motionVariants.sidebarRTL : motionVariants.sidebar;
   }
-  if (variantName === 'drawer') {
+  if (variantName === "drawer") {
     return isRTL ? motionVariants.drawerRTL : motionVariants.drawer;
   }
-  if (variantName === 'notification') {
+  if (variantName === "notification") {
     return isRTL ? motionVariants.notificationRTL : motionVariants.notification;
   }
   return motionVariants[variantName];

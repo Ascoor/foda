@@ -1,8 +1,13 @@
-import { useTranslation } from 'react-i18next';
-import { User } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog';
-import { Button } from '@shared/ui/button';
-import { Agent } from './types';
+import { useTranslation } from "react-i18next";
+import { User } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@shared/ui/dialog";
+import { Button } from "@shared/ui/button";
+import { Agent } from "./types";
 
 interface Props {
   isOpen: boolean;
@@ -21,7 +26,7 @@ export const AgentDetails = ({ isOpen, onClose, agent, onEdit }: Props) => {
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gradient-primary flex items-center gap-2">
             <User className="h-5 w-5" />
-            {t('agents.agent_name')}
+            {t("agents.agent_name")}
           </DialogTitle>
         </DialogHeader>
 
@@ -34,11 +39,18 @@ export const AgentDetails = ({ isOpen, onClose, agent, onEdit }: Props) => {
             )}
           </div>
           <div className="flex gap-3 pt-4 border-t border-white/10">
-            <Button variant="outline" onClick={onClose} className="flex-1 glass-button">
-              {t('common.cancel')}
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="flex-1 glass-button"
+            >
+              {t("common.cancel")}
             </Button>
-            <Button onClick={() => onEdit(agent)} className="flex-1 bg-gradient-primary text-white">
-              {t('common.edit')}
+            <Button
+              onClick={() => onEdit(agent)}
+              className="flex-1 bg-gradient-primary text-white"
+            >
+              {t("common.edit")}
             </Button>
           </div>
         </div>

@@ -1,23 +1,32 @@
-import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from 'react';
-import { useTranslation } from 'react-i18next';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  ReactNode,
+} from "react";
+import { useTranslation } from "react-i18next";
 
-type Language = 'ar' | 'en';
-type Direction = 'rtl' | 'ltr';
+type Language = "ar" | "en";
+type Direction = "rtl" | "ltr";
 
 interface LanguageContextType {
   language: Language;
   direction: Direction;
   toggleLanguage: () => void;
   setLanguage: (lang: Language) => void;
-  t: (key: string, options?: any) => string;
+  t: (key: string, options?: Record<string, unknown>) => string;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined,
+);
 
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
   if (!context) {
-    throw new Error('useLanguage must be used within LanguageProvider');
+    throw new Error("useLanguage must be used within LanguageProvider");
   }
   return context;
 };
@@ -29,18 +38,21 @@ interface LanguageProviderProps {
 export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   const { i18n, t } = useTranslation();
   const [language, setLanguageState] = useState<Language>(() => {
-    if (typeof window === 'undefined') {
-      return 'ar';
+    if (typeof window === "undefined") {
+      return "ar";
     }
 
-    const stored = window.localStorage.getItem('language');
-    return (stored as Language) || 'ar';
+    const stored = window.localStorage.getItem("language");
+    return (stored as Language) || "ar";
   });
 
-  const direction = useMemo<Direction>(() => (language === 'ar' ? 'rtl' : 'ltr'), [language]);
+  const direction = useMemo<Direction>(
+    () => (language === "ar" ? "rtl" : "ltr"),
+    [language],
+  );
 
   const toggleLanguage = () => {
-    setLanguageState((prev) => (prev === 'ar' ? 'en' : 'ar'));
+    setLanguageState((prev) => (prev === "ar" ? "en" : "ar"));
   };
 
   const setLanguage = (newLang: Language) => {
@@ -52,7 +64,7 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
   }, [i18n, language]);
 
   useEffect(() => {
-    if (typeof document === 'undefined') {
+    if (typeof document === "undefined") {
       return;
     }
 
@@ -65,16 +77,16 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
     }
 
     body.dataset.direction = direction;
-    body.classList.toggle('is-rtl', direction === 'rtl');
-    body.classList.toggle('is-ltr', direction === 'ltr');
+    body.classList.toggle("is-rtl", direction === "rtl");
+    body.classList.toggle("is-ltr", direction === "ltr");
   }, [direction, language]);
 
   useEffect(() => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return;
     }
 
-    window.localStorage.setItem('language', language);
+    window.localStorage.setItem("language", language);
   }, [language]);
 
   const value = useMemo(
@@ -85,8 +97,12 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
       setLanguage,
       t,
     }),
-    [direction, language, t]
+    [direction, language, t],
   );
 
-  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+  return (
+    <LanguageContext.Provider value={value}>
+      {children}
+    </LanguageContext.Provider>
+  );
 };

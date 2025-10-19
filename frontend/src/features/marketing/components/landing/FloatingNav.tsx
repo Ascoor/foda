@@ -14,7 +14,9 @@ export const FloatingNav = () => (
     transition={{ duration: 0.6, ease: "easeOut" }}
     className="pointer-events-auto mx-auto mt-8 flex w-[94%] max-w-5xl items-center justify-between rounded-full border border-white/20 bg-white/60 px-6 py-3 text-sm shadow-[0_15px_45px_rgba(59,130,246,0.2)] backdrop-blur-2xl dark:bg-slate-900/70"
   >
-    <div className="text-xs uppercase tracking-[0.4em] text-slate-600 dark:text-slate-200">Aurora Election</div>
+    <div className="text-xs uppercase tracking-[0.4em] text-slate-600 dark:text-slate-200">
+      Aurora Election
+    </div>
     <div className="flex items-center gap-4">
       {navLinks.map((link) => (
         <a

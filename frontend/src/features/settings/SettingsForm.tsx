@@ -1,27 +1,27 @@
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { useQuery, useMutation } from '@tanstack/react-query';
-import { fetchSettings, updateSettings } from './api';
-import { SystemSettings } from './types';
-import { Button } from '@shared/ui/button';
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { fetchSettings, updateSettings } from "./api";
+import { SystemSettings } from "./types";
+import { Button } from "@shared/ui/button";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from '@shared/ui/select';
-import { Input } from '@shared/ui/input';
-import { Switch } from '@shared/ui/switch';
-import { Label } from '@shared/ui/label';
-import { toast } from '@shared/ui/sonner';
+} from "@shared/ui/select";
+import { Input } from "@shared/ui/input";
+import { Switch } from "@shared/ui/switch";
+import { Label } from "@shared/ui/label";
+import { toast } from "@shared/ui/sonner";
 
 export const SettingsForm = () => {
   const { t } = useTranslation();
   const { direction } = useLanguage();
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['settings'],
+    queryKey: ["settings"],
     queryFn: fetchSettings,
   });
 
@@ -35,8 +35,8 @@ export const SettingsForm = () => {
 
   const mutation = useMutation({
     mutationFn: updateSettings,
-    onSuccess: () => toast.success(t('settings.save_success')),
-    onError: () => toast.error(t('settings.save_error')),
+    onSuccess: () => toast.success(t("settings.save_success")),
+    onError: () => toast.error(t("settings.save_error")),
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -52,7 +52,7 @@ export const SettingsForm = () => {
   };
 
   if (isLoading || !form) {
-    return <div>{t('common.loading')}</div>;
+    return <div>{t("common.loading")}</div>;
   }
 
   return (
@@ -61,14 +61,14 @@ export const SettingsForm = () => {
       className="max-w-xl mx-auto space-y-4 glass-card p-6"
       dir={direction}
     >
-      <h1 className="text-2xl font-bold mb-4">{t('settings.title')}</h1>
+      <h1 className="text-2xl font-bold mb-4">{t("settings.title")}</h1>
 
       <div className="space-y-2">
-        <Label htmlFor="language">{t('settings.language')}</Label>
+        <Label htmlFor="language">{t("settings.language")}</Label>
         <Select
           value={form.language}
           onValueChange={(v) =>
-            setForm((s) => ({ ...s!, language: v as 'en' | 'ar' }))
+            setForm((s) => ({ ...s!, language: v as "en" | "ar" }))
           }
         >
           <SelectTrigger id="language">
@@ -82,12 +82,12 @@ export const SettingsForm = () => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="region">{t('settings.region')}</Label>
+        <Label htmlFor="region">{t("settings.region")}</Label>
         <Input
           id="region"
           value={form.region}
           onChange={(e) => setForm((s) => ({ ...s!, region: e.target.value }))}
-          className={`glass ${direction === 'rtl' ? 'text-right' : ''}`}
+          className={`glass ${direction === "rtl" ? "text-right" : ""}`}
         />
       </div>
 
@@ -100,13 +100,13 @@ export const SettingsForm = () => {
           }
         />
         <Label htmlFor="allowRegistration">
-          {t('settings.allow_registration')}
+          {t("settings.allow_registration")}
         </Label>
       </div>
 
       <div className="flex gap-2">
         <Button type="submit" disabled={mutation.isPending}>
-          {t('common.save')}
+          {t("common.save")}
         </Button>
         <Button
           type="button"
@@ -114,7 +114,7 @@ export const SettingsForm = () => {
           onClick={handleReset}
           disabled={mutation.isPending}
         >
-          {t('common.reset')}
+          {t("common.reset")}
         </Button>
       </div>
     </form>

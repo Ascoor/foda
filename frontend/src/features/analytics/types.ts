@@ -1,4 +1,4 @@
-import type { AnalyticsSnapshot, AnalyticsScope } from '@/types';
+import type { AnalyticsSnapshot, AnalyticsScope } from "@/types";
 
 export interface RegionAnalytics {
   geo_area_uuid: string;

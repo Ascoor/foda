@@ -1,4 +1,4 @@
-import type { Election as ElectionEntity, ElectionStatus } from '@/types';
+import type { Election as ElectionEntity, ElectionStatus } from "@/types";
 
 export type Election = ElectionEntity;
 
@@ -8,7 +8,7 @@ export interface ElectionFormData {
   description?: string | null;
   status?: ElectionStatus;
   cycle_year: number;
-  phases: ElectionEntity['phases'];
+  phases: ElectionEntity["phases"];
   default_geo_scope?: string | null;
 }
 

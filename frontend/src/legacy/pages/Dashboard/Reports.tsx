@@ -66,9 +66,12 @@ const ReportsPage = () => (
     className="space-y-8"
   >
     <div className="space-y-2">
-      <h1 className="text-3xl font-semibold text-foreground">التقارير والتحليلات</h1>
+      <h1 className="text-3xl font-semibold text-foreground">
+        التقارير والتحليلات
+      </h1>
       <p className="text-muted-foreground">
-        متابعة تفصيلية لنتائج الحملات، مستويات المخاطر، ومؤشرات الأداء عبر المناطق.
+        متابعة تفصيلية لنتائج الحملات، مستويات المخاطر، ومؤشرات الأداء عبر
+        المناطق.
       </p>
     </div>
 
@@ -89,15 +92,27 @@ const ReportsPage = () => (
         </TableHeader>
         <TableBody>
           {reports.map((report) => (
-            <TableRow key={report.title} className="border-[hsla(var(--border)/0.1)]">
-              <TableCell className="font-medium text-foreground">{report.title}</TableCell>
-              <TableCell className="text-muted-foreground">{report.owner}</TableCell>
+            <TableRow
+              key={report.title}
+              className="border-[hsla(var(--border)/0.1)]"
+            >
+              <TableCell className="font-medium text-foreground">
+                {report.title}
+              </TableCell>
+              <TableCell className="text-muted-foreground">
+                {report.owner}
+              </TableCell>
               <TableCell>
-                <Badge variant={statusVariant(report.status)} className="rounded-full px-3 py-1 text-xs">
+                <Badge
+                  variant={statusVariant(report.status)}
+                  className="rounded-full px-3 py-1 text-xs"
+                >
                   {report.status}
                 </Badge>
               </TableCell>
-              <TableCell className="text-muted-foreground">{report.updatedAt}</TableCell>
+              <TableCell className="text-muted-foreground">
+                {report.updatedAt}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import { StatsCard } from '../components/StatsCard';
-import { LanguageProvider } from '@shared/contexts/LanguageContext';
-import { Vote } from 'lucide-react';
+import { render, screen } from "@testing-library/react";
+import { StatsCard } from "../components/StatsCard";
+import { LanguageProvider } from "@shared/contexts/LanguageContext";
+import { Vote } from "lucide-react";
 
-test('renders stats card with data', () => {
+test("renders stats card with data", () => {
   render(
     <LanguageProvider>
       <StatsCard
@@ -14,8 +14,8 @@ test('renders stats card with data', () => {
         icon={Vote}
         color="primary"
       />
-    </LanguageProvider>
+    </LanguageProvider>,
   );
-  expect(screen.getByText('10')).toBeInTheDocument();
-  expect(screen.getByText('Total Elections')).toBeInTheDocument();
+  expect(screen.getByText("10")).toBeInTheDocument();
+  expect(screen.getByText("Total Elections")).toBeInTheDocument();
 });

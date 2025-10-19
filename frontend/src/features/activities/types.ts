@@ -1,4 +1,4 @@
-import type { Activity, ActivityStatus, ActivityType } from '@/types';
+import type { Activity, ActivityStatus, ActivityType } from "@/types";
 
 export interface ActivityMeta {
   current_page: number;

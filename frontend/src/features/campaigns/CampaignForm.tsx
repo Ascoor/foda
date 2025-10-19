@@ -1,12 +1,17 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Megaphone } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog';
-import { Button } from '@shared/ui/button';
-import { Input } from '@shared/ui/input';
-import { Label } from '@shared/ui/label';
-import { Textarea } from '@shared/ui/textarea';
-import { Campaign } from './types';
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Megaphone } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@shared/ui/dialog";
+import { Button } from "@shared/ui/button";
+import { Input } from "@shared/ui/input";
+import { Label } from "@shared/ui/label";
+import { Textarea } from "@shared/ui/textarea";
+import { Campaign } from "./types";
 
 interface Props {
   isOpen: boolean;
@@ -15,7 +20,12 @@ interface Props {
   campaign?: Campaign | null;
 }
 
-export const CampaignForm = ({ isOpen, onClose, onSuccess, campaign }: Props) => {
+export const CampaignForm = ({
+  isOpen,
+  onClose,
+  onSuccess,
+  campaign,
+}: Props) => {
   const { t } = useTranslation();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,25 +43,40 @@ export const CampaignForm = ({ isOpen, onClose, onSuccess, campaign }: Props) =>
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-gradient-primary flex items-center gap-2">
             <Megaphone className="h-5 w-5" />
-            {campaign ? t('common.edit') : t('campaigns.add_campaign')}
+            {campaign ? t("common.edit") : t("campaigns.add_campaign")}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label>{t('campaigns.campaign_name')}</Label>
-            <Input className="glass border-white/20" defaultValue={campaign?.name} />
+            <Label>{t("campaigns.campaign_name")}</Label>
+            <Input
+              className="glass border-white/20"
+              defaultValue={campaign?.name}
+            />
           </div>
           <div>
-            <Label>{t('campaigns.message')}</Label>
-            <Textarea className="glass border-white/20" defaultValue={campaign?.message} />
+            <Label>{t("campaigns.message")}</Label>
+            <Textarea
+              className="glass border-white/20"
+              defaultValue={campaign?.message}
+            />
           </div>
           <div className="flex gap-3 pt-4 border-t border-white/10">
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1 glass-button">
-              {t('common.cancel')}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="flex-1 glass-button"
+            >
+              {t("common.cancel")}
             </Button>
-            <Button type="submit" disabled={isSubmitting} className="flex-1 bg-gradient-primary text-white">
-              {isSubmitting ? '...' : t('common.save')}
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="flex-1 bg-gradient-primary text-white"
+            >
+              {isSubmitting ? "..." : t("common.save")}
             </Button>
           </div>
         </form>

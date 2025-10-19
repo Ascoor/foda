@@ -1,7 +1,7 @@
-import { request } from '@shared/lib/api';
-import { API_ENDPOINTS } from '@shared/lib/endpoints';
-import type { Agent } from '@/types';
-import type { AgentFilters, AgentFormData } from './types';
+import { request } from "@shared/lib/api";
+import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import type { Agent } from "@/types";
+import type { AgentFilters, AgentFormData } from "./types";
 
 type PaginatedResponse<T> = {
   data: T[];
@@ -13,7 +13,7 @@ type PaginatedResponse<T> = {
 };
 
 const AGENTS_ENDPOINT = API_ENDPOINTS.crm.agents;
-export const mockCommittees = [{ id: 'placeholder', name: 'Committee 001' }];
+export const mockCommittees = [{ id: "placeholder", name: "Committee 001" }];
 
 export const fetchAgents = async (
   filters: AgentFilters & { page?: number; per_page?: number } = {},
@@ -21,7 +21,7 @@ export const fetchAgents = async (
   const response = await request<PaginatedResponse<Agent>>(
     {
       url: AGENTS_ENDPOINT,
-      method: 'get',
+      method: "get",
       params: filters,
     },
     { useCache: true },
@@ -32,29 +32,35 @@ export const fetchAgents = async (
 export const createAgent = async (data: AgentFormData) => {
   const response = await request<{ data: Agent }>({
     url: AGENTS_ENDPOINT,
-    method: 'post',
+    method: "post",
     data,
   });
   return response.data;
 };
 
-export const updateAgent = async (uuid: string, data: Partial<AgentFormData>) => {
+export const updateAgent = async (
+  uuid: string,
+  data: Partial<AgentFormData>,
+) => {
   const response = await request<{ data: Agent }>({
     url: `${AGENTS_ENDPOINT}/${uuid}`,
-    method: 'put',
+    method: "put",
     data,
   });
   return response.data;
 };
 
 export const deleteAgent = async (uuid: string) => {
-  await request({ url: `${AGENTS_ENDPOINT}/${uuid}`, method: 'delete' });
+  await request({ url: `${AGENTS_ENDPOINT}/${uuid}`, method: "delete" });
 };
 
-export const assignAgent = async (uuid: string, assignment: AgentFormData['assignment']) => {
+export const assignAgent = async (
+  uuid: string,
+  assignment: AgentFormData["assignment"],
+) => {
   await request({
     url: `${AGENTS_ENDPOINT}/${uuid}/assign`,
-    method: 'post',
+    method: "post",
     data: assignment,
   });
 };
@@ -62,6 +68,6 @@ export const assignAgent = async (uuid: string, assignment: AgentFormData['assig
 export const exportAgents = async () =>
   request<Blob>({
     url: `${AGENTS_ENDPOINT}/export`,
-    method: 'get',
-    responseType: 'blob',
+    method: "get",
+    responseType: "blob",
   });

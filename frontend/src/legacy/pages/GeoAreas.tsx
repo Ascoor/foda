@@ -1,45 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { mockGeoAreas, GeoAreaData, getCampaignStatusLabel } from '@shared/data/mockGeoData';
-import { 
-  Map, 
-  List, 
-  Search, 
-  Filter, 
-  Plus, 
-  Download, 
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import {
+  mockGeoAreas,
+  GeoAreaData,
+  getCampaignStatusLabel,
+} from "@shared/data/mockGeoData";
+import {
+  Map,
+  List,
+  Search,
+  Filter,
+  Plus,
+  Download,
   RefreshCw,
   Eye,
   Settings,
-  BarChart3
-} from 'lucide-react';
+  BarChart3,
+} from "lucide-react";
 
 // Components
-import { Button } from '@shared/ui/button';
-import { Input } from '@shared/ui/input';
-import { Badge } from '@shared/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui/tabs';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
+import { Button } from "@shared/ui/button";
+import { Input } from "@shared/ui/input";
+import { Badge } from "@shared/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuSeparator 
-} from '@shared/ui/dropdown-menu';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@shared/ui/select';
-import { toast } from '@shared/hooks/use-toast';
+  DropdownMenuSeparator,
+} from "@shared/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@shared/ui/select";
+import { toast } from "@shared/hooks/use-toast";
 
 // Custom Components
-import InteractiveMap from '@legacy/components/geo-areas/InteractiveMap';
-import GeoAreaStats from '@legacy/components/geo-areas/GeoAreaStats';
+import InteractiveMap from "@legacy/components/geo-areas/InteractiveMap";
+import GeoAreaStats from "@legacy/components/geo-areas/GeoAreaStats";
 // List component would be imported here
 
 const GeoAreas: React.FC = () => {
@@ -47,10 +51,10 @@ const GeoAreas: React.FC = () => {
   const [geoAreas, setGeoAreas] = useState<GeoAreaData[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedArea, setSelectedArea] = useState<GeoAreaData | null>(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
-  const [typeFilter, setTypeFilter] = useState<string>('all');
-  const [viewMode, setViewMode] = useState<'map' | 'list'>('map');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [typeFilter, setTypeFilter] = useState<string>("all");
+  const [viewMode, setViewMode] = useState<"map" | "list">("map");
 
   // Load data on component mount
   useEffect(() => {
@@ -58,11 +62,11 @@ const GeoAreas: React.FC = () => {
       setLoading(true);
       try {
         // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         setGeoAreas(mockGeoAreas);
         toast({
-          title: t('geo_areas.title'),
-          description: `${mockGeoAreas.length} ${t('geo_areas.areas')} loaded successfully`,
+          title: t("geo_areas.title"),
+          description: `${mockGeoAreas.length} ${t("geo_areas.areas")} loaded successfully`,
         });
       } catch (error) {
         toast({
@@ -79,22 +83,24 @@ const GeoAreas: React.FC = () => {
   }, [t]);
 
   // Filter areas based on search and filters
-  const filteredAreas = geoAreas.filter(area => {
-    const matchesSearch = !searchTerm || 
+  const filteredAreas = geoAreas.filter((area) => {
+    const matchesSearch =
+      !searchTerm ||
       area.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       area.nameEn.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = statusFilter === 'all' || area.campaignStatus === statusFilter;
-    const matchesType = typeFilter === 'all' || area.type === typeFilter;
-    
+
+    const matchesStatus =
+      statusFilter === "all" || area.campaignStatus === statusFilter;
+    const matchesType = typeFilter === "all" || area.type === typeFilter;
+
     return matchesSearch && matchesStatus && matchesType;
   });
 
   const handleAreaClick = (area: GeoAreaData) => {
     setSelectedArea(area);
     toast({
-      title: language === 'ar' ? area.name : area.nameEn,
-      description: `${t('geo_areas.coverage_percentage')}: ${area.stats.coverage}%`,
+      title: language === "ar" ? area.name : area.nameEn,
+      description: `${t("geo_areas.coverage_percentage")}: ${area.stats.coverage}%`,
     });
   };
 
@@ -103,7 +109,7 @@ const GeoAreas: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       toast({
-        title: t('common.success'),
+        title: t("common.success"),
         description: "Data refreshed successfully",
       });
     }, 1000);
@@ -111,7 +117,7 @@ const GeoAreas: React.FC = () => {
 
   const handleExport = () => {
     toast({
-      title: t('geo_areas.export_data'),
+      title: t("geo_areas.export_data"),
       description: "Export functionality would be implemented here",
     });
   };
@@ -138,24 +144,35 @@ const GeoAreas: React.FC = () => {
       >
         <div>
           <h1 className="text-3xl font-bold text-gradient-primary mb-2">
-            {t('geo_areas.title')}
+            {t("geo_areas.title")}
           </h1>
           <p className="text-muted-foreground">
-            Monitor and manage electoral geographic areas with interactive mapping and analytics
+            Monitor and manage electoral geographic areas with interactive
+            mapping and analytics
           </p>
         </div>
-        
+
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={handleRefresh} className="glass-button">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            className="glass-button"
+          >
             <RefreshCw className="h-4 w-4 mr-2" />
             Refresh
           </Button>
-          
-          <Button variant="outline" size="sm" onClick={handleExport} className="glass-button">
+
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExport}
+            className="glass-button"
+          >
             <Download className="h-4 w-4 mr-2" />
-            {t('geo_areas.export_data')}
+            {t("geo_areas.export_data")}
           </Button>
-          
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" className="glass-button">
@@ -175,7 +192,7 @@ const GeoAreas: React.FC = () => {
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <Plus className="h-4 w-4 mr-2" />
-                {t('geo_areas.add_area')}
+                {t("geo_areas.add_area")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -202,74 +219,93 @@ const GeoAreas: React.FC = () => {
             <div className="flex flex-col lg:flex-row gap-4">
               {/* Search */}
               <div className="relative flex-1">
-                <Search className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground ${direction === 'rtl' ? 'right-3' : 'left-3'}`} />
+                <Search
+                  className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground ${direction === "rtl" ? "right-3" : "left-3"}`}
+                />
                 <Input
-                  placeholder={t('geo_areas.search_areas')}
+                  placeholder={t("geo_areas.search_areas")}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className={`glass ${direction === 'rtl' ? 'pr-10' : 'pl-10'}`}
+                  className={`glass ${direction === "rtl" ? "pr-10" : "pl-10"}`}
                 />
               </div>
-              
+
               {/* Status Filter */}
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger className="w-full lg:w-[200px] glass">
-                  <SelectValue placeholder={t('geo_areas.filter_by_status')} />
+                  <SelectValue placeholder={t("geo_areas.filter_by_status")} />
                 </SelectTrigger>
                 <SelectContent className="glass-card">
-                  <SelectItem value="all">{t('common.all')}</SelectItem>
-                  <SelectItem value="covered">{t('geo_areas.status.covered')}</SelectItem>
-                  <SelectItem value="pending">{t('geo_areas.status.pending')}</SelectItem>
-                  <SelectItem value="high_priority">{t('geo_areas.status.high_priority')}</SelectItem>
-                  <SelectItem value="uncovered">{t('geo_areas.status.uncovered')}</SelectItem>
+                  <SelectItem value="all">{t("common.all")}</SelectItem>
+                  <SelectItem value="covered">
+                    {t("geo_areas.status.covered")}
+                  </SelectItem>
+                  <SelectItem value="pending">
+                    {t("geo_areas.status.pending")}
+                  </SelectItem>
+                  <SelectItem value="high_priority">
+                    {t("geo_areas.status.high_priority")}
+                  </SelectItem>
+                  <SelectItem value="uncovered">
+                    {t("geo_areas.status.uncovered")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
-              
+
               {/* Type Filter */}
               <Select value={typeFilter} onValueChange={setTypeFilter}>
                 <SelectTrigger className="w-full lg:w-[200px] glass">
-                  <SelectValue placeholder={t('geo_areas.area_type')} />
+                  <SelectValue placeholder={t("geo_areas.area_type")} />
                 </SelectTrigger>
                 <SelectContent className="glass-card">
-                  <SelectItem value="all">{t('common.all')}</SelectItem>
-                  <SelectItem value="governorate">{t('geo_areas.types.governorate')}</SelectItem>
-                  <SelectItem value="district">{t('geo_areas.types.district')}</SelectItem>
-                  <SelectItem value="city">{t('geo_areas.types.city')}</SelectItem>
-                  <SelectItem value="village">{t('geo_areas.types.village')}</SelectItem>
+                  <SelectItem value="all">{t("common.all")}</SelectItem>
+                  <SelectItem value="governorate">
+                    {t("geo_areas.types.governorate")}
+                  </SelectItem>
+                  <SelectItem value="district">
+                    {t("geo_areas.types.district")}
+                  </SelectItem>
+                  <SelectItem value="city">
+                    {t("geo_areas.types.city")}
+                  </SelectItem>
+                  <SelectItem value="village">
+                    {t("geo_areas.types.village")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
-              
+
               {/* View Toggle */}
               <div className="flex border border-border rounded-lg overflow-hidden glass">
                 <Button
-                  variant={viewMode === 'map' ? 'default' : 'ghost'}
+                  variant={viewMode === "map" ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => setViewMode('map')}
+                  onClick={() => setViewMode("map")}
                   className="rounded-none"
                 >
                   <Map className="h-4 w-4 mr-2" />
-                  {t('geo_areas.map_view')}
+                  {t("geo_areas.map_view")}
                 </Button>
                 <Button
-                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  variant={viewMode === "list" ? "default" : "ghost"}
                   size="sm"
-                  onClick={() => setViewMode('list')}
+                  onClick={() => setViewMode("list")}
                   className="rounded-none"
                 >
                   <List className="h-4 w-4 mr-2" />
-                  {t('geo_areas.list_view')}
+                  {t("geo_areas.list_view")}
                 </Button>
               </div>
             </div>
-            
+
             {/* Results Count */}
             <div className="flex items-center gap-2 mt-4">
               <Badge variant="secondary" className="glass">
-                {filteredAreas.length} {t('geo_areas.areas')}
+                {filteredAreas.length} {t("geo_areas.areas")}
               </Badge>
               {selectedArea && (
                 <Badge variant="outline" className="glass">
-                  Selected: {language === 'ar' ? selectedArea.name : selectedArea.nameEn}
+                  Selected:{" "}
+                  {language === "ar" ? selectedArea.name : selectedArea.nameEn}
                 </Badge>
               )}
             </div>
@@ -284,7 +320,7 @@ const GeoAreas: React.FC = () => {
         transition={{ delay: 0.3 }}
       >
         <AnimatePresence mode="wait">
-          {viewMode === 'map' ? (
+          {viewMode === "map" ? (
             <motion.div
               key="map"
               initial={{ opacity: 0, scale: 0.95 }}
@@ -314,7 +350,8 @@ const GeoAreas: React.FC = () => {
                     <List className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-lg font-semibold mb-2">List View</h3>
                     <p className="text-muted-foreground">
-                      Detailed list view would be implemented here with the existing components
+                      Detailed list view would be implemented here with the
+                      existing components
                     </p>
                   </div>
                 </CardContent>
@@ -334,7 +371,7 @@ const GeoAreas: React.FC = () => {
           <Card className="glass-card">
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>{t('geo_areas.area_details')}</span>
+                <span>{t("geo_areas.area_details")}</span>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -348,15 +385,17 @@ const GeoAreas: React.FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('geo_areas.area_name')}
+                    {t("geo_areas.area_name")}
                   </p>
                   <p className="font-bold">
-                    {language === 'ar' ? selectedArea.name : selectedArea.nameEn}
+                    {language === "ar"
+                      ? selectedArea.name
+                      : selectedArea.nameEn}
                   </p>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('geo_areas.area_type')}
+                    {t("geo_areas.area_type")}
                   </p>
                   <Badge variant="outline">
                     {t(`geo_areas.types.${selectedArea.type}`)}
@@ -364,20 +403,28 @@ const GeoAreas: React.FC = () => {
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('geo_areas.campaign_status')}
+                    {t("geo_areas.campaign_status")}
                   </p>
-                  <Badge 
+                  <Badge
                     variant="outline"
-                    style={{ borderColor: selectedArea.color, color: selectedArea.color }}
+                    style={{
+                      borderColor: selectedArea.color,
+                      color: selectedArea.color,
+                    }}
                   >
-                    {getCampaignStatusLabel(selectedArea.campaignStatus, language === 'ar')}
+                    {getCampaignStatusLabel(
+                      selectedArea.campaignStatus,
+                      language === "ar",
+                    )}
                   </Badge>
                 </div>
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-muted-foreground">
-                    {t('geo_areas.coverage_percentage')}
+                    {t("geo_areas.coverage_percentage")}
                   </p>
-                  <p className="font-bold text-2xl">{selectedArea.stats.coverage}%</p>
+                  <p className="font-bold text-2xl">
+                    {selectedArea.stats.coverage}%
+                  </p>
                 </div>
               </div>
             </CardContent>

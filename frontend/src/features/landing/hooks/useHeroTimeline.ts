@@ -10,33 +10,35 @@ export const useHeroTimeline = (sectionRef: RefObject<HTMLElement>) => {
     registerGsap();
 
     const ctx = gsap.context(() => {
-      const timeline = gsap.timeline({ defaults: { duration: 0.9, ease: "power3.out" } });
+      const timeline = gsap.timeline({
+        defaults: { duration: 0.9, ease: "power3.out" },
+      });
 
       timeline.fromTo(
         "[data-hero-badge]",
         { y: 40, opacity: 0 },
-        { y: 0, opacity: 1 }
+        { y: 0, opacity: 1 },
       );
 
       timeline.fromTo(
         "[data-hero-title]",
         { y: 80, opacity: 0 },
         { y: 0, opacity: 1 },
-        "-=0.6"
+        "-=0.6",
       );
 
       timeline.fromTo(
         "[data-hero-text]",
         { y: 60, opacity: 0 },
         { y: 0, opacity: 1 },
-        "-=0.7"
+        "-=0.7",
       );
 
       timeline.fromTo(
         "[data-hero-actions]",
         { y: 30, opacity: 0 },
         { y: 0, opacity: 1 },
-        "-=0.5"
+        "-=0.5",
       );
     }, element);
 

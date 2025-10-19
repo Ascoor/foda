@@ -1,7 +1,7 @@
-import { request } from '@shared/lib/api';
-import { API_ENDPOINTS } from '@shared/lib/endpoints';
-import type { Volunteer } from '@/types';
-import type { VolunteerFilters, VolunteerFormData } from './types';
+import { request } from "@shared/lib/api";
+import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import type { Volunteer } from "@/types";
+import type { VolunteerFilters, VolunteerFormData } from "./types";
 
 type PaginatedResponse<T> = {
   data: T[];
@@ -20,7 +20,7 @@ export const fetchVolunteers = async (
   request<PaginatedResponse<Volunteer>>(
     {
       url: VOLUNTEERS_ENDPOINT,
-      method: 'get',
+      method: "get",
       params: filters,
     },
     { useCache: true },
@@ -29,23 +29,26 @@ export const fetchVolunteers = async (
 export const createVolunteer = async (data: VolunteerFormData) => {
   const response = await request<{ data: Volunteer }>({
     url: VOLUNTEERS_ENDPOINT,
-    method: 'post',
+    method: "post",
     data,
   });
   return response.data;
 };
 
-export const updateVolunteer = async (uuid: string, data: Partial<VolunteerFormData>) => {
+export const updateVolunteer = async (
+  uuid: string,
+  data: Partial<VolunteerFormData>,
+) => {
   const response = await request<{ data: Volunteer }>({
     url: `${VOLUNTEERS_ENDPOINT}/${uuid}`,
-    method: 'put',
+    method: "put",
     data,
   });
   return response.data;
 };
 
 export const deleteVolunteer = async (uuid: string) => {
-  await request({ url: `${VOLUNTEERS_ENDPOINT}/${uuid}`, method: 'delete' });
+  await request({ url: `${VOLUNTEERS_ENDPOINT}/${uuid}`, method: "delete" });
 };
 
 export const assignVolunteer = async (
@@ -54,7 +57,7 @@ export const assignVolunteer = async (
 ): Promise<void> => {
   await request({
     url: `${VOLUNTEERS_ENDPOINT}/${uuid}/assign`,
-    method: 'post',
+    method: "post",
     data: { committee_uuid },
   });
 };

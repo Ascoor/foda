@@ -1,12 +1,15 @@
-import { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { ReactNode } from "react";
+import { motion } from "framer-motion";
 
 interface DataTableSkeletonProps {
   rows?: number;
   columns?: number;
 }
 
-export const DataTableSkeleton = ({ rows = 5, columns = 6 }: DataTableSkeletonProps) => {
+export const DataTableSkeleton = ({
+  rows = 5,
+  columns = 6,
+}: DataTableSkeletonProps) => {
   return (
     <div className="w-full">
       {/* Header Skeleton */}
@@ -32,10 +35,10 @@ export const DataTableSkeleton = ({ rows = 5, columns = 6 }: DataTableSkeletonPr
               <div
                 key={colIndex}
                 className={`h-4 bg-muted/20 rounded animate-pulse ${
-                  colIndex === 0 ? 'h-6' : ''
+                  colIndex === 0 ? "h-6" : ""
                 }`}
                 style={{
-                  animationDelay: `${(rowIndex * columns + colIndex) * 0.05}s`
+                  animationDelay: `${(rowIndex * columns + colIndex) * 0.05}s`,
                 }}
               />
             ))}
@@ -53,7 +56,12 @@ interface EmptyStateProps {
   icon?: ReactNode;
 }
 
-export const EmptyState = ({ title, description, action, icon }: EmptyStateProps) => {
+export const EmptyState = ({
+  title,
+  description,
+  action,
+  icon,
+}: EmptyStateProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -67,12 +75,10 @@ export const EmptyState = ({ title, description, action, icon }: EmptyStateProps
           transition={{ delay: 0.2 }}
           className="mb-4 flex justify-center"
         >
-          <div className="p-4 rounded-full bg-muted/20">
-            {icon}
-          </div>
+          <div className="p-4 rounded-full bg-muted/20">{icon}</div>
         </motion.div>
       )}
-      
+
       <motion.h3
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -81,7 +87,7 @@ export const EmptyState = ({ title, description, action, icon }: EmptyStateProps
       >
         {title}
       </motion.h3>
-      
+
       {description && (
         <motion.p
           initial={{ opacity: 0, y: 10 }}
@@ -92,7 +98,7 @@ export const EmptyState = ({ title, description, action, icon }: EmptyStateProps
           {description}
         </motion.p>
       )}
-      
+
       {action && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}

@@ -1,6 +1,6 @@
-import type { BaseEntity, Nullable } from './common';
+import type { BaseEntity, Nullable } from "./common";
 
-export type VolunteerStatus = 'active' | 'onboarding' | 'inactive';
+export type VolunteerStatus = "active" | "onboarding" | "inactive";
 
 export interface VolunteerAvailability {
   weekdays: string[];

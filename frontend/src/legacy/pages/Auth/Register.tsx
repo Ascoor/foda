@@ -24,7 +24,11 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
 
   const passwordsMatch = password === confirmPassword && password.length >= 8;
-  const canSubmit = name.trim().length > 0 && email.trim().length > 0 && passwordsMatch && !loading;
+  const canSubmit =
+    name.trim().length > 0 &&
+    email.trim().length > 0 &&
+    passwordsMatch &&
+    !loading;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,7 +47,9 @@ const Register = () => {
       navigate("/dashboard", { replace: true });
     } catch (err) {
       const message =
-        err instanceof Error && err.message ? err.message : "تعذر إنشاء الحساب، يرجى المحاولة مجدداً";
+        err instanceof Error && err.message
+          ? err.message
+          : "تعذر إنشاء الحساب، يرجى المحاولة مجدداً";
       setError(message);
     } finally {
       setLoading(false);
@@ -56,8 +62,11 @@ const Register = () => {
       subtitle="ابدأ بإدارة المنصة بواجهة واحدة تجمع كل أدواتك التنظيمية"
       footer={
         <p>
-          لديك حساب بالفعل؟ {" "}
-          <Link to="/auth/login" className="font-semibold text-[hsl(var(--primary))]">
+          لديك حساب بالفعل؟{" "}
+          <Link
+            to="/auth/login"
+            className="font-semibold text-[hsl(var(--primary))]"
+          >
             سجل الدخول الآن
           </Link>
         </p>
@@ -110,7 +119,9 @@ const Register = () => {
             disabled={loading}
             required
           />
-          <p className="text-xs text-muted-foreground">يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.</p>
+          <p className="text-xs text-muted-foreground">
+            يجب أن تتكون كلمة المرور من 8 أحرف على الأقل.
+          </p>
         </motion.div>
 
         <motion.div variants={fieldVariants} className="space-y-2 text-start">
@@ -126,7 +137,9 @@ const Register = () => {
             required
           />
           {!passwordsMatch && confirmPassword.length > 0 && (
-            <span className="text-xs text-destructive">كلمة المرور غير متطابقة</span>
+            <span className="text-xs text-destructive">
+              كلمة المرور غير متطابقة
+            </span>
           )}
         </motion.div>
 

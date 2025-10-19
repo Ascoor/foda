@@ -1,7 +1,7 @@
-import type { BaseEntity, Nullable } from './common';
-import type { Activity } from './Activity';
+import type { BaseEntity, Nullable } from "./common";
+import type { Activity } from "./Activity";
 
-export type CampaignStatus = 'draft' | 'active' | 'paused' | 'completed';
+export type CampaignStatus = "draft" | "active" | "paused" | "completed";
 
 export interface CampaignGoal {
   metric: string;

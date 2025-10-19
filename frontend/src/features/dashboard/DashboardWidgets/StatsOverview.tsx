@@ -1,16 +1,16 @@
-import { memo } from 'react';
-import type { LucideIcon } from 'lucide-react';
-import { StatsCard } from '../components/StatsCard';
-import { Skeleton } from '@shared/ui/skeleton';
+import { memo } from "react";
+import type { LucideIcon } from "lucide-react";
+import { StatsCard } from "../components/StatsCard";
+import { Skeleton } from "@shared/ui/skeleton";
 
 export interface StatMetric {
   key: string;
   label: string;
   value: number;
   change?: string;
-  trend?: 'up' | 'down';
+  trend?: "up" | "down";
   icon: LucideIcon;
-  color: 'primary' | 'secondary' | 'accent' | 'success';
+  color: "primary" | "secondary" | "accent" | "success";
 }
 
 interface StatsOverviewProps {
@@ -39,8 +39,8 @@ const StatsOverviewComponent = ({ metrics, loading }: StatsOverviewProps) => {
           key={metric.key}
           title={metric.label}
           value={metric.value.toLocaleString()}
-          change={metric.change ?? '0%'}
-          trend={metric.trend ?? 'up'}
+          change={metric.change ?? "0%"}
+          trend={metric.trend ?? "up"}
           icon={metric.icon}
           color={metric.color}
         />

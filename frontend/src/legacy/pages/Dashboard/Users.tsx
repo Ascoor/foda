@@ -10,10 +10,34 @@ const pageTransition = {
 };
 
 const mockUsers = [
-  { name: "سارة الجبوري", email: "sara@campaign.io", role: "مشرف", status: "نشط", initials: "سج" },
-  { name: "محمود العبد", email: "mahmoud@field.org", role: "قائد ميداني", status: "نشط", initials: "مع" },
-  { name: "ريما الدروبي", email: "reema@data.ai", role: "محلل بيانات", status: "قيد المتابعة", initials: "رد" },
-  { name: "خالد العتيبي", email: "khalid@campaign.ai", role: "مراقب", status: "غير نشط", initials: "خع" },
+  {
+    name: "سارة الجبوري",
+    email: "sara@campaign.io",
+    role: "مشرف",
+    status: "نشط",
+    initials: "سج",
+  },
+  {
+    name: "محمود العبد",
+    email: "mahmoud@field.org",
+    role: "قائد ميداني",
+    status: "نشط",
+    initials: "مع",
+  },
+  {
+    name: "ريما الدروبي",
+    email: "reema@data.ai",
+    role: "محلل بيانات",
+    status: "قيد المتابعة",
+    initials: "رد",
+  },
+  {
+    name: "خالد العتيبي",
+    email: "khalid@campaign.ai",
+    role: "مراقب",
+    status: "غير نشط",
+    initials: "خع",
+  },
 ];
 
 const UsersPage = () => (
@@ -27,7 +51,9 @@ const UsersPage = () => (
     className="space-y-8"
   >
     <div className="flex flex-col gap-2">
-      <h1 className="text-3xl font-semibold text-foreground">إدارة المستخدمين</h1>
+      <h1 className="text-3xl font-semibold text-foreground">
+        إدارة المستخدمين
+      </h1>
       <p className="text-muted-foreground">
         تحكم كامل في الأدوار، الصلاحيات، والتراخيص الممنوحة لأعضاء فريقك.
       </p>
@@ -41,7 +67,9 @@ const UsersPage = () => (
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-foreground">الأعضاء الحاليون</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            الأعضاء الحاليون
+          </h2>
           <p className="text-sm text-muted-foreground">آخر تحديث قبل 5 دقائق</p>
         </div>
         <Button className="rounded-2xl bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))]">
@@ -51,24 +79,40 @@ const UsersPage = () => (
 
       <div className="mt-6 divide-y divide-[hsla(var(--border)/0.12)]">
         {mockUsers.map((user) => (
-          <div key={user.email} className="flex flex-wrap items-center justify-between gap-4 py-4">
+          <div
+            key={user.email}
+            className="flex flex-wrap items-center justify-between gap-4 py-4"
+          >
             <div className="flex items-center gap-4">
               <Avatar className="h-12 w-12 rounded-2xl border border-[hsla(var(--border)/0.2)] bg-[hsla(var(--surface-secondary)/0.6)]">
-                <AvatarFallback className="text-sm font-semibold text-foreground">{user.initials}</AvatarFallback>
+                <AvatarFallback className="text-sm font-semibold text-foreground">
+                  {user.initials}
+                </AvatarFallback>
               </Avatar>
               <div className="space-y-1">
-                <p className="text-base font-semibold text-foreground">{user.name}</p>
+                <p className="text-base font-semibold text-foreground">
+                  {user.name}
+                </p>
                 <p className="text-sm text-muted-foreground">{user.email}</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3 text-sm">
-              <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs font-semibold">
+              <Badge
+                variant="secondary"
+                className="rounded-full px-3 py-1 text-xs font-semibold"
+              >
                 {user.role}
               </Badge>
               <Badge
                 className="rounded-full px-3 py-1 text-xs"
-                variant={user.status === "نشط" ? "default" : user.status === "قيد المتابعة" ? "outline" : "secondary"}
+                variant={
+                  user.status === "نشط"
+                    ? "default"
+                    : user.status === "قيد المتابعة"
+                      ? "outline"
+                      : "secondary"
+                }
               >
                 {user.status}
               </Badge>

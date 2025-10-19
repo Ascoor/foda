@@ -1,17 +1,23 @@
-import { render, screen } from '@testing-library/react';
-import { ActivityFeed } from '../components/ActivityFeed';
-import { LanguageProvider } from '@shared/contexts/LanguageContext';
-import { Vote } from 'lucide-react';
+import { render, screen } from "@testing-library/react";
+import { ActivityFeed } from "../components/ActivityFeed";
+import { LanguageProvider } from "@shared/contexts/LanguageContext";
+import { Vote } from "lucide-react";
 
-test('renders activity feed', () => {
+test("renders activity feed", () => {
   const activities = [
-    { id: 1, type: 'election_created', title: 'Election created', time: 'now', icon: Vote }
+    {
+      id: 1,
+      type: "election_created",
+      title: "Election created",
+      time: "now",
+      icon: Vote,
+    },
   ];
   render(
     <LanguageProvider>
       <ActivityFeed activities={activities} />
-    </LanguageProvider>
+    </LanguageProvider>,
   );
-  expect(screen.getByText('Election created')).toBeInTheDocument();
-  expect(screen.getByText('View All Activities')).toBeInTheDocument();
+  expect(screen.getByText("Election created")).toBeInTheDocument();
+  expect(screen.getByText("View All Activities")).toBeInTheDocument();
 });

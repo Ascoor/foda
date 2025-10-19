@@ -1,6 +1,6 @@
-import type { MultiPolygon, Polygon } from 'geojson';
+import type { MultiPolygon, Polygon } from "geojson";
 
-export type ElectoralZoneStatus = 'مغطاة' | 'غير مغطاة' | 'أولوية قصوى';
+export type ElectoralZoneStatus = "مغطاة" | "غير مغطاة" | "أولوية قصوى";
 
 export interface ElectoralZone {
   id: string;

@@ -1,7 +1,7 @@
-import { request } from '@shared/lib/api';
-import { API_ENDPOINTS } from '@shared/lib/endpoints';
-import type { Committee, GeoArea } from '@/types';
-import type { CommitteeFilters, CommitteeFormData } from './types';
+import { request } from "@shared/lib/api";
+import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import type { Committee, GeoArea } from "@/types";
+import type { CommitteeFilters, CommitteeFormData } from "./types";
 
 type PaginatedResponse<T> = {
   data: T[];
@@ -18,7 +18,7 @@ export const fetchCommittees = async (params: CommitteeFilters = {}) => {
   const response = await request<PaginatedResponse<Committee>>(
     {
       url: COMMITTEES_ENDPOINT,
-      method: 'get',
+      method: "get",
       params,
     },
     { useCache: true },
@@ -31,7 +31,7 @@ export const fetchCommittees = async (params: CommitteeFilters = {}) => {
 
 export const fetchCommittee = async (identifier: string | number) => {
   const response = await request<{ data: Committee }>(
-    { url: `${COMMITTEES_ENDPOINT}/${identifier}`, method: 'get' },
+    { url: `${COMMITTEES_ENDPOINT}/${identifier}`, method: "get" },
     { useCache: true },
   );
   return response.data;
@@ -40,36 +40,45 @@ export const fetchCommittee = async (identifier: string | number) => {
 export const createCommittee = async (payload: CommitteeFormData) => {
   const data = await request<{ data: Committee }>({
     url: COMMITTEES_ENDPOINT,
-    method: 'post',
+    method: "post",
     data: payload,
   });
   return data.data;
 };
 
-export const updateCommittee = async (identifier: string | number, payload: CommitteeFormData) => {
+export const updateCommittee = async (
+  identifier: string | number,
+  payload: CommitteeFormData,
+) => {
   const data = await request<{ data: Committee }>({
     url: `${COMMITTEES_ENDPOINT}/${identifier}`,
-    method: 'put',
+    method: "put",
     data: payload,
   });
   return data.data;
 };
 
 export const deleteCommittee = async (identifier: string | number) => {
-  await request({ url: `${COMMITTEES_ENDPOINT}/${identifier}`, method: 'delete' });
+  await request({
+    url: `${COMMITTEES_ENDPOINT}/${identifier}`,
+    method: "delete",
+  });
 };
 
-export const assignMembers = async (committeeIdentifier: string | number, memberUuids: string[]) => {
+export const assignMembers = async (
+  committeeIdentifier: string | number,
+  memberUuids: string[],
+) => {
   await request({
     url: `${COMMITTEES_ENDPOINT}/${committeeIdentifier}/members`,
-    method: 'post',
+    method: "post",
     data: { member_uuids: memberUuids },
   });
 };
 
 export const fetchGeoAreas = async () => {
   const response = await request<{ data: GeoArea[] }>(
-    { url: API_ENDPOINTS.elections.geoAreas, method: 'get' },
+    { url: API_ENDPOINTS.elections.geoAreas, method: "get" },
     { useCache: true },
   );
   return response;

@@ -1,4 +1,4 @@
-import type { Committee as CommitteeEntity, CommitteeType } from '@/types';
+import type { Committee as CommitteeEntity, CommitteeType } from "@/types";
 
 export type Committee = CommitteeEntity;
 

@@ -37,7 +37,9 @@ const Login = () => {
       navigate("/dashboard", { replace: true });
     } catch (err) {
       const message =
-        err instanceof Error && err.message ? err.message : "تعذر تسجيل الدخول، حاول مرة أخرى";
+        err instanceof Error && err.message
+          ? err.message
+          : "تعذر تسجيل الدخول، حاول مرة أخرى";
       setError(message);
     } finally {
       setLoading(false);
@@ -50,8 +52,11 @@ const Login = () => {
       subtitle="سجل الدخول لمتابعة لوحة التحكم والتحليلات الذكية"
       footer={
         <p>
-          لا تملك حساباً؟ {" "}
-          <Link to="/auth/register" className="font-semibold text-[hsl(var(--primary))]">
+          لا تملك حساباً؟{" "}
+          <Link
+            to="/auth/register"
+            className="font-semibold text-[hsl(var(--primary))]"
+          >
             إنشاء حساب جديد
           </Link>
         </p>
@@ -94,7 +99,10 @@ const Login = () => {
           />
         </motion.div>
 
-        <motion.div variants={fieldVariants} className="flex flex-wrap items-center justify-between gap-3 text-sm">
+        <motion.div
+          variants={fieldVariants}
+          className="flex flex-wrap items-center justify-between gap-3 text-sm"
+        >
           <label className="flex items-center gap-2">
             <Checkbox
               id="remember"
@@ -104,7 +112,10 @@ const Login = () => {
             />
             <span>تذكرني لاحقاً</span>
           </label>
-          <Link to="/auth/forgot-password" className="font-medium text-[hsl(var(--primary))]">
+          <Link
+            to="/auth/forgot-password"
+            className="font-medium text-[hsl(var(--primary))]"
+          >
             نسيت كلمة المرور؟
           </Link>
         </motion.div>

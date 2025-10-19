@@ -1,14 +1,16 @@
-import { request } from '@shared/lib/api';
-import { API_ENDPOINTS } from '@shared/lib/endpoints';
-import type { GeoArea } from '@/types';
-import type { GeoAreaFormData } from './types';
+import { request } from "@shared/lib/api";
+import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import type { GeoArea } from "@/types";
+import type { GeoAreaFormData } from "./types";
 
 const GEO_AREAS_ENDPOINT = API_ENDPOINTS.elections.geoAreas;
 
-export const fetchGeoAreas = async (params: Record<string, unknown> = {}): Promise<GeoArea[]> => {
+export const fetchGeoAreas = async (
+  params: Record<string, unknown> = {},
+): Promise<GeoArea[]> => {
   const res = await request<{ data: GeoArea[] }>({
     url: GEO_AREAS_ENDPOINT,
-    method: 'get',
+    method: "get",
     params,
   });
   return res.data;
@@ -18,7 +20,7 @@ export const fetchGeoArea = async (uuid: string): Promise<GeoArea> => {
   const res = await request<{ data: GeoArea }>(
     {
       url: `${GEO_AREAS_ENDPOINT}/${uuid}`,
-      method: 'get',
+      method: "get",
     },
     { useCache: true },
   );
@@ -28,7 +30,7 @@ export const fetchGeoArea = async (uuid: string): Promise<GeoArea> => {
 export const createGeoArea = async (payload: GeoAreaFormData) => {
   const res = await request<{ data: GeoArea }>({
     url: GEO_AREAS_ENDPOINT,
-    method: 'post',
+    method: "post",
     data: payload,
   });
   return res.data;
@@ -37,12 +39,12 @@ export const createGeoArea = async (payload: GeoAreaFormData) => {
 export const updateGeoArea = async (uuid: string, payload: GeoAreaFormData) => {
   const res = await request<{ data: GeoArea }>({
     url: `${GEO_AREAS_ENDPOINT}/${uuid}`,
-    method: 'put',
+    method: "put",
     data: payload,
   });
   return res.data;
 };
 
 export const deleteGeoArea = async (uuid: string) => {
-  await request({ url: `${GEO_AREAS_ENDPOINT}/${uuid}`, method: 'delete' });
+  await request({ url: `${GEO_AREAS_ENDPOINT}/${uuid}`, method: "delete" });
 };

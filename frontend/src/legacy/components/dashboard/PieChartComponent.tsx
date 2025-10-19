@@ -22,7 +22,11 @@ const defaultData: PieDataPoint[] = [
   { name: "يحتاج متابعة", value: 13, color: "#F97316" },
 ];
 
-export const PieChartComponent = ({ title, data = defaultData, delay = 0 }: PieChartComponentProps) => (
+export const PieChartComponent = ({
+  title,
+  data = defaultData,
+  delay = 0,
+}: PieChartComponentProps) => (
   <motion.div
     initial={{ opacity: 0, y: 22, scale: 0.96 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -44,22 +48,32 @@ export const PieChartComponent = ({ title, data = defaultData, delay = 0 }: PieC
           {"توزيع الحملات"}
         </span>
         <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-        <p className="text-sm text-muted-foreground/80">توزيع سريع حسب حالة الحملات النشطة.</p>
-
+        <p className="text-sm text-muted-foreground/80">
+          توزيع سريع حسب حالة الحملات النشطة.
+        </p>
       </div>
       <div className="aspect-square w-full">
         <ResponsiveContainer>
           <PieChart>
-
-            <Pie data={data} innerRadius={70} outerRadius={110} paddingAngle={4} dataKey="value">
-
+            <Pie
+              data={data}
+              innerRadius={70}
+              outerRadius={110}
+              paddingAngle={4}
+              dataKey="value"
+            >
               {data.map((entry, index) => (
-                <Cell key={entry.name} fill={entry.color ?? ["#7E69AB", "#3E82F7", "#0EA5E9", "#F97316"][index % 4]} />
+                <Cell
+                  key={entry.name}
+                  fill={
+                    entry.color ??
+                    ["#7E69AB", "#3E82F7", "#0EA5E9", "#F97316"][index % 4]
+                  }
+                />
               ))}
             </Pie>
             <Tooltip
               contentStyle={{
-
                 borderRadius: 18,
                 border: "1px solid hsla(var(--border)/0.18)",
 
@@ -71,17 +85,21 @@ export const PieChartComponent = ({ title, data = defaultData, delay = 0 }: PieC
       </div>
       <div className="grid grid-cols-2 gap-3 text-sm text-muted-foreground">
         {data.map((entry) => (
-
-          <div key={entry.name} className="flex items-center gap-2 rounded-2xl border border-[hsla(var(--border)/0.1)] bg-[hsla(var(--surface-secondary)/0.4)] px-3 py-2">
-
+          <div
+            key={entry.name}
+            className="flex items-center gap-2 rounded-2xl border border-[hsla(var(--border)/0.1)] bg-[hsla(var(--surface-secondary)/0.4)] px-3 py-2"
+          >
             <span
               className="h-2 w-2 rounded-full"
               style={{ background: entry.color ?? "#7E69AB" }}
             />
 
-            <span className="flex-1 truncate text-foreground/90">{entry.name}</span>
-            <span className="text-xs font-semibold text-foreground">{entry.value}%</span>
-
+            <span className="flex-1 truncate text-foreground/90">
+              {entry.name}
+            </span>
+            <span className="text-xs font-semibold text-foreground">
+              {entry.value}%
+            </span>
           </div>
         ))}
       </div>

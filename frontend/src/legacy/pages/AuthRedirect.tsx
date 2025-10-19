@@ -1,8 +1,8 @@
 // src/pages/AuthRedirect.tsx
-import { useAuth } from '@legacy/hooks/useAuth';
-import { useEffect } from 'react';
-import FloatingLandingPage from '@features/marketing/pages/LandingPage';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from "@legacy/hooks/useAuth";
+import { useEffect } from "react";
+import FloatingLandingPage from "@features/marketing/pages/LandingPage";
+import { useNavigate } from "react-router-dom";
 
 export const AuthRedirect = () => {
   const { token, loading } = useAuth();
@@ -10,7 +10,7 @@ export const AuthRedirect = () => {
 
   useEffect(() => {
     if (!loading && token) {
-      navigate('/dashboard', { replace: true });
+      navigate("/dashboard", { replace: true });
     }
   }, [loading, token, navigate]);
 

@@ -1,4 +1,4 @@
-import { SettingsForm } from './SettingsForm';
+import { SettingsForm } from "./SettingsForm";
 
 export const Settings = () => <SettingsForm />;
 

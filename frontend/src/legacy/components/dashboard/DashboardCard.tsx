@@ -56,10 +56,7 @@ export const DashboardCard = ({
               {title}
             </p>
             {value !== undefined && (
-              <motion.div
-                layout
-                className="flex items-baseline gap-3"
-              >
+              <motion.div layout className="flex items-baseline gap-3">
                 <span className="bg-gradient-to-r from-[hsl(var(--primary))] via-[hsl(var(--accent))] to-[hsl(var(--primary))] bg-clip-text text-3xl font-semibold text-transparent sm:text-4xl">
                   {typeof value === "number" ? value.toLocaleString() : value}
                 </span>
@@ -88,9 +85,7 @@ export const DashboardCard = ({
               className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-[hsla(var(--primary)/0.16)] text-[hsl(var(--primary))] shadow-[inset_0_1px_0_rgba(255,255,255,0.3)]"
             >
               <Icon className="h-6 w-6" />
-              <motion.span
-                className="absolute inset-0 rounded-2xl bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-              />
+              <motion.span className="absolute inset-0 rounded-2xl bg-gradient-to-br from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             </motion.div>
           )}
         </div>
@@ -107,7 +102,6 @@ export const DashboardCard = ({
           </div>
         )}
       </div>
-
     </motion.div>
   );
 };

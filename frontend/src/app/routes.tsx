@@ -87,7 +87,10 @@ export const router = createBrowserRouter([
               { path: "/observations", element: <ObservationsList /> },
               { path: "/campaigns", element: <CampaignsList /> },
               { path: "/automation", element: <AutomationDashboard /> },
-              { path: "/analytics", element: <ComingSoon module="Analytics" /> },
+              {
+                path: "/analytics",
+                element: <ComingSoon module="Analytics" />,
+              },
               { path: "/zones/mansoura", element: <ZoneDashboard /> },
               { path: "/settings", element: <Settings /> },
               { path: "*", element: <NotFound /> },

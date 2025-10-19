@@ -28,7 +28,11 @@ export const FloatingActions = () => {
           <div className="flex size-10 items-center justify-center rounded-full bg-white/80 text-cyan-600 shadow-lg group-hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]">
             <Icon className="size-5" />
           </div>
-          <span className={`${language === "ar" ? "pl-2" : "pr-2"} text-slate-900 drop-shadow dark:text-white`}>{label}</span>
+          <span
+            className={`${language === "ar" ? "pl-2" : "pr-2"} text-slate-900 drop-shadow dark:text-white`}
+          >
+            {label}
+          </span>
         </motion.button>
       ))}
     </motion.div>

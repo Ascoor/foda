@@ -1,9 +1,9 @@
-import landingIllustration from "@/assets/img/landing.webp"
-import partner1Logo from "@/assets/img/partner-1.svg"
-import partner2Logo from "@/assets/img/partner-2.svg"
-import partner3Logo from "@/assets/img/partner-3.svg"
-import partner4Logo from "@/assets/img/partner-4.svg"
-import partner5Logo from "@/assets/img/partner-5.svg"
+import landingIllustration from "@/assets/img/landing.webp";
+import partner1Logo from "@/assets/img/partner-1.svg";
+import partner2Logo from "@/assets/img/partner-2.svg";
+import partner3Logo from "@/assets/img/partner-3.svg";
+import partner4Logo from "@/assets/img/partner-4.svg";
+import partner5Logo from "@/assets/img/partner-5.svg";
 
 export interface HeroSlide {
   id: string;

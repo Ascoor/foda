@@ -23,7 +23,7 @@ export const useFeatureTreeAnimation = (sectionRef: RefObject<HTMLElement>) => {
             trigger: element,
             start: "top 70%",
           },
-        }
+        },
       );
 
       gsap.fromTo(
@@ -38,7 +38,7 @@ export const useFeatureTreeAnimation = (sectionRef: RefObject<HTMLElement>) => {
             trigger: element,
             start: "top 70%",
           },
-        }
+        },
       );
     }, element);
 

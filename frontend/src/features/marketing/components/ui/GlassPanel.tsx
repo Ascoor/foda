@@ -5,7 +5,10 @@ interface GlassPanelProps {
   className?: string;
 }
 
-export const GlassPanel = ({ children, className = "" }: PropsWithChildren<GlassPanelProps>) => (
+export const GlassPanel = ({
+  children,
+  className = "",
+}: PropsWithChildren<GlassPanelProps>) => (
   <motion.div
     initial={{ opacity: 0, y: 40 }}
     whileInView={{ opacity: 1, y: 0 }}

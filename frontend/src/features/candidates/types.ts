@@ -1,5 +1,5 @@
-export type CandidateType = 'individual' | 'list';
-export type CandidateStatus = 'active' | 'withdrawn' | 'disqualified';
+export type CandidateType = "individual" | "list";
+export type CandidateStatus = "active" | "withdrawn" | "disqualified";
 
 export interface Candidate {
   id: number;

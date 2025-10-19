@@ -1,23 +1,23 @@
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslation } from 'react-i18next';
-import { CandidateFormData } from './types';
-import { Input } from '@shared/ui/input';
-import { Button } from '@shared/ui/button';
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslation } from "react-i18next";
+import { CandidateFormData } from "./types";
+import { Input } from "@shared/ui/input";
+import { Button } from "@shared/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@shared/ui/select';
+} from "@shared/ui/select";
 
 const schema = z.object({
   name: z.string().min(1),
   party: z.string().min(1),
-  type: z.enum(['individual', 'list']),
-  status: z.enum(['active', 'withdrawn']),
+  type: z.enum(["individual", "list"]),
+  status: z.enum(["active", "withdrawn"]),
 });
 
 interface Props {
@@ -37,8 +37,8 @@ export const CandidateForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
       <div>
         <Input
-          placeholder={t('candidates.candidate_name')}
-          {...form.register('name')}
+          placeholder={t("candidates.candidate_name")}
+          {...form.register("name")}
           className="glass"
         />
         {form.formState.errors.name && (
@@ -50,8 +50,8 @@ export const CandidateForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
 
       <div>
         <Input
-          placeholder={t('candidates.party')}
-          {...form.register('party')}
+          placeholder={t("candidates.party")}
+          {...form.register("party")}
           className="glass"
         />
         {form.formState.errors.party && (
@@ -64,15 +64,19 @@ export const CandidateForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
       <div className="grid grid-cols-2 gap-4">
         <div>
           <Select
-            defaultValue={form.watch('type')}
-            onValueChange={(val) => form.setValue('type', val as CandidateFormData['type'])}
+            defaultValue={form.watch("type")}
+            onValueChange={(val) =>
+              form.setValue("type", val as CandidateFormData["type"])
+            }
           >
             <SelectTrigger className="glass">
-              <SelectValue placeholder={t('common.type')} />
+              <SelectValue placeholder={t("common.type")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="individual">{t('candidates.types.individual')}</SelectItem>
-              <SelectItem value="list">{t('candidates.types.list')}</SelectItem>
+              <SelectItem value="individual">
+                {t("candidates.types.individual")}
+              </SelectItem>
+              <SelectItem value="list">{t("candidates.types.list")}</SelectItem>
             </SelectContent>
           </Select>
           {form.formState.errors.type && (
@@ -83,15 +87,21 @@ export const CandidateForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
         </div>
         <div>
           <Select
-            defaultValue={form.watch('status')}
-            onValueChange={(val) => form.setValue('status', val as CandidateFormData['status'])}
+            defaultValue={form.watch("status")}
+            onValueChange={(val) =>
+              form.setValue("status", val as CandidateFormData["status"])
+            }
           >
             <SelectTrigger className="glass">
-              <SelectValue placeholder={t('common.status')} />
+              <SelectValue placeholder={t("common.status")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="active">{t('candidates.status_options.active')}</SelectItem>
-              <SelectItem value="withdrawn">{t('candidates.status_options.withdrawn')}</SelectItem>
+              <SelectItem value="active">
+                {t("candidates.status_options.active")}
+              </SelectItem>
+              <SelectItem value="withdrawn">
+                {t("candidates.status_options.withdrawn")}
+              </SelectItem>
             </SelectContent>
           </Select>
           {form.formState.errors.status && (
@@ -103,12 +113,20 @@ export const CandidateForm = ({ defaultValues, onSubmit, onCancel }: Props) => {
       </div>
 
       <div className="flex gap-2">
-        <Button type="submit" className="glass-button bg-gradient-primary text-white">
-          {t('common.save')}
+        <Button
+          type="submit"
+          className="glass-button bg-gradient-primary text-white"
+        >
+          {t("common.save")}
         </Button>
         {onCancel && (
-          <Button type="button" variant="outline" onClick={onCancel} className="glass-button">
-            {t('common.cancel')}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
+            className="glass-button"
+          >
+            {t("common.cancel")}
           </Button>
         )}
       </div>

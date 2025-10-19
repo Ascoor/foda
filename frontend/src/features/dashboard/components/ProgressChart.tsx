@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { BarChart3 } from 'lucide-react';
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { BarChart3 } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -11,10 +11,17 @@ import {
   XAxis,
   YAxis,
   type TooltipProps,
-} from 'recharts';
-import type { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
+} from "recharts";
+import type {
+  ValueType,
+  NameType,
+} from "recharts/types/component/DefaultTooltipContent";
 
-import { useThemePalette, type ColorToken, type ThemePalette } from '@shared/hooks/useThemePalette';
+import {
+  useThemePalette,
+  type ColorToken,
+  type ThemePalette,
+} from "@shared/hooks/useThemePalette";
 
 interface ProgressItem {
   label: string;
@@ -32,7 +39,12 @@ interface ProgressTooltipProps extends TooltipProps<ValueType, NameType> {
   palette: ThemePalette;
 }
 
-const ProgressTooltip = ({ active, payload, label, palette }: ProgressTooltipProps) => {
+const ProgressTooltip = ({
+  active,
+  payload,
+  label,
+  palette,
+}: ProgressTooltipProps) => {
   if (!active || !payload || payload.length === 0) {
     return null;
   }
@@ -40,7 +52,8 @@ const ProgressTooltip = ({ active, payload, label, palette }: ProgressTooltipPro
   const [entry] = payload;
   const stage = (entry.payload as { color: ColorToken }).color;
   const color = palette.tokens[stage];
-  const value = typeof entry.value === 'number' ? entry.value : Number(entry.value);
+  const value =
+    typeof entry.value === "number" ? entry.value : Number(entry.value);
 
   return (
     <div
@@ -52,17 +65,18 @@ const ProgressTooltip = ({ active, payload, label, palette }: ProgressTooltipPro
       }}
     >
       <p className="font-semibold">{label}</p>
-      <p
-        className="mt-1 text-sm font-semibold"
-        style={{ color: color.base }}
-      >
+      <p className="mt-1 text-sm font-semibold" style={{ color: color.base }}>
         {`${Math.round(value)}%`}
       </p>
     </div>
   );
 };
 
-export const ProgressChart = ({ data, overall, remaining }: ProgressChartProps) => {
+export const ProgressChart = ({
+  data,
+  overall,
+  remaining,
+}: ProgressChartProps) => {
   const { t } = useTranslation();
   const palette = useThemePalette();
 
@@ -81,17 +95,26 @@ export const ProgressChart = ({ data, overall, remaining }: ProgressChartProps) 
       <div className="rounded-3xl border border-[hsla(var(--border)/0.35)] bg-[hsl(var(--surface))] p-5 shadow-sm transition-colors dark:border-[hsla(var(--border)/0.25)] dark:bg-[hsla(var(--surface)/0.65)]">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
-            <BarChart3 className="h-5 w-5 text-[hsl(var(--primary))]" aria-hidden="true" />
+            <BarChart3
+              className="h-5 w-5 text-[hsl(var(--primary))]"
+              aria-hidden="true"
+            />
             <h2 className="text-base font-semibold text-foreground">
-              {t('dashboard.election_progress', { defaultValue: 'Election progress' })}
+              {t("dashboard.election_progress", {
+                defaultValue: "Election progress",
+              })}
             </h2>
           </div>
           <div className="flex flex-wrap gap-3 text-xs text-muted-foreground">
             <span className="inline-flex items-center gap-1 rounded-full bg-[hsla(var(--primary)/0.12)] px-3 py-1 font-medium text-[hsl(var(--primary))]">
-              {t('dashboard.overall_progress', { defaultValue: 'Overall progress' })}: {Math.round(overall)}%
+              {t("dashboard.overall_progress", {
+                defaultValue: "Overall progress",
+              })}
+              : {Math.round(overall)}%
             </span>
             <span className="inline-flex items-center gap-1 rounded-full bg-[hsla(var(--secondary)/0.12)] px-3 py-1 font-medium text-[hsl(var(--secondary))]">
-              {t('dashboard.remaining_label', { defaultValue: 'Remaining' })}: {Math.round(remaining)}
+              {t("dashboard.remaining_label", { defaultValue: "Remaining" })}:{" "}
+              {Math.round(remaining)}
             </span>
           </div>
         </div>
@@ -104,7 +127,11 @@ export const ProgressChart = ({ data, overall, remaining }: ProgressChartProps) 
                 margin={{ top: 12, right: 8, left: -12, bottom: 4 }}
                 barSize={48}
               >
-                <CartesianGrid stroke={palette.grid} vertical={false} strokeDasharray="3 6" />
+                <CartesianGrid
+                  stroke={palette.grid}
+                  vertical={false}
+                  strokeDasharray="3 6"
+                />
                 <XAxis
                   dataKey="label"
                   axisLine={false}
@@ -139,7 +166,7 @@ export const ProgressChart = ({ data, overall, remaining }: ProgressChartProps) 
             </ResponsiveContainer>
           ) : (
             <div className="flex h-full items-center justify-center text-sm text-muted-foreground">
-              {t('common.no_data', { defaultValue: 'No data available' })}
+              {t("common.no_data", { defaultValue: "No data available" })}
             </div>
           )}
         </div>

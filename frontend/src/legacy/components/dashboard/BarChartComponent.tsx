@@ -1,5 +1,12 @@
 import { motion } from "framer-motion";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+} from "recharts";
 
 import { cn } from "@shared/lib/utils";
 
@@ -24,7 +31,12 @@ const defaultBarData: BarDataPoint[] = [
   { name: "يونيو", value: 640 },
 ];
 
-export const BarChartComponent = ({ title, subtitle, data = defaultBarData, delay = 0 }: BarChartComponentProps) => (
+export const BarChartComponent = ({
+  title,
+  subtitle,
+  data = defaultBarData,
+  delay = 0,
+}: BarChartComponentProps) => (
   <motion.div
     initial={{ opacity: 0, y: 22, scale: 0.96 }}
     animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -50,8 +62,17 @@ export const BarChartComponent = ({ title, subtitle, data = defaultBarData, dela
       <div className="h-72 w-full">
         <ResponsiveContainer>
           <BarChart data={data} barGap={8} barCategoryGap="20%">
-            <CartesianGrid strokeDasharray="4 8" stroke="hsla(var(--border)/0.35)" vertical={false} />
-            <XAxis dataKey="name" stroke="hsla(var(--foreground)/0.5)" tickLine={false} axisLine={false} />
+            <CartesianGrid
+              strokeDasharray="4 8"
+              stroke="hsla(var(--border)/0.35)"
+              vertical={false}
+            />
+            <XAxis
+              dataKey="name"
+              stroke="hsla(var(--foreground)/0.5)"
+              tickLine={false}
+              axisLine={false}
+            />
             <Tooltip
               cursor={{ fill: "hsla(var(--primary)/0.08)" }}
               contentStyle={{
@@ -60,12 +81,30 @@ export const BarChartComponent = ({ title, subtitle, data = defaultBarData, dela
                 background: "hsla(var(--surface)/0.92)",
               }}
             />
-            <Bar dataKey="value" fill="url(#dashboard-bar-gradient)" radius={[14, 14, 14, 14]} />
+            <Bar
+              dataKey="value"
+              fill="url(#dashboard-bar-gradient)"
+              radius={[14, 14, 14, 14]}
+            />
             <defs>
-              <linearGradient id="dashboard-bar-gradient" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="hsl(var(--primary))" stopOpacity={0.9} />
+              <linearGradient
+                id="dashboard-bar-gradient"
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="1"
+              >
+                <stop
+                  offset="0%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity={0.9}
+                />
 
-                <stop offset="100%" stopColor="hsl(var(--accent))" stopOpacity={0.85} />
+                <stop
+                  offset="100%"
+                  stopColor="hsl(var(--accent))"
+                  stopOpacity={0.85}
+                />
               </linearGradient>
             </defs>
           </BarChart>
