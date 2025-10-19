@@ -1,4 +1,4 @@
-export * from "./SafeDataRenderer";
+export * from "./safe-data-renderer";
 export * from "./accordion";
 export * from "./alert-dialog";
 export * from "./alert";

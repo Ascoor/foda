@@ -1,20 +1,27 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { MapContainer, TileLayer, Polygon, Marker, Popup, useMap } from 'react-leaflet';
-import { LatLngBounds, LatLng } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { GeoAreaData } from '@shared/data/mockGeoData';
-import { MapPin, Users, UserCheck, Target, Layers } from 'lucide-react';
-import { Card, CardContent } from '@shared/ui/card';
-import { Badge } from '@shared/ui/badge';
-import { Button } from '@shared/ui/button';
+import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import {
+  MapContainer,
+  TileLayer,
+  Polygon,
+  Marker,
+  Popup,
+  useMap,
+} from "react-leaflet";
+import { LatLngBounds, LatLng } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { GeoAreaData } from "@shared/data/mockGeoData";
+import { MapPin, Users, UserCheck, Target, Layers } from "lucide-react";
+import { Card, CardContent } from "@shared/ui/card";
+import { Badge } from "@shared/ui/badge";
+import { Button } from "@shared/ui/button";
 
 // Fix Leaflet default markers
-import L from 'leaflet';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import L from "leaflet";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -42,17 +49,29 @@ const MapController: React.FC<{
   useEffect(() => {
     if (selectedArea?.coordinates.bounds) {
       const bounds = new LatLngBounds(
-        [selectedArea.coordinates.bounds.south, selectedArea.coordinates.bounds.west],
-        [selectedArea.coordinates.bounds.north, selectedArea.coordinates.bounds.east]
+        [
+          selectedArea.coordinates.bounds.south,
+          selectedArea.coordinates.bounds.west,
+        ],
+        [
+          selectedArea.coordinates.bounds.north,
+          selectedArea.coordinates.bounds.east,
+        ],
       );
       map.fitBounds(bounds, { padding: [20, 20] });
     } else if (geoAreas.length > 0) {
       // Fit all areas
       const bounds = new LatLngBounds([]);
-      geoAreas.forEach(area => {
+      geoAreas.forEach((area) => {
         if (area.coordinates.bounds) {
-          bounds.extend([area.coordinates.bounds.south, area.coordinates.bounds.west]);
-          bounds.extend([area.coordinates.bounds.north, area.coordinates.bounds.east]);
+          bounds.extend([
+            area.coordinates.bounds.south,
+            area.coordinates.bounds.west,
+          ]);
+          bounds.extend([
+            area.coordinates.bounds.north,
+            area.coordinates.bounds.east,
+          ]);
         } else {
           bounds.extend([area.coordinates.lat, area.coordinates.lng]);
         }
@@ -70,14 +89,17 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   onAreaClick,
   onAreaHover,
   filterStatus,
-  className = ''
+  className = "",
 }) => {
   const { t, language } = useLanguage();
   const [hoveredArea, setHoveredArea] = useState<GeoAreaData | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const filteredAreas = geoAreas.filter(area => 
-    !filterStatus || filterStatus === 'all' || area.campaignStatus === filterStatus
+  const filteredAreas = geoAreas.filter(
+    (area) =>
+      !filterStatus ||
+      filterStatus === "all" ||
+      area.campaignStatus === filterStatus,
   );
 
   const handleAreaClick = (area: GeoAreaData) => {
@@ -124,7 +146,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
   };
 
   return (
-    <div className={`relative w-full h-[600px] glass-card overflow-hidden ${className}`}>
+    <div
+      className={`relative w-full h-[600px] glass-card overflow-hidden ${className}`}
+    >
       {/* Map Container */}
       <MapContainer
         center={[30.0444, 31.2357]} // Cairo coordinates
@@ -137,9 +161,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           className="filter brightness-95 dark:brightness-75 dark:hue-rotate-180 dark:invert"
         />
-        
+
         <MapController selectedArea={selectedArea} geoAreas={filteredAreas} />
-        
+
         {/* Area Polygons */}
         {filteredAreas.map((area) => (
           <Polygon
@@ -158,7 +182,7 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
             }}
           />
         ))}
-        
+
         {/* Area Markers */}
         {filteredAreas.map((area) => (
           <Marker
@@ -171,25 +195,36 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
             <Popup>
               <div className="p-2 min-w-[200px]">
                 <h3 className="font-bold text-lg mb-2">
-                  {language === 'ar' ? area.name : area.nameEn}
+                  {language === "ar" ? area.name : area.nameEn}
                 </h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4 text-primary" />
-                    <span>{t('geo_areas.total_voters')}: {area.stats.totalVoters.toLocaleString()}</span>
+                    <span>
+                      {t("geo_areas.total_voters")}:{" "}
+                      {area.stats.totalVoters.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <UserCheck className="h-4 w-4 text-secondary" />
-                    <span>{t('geo_areas.registered_voters')}: {area.stats.registeredVoters.toLocaleString()}</span>
+                    <span>
+                      {t("geo_areas.registered_voters")}:{" "}
+                      {area.stats.registeredVoters.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4 text-accent" />
-                    <span>{t('geo_areas.coverage_percentage')}: {area.stats.coverage}%</span>
+                    <span>
+                      {t("geo_areas.coverage_percentage")}:{" "}
+                      {area.stats.coverage}%
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-muted-foreground">{t('geo_areas.campaign_status')}:</span>
-                    <Badge 
-                      variant="outline" 
+                    <span className="text-muted-foreground">
+                      {t("geo_areas.campaign_status")}:
+                    </span>
+                    <Badge
+                      variant="outline"
                       className="text-xs"
                       style={{ borderColor: area.color, color: area.color }}
                     >
@@ -213,17 +248,19 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <Card className="glass-card p-3 min-w-[200px]">
           <div className="flex items-center gap-2 mb-3">
             <Layers className="h-4 w-4 text-primary" />
-            <span className="font-medium text-sm">{t('geo_areas.campaign_coverage')}</span>
+            <span className="font-medium text-sm">
+              {t("geo_areas.campaign_coverage")}
+            </span>
           </div>
           <div className="space-y-2">
             {[
-              { status: 'covered', color: '#22c55e' },
-              { status: 'pending', color: '#f59e0b' },
-              { status: 'high_priority', color: '#ef4444' },
-              { status: 'uncovered', color: '#94a3b8' }
+              { status: "covered", color: "#22c55e" },
+              { status: "pending", color: "#f59e0b" },
+              { status: "high_priority", color: "#ef4444" },
+              { status: "uncovered", color: "#94a3b8" },
             ].map(({ status, color }) => (
               <div key={status} className="flex items-center gap-2 text-xs">
-                <div 
+                <div
                   className="w-3 h-3 rounded border"
                   style={{ backgroundColor: color, borderColor: color }}
                 />
@@ -247,56 +284,77 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
               <div className="flex items-start justify-between mb-3">
                 <div>
                   <h3 className="font-bold text-lg">
-                    {language === 'ar' ? selectedArea.name : selectedArea.nameEn}
+                    {language === "ar"
+                      ? selectedArea.name
+                      : selectedArea.nameEn}
                   </h3>
                   <p className="text-sm text-muted-foreground capitalize">
                     {t(`geo_areas.types.${selectedArea.type}`)}
                   </p>
                 </div>
-                <Badge 
+                <Badge
                   variant="outline"
-                  style={{ borderColor: selectedArea.color, color: selectedArea.color }}
+                  style={{
+                    borderColor: selectedArea.color,
+                    color: selectedArea.color,
+                  }}
                 >
                   {t(`geo_areas.status.${selectedArea.campaignStatus}`)}
                 </Badge>
               </div>
-              
+
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Users className="h-4 w-4 text-primary" />
                     <div>
-                      <p className="font-medium">{selectedArea.stats.totalVoters.toLocaleString()}</p>
-                      <p className="text-xs text-muted-foreground">{t('geo_areas.total_voters')}</p>
+                      <p className="font-medium">
+                        {selectedArea.stats.totalVoters.toLocaleString()}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("geo_areas.total_voters")}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <UserCheck className="h-4 w-4 text-secondary" />
                     <div>
-                      <p className="font-medium">{selectedArea.stats.registeredVoters.toLocaleString()}</p>
-                      <p className="text-xs text-muted-foreground">{t('geo_areas.registered_voters')}</p>
+                      <p className="font-medium">
+                        {selectedArea.stats.registeredVoters.toLocaleString()}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("geo_areas.registered_voters")}
+                      </p>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4 text-accent" />
                     <div>
-                      <p className="font-medium">{selectedArea.stats.coverage}%</p>
-                      <p className="text-xs text-muted-foreground">{t('geo_areas.coverage_percentage')}</p>
+                      <p className="font-medium">
+                        {selectedArea.stats.coverage}%
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("geo_areas.coverage_percentage")}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-success" />
                     <div>
-                      <p className="font-medium">{selectedArea.stats.activeVolunteers}</p>
-                      <p className="text-xs text-muted-foreground">{t('geo_areas.active_volunteers')}</p>
+                      <p className="font-medium">
+                        {selectedArea.stats.activeVolunteers}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("geo_areas.active_volunteers")}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               {selectedArea.description && (
                 <p className="mt-3 text-xs text-muted-foreground">
                   {selectedArea.description}
@@ -312,7 +370,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({
         <div className="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-sm z-[1001]">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
-            <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
+            <p className="text-sm text-muted-foreground">
+              {t("common.loading")}
+            </p>
           </div>
         </div>
       )}

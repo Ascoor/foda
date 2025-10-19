@@ -24,9 +24,12 @@ const SettingsPage = () => {
       className="space-y-8"
     >
       <div className="space-y-2">
-        <h1 className="text-3xl font-semibold text-foreground">إعدادات المنصة</h1>
+        <h1 className="text-3xl font-semibold text-foreground">
+          إعدادات المنصة
+        </h1>
         <p className="text-muted-foreground">
-          تخصيص تجربة الفريق، التحكم في التنبيهات، وتهيئة خيارات الأمان والتزامن.
+          تخصيص تجربة الفريق، التحكم في التنبيهات، وتهيئة خيارات الأمان
+          والتزامن.
         </p>
       </div>
 
@@ -37,15 +40,20 @@ const SettingsPage = () => {
         className="grid gap-6 lg:grid-cols-2"
       >
         <section className="rounded-[28px] border border-[hsla(var(--border)/0.15)] bg-[hsla(var(--surface)/0.82)] p-6 shadow-[0_35px_90px_rgba(79,70,229,0.18)] backdrop-blur-2xl">
-          <h2 className="text-lg font-semibold text-foreground">الإشعارات الذكية</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            الإشعارات الذكية
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            قم بتفعيل التنبيهات الفورية للمخاطر، الأداء، والتغييرات المهمة في الحملات.
+            قم بتفعيل التنبيهات الفورية للمخاطر، الأداء، والتغييرات المهمة في
+            الحملات.
           </p>
 
           <div className="mt-6 space-y-5 text-sm text-muted-foreground">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-base font-semibold text-foreground">تنبيهات الوقت الحقيقي</p>
+                <p className="text-base font-semibold text-foreground">
+                  تنبيهات الوقت الحقيقي
+                </p>
                 <p>إرسال إشعارات فورية عند ظهور مؤشرات حرجة.</p>
               </div>
               <Switch
@@ -56,7 +64,9 @@ const SettingsPage = () => {
 
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-base font-semibold text-foreground">ملخص يومي</p>
+                <p className="text-base font-semibold text-foreground">
+                  ملخص يومي
+                </p>
                 <p>ملخص منسق لأبرز الأرقام يصل عبر البريد في نهاية اليوم.</p>
               </div>
               <Switch defaultChecked />
@@ -65,15 +75,20 @@ const SettingsPage = () => {
         </section>
 
         <section className="rounded-[28px] border border-[hsla(var(--border)/0.15)] bg-[hsla(var(--surface)/0.82)] p-6 shadow-[0_35px_90px_rgba(79,70,229,0.18)] backdrop-blur-2xl">
-          <h2 className="text-lg font-semibold text-foreground">الأمان والتزامن</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            الأمان والتزامن
+          </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            حافظ على استقرار البيانات من خلال تفعيل التزامن الذكي وإدارة الجلسات.
+            حافظ على استقرار البيانات من خلال تفعيل التزامن الذكي وإدارة
+            الجلسات.
           </p>
 
           <div className="mt-6 space-y-5 text-sm text-muted-foreground">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-base font-semibold text-foreground">التزامن التلقائي</p>
+                <p className="text-base font-semibold text-foreground">
+                  التزامن التلقائي
+                </p>
                 <p>تحديث قواعد البيانات كل 15 دقيقة لضمان دقة المعلومات.</p>
               </div>
               <Switch
@@ -84,7 +99,9 @@ const SettingsPage = () => {
 
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-base font-semibold text-foreground">إدارة الجلسات</p>
+                <p className="text-base font-semibold text-foreground">
+                  إدارة الجلسات
+                </p>
                 <p>متابعة الجلسات النشطة وإيقاف غير المصرح بها فوراً.</p>
               </div>
               <Button variant="outline" className="rounded-2xl">

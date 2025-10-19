@@ -1,5 +1,5 @@
-import { ProfessionalLayout } from '@legacy/components/ProfessionalLayout';
-import { EnhancedDashboard } from '@legacy/components/dashboard/EnhancedDashboard';
+import { ProfessionalLayout } from "@legacy/components/ProfessionalLayout";
+import { EnhancedDashboard } from "@legacy/components/dashboard/EnhancedDashboard";
 
 const Index = () => {
   return (

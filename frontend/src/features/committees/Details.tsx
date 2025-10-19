@@ -1,16 +1,16 @@
-import { useParams, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@shared/ui/button';
-import { AssignDialog } from '@shared/ui/assign-dialog';
+import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@shared/ui/button";
+import { AssignDialog } from "@shared/ui/assign-dialog";
 import {
   fetchCommittee,
   deleteCommittee,
   updateCommittee,
   assignMembers,
-} from './api';
-import { CommitteeForm } from './Form';
+} from "./api";
+import { CommitteeForm } from "./Form";
 
 export const CommitteeDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,13 +21,13 @@ export const CommitteeDetails = () => {
   const [assignOpen, setAssignOpen] = useState(false);
 
   const { data: committee } = useQuery({
-    queryKey: ['committee', id],
+    queryKey: ["committee", id],
     queryFn: () => fetchCommittee(id!),
   });
 
   const deleteMut = useMutation({
     mutationFn: deleteCommittee,
-    onSuccess: () => navigate('/committees'),
+    onSuccess: () => navigate("/committees"),
   });
 
   if (!committee) return null;
@@ -40,7 +40,7 @@ export const CommitteeDetails = () => {
           onSubmit={async (data) => {
             await updateCommittee(id!, data);
             setEditing(false);
-            queryClient.invalidateQueries({ queryKey: ['committee', id] });
+            queryClient.invalidateQueries({ queryKey: ["committee", id] });
           }}
           onCancel={() => setEditing(false)}
         />
@@ -52,15 +52,12 @@ export const CommitteeDetails = () => {
           <p>{committee.location}</p>
           <p>{committee.geo_area_name}</p>
           <div className="flex gap-2 pt-4">
-            <Button onClick={() => setEditing(true)}>{t('common.edit')}</Button>
-            <Button
-              variant="destructive"
-              onClick={() => deleteMut.mutate(id!)}
-            >
-              {t('common.delete')}
+            <Button onClick={() => setEditing(true)}>{t("common.edit")}</Button>
+            <Button variant="destructive" onClick={() => deleteMut.mutate(id!)}>
+              {t("common.delete")}
             </Button>
             <Button variant="outline" onClick={() => setAssignOpen(true)}>
-              {t('committees.assign_members')}
+              {t("committees.assign_members")}
             </Button>
           </div>
         </div>
@@ -69,7 +66,7 @@ export const CommitteeDetails = () => {
       <AssignDialog
         isOpen={assignOpen}
         onClose={() => setAssignOpen(false)}
-        title={t('committees.assign_members')}
+        title={t("committees.assign_members")}
         onAssign={(ids) => assignMembers(id!, ids)}
         items={[]}
       />

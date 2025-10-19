@@ -1,26 +1,21 @@
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from '@shared/ui/tabs';
-import { Input } from '@shared/ui/input';
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shared/ui/tabs";
+import { Input } from "@shared/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@shared/ui/select';
-import { Badge } from '@shared/ui/badge';
+} from "@shared/ui/select";
+import { Badge } from "@shared/ui/badge";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@shared/ui/card';
+} from "@shared/ui/card";
 import {
   Table,
   TableBody,
@@ -28,54 +23,59 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@shared/ui/table';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { cn } from '@shared/lib/utils';
-import { MapContainer, Polygon, TileLayer, Tooltip } from 'react-leaflet';
-import type { LatLngExpression } from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+} from "@shared/ui/table";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { cn } from "@shared/lib/utils";
+import { MapContainer, Polygon, TileLayer, Tooltip } from "react-leaflet";
+import type { LatLngExpression } from "leaflet";
+import "leaflet/dist/leaflet.css";
 
-import { useZoneFilter } from './hooks/useZoneFilter';
-import type { ElectoralZone, ElectoralZoneStatus } from './types';
+import { useZoneFilter } from "./hooks/useZoneFilter";
+import type { ElectoralZone, ElectoralZoneStatus } from "./types";
 
 const DEFAULT_CENTER: [number, number] = [31.037933, 31.381523];
 
 const statusColors: Record<ElectoralZoneStatus, string> = {
-  'مغطاة': '#16a34a',
-  'غير مغطاة': '#dc2626',
-  'أولوية قصوى': '#f97316',
+  مغطاة: "#16a34a",
+  "غير مغطاة": "#dc2626",
+  "أولوية قصوى": "#f97316",
 };
 
 const statusBadgeStyles: Record<ElectoralZoneStatus, string> = {
-  'مغطاة': 'border-emerald-400/40 text-emerald-500 bg-emerald-500/10',
-  'غير مغطاة': 'border-red-400/40 text-red-500 bg-red-500/10',
-  'أولوية قصوى': 'border-amber-400/40 text-amber-500 bg-amber-500/10',
+  مغطاة: "border-emerald-400/40 text-emerald-500 bg-emerald-500/10",
+  "غير مغطاة": "border-red-400/40 text-red-500 bg-red-500/10",
+  "أولوية قصوى": "border-amber-400/40 text-amber-500 bg-amber-500/10",
 };
 
-const statusOptions: Array<{ label: string; value: ElectoralZoneStatus | 'الكل' }> = [
-  { label: 'جميع الحالات', value: 'الكل' },
-  { label: 'مغطاة', value: 'مغطاة' },
-  { label: 'غير مغطاة', value: 'غير مغطاة' },
-  { label: 'أولوية قصوى', value: 'أولوية قصوى' },
+const statusOptions: Array<{
+  label: string;
+  value: ElectoralZoneStatus | "الكل";
+}> = [
+  { label: "جميع الحالات", value: "الكل" },
+  { label: "مغطاة", value: "مغطاة" },
+  { label: "غير مغطاة", value: "غير مغطاة" },
+  { label: "أولوية قصوى", value: "أولوية قصوى" },
 ];
 
-const numberFormatter = new Intl.NumberFormat('ar-EG');
+const numberFormatter = new Intl.NumberFormat("ar-EG");
 
 type LatLngPolygon = LatLngExpression[][];
 
 const getLeafletPolygons = (zone: ElectoralZone): LatLngPolygon[] => {
   if (!zone.geometry) return [];
 
-  if (zone.geometry.type === 'Polygon') {
+  if (zone.geometry.type === "Polygon") {
     return [
       zone.geometry.coordinates.map((ring) =>
-        ring.map(([lng, lat]) => [lat, lng] as [number, number])
+        ring.map(([lng, lat]) => [lat, lng] as [number, number]),
       ),
     ];
   }
 
   return zone.geometry.coordinates.map((polygon) =>
-    polygon.map((ring) => ring.map(([lng, lat]) => [lat, lng] as [number, number]))
+    polygon.map((ring) =>
+      ring.map(([lng, lat]) => [lat, lng] as [number, number]),
+    ),
   );
 };
 
@@ -102,7 +102,7 @@ const getZoneCenter = (zones: ElectoralZone[]): [number, number] => {
       latSum: acc.latSum + lat,
       lngSum: acc.lngSum + lng,
     }),
-    { latSum: 0, lngSum: 0 }
+    { latSum: 0, lngSum: 0 },
   );
 
   return [latSum / points.length, lngSum / points.length];
@@ -126,7 +126,7 @@ const ZoneMap = ({
         zoom={13}
         className="h-full w-full"
         scrollWheelZoom
-        style={{ direction: 'ltr' }}
+        style={{ direction: "ltr" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
@@ -158,7 +158,10 @@ const ZoneMap = ({
                     <span className="font-semibold text-base">{zone.name}</span>
                     <Badge
                       variant="outline"
-                      className={cn('rounded-full px-2 py-0.5 text-xs font-medium', statusBadgeStyles[zone.status])}
+                      className={cn(
+                        "rounded-full px-2 py-0.5 text-xs font-medium",
+                        statusBadgeStyles[zone.status],
+                      )}
                     >
                       {zone.status}
                     </Badge>
@@ -189,11 +192,21 @@ const ZoneTable = ({
     <Table>
       <TableHeader>
         <TableRow className="bg-muted/30 hover:bg-muted/30">
-          <TableHead className="text-right text-sm font-semibold">الاسم</TableHead>
-          <TableHead className="text-right text-sm font-semibold">الحالة</TableHead>
-          <TableHead className="text-right text-sm font-semibold">الناخبون</TableHead>
-          <TableHead className="text-right text-sm font-semibold">المتطوعون</TableHead>
-          <TableHead className="text-right text-sm font-semibold">اللجان</TableHead>
+          <TableHead className="text-right text-sm font-semibold">
+            الاسم
+          </TableHead>
+          <TableHead className="text-right text-sm font-semibold">
+            الحالة
+          </TableHead>
+          <TableHead className="text-right text-sm font-semibold">
+            الناخبون
+          </TableHead>
+          <TableHead className="text-right text-sm font-semibold">
+            المتطوعون
+          </TableHead>
+          <TableHead className="text-right text-sm font-semibold">
+            اللجان
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -204,16 +217,21 @@ const ZoneTable = ({
             <TableRow
               key={zone.id}
               className={cn(
-                'cursor-pointer border-b border-border/60 transition-colors hover:bg-muted/40',
-                isSelected && 'bg-muted/50'
+                "cursor-pointer border-b border-border/60 transition-colors hover:bg-muted/40",
+                isSelected && "bg-muted/50",
               )}
               onClick={() => onSelect(zone)}
             >
-              <TableCell className="text-right font-medium">{zone.name}</TableCell>
+              <TableCell className="text-right font-medium">
+                {zone.name}
+              </TableCell>
               <TableCell className="text-right">
                 <Badge
                   variant="outline"
-                  className={cn('rounded-full px-3 py-1 text-xs font-medium', statusBadgeStyles[zone.status])}
+                  className={cn(
+                    "rounded-full px-3 py-1 text-xs font-medium",
+                    statusBadgeStyles[zone.status],
+                  )}
                 >
                   {zone.status}
                 </Badge>
@@ -232,7 +250,10 @@ const ZoneTable = ({
         })}
         {!zones.length && (
           <TableRow>
-            <TableCell colSpan={5} className="py-10 text-center text-sm text-muted-foreground">
+            <TableCell
+              colSpan={5}
+              className="py-10 text-center text-sm text-muted-foreground"
+            >
               لا توجد مناطق مطابقة للبحث الحالي
             </TableCell>
           </TableRow>
@@ -244,18 +265,26 @@ const ZoneTable = ({
 
 export const ZoneDashboard = () => {
   const { direction } = useLanguage();
-  const [view, setView] = useState<'map' | 'list'>('map');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState<ElectoralZoneStatus | 'الكل'>('الكل');
+  const [view, setView] = useState<"map" | "list">("map");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState<
+    ElectoralZoneStatus | "الكل"
+  >("الكل");
   const [selectedZone, setSelectedZone] = useState<ElectoralZone | null>(null);
 
-  const { filteredZones, totalZones, totalVoters, totalVolunteers, totalCommittees } = useZoneFilter(
-    searchTerm,
-    statusFilter
-  );
+  const {
+    filteredZones,
+    totalZones,
+    totalVoters,
+    totalVolunteers,
+    totalCommittees,
+  } = useZoneFilter(searchTerm, statusFilter);
 
   useEffect(() => {
-    if (selectedZone && !filteredZones.some((zone) => zone.id === selectedZone.id)) {
+    if (
+      selectedZone &&
+      !filteredZones.some((zone) => zone.id === selectedZone.id)
+    ) {
       setSelectedZone(null);
     }
   }, [filteredZones, selectedZone]);
@@ -267,9 +296,12 @@ export const ZoneDashboard = () => {
   return (
     <div className="space-y-6" dir={direction}>
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-gradient-primary">مناطق المنصورة الانتخابية</h1>
+        <h1 className="text-3xl font-bold text-gradient-primary">
+          مناطق المنصورة الانتخابية
+        </h1>
         <p className="text-muted-foreground">
-          إدارة ومراقبة تغطية المناطق الانتخابية داخل مدينة وحي المنصورة بمحافظة الدقهلية.
+          إدارة ومراقبة تغطية المناطق الانتخابية داخل مدينة وحي المنصورة بمحافظة
+          الدقهلية.
         </p>
       </div>
 
@@ -277,7 +309,8 @@ export const ZoneDashboard = () => {
         <CardHeader>
           <CardTitle className="text-xl">نظرة عامة على المناطق</CardTitle>
           <CardDescription>
-            استكشف حالة التغطية، أعداد الناخبين والمتطوعين، ومراكز اللجان لكل منطقة انتخابية.
+            استكشف حالة التغطية، أعداد الناخبين والمتطوعين، ومراكز اللجان لكل
+            منطقة انتخابية.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -291,7 +324,9 @@ export const ZoneDashboard = () => {
               />
               <Select
                 value={statusFilter}
-                onValueChange={(value) => setStatusFilter(value as ElectoralZoneStatus | 'الكل')}
+                onValueChange={(value) =>
+                  setStatusFilter(value as ElectoralZoneStatus | "الكل")
+                }
               >
                 <SelectTrigger className="glass w-full max-w-[220px]">
                   <SelectValue placeholder="تصفية حسب الحالة" />
@@ -306,14 +341,29 @@ export const ZoneDashboard = () => {
               </Select>
             </div>
             <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              <StatBlock label="المناطق" value={numberFormatter.format(totalZones)} />
-              <StatBlock label="الناخبون" value={numberFormatter.format(totalVoters)} />
-              <StatBlock label="المتطوعون" value={numberFormatter.format(totalVolunteers)} />
-              <StatBlock label="اللجان" value={numberFormatter.format(totalCommittees)} />
+              <StatBlock
+                label="المناطق"
+                value={numberFormatter.format(totalZones)}
+              />
+              <StatBlock
+                label="الناخبون"
+                value={numberFormatter.format(totalVoters)}
+              />
+              <StatBlock
+                label="المتطوعون"
+                value={numberFormatter.format(totalVolunteers)}
+              />
+              <StatBlock
+                label="اللجان"
+                value={numberFormatter.format(totalCommittees)}
+              />
             </div>
           </div>
 
-          <Tabs value={view} onValueChange={(val) => setView(val as 'map' | 'list')}>
+          <Tabs
+            value={view}
+            onValueChange={(val) => setView(val as "map" | "list")}
+          >
             <TabsList className="grid w-full grid-cols-2 md:w-fit">
               <TabsTrigger value="map">الخريطة</TabsTrigger>
               <TabsTrigger value="list">القائمة</TabsTrigger>
@@ -345,7 +395,8 @@ export const ZoneDashboard = () => {
           <CardHeader>
             <CardTitle className="text-xl">تفاصيل المنطقة المختارة</CardTitle>
             <CardDescription>
-              نظرة أعمق على الإحصائيات الحالية للمنطقة المختارة من الخريطة أو القائمة.
+              نظرة أعمق على الإحصائيات الحالية للمنطقة المختارة من الخريطة أو
+              القائمة.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -356,15 +407,27 @@ export const ZoneDashboard = () => {
                 value={
                   <Badge
                     variant="outline"
-                    className={cn('rounded-full px-3 py-1 text-xs font-medium', statusBadgeStyles[selectedZone.status])}
+                    className={cn(
+                      "rounded-full px-3 py-1 text-xs font-medium",
+                      statusBadgeStyles[selectedZone.status],
+                    )}
                   >
                     {selectedZone.status}
                   </Badge>
                 }
               />
-              <InfoBlock title="عدد الناخبين" value={numberFormatter.format(selectedZone.voters)} />
-              <InfoBlock title="عدد المتطوعين" value={numberFormatter.format(selectedZone.volunteers)} />
-              <InfoBlock title="عدد اللجان" value={numberFormatter.format(selectedZone.committees)} />
+              <InfoBlock
+                title="عدد الناخبين"
+                value={numberFormatter.format(selectedZone.voters)}
+              />
+              <InfoBlock
+                title="عدد المتطوعين"
+                value={numberFormatter.format(selectedZone.volunteers)}
+              />
+              <InfoBlock
+                title="عدد اللجان"
+                value={numberFormatter.format(selectedZone.committees)}
+              />
             </div>
           </CardContent>
         </Card>
@@ -379,10 +442,26 @@ export const ZoneDashboard = () => {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <StatBlock label="إجمالي المناطق المعروضة" value={numberFormatter.format(totalZones)} subtle />
-            <StatBlock label="إجمالي الناخبين" value={numberFormatter.format(totalVoters)} subtle />
-            <StatBlock label="إجمالي المتطوعين" value={numberFormatter.format(totalVolunteers)} subtle />
-            <StatBlock label="إجمالي اللجان" value={numberFormatter.format(totalCommittees)} subtle />
+            <StatBlock
+              label="إجمالي المناطق المعروضة"
+              value={numberFormatter.format(totalZones)}
+              subtle
+            />
+            <StatBlock
+              label="إجمالي الناخبين"
+              value={numberFormatter.format(totalVoters)}
+              subtle
+            />
+            <StatBlock
+              label="إجمالي المتطوعين"
+              value={numberFormatter.format(totalVolunteers)}
+              subtle
+            />
+            <StatBlock
+              label="إجمالي اللجان"
+              value={numberFormatter.format(totalCommittees)}
+              subtle
+            />
           </div>
         </CardContent>
       </Card>
@@ -401,8 +480,8 @@ const StatBlock = ({
 }) => (
   <div
     className={cn(
-      'rounded-xl border border-border/60 bg-background/60 p-4 text-right shadow-sm backdrop-blur',
-      subtle && 'bg-background/40'
+      "rounded-xl border border-border/60 bg-background/60 p-4 text-right shadow-sm backdrop-blur",
+      subtle && "bg-background/40",
     )}
   >
     <p className="text-xs text-muted-foreground">{label}</p>
@@ -410,18 +489,10 @@ const StatBlock = ({
   </div>
 );
 
-const InfoBlock = ({
-  title,
-  value,
-}: {
-  title: string;
-  value: ReactNode;
-}) => (
+const InfoBlock = ({ title, value }: { title: string; value: ReactNode }) => (
   <div className="rounded-xl border border-border/60 bg-background/60 p-4 text-right shadow-sm backdrop-blur">
     <p className="text-xs text-muted-foreground">{title}</p>
-    <div className="text-lg font-semibold text-foreground">
-      {value}
-    </div>
+    <div className="text-lg font-semibold text-foreground">{value}</div>
   </div>
 );
 

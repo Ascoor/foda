@@ -16,8 +16,12 @@ export const CallToAction = () => {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/30 via-purple-400/25 to-emerald-400/30" />
         <div className="relative space-y-6">
-          <h3 className="text-3xl font-bold text-slate-900 dark:text-white">{t("ctaTitle")}</h3>
-          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">{t("ctaSubtitle")}</p>
+          <h3 className="text-3xl font-bold text-slate-900 dark:text-white">
+            {t("ctaTitle")}
+          </h3>
+          <p className="mx-auto max-w-2xl text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+            {t("ctaSubtitle")}
+          </p>
           <div className="flex items-center justify-center">
             <GlowButton to="/experience" className="group">
               {t("viewDashboard")}

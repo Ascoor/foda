@@ -1,4 +1,4 @@
-import type { Campaign as CampaignEntity, CampaignStatus } from '@/types';
+import type { Campaign as CampaignEntity, CampaignStatus } from "@/types";
 
 export type Campaign = CampaignEntity;
 
@@ -9,7 +9,7 @@ export interface CampaignFormData {
   starts_at: string;
   ends_at: string;
   owner_uuid: string;
-  goals: CampaignEntity['goals'];
+  goals: CampaignEntity["goals"];
   budget?: number | null;
   tags?: string[];
 }

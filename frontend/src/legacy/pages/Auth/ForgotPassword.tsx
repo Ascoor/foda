@@ -34,7 +34,9 @@ const ForgotPassword = () => {
       setSuccess("تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني");
     } catch (err) {
       const message =
-        err instanceof Error && err.message ? err.message : "تعذر إرسال البريد الإلكتروني، حاول لاحقاً";
+        err instanceof Error && err.message
+          ? err.message
+          : "تعذر إرسال البريد الإلكتروني، حاول لاحقاً";
       setError(message);
     } finally {
       setLoading(false);
@@ -47,8 +49,11 @@ const ForgotPassword = () => {
       subtitle="أدخل بريدك الإلكتروني وسنرسل لك رابطاً آمناً لإعادة التعيين"
       footer={
         <p>
-          تذكرت كلمة المرور؟ {" "}
-          <Link to="/auth/login" className="font-semibold text-[hsl(var(--primary))]">
+          تذكرت كلمة المرور؟{" "}
+          <Link
+            to="/auth/login"
+            className="font-semibold text-[hsl(var(--primary))]"
+          >
             العودة لتسجيل الدخول
           </Link>
         </p>

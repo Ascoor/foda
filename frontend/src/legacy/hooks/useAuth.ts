@@ -6,4 +6,3 @@ export const useAuthenticatedUser = () => {
 };
 
 export { useAuth, AuthProvider };
-

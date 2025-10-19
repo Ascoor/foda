@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-export type ColorToken = 'primary' | 'secondary' | 'accent' | 'success';
+export type ColorToken = "primary" | "secondary" | "accent" | "success";
 
 interface RgbColor {
   r: number;
@@ -22,7 +22,7 @@ export interface ThemePalette {
   grid: string;
 }
 
-const TOKEN_KEYS: ColorToken[] = ['primary', 'secondary', 'accent', 'success'];
+const TOKEN_KEYS: ColorToken[] = ["primary", "secondary", "accent", "success"];
 
 const FALLBACK_COLORS: Record<string, RgbColor> = {
   primary: hslToRgbColor(11, 100, 60),
@@ -33,7 +33,7 @@ const FALLBACK_COLORS: Record<string, RgbColor> = {
   background: hslToRgbColor(0, 0, 96),
   border: hslToRgbColor(0, 0, 82),
   muted: hslToRgbColor(0, 0, 90),
-  'muted-foreground': hslToRgbColor(0, 0, 45),
+  "muted-foreground": hslToRgbColor(0, 0, 45),
   foreground: hslToRgbColor(0, 0, 20),
 };
 
@@ -89,11 +89,11 @@ function parseColorValue(raw: string): RgbColor | null {
     return null;
   }
 
-  if (value.startsWith('#')) {
+  if (value.startsWith("#")) {
     return hexToRgb(value);
   }
 
-  if (value.startsWith('rgb')) {
+  if (value.startsWith("rgb")) {
     const components = value.match(/\d+\.?\d*/g);
     if (!components || components.length < 3) {
       return null;
@@ -105,7 +105,7 @@ function parseColorValue(raw: string): RgbColor | null {
     };
   }
 
-  if (value.startsWith('hsl')) {
+  if (value.startsWith("hsl")) {
     const components = value.match(/-?\d+\.?\d*/g);
     if (!components || components.length < 3) {
       return null;
@@ -139,14 +139,18 @@ function parseColorValue(raw: string): RgbColor | null {
 }
 
 function hexToRgb(hex: string): RgbColor | null {
-  const normalized = hex.replace('#', '');
+  const normalized = hex.replace("#", "");
   if (normalized.length !== 3 && normalized.length !== 6) {
     return null;
   }
 
-  const value = normalized.length === 3
-    ? normalized.split('').map((char) => `${char}${char}`).join('')
-    : normalized;
+  const value =
+    normalized.length === 3
+      ? normalized
+          .split("")
+          .map((char) => `${char}${char}`)
+          .join("")
+      : normalized;
 
   const r = Number.parseInt(value.slice(0, 2), 16);
   const g = Number.parseInt(value.slice(2, 4), 16);
@@ -180,24 +184,36 @@ function resolveColor(
   return parsed ?? FALLBACK_COLORS[fallbackKey];
 }
 
-function createPaletteFromStyle(style: CSSStyleDeclaration | null): ThemePalette {
-  const getColor = (variable: keyof typeof FALLBACK_COLORS) => resolveColor(style, variable, variable);
+function createPaletteFromStyle(
+  style: CSSStyleDeclaration | null,
+): ThemePalette {
+  const getColor = (variable: keyof typeof FALLBACK_COLORS) =>
+    resolveColor(style, variable, variable);
 
-  const tokenColors = TOKEN_KEYS.reduce<Record<ColorToken, { base: string; soft: string }>>((acc, token) => {
-    const rgb = getColor(token);
-    acc[token] = {
-      base: toRgbaString(rgb, 1),
-      soft: toRgbaString(rgb, 0.25),
-    };
-    return acc;
-  }, {} as Record<ColorToken, { base: string; soft: string }>);
+  const tokenColors = TOKEN_KEYS.reduce<
+    Record<ColorToken, { base: string; soft: string }>
+  >(
+    (acc, token) => {
+      const rgb = getColor(token);
+      acc[token] = {
+        base: toRgbaString(rgb, 1),
+        soft: toRgbaString(rgb, 0.25),
+      };
+      return acc;
+    },
+    {} as Record<ColorToken, { base: string; soft: string }>,
+  );
 
-  const surface = getColor('surface');
-  const background = getColor('background');
-  const border = getColor('border');
-  const muted = getColor('muted');
-  const mutedForeground = resolveColor(style, 'muted-foreground', 'muted-foreground');
-  const foreground = getColor('foreground');
+  const surface = getColor("surface");
+  const background = getColor("background");
+  const border = getColor("border");
+  const muted = getColor("muted");
+  const mutedForeground = resolveColor(
+    style,
+    "muted-foreground",
+    "muted-foreground",
+  );
+  const foreground = getColor("foreground");
 
   return {
     tokens: tokenColors,
@@ -215,7 +231,7 @@ function createPaletteFromStyle(style: CSSStyleDeclaration | null): ThemePalette
 }
 
 function readPalette(): ThemePalette {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
+  if (typeof window === "undefined" || typeof document === "undefined") {
     return createPaletteFromStyle(null);
   }
 
@@ -227,7 +243,7 @@ export function useThemePalette(): ThemePalette {
   const [palette, setPalette] = useState<ThemePalette>(() => readPalette());
 
   useEffect(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
+    if (typeof window === "undefined" || typeof document === "undefined") {
       return;
     }
 
@@ -239,14 +255,14 @@ export function useThemePalette(): ThemePalette {
     const observer = new MutationObserver(updatePalette);
     observer.observe(root, {
       attributes: true,
-      attributeFilter: ['class', 'style', 'data-theme'],
+      attributeFilter: ["class", "style", "data-theme"],
     });
 
-    window.addEventListener('themechange', updatePalette);
+    window.addEventListener("themechange", updatePalette);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener('themechange', updatePalette);
+      window.removeEventListener("themechange", updatePalette);
     };
   }, []);
 

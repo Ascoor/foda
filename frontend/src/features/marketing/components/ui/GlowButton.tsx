@@ -7,7 +7,12 @@ interface GlowButtonProps extends PropsWithChildren<LinkProps> {
   variant?: "primary" | "secondary";
 }
 
-export const GlowButton = ({ children, className, variant = "primary", ...props }: GlowButtonProps) => (
+export const GlowButton = ({
+  children,
+  className,
+  variant = "primary",
+  ...props
+}: GlowButtonProps) => (
   <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
     <Link
       {...props}
@@ -16,7 +21,7 @@ export const GlowButton = ({ children, className, variant = "primary", ...props 
         variant === "primary"
           ? "bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-500"
           : "bg-white/20 text-slate-900 backdrop-blur-xl dark:text-white",
-        className
+        className,
       )}
     >
       <span className="absolute inset-0 rounded-full bg-white/30 opacity-0 transition group-hover:opacity-100" />

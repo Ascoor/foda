@@ -1,4 +1,4 @@
-import type { Volunteer as VolunteerEntity, VolunteerStatus } from '@/types';
+import type { Volunteer as VolunteerEntity, VolunteerStatus } from "@/types";
 
 export type Volunteer = VolunteerEntity;
 export type VolunteerListItem = VolunteerEntity;
@@ -11,7 +11,7 @@ export interface VolunteerFormData {
   election_uuid?: string;
   assigned_committee_uuid?: string | null;
   skills?: string[];
-  availability?: VolunteerEntity['availability'];
+  availability?: VolunteerEntity["availability"];
   notes?: string | null;
 }
 

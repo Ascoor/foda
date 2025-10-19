@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Activity, LucideIcon } from 'lucide-react';
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { Activity, LucideIcon } from "lucide-react";
 
 interface ActivityItem {
   id: number;
@@ -21,16 +21,18 @@ export const ActivityFeed = ({ activities }: ActivityFeedProps) => {
     <div className="glass-card h-full">
       <div className="flex items-center gap-3 mb-6">
         <Activity className="h-6 w-6 text-primary" />
-        <h2 className="text-xl font-semibold">{t('dashboard.recent_activity')}</h2>
+        <h2 className="text-xl font-semibold">
+          {t("dashboard.recent_activity")}
+        </h2>
       </div>
 
       <div className="space-y-4">
         {activities.length === 0 && (
-          <p className="text-sm text-muted-foreground">{t('common.no_data')}</p>
+          <p className="text-sm text-muted-foreground">{t("common.no_data")}</p>
         )}
         {activities.map((activity, index) => {
           const Icon = activity.icon;
-          
+
           return (
             <motion.div
               key={activity.id}
@@ -73,7 +75,7 @@ export const ActivityFeed = ({ activities }: ActivityFeedProps) => {
         whileTap={{ scale: 0.98 }}
         className="w-full mt-6 py-3 text-sm font-medium text-primary hover:text-primary-glow transition-colors border-t border-white/10 pt-4"
       >
-        {t('dashboard.view_all_activities')}
+        {t("dashboard.view_all_activities")}
       </motion.button>
     </div>
   );

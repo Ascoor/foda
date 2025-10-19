@@ -8,7 +8,9 @@ interface TestimonialsSectionProps {
   testimonials: Testimonial[];
 }
 
-export const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
+export const TestimonialsSection = ({
+  testimonials,
+}: TestimonialsSectionProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   useTestimonialsAnimation(sectionRef);
 
@@ -22,7 +24,9 @@ export const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) 
         <span className="rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.3em] text-blue-200">
           ثقة القيادات
         </span>
-        <h2 className="mt-6 text-3xl font-bold md:text-4xl">آراء الحملات التي نجحنا في خدمتها</h2>
+        <h2 className="mt-6 text-3xl font-bold md:text-4xl">
+          آراء الحملات التي نجحنا في خدمتها
+        </h2>
       </div>
 
       <div className="mx-auto mt-12 max-w-5xl">
@@ -45,7 +49,9 @@ export const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) 
                 data-testimonial
                 className="h-full rounded-3xl border border-white/10 bg-white/5 p-8 text-left backdrop-blur"
               >
-                <p className="text-lg leading-8 text-white/85">“{testimonial.quote}”</p>
+                <p className="text-lg leading-8 text-white/85">
+                  “{testimonial.quote}”
+                </p>
                 <div className="mt-8 flex items-center gap-4">
                   <img
                     src={testimonial.avatar}
@@ -53,7 +59,9 @@ export const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) 
                     className="h-14 w-14 rounded-full border border-white/30 object-cover"
                   />
                   <div>
-                    <h3 className="text-lg font-semibold text-white">{testimonial.author}</h3>
+                    <h3 className="text-lg font-semibold text-white">
+                      {testimonial.author}
+                    </h3>
                     <p className="text-sm text-white/60">{testimonial.role}</p>
                   </div>
                 </div>

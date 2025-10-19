@@ -54,7 +54,9 @@ const TOKEN_STORAGE_KEY = "token";
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const getStoredToken = () =>
-  (typeof window !== "undefined" ? localStorage.getItem(TOKEN_STORAGE_KEY) : null);
+  typeof window !== "undefined"
+    ? localStorage.getItem(TOKEN_STORAGE_KEY)
+    : null;
 
 const persistToken = (token: string | null) => {
   if (typeof window === "undefined") {
@@ -85,9 +87,12 @@ const extractToken = (payload: unknown): string | null => {
 
   if (candidate && typeof candidate === "object") {
     return (
-      (candidate as Record<string, unknown>).token as string | undefined ??
-      ((candidate as Record<string, unknown>).access_token as string | undefined)
-    ) ?? null;
+      ((candidate as Record<string, unknown>).token as string | undefined) ??
+      ((candidate as Record<string, unknown>).access_token as
+        | string
+        | undefined) ??
+      null
+    );
   }
 
   return null;

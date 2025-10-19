@@ -1,8 +1,8 @@
-import type { Role } from './Role';
-import type { Permission } from './Permission';
-import type { Nullable, BaseEntity } from './common';
+import type { Role } from "./Role";
+import type { Permission } from "./Permission";
+import type { Nullable, BaseEntity } from "./common";
 
-export type UserStatus = 'active' | 'pending' | 'invited' | 'suspended';
+export type UserStatus = "active" | "pending" | "invited" | "suspended";
 
 export interface UserProfile {
   first_name: string;

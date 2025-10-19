@@ -1,17 +1,23 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Plus, Search, Eye, Edit, Trash2, UserCheck } from 'lucide-react';
-import { Button } from '@shared/ui/button';
-import { Input } from '@shared/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shared/ui/select';
-import { AssignDialog } from '@shared/ui/assign-dialog';
-import { Volunteer, VolunteerFilters } from './types';
-import { fetchVolunteers, deleteVolunteer, assignVolunteer } from './api';
-import { VolunteerForm } from './VolunteerForm';
-import { VolunteerDetails } from './VolunteerDetails';
-import { request } from '@shared/lib/api';
-import { API_ENDPOINTS } from '@shared/lib/endpoints';
-import type { Committee } from '@/types';
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import { Plus, Search, Eye, Edit, Trash2, UserCheck } from "lucide-react";
+import { Button } from "@shared/ui/button";
+import { Input } from "@shared/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@shared/ui/select";
+import { AssignDialog } from "@shared/ui/assign-dialog";
+import { Volunteer, VolunteerFilters } from "./types";
+import { fetchVolunteers, deleteVolunteer, assignVolunteer } from "./api";
+import { VolunteerForm } from "./VolunteerForm";
+import { VolunteerDetails } from "./VolunteerDetails";
+import { request } from "@shared/lib/api";
+import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import type { Committee } from "@/types";
 
 const DEFAULT_META = { total: 0, per_page: 0, current_page: 0 };
 
@@ -19,7 +25,7 @@ export const VolunteersList = () => {
   const { t } = useTranslation();
   const [volunteers, setVolunteers] = useState<Volunteer[]>([]);
   const [filters, setFilters] = useState<VolunteerFilters>({});
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -29,7 +35,9 @@ export const VolunteersList = () => {
   const [committees, setCommittees] = useState<Committee[]>([]);
 
   const committeeLookup = useMemo(() => {
-    return new Map(committees.map((committee) => [committee.uuid, committee.name]));
+    return new Map(
+      committees.map((committee) => [committee.uuid, committee.name]),
+    );
   }, [committees]);
 
   const load = useCallback(async () => {
@@ -39,7 +47,7 @@ export const VolunteersList = () => {
       setVolunteers(response.data);
       setMeta(response.meta ?? DEFAULT_META);
     } catch (error) {
-      console.error('Failed to load volunteers', error);
+      console.error("Failed to load volunteers", error);
     } finally {
       setIsLoading(false);
     }
@@ -54,12 +62,12 @@ export const VolunteersList = () => {
       try {
         const res = await request<{ data: Committee[] }>({
           url: API_ENDPOINTS.elections.committees,
-          method: 'get',
+          method: "get",
           params: { per_page: 100 },
         });
         setCommittees(res.data);
       } catch (error) {
-        console.error('Failed to load committees', error);
+        console.error("Failed to load committees", error);
       }
     };
 
@@ -91,15 +99,20 @@ export const VolunteersList = () => {
     }
   };
 
-  const committeeItems = committees.map((committee) => ({ id: committee.uuid, name: committee.name }));
+  const committeeItems = committees.map((committee) => ({
+    id: committee.uuid,
+    name: committee.name,
+  }));
 
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gradient-primary">{t('volunteers.title')}</h1>
+        <h1 className="text-2xl font-bold text-gradient-primary">
+          {t("volunteers.title")}
+        </h1>
         <Button onClick={handleAdd} className="bg-gradient-primary text-white">
           <Plus className="h-4 w-4 mr-2" />
-          {t('volunteers.add_volunteer')}
+          {t("volunteers.add_volunteer")}
         </Button>
       </div>
 
@@ -107,20 +120,37 @@ export const VolunteersList = () => {
         <div className="relative flex-1">
           <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder={t('common.search') ?? 'Search'}
+            placeholder={t("common.search") ?? "Search"}
             className="pl-8"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
-        <Select onValueChange={(value) => setFilters((prev) => ({ ...prev, status: value as Volunteer['status'] }))}>
+        <Select
+          onValueChange={(value) =>
+            setFilters((prev) => ({
+              ...prev,
+              status: value as Volunteer["status"],
+            }))
+          }
+        >
           <SelectTrigger className="w-[160px]">
-            <SelectValue placeholder={t('volunteers.status_filter', { defaultValue: 'Status' })} />
+            <SelectValue
+              placeholder={t("volunteers.status_filter", {
+                defaultValue: "Status",
+              })}
+            />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="active">{t('status.active', { defaultValue: 'Active' })}</SelectItem>
-            <SelectItem value="onboarding">{t('status.onboarding', { defaultValue: 'Onboarding' })}</SelectItem>
-            <SelectItem value="inactive">{t('status.inactive', { defaultValue: 'Inactive' })}</SelectItem>
+            <SelectItem value="active">
+              {t("status.active", { defaultValue: "Active" })}
+            </SelectItem>
+            <SelectItem value="onboarding">
+              {t("status.onboarding", { defaultValue: "Onboarding" })}
+            </SelectItem>
+            <SelectItem value="inactive">
+              {t("status.inactive", { defaultValue: "Inactive" })}
+            </SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -129,17 +159,22 @@ export const VolunteersList = () => {
         <table className="min-w-full text-sm">
           <thead>
             <tr className="text-left">
-              <th className="px-4 py-2">{t('volunteers.volunteer_name')}</th>
-              <th className="px-4 py-2">{t('volunteers.status', { defaultValue: 'Status' })}</th>
-              <th className="px-4 py-2">{t('volunteers.assigned_area') || 'Committee'}</th>
-              <th className="px-4 py-2">{t('common.actions')}</th>
+              <th className="px-4 py-2">{t("volunteers.volunteer_name")}</th>
+              <th className="px-4 py-2">
+                {t("volunteers.status", { defaultValue: "Status" })}
+              </th>
+              <th className="px-4 py-2">
+                {t("volunteers.assigned_area") || "Committee"}
+              </th>
+              <th className="px-4 py-2">{t("common.actions")}</th>
             </tr>
           </thead>
           <tbody>
             {volunteers.map((volunteer) => {
               const committeeName = volunteer.assigned_committee_uuid
-                ? committeeLookup.get(volunteer.assigned_committee_uuid) ?? '-'
-                : '-';
+                ? (committeeLookup.get(volunteer.assigned_committee_uuid) ??
+                  "-")
+                : "-";
 
               return (
                 <tr key={volunteer.uuid} className="border-t border-white/10">
@@ -147,13 +182,25 @@ export const VolunteersList = () => {
                   <td className="px-4 py-2 capitalize">{volunteer.status}</td>
                   <td className="px-4 py-2">{committeeName}</td>
                   <td className="px-4 py-2 space-x-2">
-                    <Button size="sm" variant="ghost" onClick={() => handleView(volunteer)}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleView(volunteer)}
+                    >
                       <Eye className="h-4 w-4" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleEdit(volunteer)}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleEdit(volunteer)}
+                    >
                       <Edit className="h-4 w-4" />
                     </Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleAssign(volunteer)}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => handleAssign(volunteer)}
+                    >
                       <UserCheck className="h-4 w-4" />
                     </Button>
                     <Button
@@ -173,8 +220,11 @@ export const VolunteersList = () => {
             })}
             {!isLoading && volunteers.length === 0 && (
               <tr>
-                <td colSpan={4} className="text-center py-4 text-muted-foreground">
-                  {t('common.no_data') || 'No data'}
+                <td
+                  colSpan={4}
+                  className="text-center py-4 text-muted-foreground"
+                >
+                  {t("common.no_data") || "No data"}
                 </td>
               </tr>
             )}
@@ -201,7 +251,12 @@ export const VolunteersList = () => {
           setSelected(null);
         }}
         volunteer={selected}
-        committeeName={selected?.assigned_committee_uuid ? committeeLookup.get(selected.assigned_committee_uuid) ?? undefined : undefined}
+        committeeName={
+          selected?.assigned_committee_uuid
+            ? (committeeLookup.get(selected.assigned_committee_uuid) ??
+              undefined)
+            : undefined
+        }
         onEdit={(volunteer) => {
           setShowDetails(false);
           handleEdit(volunteer);
@@ -210,14 +265,17 @@ export const VolunteersList = () => {
       <AssignDialog
         isOpen={showAssign}
         onClose={() => setShowAssign(false)}
-        title={t('volunteers.assigned_area') || 'Assign'}
+        title={t("volunteers.assigned_area") || "Assign"}
         items={committeeItems}
         onAssign={onAssign}
         multiSelect={false}
       />
 
       <div className="text-xs text-muted-foreground">
-        {t('common.total_results', { defaultValue: 'Total results: {{count}}', count: meta.total })}
+        {t("common.total_results", {
+          defaultValue: "Total results: {{count}}",
+          count: meta.total,
+        })}
       </div>
     </div>
   );

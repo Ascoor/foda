@@ -13,7 +13,11 @@ export const PartnersSection = ({ partners }: PartnersSectionProps) => {
   usePartnersAnimation(sectionRef);
 
   return (
-    <section ref={sectionRef} id="partners" className="bg-[#050b16] px-4 pb-16 pt-12 text-white/80">
+    <section
+      ref={sectionRef}
+      id="partners"
+      className="bg-[#050b16] px-4 pb-16 pt-12 text-white/80"
+    >
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-10">
         <div className="text-center">
           <span className="rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.3em] text-blue-200">
@@ -42,7 +46,11 @@ export const PartnersSection = ({ partners }: PartnersSectionProps) => {
                 data-partner-logo
                 className="flex h-24 w-36 items-center justify-center rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur"
               >
-                <img src={partner.logo} alt={partner.name} className="max-h-full max-w-full object-contain" />
+                <img
+                  src={partner.logo}
+                  alt={partner.name}
+                  className="max-h-full max-w-full object-contain"
+                />
               </div>
             </SwiperSlide>
           ))}

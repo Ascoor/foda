@@ -13,14 +13,22 @@ interface SidebarProps {
   isMobile?: boolean;
 }
 
-const SPRING_TRANSITION = { type: "spring", stiffness: 220, damping: 30 } as const;
+const SPRING_TRANSITION = {
+  type: "spring",
+  stiffness: 220,
+  damping: 30,
+} as const;
 
-export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarProps) => {
+export const Sidebar = ({
+  isOpen,
+  onToggleCollapse,
+  isMobile = false,
+}: SidebarProps) => {
   const { language, direction } = useLanguage();
   const location = useLocation();
 
   const [expandedSections, setExpandedSections] = useState<string[]>(() =>
-    sidebarSections.filter((s) => s.items?.length).map((s) => s.key)
+    sidebarSections.filter((s) => s.items?.length).map((s) => s.key),
   );
 
   const [isVisible, setIsVisible] = useState(true);
@@ -48,11 +56,13 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
 
   const toggleSection = (key: string) =>
     setExpandedSections((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
     );
 
   const getLabel = (key: string) =>
-    sidebarTranslations[language][key as keyof (typeof sidebarTranslations)["en"]] ?? key;
+    sidebarTranslations[language][
+      key as keyof (typeof sidebarTranslations)["en"]
+    ] ?? key;
 
   const isRouteActive = (path?: string): boolean =>
     !!path && location.pathname.startsWith(path);
@@ -64,9 +74,9 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
           ? ChevronRight
           : ChevronLeft
         : isOpen
-        ? ChevronLeft
-        : ChevronRight,
-    [direction, isOpen]
+          ? ChevronLeft
+          : ChevronRight,
+    [direction, isOpen],
   );
 
   const toggleAriaLabel =
@@ -75,8 +85,8 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
         ? "إخفاء القائمة الجانبية"
         : "إظهار القائمة الجانبية"
       : isOpen
-      ? "Collapse sidebar"
-      : "Expand sidebar";
+        ? "Collapse sidebar"
+        : "Expand sidebar";
 
   const containerClasses = cn(
     "group/sidebar relative z-30 flex shrink-0 flex-col overflow-hidden rounded-[28px] border border-border/40 bg-[hsla(var(--card)/0.88)] p-4 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur-xl transition-all",
@@ -85,7 +95,7 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
           "fixed inset-y-24 max-h-[calc(100vh-8rem)] w-[min(20rem,90vw)] overflow-y-auto",
           direction === "rtl" ? "right-4" : "left-4",
         ]
-      : "sticky top-28 max-h-[calc(100vh-12rem)] self-start"
+      : "sticky top-28 max-h-[calc(100vh-12rem)] self-start",
   );
 
   const headerLabel = getLabel("dashboard");
@@ -113,7 +123,9 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
               <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
                 Aurora Election
               </p>
-              <p className="text-sm font-semibold text-foreground">{headerLabel}</p>
+              <p className="text-sm font-semibold text-foreground">
+                {headerLabel}
+              </p>
             </div>
           )}
         </div>
@@ -153,7 +165,7 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
                   isActive || isRouteActive(item.path)
                     ? "bg-[hsla(var(--primary)/0.2)] text-[hsl(var(--primary))] shadow-sm"
                     : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
-                  !isOpen && "justify-center px-0"
+                  !isOpen && "justify-center px-0",
                 )
               }
             >
@@ -178,7 +190,7 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
                   <ChevronDown
                     className={cn(
                       "h-4 w-4 transition-transform",
-                      sectionIsExpanded ? "rotate-0" : "-rotate-90"
+                      sectionIsExpanded ? "rotate-0" : "-rotate-90",
                     )}
                   />
                 </button>
@@ -192,7 +204,10 @@ export const Sidebar = ({ isOpen, onToggleCollapse, isMobile = false }: SidebarP
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.25, ease: "easeInOut" }}
-                    className={cn("flex flex-col gap-1", isOpen && hasChildren && "mt-1")}
+                    className={cn(
+                      "flex flex-col gap-1",
+                      isOpen && hasChildren && "mt-1",
+                    )}
                   >
                     {links}
                   </motion.div>

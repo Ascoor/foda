@@ -1,38 +1,38 @@
-import { render, screen } from '@testing-library/react';
-import { vi, beforeEach } from 'vitest';
-import { Dashboard } from '../Dashboard';
-import { LanguageProvider } from '@shared/contexts/LanguageContext';
+import { render, screen } from "@testing-library/react";
+import { vi, beforeEach } from "vitest";
+import { Dashboard } from "../Dashboard";
+import { LanguageProvider } from "@shared/contexts/LanguageContext";
 
 const mockUseApi = vi.fn();
 
-vi.mock('@shared/lib/api', () => ({
-  useApi: (config: any) => mockUseApi(config),
+vi.mock("@shared/lib/api", () => ({
+  useApi: (config: Record<string, unknown>) => mockUseApi(config),
 }));
 
-vi.mock('../components/LiveOperationsMap', () => ({
+vi.mock("../components/LiveOperationsMap", () => ({
   LiveOperationsMap: () => <div data-testid="live-map" />,
 }));
 
 beforeEach(() => {
   mockUseApi.mockReset();
-  window.localStorage.setItem('language', 'en');
+  window.localStorage.setItem("language", "en");
 });
 
 const renderDashboard = () =>
   render(
     <LanguageProvider>
       <Dashboard />
-    </LanguageProvider>
+    </LanguageProvider>,
   );
 
-test('displays stats from api', () => {
+test("displays stats from api", () => {
   mockUseApi.mockReturnValue({
     data: {
       stats: {
-        total_elections: { value: 5, change: '+1%', trend: 'up' },
-        active_voters: { value: 10, change: '+1%', trend: 'up' },
-        total_candidates: { value: 2, change: '0%', trend: 'up' },
-        committees_count: { value: 3, change: '0%', trend: 'up' },
+        total_elections: { value: 5, change: "+1%", trend: "up" },
+        active_voters: { value: 10, change: "+1%", trend: "up" },
+        total_candidates: { value: 2, change: "0%", trend: "up" },
+        committees_count: { value: 3, change: "0%", trend: "up" },
       },
       activities: [],
       progress: {
@@ -51,17 +51,17 @@ test('displays stats from api', () => {
   });
 
   renderDashboard();
-  expect(screen.getByText('Total Elections')).toBeInTheDocument();
+  expect(screen.getByText("Total Elections")).toBeInTheDocument();
 });
 
-test('shows error message on failure', () => {
+test("shows error message on failure", () => {
   mockUseApi.mockReturnValue({
     data: null,
     loading: false,
-    error: new Error('fail'),
+    error: new Error("fail"),
     execute: vi.fn().mockResolvedValue(undefined),
   });
 
   renderDashboard();
-  expect(screen.getByText('Failed to load dashboard data')).toBeInTheDocument();
+  expect(screen.getByText("Failed to load dashboard data")).toBeInTheDocument();
 });

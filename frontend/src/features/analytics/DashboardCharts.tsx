@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
-import { useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
+import { useMemo } from "react";
 import {
   Bar,
   BarChart,
@@ -13,19 +13,19 @@ import {
   XAxis,
   YAxis,
   Cell,
-} from 'recharts';
+} from "recharts";
 import type {
   RegionAnalytics,
   ReportDistributionSlice,
   SupportTrendPoint,
-} from './types';
+} from "./types";
 
 const COLORS = [
-  'hsl(var(--primary))',
-  'hsl(var(--secondary))',
-  'hsl(var(--accent))',
-  'hsl(var(--success))',
-  'hsl(var(--destructive))',
+  "hsl(var(--primary))",
+  "hsl(var(--secondary))",
+  "hsl(var(--accent))",
+  "hsl(var(--success))",
+  "hsl(var(--destructive))",
 ];
 
 interface DashboardChartsProps {
@@ -35,13 +35,17 @@ interface DashboardChartsProps {
 }
 
 const tooltipStyles = {
-  backgroundColor: 'hsl(var(--popover))',
-  border: '1px solid hsl(var(--border))',
-  borderRadius: '0.5rem',
-  color: 'hsl(var(--foreground))',
+  backgroundColor: "hsl(var(--popover))",
+  border: "1px solid hsl(var(--border))",
+  borderRadius: "0.5rem",
+  color: "hsl(var(--foreground))",
 };
 
-export const DashboardCharts = ({ regions, trends, distribution }: DashboardChartsProps) => {
+export const DashboardCharts = ({
+  regions,
+  trends,
+  distribution,
+}: DashboardChartsProps) => {
   const regionDataset = useMemo(
     () =>
       regions.map((region) => ({
@@ -85,7 +89,11 @@ export const DashboardCharts = ({ regions, trends, distribution }: DashboardChar
               <XAxis dataKey="name" stroke="hsl(var(--foreground))" />
               <YAxis stroke="hsl(var(--foreground))" allowDecimals={false} />
               <Tooltip contentStyle={tooltipStyles} />
-              <Bar dataKey="activeAgents" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} />
+              <Bar
+                dataKey="activeAgents"
+                fill="hsl(var(--primary))"
+                radius={[6, 6, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </CardContent>
@@ -136,7 +144,10 @@ export const DashboardCharts = ({ regions, trends, distribution }: DashboardChar
                 paddingAngle={4}
               >
                 {distributionDataset.map((entry, index) => (
-                  <Cell key={`slice-${entry.type}-${index}`} fill={entry.fill} />
+                  <Cell
+                    key={`slice-${entry.type}-${index}`}
+                    fill={entry.fill}
+                  />
                 ))}
               </Pie>
             </PieChart>

@@ -1,6 +1,12 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shared/ui/card';
-import { Skeleton } from '@shared/ui/skeleton';
-import { LiveOperationsMap } from '../components/LiveOperationsMap';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@shared/ui/card";
+import { Skeleton } from "@shared/ui/skeleton";
+import { LiveOperationsMap } from "../components/LiveOperationsMap";
 
 interface LiveOperationsPanelProps {
   loading: boolean;
@@ -8,14 +14,24 @@ interface LiveOperationsPanelProps {
   description: string;
 }
 
-export const LiveOperationsPanel = ({ loading, heading, description }: LiveOperationsPanelProps) => (
+export const LiveOperationsPanel = ({
+  loading,
+  heading,
+  description,
+}: LiveOperationsPanelProps) => (
   <Card className="h-full overflow-hidden">
     <CardHeader>
-      <CardTitle className="text-2xl font-semibold tracking-tight">{heading}</CardTitle>
+      <CardTitle className="text-2xl font-semibold tracking-tight">
+        {heading}
+      </CardTitle>
       <CardDescription>{description}</CardDescription>
     </CardHeader>
     <CardContent className="pb-6">
-      {loading ? <Skeleton className="h-[360px] w-full rounded-3xl" /> : <LiveOperationsMap />}
+      {loading ? (
+        <Skeleton className="h-[360px] w-full rounded-3xl" />
+      ) : (
+        <LiveOperationsMap />
+      )}
     </CardContent>
   </Card>
 );

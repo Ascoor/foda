@@ -1,6 +1,6 @@
-import type { BaseEntity, Nullable } from './common';
+import type { BaseEntity, Nullable } from "./common";
 
-export type AgentAssignmentType = 'polling_station' | 'field' | 'digital';
+export type AgentAssignmentType = "polling_station" | "field" | "digital";
 
 export interface AgentAssignment {
   type: AgentAssignmentType;
@@ -12,7 +12,7 @@ export interface AgentAssignment {
 export interface Agent extends BaseEntity {
   full_name: string;
   code: string;
-  status: 'active' | 'standby' | 'inactive';
+  status: "active" | "standby" | "inactive";
   contact_number?: string | null;
   email?: string | null;
   assignment: AgentAssignment;

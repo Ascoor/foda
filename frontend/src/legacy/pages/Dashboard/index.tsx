@@ -116,7 +116,8 @@ const DashboardOverview = () => {
                 متابعة حية لأداء الحملات والفرق التنظيمية
               </h1>
               <p className="max-w-2xl text-sm text-muted-foreground">
-                لوحة رقمية حديثة تجمع المؤشرات الرئيسية، حالة الحملات، وإشعارات المخاطر في مكان واحد لتسهيل اتخاذ القرارات السريعة.
+                لوحة رقمية حديثة تجمع المؤشرات الرئيسية، حالة الحملات، وإشعارات
+                المخاطر في مكان واحد لتسهيل اتخاذ القرارات السريعة.
               </p>
             </div>
             <div className="grid gap-4 text-sm sm:grid-cols-3">
@@ -125,21 +126,31 @@ const DashboardOverview = () => {
                   key={highlight.title}
                   className="rounded-2xl border border-[hsla(var(--border)/0.15)] bg-[hsla(var(--surface-secondary)/0.35)] p-4 shadow-sm"
                 >
-                  <p className="text-xs text-muted-foreground">{highlight.title}</p>
-                  <p className="text-lg font-semibold text-foreground">{highlight.value}</p>
-                  <p className="text-xs text-muted-foreground/80">{highlight.caption}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {highlight.title}
+                  </p>
+                  <p className="text-lg font-semibold text-foreground">
+                    {highlight.value}
+                  </p>
+                  <p className="text-xs text-muted-foreground/80">
+                    {highlight.caption}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
           <div className="grid w-full max-w-sm grid-cols-2 gap-3 rounded-[28px] border border-[hsla(var(--border)/0.12)] bg-[hsla(var(--surface-secondary)/0.45)] p-4 text-sm">
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground">تقارير اليوم</span>
+              <span className="text-xs text-muted-foreground">
+                تقارير اليوم
+              </span>
               <span className="text-2xl font-semibold text-foreground">64</span>
               <span className="text-xs text-emerald-400">+12% نمو</span>
             </div>
             <div className="flex flex-col gap-1">
-              <span className="text-xs text-muted-foreground">إشعارات المخاطر</span>
+              <span className="text-xs text-muted-foreground">
+                إشعارات المخاطر
+              </span>
               <span className="text-2xl font-semibold text-foreground">5</span>
               <span className="text-xs text-rose-400">-3% عن الأمس</span>
             </div>
@@ -187,8 +198,12 @@ const DashboardOverview = () => {
           <div className="relative z-10 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-foreground">أحدث الأنشطة</h3>
-                <p className="text-sm text-muted-foreground">متابعة مباشرة لأعمال الفرق الميدانية</p>
+                <h3 className="text-lg font-semibold text-foreground">
+                  أحدث الأنشطة
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  متابعة مباشرة لأعمال الفرق الميدانية
+                </p>
               </div>
               <span className="rounded-full bg-[hsla(var(--primary)/0.15)] px-3 py-1 text-xs font-semibold text-[hsl(var(--primary))]">
                 مباشر الآن
@@ -222,8 +237,12 @@ const DashboardOverview = () => {
           <div className="relative z-10 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold text-foreground">قنوات المتابعة</h3>
-                <p className="text-sm text-muted-foreground">توزيع نقاط الاتصال خلال الأسبوع</p>
+                <h3 className="text-lg font-semibold text-foreground">
+                  قنوات المتابعة
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  توزيع نقاط الاتصال خلال الأسبوع
+                </p>
               </div>
               <span className="rounded-full bg-[hsla(var(--accent)/0.18)] px-3 py-1 text-xs font-semibold text-[hsl(var(--accent))]">
                 محدث آلياً
@@ -234,7 +253,9 @@ const DashboardOverview = () => {
                 <div key={channel.label} className="space-y-2">
                   <div className="flex items-center justify-between text-foreground">
                     <span>{channel.label}</span>
-                    <span className="text-xs font-semibold text-muted-foreground">{channel.value}</span>
+                    <span className="text-xs font-semibold text-muted-foreground">
+                      {channel.value}
+                    </span>
                   </div>
                   <div className="h-2 rounded-full bg-[hsla(var(--surface-secondary)/0.4)]">
                     <div

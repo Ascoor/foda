@@ -16,7 +16,12 @@ const cardVariants = {
   animate: { opacity: 1, y: 0, filter: "blur(0px)" },
 };
 
-export const AuthLayout = ({ title, subtitle, children, footer }: AuthLayoutProps) => {
+export const AuthLayout = ({
+  title,
+  subtitle,
+  children,
+  footer,
+}: AuthLayoutProps) => {
   const { direction } = useLanguage();
 
   return (
@@ -45,27 +50,40 @@ export const AuthLayout = ({ title, subtitle, children, footer }: AuthLayoutProp
           <div className="grid grid-cols-1 gap-0 lg:grid-cols-2">
             <div className="relative hidden flex-col justify-between border-e border-[hsla(var(--border)/0.15)] bg-gradient-to-b from-[hsla(var(--primary)/0.18)] via-transparent to-[hsla(var(--accent)/0.12)] px-10 py-12 lg:flex">
               <div className="space-y-6 text-start">
-                <h1 className="text-3xl font-bold leading-tight text-gradient-primary">{title}</h1>
+                <h1 className="text-3xl font-bold leading-tight text-gradient-primary">
+                  {title}
+                </h1>
                 <p className="text-base text-muted-foreground">{subtitle}</p>
               </div>
               <div className="space-y-4 text-sm text-muted-foreground">
                 <p className="font-semibold text-foreground">{subtitle}</p>
                 <p>
-                  منصة موحدة تربط فريقك الميداني بالقيادة عبر مؤشرات واضحة ودقيقة.
+                  منصة موحدة تربط فريقك الميداني بالقيادة عبر مؤشرات واضحة
+                  ودقيقة.
                 </p>
                 <div className="flex items-center gap-2 text-xs">
                   <span className="h-1 w-12 rounded-full bg-[hsla(var(--primary)/0.35)]" />
-                  <span className="text-muted-foreground">FODA Admin Suite</span>
+                  <span className="text-muted-foreground">
+                    FODA Admin Suite
+                  </span>
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-8 p-6 sm:p-10">
               <div className="space-y-3 text-center lg:text-start">
-                <h2 className="text-2xl font-semibold text-foreground lg:text-3xl">{title}</h2>
-                <p className="text-sm text-muted-foreground lg:text-base">{subtitle}</p>
+                <h2 className="text-2xl font-semibold text-foreground lg:text-3xl">
+                  {title}
+                </h2>
+                <p className="text-sm text-muted-foreground lg:text-base">
+                  {subtitle}
+                </p>
               </div>
               {children}
-              {footer && <div className="text-center text-sm text-muted-foreground lg:text-start">{footer}</div>}
+              {footer && (
+                <div className="text-center text-sm text-muted-foreground lg:text-start">
+                  {footer}
+                </div>
+              )}
             </div>
           </div>
         </motion.section>

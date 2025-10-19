@@ -19,7 +19,10 @@ const registerDevtools = (payload: Record<string, unknown>) => {
   };
 
   if (import.meta.env.DEV) {
-    console.info("[DevTools] context payload updated", target.__FODA_DEVTOOLS__);
+    console.info(
+      "[DevTools] context payload updated",
+      target.__FODA_DEVTOOLS__,
+    );
   }
 };
 
@@ -41,7 +44,13 @@ export const DevTools = () => {
     });
 
     return () => {
-      registerDevtools({ notifications: [], unreadCount: 0, isDrawerOpen: false, user: null, isAuthenticated: false });
+      registerDevtools({
+        notifications: [],
+        unreadCount: 0,
+        isDrawerOpen: false,
+        user: null,
+        isAuthenticated: false,
+      });
     };
   }, [isAuthenticated, isDrawerOpen, notifications, unreadCount, user]);
 

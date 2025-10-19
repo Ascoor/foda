@@ -1,4 +1,4 @@
-export type ObservationType = 'violation' | 'note' | 'complaint';
+export type ObservationType = "violation" | "note" | "complaint";
 
 export interface Observation {
   id: number;

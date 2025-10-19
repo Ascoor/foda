@@ -24,7 +24,13 @@ export const Sidebar = () => {
         onClick={toggleSidebar}
         className="self-end rounded-full border border-white/30 bg-white/30 px-4 py-1 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-white/50 dark:bg-slate-800/60 dark:text-slate-100"
       >
-        {sidebarOpen ? (language === "ar" ? "إخفاء" : "Hide") : language === "ar" ? "إظهار" : "Show"}
+        {sidebarOpen
+          ? language === "ar"
+            ? "إخفاء"
+            : "Hide"
+          : language === "ar"
+            ? "إظهار"
+            : "Show"}
       </button>
       {sidebarOpen && (
         <nav className="space-y-3">
@@ -35,7 +41,10 @@ export const Sidebar = () => {
               className="group relative overflow-hidden rounded-2xl border border-white/15 bg-white/40 p-4 shadow-lg backdrop-blur-xl transition dark:bg-slate-900/50"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 via-emerald-200/15 to-indigo-300/20 opacity-0 transition group-hover:opacity-100" />
-              <a href={to} className="relative flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-100">
+              <a
+                href={to}
+                className="relative flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-100"
+              >
                 <span className="flex size-10 items-center justify-center rounded-2xl bg-white/70 text-cyan-700 shadow-inner dark:bg-slate-800/80 dark:text-indigo-200">
                   <Icon className="size-4" />
                 </span>

@@ -44,7 +44,7 @@ export const MapSection = () => {
       theme === "day"
         ? "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-    [theme]
+    [theme],
   );
 
   return (
@@ -59,13 +59,20 @@ export const MapSection = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/20 via-emerald-200/10 to-purple-300/20" />
       <div className="relative z-10 space-y-4 p-6">
         <div>
-          <h3 className="text-lg font-semibold text-slate-800 dark:text-white">خريطة المنصورة / الدقهلية</h3>
+          <h3 className="text-lg font-semibold text-slate-800 dark:text-white">
+            خريطة المنصورة / الدقهلية
+          </h3>
           <p className="text-sm text-slate-600 dark:text-slate-300">
             استكشف مراكز الاقتراع عبر الخريطة التفاعلية وتابع نسب المشاركة.
           </p>
         </div>
         <div className="h-[360px] overflow-hidden rounded-2xl border border-white/20 shadow-inner">
-          <MapContainer center={mansouraCoordinates} zoom={10} style={{ height: "100%", width: "100%" }} scrollWheelZoom={false}>
+          <MapContainer
+            center={mansouraCoordinates}
+            zoom={10}
+            style={{ height: "100%", width: "100%" }}
+            scrollWheelZoom={false}
+          >
             <TileLayer url={tileLayer} />
             {points.map((point, index) => (
               <Marker

@@ -1,4 +1,4 @@
-export type RoleScope = 'system' | 'election' | 'committee';
+export type RoleScope = "system" | "election" | "committee";
 
 export interface RoleRecord {
   id: number;
@@ -14,4 +14,3 @@ export interface RolesResponse {
   data: RoleRecord[];
   permissions: string[];
 }
-

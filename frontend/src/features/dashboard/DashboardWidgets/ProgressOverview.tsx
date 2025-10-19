@@ -1,14 +1,21 @@
-import { RefreshCcw } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@shared/ui/card';
-import { Button } from '@shared/ui/button';
-import { Skeleton } from '@shared/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@shared/ui/alert';
-import { ProgressChart } from '../components/ProgressChart';
+import { RefreshCcw } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@shared/ui/card";
+import { Button } from "@shared/ui/button";
+import { Skeleton } from "@shared/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@shared/ui/alert";
+import { ProgressChart } from "../components/ProgressChart";
 
 interface ProgressDatum {
   label: string;
   value: number;
-  color: 'primary' | 'secondary' | 'accent' | 'success';
+  color: "primary" | "secondary" | "accent" | "success";
 }
 
 interface ProgressOverviewProps {
@@ -39,7 +46,9 @@ export const ProgressOverview = ({
   <Card className="h-full overflow-hidden">
     <CardHeader className="flex flex-row items-start justify-between gap-4">
       <div>
-        <CardTitle className="text-2xl font-semibold tracking-tight">{heading}</CardTitle>
+        <CardTitle className="text-2xl font-semibold tracking-tight">
+          {heading}
+        </CardTitle>
         <CardDescription>{description}</CardDescription>
       </div>
       <Button
@@ -70,13 +79,17 @@ export const ProgressOverview = ({
         <span className="inline-flex items-center rounded-lg bg-[hsla(var(--primary)/0.15)] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[hsl(var(--primary))]">
           {overallLabel}
         </span>
-        <span className="text-lg font-semibold text-foreground">{Math.round(overall)}%</span>
+        <span className="text-lg font-semibold text-foreground">
+          {Math.round(overall)}%
+        </span>
       </div>
       <div className="flex items-center gap-3">
         <span className="inline-flex items-center rounded-lg bg-[hsla(var(--accent)/0.15)] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-[hsl(var(--accent))]">
           {remainingLabel}
         </span>
-        <span className="text-lg font-semibold text-foreground">{Math.round(remaining)}</span>
+        <span className="text-lg font-semibold text-foreground">
+          {Math.round(remaining)}
+        </span>
       </div>
     </CardFooter>
   </Card>

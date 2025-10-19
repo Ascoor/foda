@@ -1,9 +1,14 @@
-import { useTranslation } from 'react-i18next';
-import { Megaphone } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog';
-import { Button } from '@shared/ui/button';
-import { Campaign } from './types';
-import { sendCampaign } from './api';
+import { useTranslation } from "react-i18next";
+import { Megaphone } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@shared/ui/dialog";
+import { Button } from "@shared/ui/button";
+import { Campaign } from "./types";
+import { sendCampaign } from "./api";
 
 interface Props {
   isOpen: boolean;
@@ -12,7 +17,12 @@ interface Props {
   onEdit: (c: Campaign) => void;
 }
 
-export const CampaignDetails = ({ isOpen, onClose, campaign, onEdit }: Props) => {
+export const CampaignDetails = ({
+  isOpen,
+  onClose,
+  campaign,
+  onEdit,
+}: Props) => {
   const { t } = useTranslation();
   if (!campaign) return null;
 
@@ -32,17 +42,31 @@ export const CampaignDetails = ({ isOpen, onClose, campaign, onEdit }: Props) =>
 
         <div className="space-y-2">
           <p>{campaign.message}</p>
-          <p><strong>{t('campaigns.sent')}:</strong> {campaign.sent}</p>
-          <p><strong>{t('campaigns.delivered')}:</strong> {campaign.delivered}</p>
+          <p>
+            <strong>{t("campaigns.sent")}:</strong> {campaign.sent}
+          </p>
+          <p>
+            <strong>{t("campaigns.delivered")}:</strong> {campaign.delivered}
+          </p>
           <div className="flex gap-3 pt-4 border-t border-white/10">
-            <Button variant="outline" onClick={onClose} className="flex-1 glass-button">
-              {t('common.cancel')}
+            <Button
+              variant="outline"
+              onClick={onClose}
+              className="flex-1 glass-button"
+            >
+              {t("common.cancel")}
             </Button>
-            <Button onClick={() => onEdit(campaign)} className="flex-1 bg-gradient-primary text-white">
-              {t('common.edit')}
+            <Button
+              onClick={() => onEdit(campaign)}
+              className="flex-1 bg-gradient-primary text-white"
+            >
+              {t("common.edit")}
             </Button>
-            <Button onClick={handleSend} className="flex-1 bg-gradient-primary text-white">
-              {t('campaigns.send')}
+            <Button
+              onClick={handleSend}
+              className="flex-1 bg-gradient-primary text-white"
+            >
+              {t("campaigns.send")}
             </Button>
           </div>
         </div>

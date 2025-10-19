@@ -1,5 +1,5 @@
 export interface SystemSettings {
-  language: 'en' | 'ar';
+  language: "en" | "ar";
   region: string;
   allowRegistration: boolean;
 }

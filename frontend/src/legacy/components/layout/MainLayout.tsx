@@ -45,10 +45,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
 
         <div className="relative mx-auto flex w-full max-w-6xl flex-1 gap-6 px-4 md:px-0">
           {isDesktop ? (
-            <Sidebar
-              isOpen={sidebarOpen}
-              onToggleCollapse={toggleSidebar}
-            />
+            <Sidebar isOpen={sidebarOpen} onToggleCollapse={toggleSidebar} />
           ) : (
             <AnimatePresence>
               {sidebarOpen && (
@@ -62,20 +59,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                     exit={{ opacity: 0 }}
                     onClick={toggleSidebar}
                   />
-                  <Sidebar
-                    isOpen
-                    isMobile
-                    onToggleCollapse={toggleSidebar}
-                  />
+                  <Sidebar isOpen isMobile onToggleCollapse={toggleSidebar} />
                 </>
               )}
             </AnimatePresence>
           )}
 
-          <motion.main
-            layout
-            className="relative z-10 flex-1 pb-10 pt-6"
-          >
+          <motion.main layout className="relative z-10 flex-1 pb-10 pt-6">
             {children ?? <Outlet />}
           </motion.main>
         </div>

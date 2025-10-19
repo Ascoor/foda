@@ -1,28 +1,28 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@shared/ui/button';
-import { Input } from '@shared/ui/input';
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@shared/ui/button";
+import { Input } from "@shared/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@shared/ui/select';
-import { Alert, AlertDescription, AlertTitle } from '@shared/ui/alert';
-import { DataTableSkeleton, EmptyState } from '@shared/ui/data-table-skeleton';
-import { safeArray } from '@shared/lib/utils';
+} from "@shared/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@shared/ui/alert";
+import { DataTableSkeleton, EmptyState } from "@shared/ui/data-table-skeleton";
+import { safeArray } from "@shared/lib/utils";
 import {
   fetchElections,
   deleteElection,
   createElection,
   updateElection,
-} from './api';
-import { Election } from './types';
-import { ElectionForm } from './Form';
+} from "./api";
+import { Election } from "./types";
+import { ElectionForm } from "./Form";
 
 export const ElectionsList = () => {
   const { t } = useTranslation();
@@ -31,8 +31,8 @@ export const ElectionsList = () => {
   const queryClient = useQueryClient();
 
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState<Election | null>(null);
 
@@ -41,13 +41,15 @@ export const ElectionsList = () => {
     isLoading,
     error,
   } = useQuery<{ data: Election[]; total: number }>({
-    queryKey: ['elections', page, search, statusFilter],
+    queryKey: ["elections", page, search, statusFilter],
     queryFn: () =>
       fetchElections({
         page,
         per_page: 10,
         search,
-        status: (statusFilter as "draft" | "active" | "completed" | "cancelled") || undefined,
+        status:
+          (statusFilter as "draft" | "active" | "completed" | "cancelled") ||
+          undefined,
       }),
     placeholderData: (prevData) => prevData,
   });
@@ -58,7 +60,7 @@ export const ElectionsList = () => {
 
   const deleteMut = useMutation({
     mutationFn: deleteElection,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['elections'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["elections"] }),
   });
 
   if (isLoading) return <DataTableSkeleton />;
@@ -66,21 +68,21 @@ export const ElectionsList = () => {
   if (error) {
     return (
       <Alert variant="destructive">
-        <AlertTitle>{t('common.error') || 'Error'}</AlertTitle>
+        <AlertTitle>{t("common.error") || "Error"}</AlertTitle>
         <AlertDescription>{(error as Error).message}</AlertDescription>
       </Alert>
     );
   }
 
   if (elections.length === 0) {
-    return <EmptyState title={t('common.no_data')} />;
+    return <EmptyState title={t("common.no_data")} />;
   }
 
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-3xl font-bold text-gradient-primary">
-          {t('elections.title')}
+          {t("elections.title")}
         </h1>
         <Button
           className="glass-button bg-gradient-primary text-white"
@@ -89,13 +91,13 @@ export const ElectionsList = () => {
             setShowForm(true);
           }}
         >
-          {t('elections.add_election')}
+          {t("elections.add_election")}
         </Button>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-2">
         <Input
-          placeholder={t('elections.search_placeholder')}
+          placeholder={t("elections.search_placeholder")}
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -111,14 +113,16 @@ export const ElectionsList = () => {
           }}
         >
           <SelectTrigger className="glass max-w-xs">
-            <SelectValue placeholder={t('common.status')} />
+            <SelectValue placeholder={t("common.status")} />
           </SelectTrigger>
           <SelectContent>
-            {(['draft', 'active', 'completed', 'cancelled'] as const).map((s) => (
-              <SelectItem key={s} value={s}>
-                {t(`elections.status.${s}`)}
-              </SelectItem>
-            ))}
+            {(["draft", "active", "completed", "cancelled"] as const).map(
+              (s) => (
+                <SelectItem key={s} value={s}>
+                  {t(`elections.status.${s}`)}
+                </SelectItem>
+              ),
+            )}
           </SelectContent>
         </Select>
       </div>
@@ -127,11 +131,17 @@ export const ElectionsList = () => {
         <table className="min-w-full text-sm">
           <thead>
             <tr>
-              <th className="px-4 py-2 text-left">{t('elections.election_name')}</th>
-              <th className="px-4 py-2 text-left">{t('elections.election_type')}</th>
-              <th className="px-4 py-2 text-left">{t('common.status')}</th>
-              <th className="px-4 py-2 text-left">{t('elections.start_date')}</th>
-              <th className="px-4 py-2 text-left">{t('common.actions')}</th>
+              <th className="px-4 py-2 text-left">
+                {t("elections.election_name")}
+              </th>
+              <th className="px-4 py-2 text-left">
+                {t("elections.election_type")}
+              </th>
+              <th className="px-4 py-2 text-left">{t("common.status")}</th>
+              <th className="px-4 py-2 text-left">
+                {t("elections.start_date")}
+              </th>
+              <th className="px-4 py-2 text-left">{t("common.actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -139,7 +149,9 @@ export const ElectionsList = () => {
               <tr key={e.id} className="border-t border-white/10">
                 <td className="px-4 py-2">{e.name}</td>
                 <td className="px-4 py-2">{t(`elections.types.${e.type}`)}</td>
-                <td className="px-4 py-2">{t(`elections.status.${e.status}`)}</td>
+                <td className="px-4 py-2">
+                  {t(`elections.status.${e.status}`)}
+                </td>
                 <td className="px-4 py-2">{e.start_date}</td>
                 <td className="px-4 py-2 flex gap-2">
                   <Button
@@ -147,7 +159,7 @@ export const ElectionsList = () => {
                     variant="outline"
                     onClick={() => navigate(`/elections/${e.id}`)}
                   >
-                    {t('common.view')}
+                    {t("common.view")}
                   </Button>
                   <Button
                     size="sm"
@@ -157,14 +169,14 @@ export const ElectionsList = () => {
                       setShowForm(true);
                     }}
                   >
-                    {t('common.edit')}
+                    {t("common.edit")}
                   </Button>
                   <Button
                     size="sm"
                     variant="destructive"
                     onClick={() => deleteMut.mutate(e.id)}
                   >
-                    {t('common.delete')}
+                    {t("common.delete")}
                   </Button>
                 </td>
               </tr>
@@ -179,7 +191,7 @@ export const ElectionsList = () => {
           disabled={page === 1}
           onClick={() => setPage((p) => p - 1)}
         >
-          {t('common.previous')}
+          {t("common.previous")}
         </Button>
         <span>
           {page} / {totalPages}
@@ -189,7 +201,7 @@ export const ElectionsList = () => {
           disabled={page === totalPages}
           onClick={() => setPage((p) => p + 1)}
         >
-          {t('common.next')}
+          {t("common.next")}
         </Button>
       </div>
 
@@ -206,7 +218,7 @@ export const ElectionsList = () => {
                 }
                 setShowForm(false);
                 setSelected(null);
-                queryClient.invalidateQueries({ queryKey: ['elections'] });
+                queryClient.invalidateQueries({ queryKey: ["elections"] });
               }}
               onCancel={() => {
                 setShowForm(false);

@@ -9,7 +9,7 @@ export function safeArray<T>(value?: T[] | null | undefined): T[] {
 
 // Safe object utility
 export function safeObject<T>(value?: T | null | undefined): T | {} {
-  return value && typeof value === 'object' ? value : {} as T;
+  return value && typeof value === "object" ? value : ({} as T);
 }
 
 // Safe number utility
@@ -20,7 +20,7 @@ export function safeNumber(value?: number | string | null): number {
 
 // Safe string utility
 export function safeString(value?: string | null | undefined): string {
-  return typeof value === 'string' ? value : '';
+  return typeof value === "string" ? value : "";
 }
 
 // Type guard for arrays
@@ -29,23 +29,25 @@ export function isValidArray<T>(value: unknown): value is T[] {
 }
 
 // Type guard for objects
-export function isValidObject(value: unknown): value is Record<string, unknown> {
-  return value !== null && typeof value === 'object' && !Array.isArray(value);
+export function isValidObject(
+  value: unknown,
+): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
 // Safe data mapper with fallback
 export function safeMap<T, U>(
   data: T[] | null | undefined,
   mapper: (item: T, index: number) => U,
-  fallback: U[] = []
+  fallback: U[] = [],
 ): U[] {
   const safeData = safeArray(data);
   if (safeData.length === 0) return fallback;
-  
+
   try {
     return safeData.map(mapper);
   } catch (error) {
-    console.warn('Safe map failed:', error);
+    console.warn("Safe map failed:", error);
     return fallback;
   }
 }
@@ -53,14 +55,14 @@ export function safeMap<T, U>(
 // Safe data filter with error handling
 export function safeFilter<T>(
   data: T[] | null | undefined,
-  predicate: (item: T, index: number) => boolean
+  predicate: (item: T, index: number) => boolean,
 ): T[] {
   const safeData = safeArray(data);
-  
+
   try {
     return safeData.filter(predicate);
   } catch (error) {
-    console.warn('Safe filter failed:', error);
+    console.warn("Safe filter failed:", error);
     return [];
   }
 }
@@ -69,14 +71,14 @@ export function safeFilter<T>(
 export function safeReduce<T, U>(
   data: T[] | null | undefined,
   reducer: (acc: U, current: T, index: number) => U,
-  initialValue: U
+  initialValue: U,
 ): U {
   const safeData = safeArray(data);
-  
+
   try {
     return safeData.reduce(reducer, initialValue);
   } catch (error) {
-    console.warn('Safe reduce failed:', error);
+    console.warn("Safe reduce failed:", error);
     return initialValue;
   }
 }
@@ -94,13 +96,13 @@ export interface SafeApiResponse<T> {
 export function createSafeApiResponse<T>(
   response?: { data?: T[]; total?: number; page?: number } | null,
   loading = false,
-  error: string | null = null
+  error: string | null = null,
 ): SafeApiResponse<T> {
   return {
     data: safeArray(response?.data),
     total: safeNumber(response?.total),
     page: response?.page || 1,
     loading,
-    error
+    error,
   };
 }

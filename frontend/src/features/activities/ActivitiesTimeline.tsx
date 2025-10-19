@@ -1,27 +1,34 @@
-import { useEffect, useMemo, useState } from 'react';
-import { format, parseISO } from 'date-fns';
-import { Calendar, Clock, Layers, ListTree } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
-import { Badge } from '@shared/ui/badge';
-import { Button } from '@shared/ui/button';
-import { SafeDataRenderer } from '@shared/ui/safe-data-renderer';
-import { Skeleton } from '@shared/ui/skeleton';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@shared/ui/table';
-import { fetchActivities } from './api';
-import type { ActivitiesResponse, ActivityTimelineItem } from './types';
+import { useEffect, useMemo, useState } from "react";
+import { format, parseISO } from "date-fns";
+import { Calendar, Clock, Layers, ListTree } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
+import { Badge } from "@shared/ui/badge";
+import { Button } from "@shared/ui/button";
+import { SafeDataRenderer } from "@shared/ui/safe-data-renderer";
+import { Skeleton } from "@shared/ui/skeleton";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@shared/ui/table";
+import { fetchActivities } from "./api";
+import type { ActivitiesResponse, ActivityTimelineItem } from "./types";
 
 const VIEW_MODES = [
-  { value: 'timeline', label: 'Timeline', icon: ListTree },
-  { value: 'table', label: 'Table', icon: Layers },
+  { value: "timeline", label: "Timeline", icon: ListTree },
+  { value: "table", label: "Table", icon: Layers },
 ] as const;
 
-type ViewMode = (typeof VIEW_MODES)[number]['value'];
+type ViewMode = (typeof VIEW_MODES)[number]["value"];
 
 const groupByDate = (items: ActivityTimelineItem[]) => {
   const map = new Map<string, ActivityTimelineItem[]>();
   items.forEach((item) => {
     const iso = item.reported_at ?? item.created_at;
-    const key = format(parseISO(iso), 'yyyy-MM-dd');
+    const key = format(parseISO(iso), "yyyy-MM-dd");
     if (!map.has(key)) {
       map.set(key, []);
     }
@@ -30,14 +37,19 @@ const groupByDate = (items: ActivityTimelineItem[]) => {
 
   return Array.from(map.entries()).map(([date, entries]) => ({
     date,
-    displayDate: format(parseISO(date), 'MMMM d, yyyy'),
-    entries: entries.sort((a, b) => (a.reported_at ?? a.created_at).localeCompare(b.reported_at ?? b.created_at) * -1),
+    displayDate: format(parseISO(date), "MMMM d, yyyy"),
+    entries: entries.sort(
+      (a, b) =>
+        (a.reported_at ?? a.created_at).localeCompare(
+          b.reported_at ?? b.created_at,
+        ) * -1,
+    ),
   }));
 };
 
 export const ActivitiesTimeline = () => {
   const [response, setResponse] = useState<ActivitiesResponse | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>('timeline');
+  const [viewMode, setViewMode] = useState<ViewMode>("timeline");
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +76,9 @@ export const ActivitiesTimeline = () => {
       });
       setPage(pageNumber);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unable to load activities');
+      setError(
+        err instanceof Error ? err.message : "Unable to load activities",
+      );
     } finally {
       setLoading(false);
       setIsLoadingMore(false);
@@ -77,7 +91,9 @@ export const ActivitiesTimeline = () => {
 
   const grouped = useMemo(() => groupByDate(response?.data ?? []), [response]);
 
-  const canLoadMore = response ? response.meta.current_page < response.meta.last_page : false;
+  const canLoadMore = response
+    ? response.meta.current_page < response.meta.last_page
+    : false;
 
   return (
     <Card className="glass-card">
@@ -95,7 +111,7 @@ export const ActivitiesTimeline = () => {
           {VIEW_MODES.map(({ value, label, icon: Icon }) => (
             <Button
               key={value}
-              variant={viewMode === value ? 'default' : 'outline'}
+              variant={viewMode === value ? "default" : "outline"}
               size="sm"
               onClick={() => setViewMode(value)}
               className="flex items-center gap-2"
@@ -117,7 +133,7 @@ export const ActivitiesTimeline = () => {
         >
           {() => (
             <div className="space-y-6">
-              {viewMode === 'timeline' ? (
+              {viewMode === "timeline" ? (
                 <div className="space-y-6">
                   {grouped.map((group) => (
                     <div key={group.date} className="space-y-3">
@@ -129,23 +145,38 @@ export const ActivitiesTimeline = () => {
                       </div>
                       <div className="space-y-3 border-l border-dashed border-primary/30 pl-6">
                         {group.entries.map((activity) => (
-                          <div key={activity.id} className="relative flex flex-col gap-2">
+                          <div
+                            key={activity.id}
+                            className="relative flex flex-col gap-2"
+                          >
                             <span className="absolute -left-[13px] top-1 h-3 w-3 rounded-full bg-primary shadow-lg" />
                             <div className="flex flex-wrap items-center gap-2">
                               <Badge variant="secondary">{activity.type}</Badge>
-                              {activity.status && <Badge variant="outline">{activity.status}</Badge>}
+                              {activity.status && (
+                                <Badge variant="outline">
+                                  {activity.status}
+                                </Badge>
+                              )}
                               {activity.area?.name && (
-                                <Badge variant="outline" className="bg-muted/50">
+                                <Badge
+                                  variant="outline"
+                                  className="bg-muted/50"
+                                >
                                   {activity.area.name}
                                 </Badge>
                               )}
                               {activity.support_score !== null && (
-                                <Badge variant="default" className="bg-primary/90">
+                                <Badge
+                                  variant="default"
+                                  className="bg-primary/90"
+                                >
                                   Support {activity.support_score}%
                                 </Badge>
                               )}
                             </div>
-                            <h4 className="text-base font-semibold">{activity.title}</h4>
+                            <h4 className="text-base font-semibold">
+                              {activity.title}
+                            </h4>
                             {activity.description && (
                               <p className="text-sm text-muted-foreground whitespace-pre-line">
                                 {activity.description}
@@ -153,7 +184,14 @@ export const ActivitiesTimeline = () => {
                             )}
                             <div className="flex items-center gap-2 text-xs text-muted-foreground">
                               <Clock className="h-3 w-3" />
-                              <span>{format(parseISO(activity.reported_at ?? activity.created_at), 'HH:mm')}</span>
+                              <span>
+                                {format(
+                                  parseISO(
+                                    activity.reported_at ?? activity.created_at,
+                                  ),
+                                  "HH:mm",
+                                )}
+                              </span>
                             </div>
                           </div>
                         ))}
@@ -177,15 +215,24 @@ export const ActivitiesTimeline = () => {
                     <TableBody>
                       {response?.data.map((activity) => (
                         <TableRow key={activity.id}>
-                          <TableCell className="font-medium">{activity.title}</TableCell>
-                          <TableCell>{activity.type}</TableCell>
-                          <TableCell>{activity.status ?? '—'}</TableCell>
-                          <TableCell>
-                            {activity.support_score !== null ? `${activity.support_score}%` : '—'}
+                          <TableCell className="font-medium">
+                            {activity.title}
                           </TableCell>
-                          <TableCell>{activity.area?.name ?? '—'}</TableCell>
+                          <TableCell>{activity.type}</TableCell>
+                          <TableCell>{activity.status ?? "—"}</TableCell>
                           <TableCell>
-                            {format(parseISO(activity.reported_at ?? activity.created_at), 'PPpp')}
+                            {activity.support_score !== null
+                              ? `${activity.support_score}%`
+                              : "—"}
+                          </TableCell>
+                          <TableCell>{activity.area?.name ?? "—"}</TableCell>
+                          <TableCell>
+                            {format(
+                              parseISO(
+                                activity.reported_at ?? activity.created_at,
+                              ),
+                              "PPpp",
+                            )}
                           </TableCell>
                         </TableRow>
                       ))}
@@ -201,7 +248,7 @@ export const ActivitiesTimeline = () => {
                     disabled={isLoadingMore}
                     onClick={() => loadActivities(page + 1, true)}
                   >
-                    {isLoadingMore ? 'Loading…' : 'Load more'}
+                    {isLoadingMore ? "Loading…" : "Load more"}
                   </Button>
                 </div>
               )}

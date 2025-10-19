@@ -58,9 +58,14 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
           >
             {slides[activeSlide]?.title}
           </h1>
-          <p data-hero-text className="text-lg text-white/80 md:text-xl">{slides[activeSlide]?.description}</p>
+          <p data-hero-text className="text-lg text-white/80 md:text-xl">
+            {slides[activeSlide]?.description}
+          </p>
           <div data-hero-actions className="flex flex-wrap gap-4">
-            <Button size="lg" className="bg-blue-600 text-white hover:bg-blue-700">
+            <Button
+              size="lg"
+              className="bg-blue-600 text-white hover:bg-blue-700"
+            >
               البدء الآن
             </Button>
             <Button
@@ -91,7 +96,9 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               }`}
             >
               <p className="text-sm text-white/70">{slide.badge}</p>
-              <h3 className="mt-2 text-lg font-semibold text-white">{slide.title}</h3>
+              <h3 className="mt-2 text-lg font-semibold text-white">
+                {slide.title}
+              </h3>
               <p className="text-sm text-white/60">{slide.description}</p>
             </div>
           ))}

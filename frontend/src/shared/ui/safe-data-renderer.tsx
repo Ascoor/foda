@@ -1,14 +1,20 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Loader2, AlertCircle, Database } from 'lucide-react';
-import { Button } from './button';
-import { Alert, AlertDescription } from './alert';
+import React from "react";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { Loader2, AlertCircle, Database } from "lucide-react";
+import { Button } from "./button";
+import { Alert, AlertDescription } from "./alert";
 
 // Enhanced loading spinner
-export const LoadingSpinner = ({ size = 40, message }: { size?: number; message?: string }) => {
+export const LoadingSpinner = ({
+  size = 40,
+  message,
+}: {
+  size?: number;
+  message?: string;
+}) => {
   const { t } = useTranslation();
-  
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -20,9 +26,9 @@ export const LoadingSpinner = ({ size = 40, message }: { size?: number; message?
         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         className="relative"
       >
-        <Loader2 
-          size={size} 
-          className="text-primary animate-spin drop-shadow-lg" 
+        <Loader2
+          size={size}
+          className="text-primary animate-spin drop-shadow-lg"
         />
         <div className="absolute inset-0 rounded-full bg-primary/20 blur-xl animate-pulse" />
       </motion.div>
@@ -33,7 +39,7 @@ export const LoadingSpinner = ({ size = 40, message }: { size?: number; message?
           transition={{ delay: 0.2 }}
           className="text-muted-foreground text-sm text-center"
         >
-          {message || t('common.loading')}
+          {message || t("common.loading")}
         </motion.p>
       )}
     </motion.div>
@@ -41,19 +47,19 @@ export const LoadingSpinner = ({ size = 40, message }: { size?: number; message?
 };
 
 // Enhanced error display
-export const ErrorDisplay = ({ 
-  error, 
-  onRetry, 
-  title 
-}: { 
-  error: string | Error; 
+export const ErrorDisplay = ({
+  error,
+  onRetry,
+  title,
+}: {
+  error: string | Error;
   onRetry?: () => void;
   title?: string;
 }) => {
   const { t } = useTranslation();
-  
-  const errorMessage = typeof error === 'string' ? error : error.message;
-  
+
+  const errorMessage = typeof error === "string" ? error : error.message;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -63,7 +69,7 @@ export const ErrorDisplay = ({
       <Alert variant="destructive" className="border-0 bg-transparent">
         <AlertCircle className="h-5 w-5" />
         <div className="space-y-2">
-          <h4 className="font-semibold">{title || t('common.error')}</h4>
+          <h4 className="font-semibold">{title || t("common.error")}</h4>
           <AlertDescription className="text-sm">
             {errorMessage}
           </AlertDescription>
@@ -74,7 +80,7 @@ export const ErrorDisplay = ({
               onClick={onRetry}
               className="mt-3 glass-button"
             >
-              {t('common.retry')}
+              {t("common.retry")}
             </Button>
           )}
         </div>
@@ -84,19 +90,24 @@ export const ErrorDisplay = ({
 };
 
 // Enhanced empty state
-export const EmptyState = ({ 
-  title, 
-  description, 
-  action, 
-  icon: Icon = Database
+type IconComponent = React.ComponentType<{
+  size?: string | number;
+  className?: string;
+}>;
+
+export const EmptyState = ({
+  title,
+  description,
+  action,
+  icon: Icon = Database,
 }: {
   title?: string;
   description?: string;
   action?: React.ReactNode;
-  icon?: any;
+  icon?: IconComponent;
 }) => {
   const { t } = useTranslation();
-  
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -112,7 +123,7 @@ export const EmptyState = ({
         <Icon size={64} className="text-muted-foreground/50" />
         <div className="absolute inset-0 rounded-full bg-muted/20 blur-xl" />
       </motion.div>
-      
+
       <div className="text-center space-y-2">
         <motion.h3
           initial={{ opacity: 0 }}
@@ -120,9 +131,9 @@ export const EmptyState = ({
           transition={{ delay: 0.2 }}
           className="text-lg font-semibold text-muted-foreground"
         >
-          {title || t('common.no_data')}
+          {title || t("common.no_data")}
         </motion.h3>
-        
+
         {description && (
           <motion.p
             initial={{ opacity: 0 }}
@@ -134,7 +145,7 @@ export const EmptyState = ({
           </motion.p>
         )}
       </div>
-      
+
       {action && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -170,21 +181,21 @@ export function SafeDataRenderer<T>({
   emptyTitle,
   emptyDescription,
   emptyAction,
-  children
+  children,
 }: SafeDataRendererProps<T>) {
   // Show loading state
   if (loading) {
     return <LoadingSpinner message={loadingMessage} />;
   }
-  
+
   // Show error state
   if (error) {
     return <ErrorDisplay error={error} onRetry={onRetry} />;
   }
-  
+
   // Ensure data is an array
   const safeData = Array.isArray(data) ? data : [];
-  
+
   // Show empty state
   if (safeData.length === 0) {
     return (
@@ -195,7 +206,7 @@ export function SafeDataRenderer<T>({
       />
     );
   }
-  
+
   // Render data
   return <>{children(safeData)}</>;
 }

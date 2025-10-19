@@ -1,26 +1,26 @@
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@shared/contexts/LanguageContext';
-import { useNavigate } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@shared/ui/button';
-import { Input } from '@shared/ui/input';
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useNavigate } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@shared/ui/button";
+import { Input } from "@shared/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@shared/ui/select';
+} from "@shared/ui/select";
 import {
   fetchCommittees,
   deleteCommittee,
   createCommittee,
   updateCommittee,
   fetchGeoAreas,
-} from './api';
-import { Committee, GeoArea } from './types';
-import { CommitteeForm } from './Form';
+} from "./api";
+import { Committee, GeoArea } from "./types";
+import { CommitteeForm } from "./Form";
 
 export const CommitteesList = () => {
   const { t } = useTranslation();
@@ -29,18 +29,18 @@ export const CommitteesList = () => {
   const queryClient = useQueryClient();
 
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState('');
-  const [areaFilter, setAreaFilter] = useState('');
+  const [search, setSearch] = useState("");
+  const [areaFilter, setAreaFilter] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [selected, setSelected] = useState<Committee | null>(null);
 
   const { data: areas } = useQuery<{ data: GeoArea[] }>({
-    queryKey: ['geo-areas'],
+    queryKey: ["geo-areas"],
     queryFn: fetchGeoAreas,
   });
 
   const { data, isLoading } = useQuery({
-    queryKey: ['committees', page, search, areaFilter],
+    queryKey: ["committees", page, search, areaFilter],
     queryFn: () =>
       fetchCommittees({
         page,
@@ -57,7 +57,8 @@ export const CommitteesList = () => {
 
   const deleteMutation = useMutation({
     mutationFn: deleteCommittee,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['committees'] }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["committees"] }),
   });
 
   const handleDelete = (id: string) => {
@@ -65,16 +66,16 @@ export const CommitteesList = () => {
   };
 
   const handleExport = () => {
-    const headers = ['id', 'name', 'location', 'geo_area_id'];
+    const headers = ["id", "name", "location", "geo_area_id"];
     const rows = committees.map((c) =>
-      [c.id, c.name, c.location, c.geo_area_id].join(',')
+      [c.id, c.name, c.location, c.geo_area_id].join(","),
     );
-    const csv = [headers.join(','), ...rows].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
+    const csv = [headers.join(","), ...rows].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'committees.csv';
+    a.download = "committees.csv";
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -83,11 +84,15 @@ export const CommitteesList = () => {
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <h1 className="text-3xl font-bold text-gradient-primary">
-          {t('committees.title')}
+          {t("committees.title")}
         </h1>
         <div className="flex gap-2">
-          <Button variant="outline" className="glass-button" onClick={handleExport}>
-            {t('committees.export_csv')}
+          <Button
+            variant="outline"
+            className="glass-button"
+            onClick={handleExport}
+          >
+            {t("committees.export_csv")}
           </Button>
           <Button
             className="glass-button bg-gradient-primary text-white"
@@ -96,14 +101,14 @@ export const CommitteesList = () => {
               setShowForm(true);
             }}
           >
-            {t('committees.add_committee')}
+            {t("committees.add_committee")}
           </Button>
         </div>
       </div>
 
       <div className="flex flex-col sm:flex-row gap-2">
         <Input
-          placeholder={t('committees.search_placeholder')}
+          placeholder={t("committees.search_placeholder")}
           value={search}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -119,7 +124,7 @@ export const CommitteesList = () => {
           }}
         >
           <SelectTrigger className="glass max-w-xs">
-            <SelectValue placeholder={t('committees.area')} />
+            <SelectValue placeholder={t("committees.area")} />
           </SelectTrigger>
           <SelectContent>
             {areas?.data?.map((a: GeoArea) => (
@@ -136,13 +141,13 @@ export const CommitteesList = () => {
           <thead>
             <tr>
               <th className="px-4 py-2 text-left">
-                {t('committees.committee_name')}
+                {t("committees.committee_name")}
               </th>
               <th className="px-4 py-2 text-left">
-                {t('committees.location')}
+                {t("committees.location")}
               </th>
-              <th className="px-4 py-2 text-left">{t('committees.area')}</th>
-              <th className="px-4 py-2 text-left">{t('common.actions')}</th>
+              <th className="px-4 py-2 text-left">{t("committees.area")}</th>
+              <th className="px-4 py-2 text-left">{t("common.actions")}</th>
             </tr>
           </thead>
           <tbody>
@@ -157,7 +162,7 @@ export const CommitteesList = () => {
                     variant="outline"
                     onClick={() => navigate(`/committees/${c.id}`)}
                   >
-                    {t('common.view')}
+                    {t("common.view")}
                   </Button>
                   <Button
                     size="sm"
@@ -167,14 +172,14 @@ export const CommitteesList = () => {
                       setShowForm(true);
                     }}
                   >
-                    {t('common.edit')}
+                    {t("common.edit")}
                   </Button>
                   <Button
                     size="sm"
                     variant="destructive"
                     onClick={() => handleDelete(c.id)}
                   >
-                    {t('common.delete')}
+                    {t("common.delete")}
                   </Button>
                 </td>
               </tr>
@@ -185,7 +190,7 @@ export const CommitteesList = () => {
                   colSpan={4}
                   className="px-4 py-4 text-center text-muted-foreground"
                 >
-                  {t('common.no_data')}
+                  {t("common.no_data")}
                 </td>
               </tr>
             )}
@@ -199,7 +204,7 @@ export const CommitteesList = () => {
           disabled={page === 1}
           onClick={() => setPage((p) => p - 1)}
         >
-          {t('common.previous')}
+          {t("common.previous")}
         </Button>
         <span>
           {page} / {totalPages}
@@ -209,7 +214,7 @@ export const CommitteesList = () => {
           disabled={page === totalPages}
           onClick={() => setPage((p) => p + 1)}
         >
-          {t('common.next')}
+          {t("common.next")}
         </Button>
       </div>
 
@@ -224,7 +229,7 @@ export const CommitteesList = () => {
                 await createCommittee(formData);
               }
               setShowForm(false);
-              queryClient.invalidateQueries({ queryKey: ['committees'] });
+              queryClient.invalidateQueries({ queryKey: ["committees"] });
             }}
             onCancel={() => setShowForm(false)}
           />
@@ -233,4 +238,3 @@ export const CommitteesList = () => {
     </div>
   );
 };
-

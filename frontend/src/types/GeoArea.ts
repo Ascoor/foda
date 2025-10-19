@@ -1,9 +1,15 @@
-import type { BaseEntity, Nullable } from './common';
+import type { BaseEntity, Nullable } from "./common";
 
-export type GeoAreaType = 'country' | 'state' | 'district' | 'municipality' | 'ward' | 'precinct';
+export type GeoAreaType =
+  | "country"
+  | "state"
+  | "district"
+  | "municipality"
+  | "ward"
+  | "precinct";
 
 export interface GeoBoundary {
-  type: 'Polygon' | 'MultiPolygon';
+  type: "Polygon" | "MultiPolygon";
   coordinates: number[][][];
 }
 

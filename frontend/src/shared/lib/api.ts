@@ -3,8 +3,8 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig,
-} from 'axios';
-import { useState, useCallback, useEffect, useRef } from 'react';
+} from "axios";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 let authToken: string | null = null;
 
@@ -15,23 +15,25 @@ export const setAuthToken = (token: string | null) => {
     api.defaults.headers.common = api.defaults.headers.common || {};
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
   } else if (api.defaults.headers.common) {
-    delete (api.defaults.headers.common as Record<string, unknown>).Authorization;
+    delete (api.defaults.headers.common as Record<string, unknown>)
+      .Authorization;
   }
 };
 
-const rawBaseURL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/v1';
+const rawBaseURL =
+  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/v1";
 
 const { resolvedBaseURL, apiPrefix } = (() => {
   try {
     const parsed = new URL(rawBaseURL);
     return {
       resolvedBaseURL: parsed.origin,
-      apiPrefix: parsed.pathname.replace(/\/+$/, ''),
+      apiPrefix: parsed.pathname.replace(/\/+$/, ""),
     };
   } catch (error) {
     return {
       resolvedBaseURL: rawBaseURL,
-      apiPrefix: '',
+      apiPrefix: "",
     };
   }
 })();
@@ -39,20 +41,21 @@ const { resolvedBaseURL, apiPrefix } = (() => {
 const api: AxiosInstance = axios.create({
   baseURL: resolvedBaseURL,
   headers: {
-    Accept: 'application/json',
+    Accept: "application/json",
   },
 });
 
 axios.defaults.baseURL = rawBaseURL;
 axios.defaults.headers.common = axios.defaults.headers.common || {};
-axios.defaults.headers.common.Accept = 'application/json';
+axios.defaults.headers.common.Accept = "application/json";
 
-const ensureLeadingSlash = (value: string) => (value.startsWith('/') ? value : `/${value}`);
+const ensureLeadingSlash = (value: string) =>
+  value.startsWith("/") ? value : `/${value}`;
 
 const joinWithPrefix = (suffix: string) => {
   const normalizedPrefix = ensureLeadingSlash(apiPrefix);
-  const sanitizedSuffix = suffix.startsWith('/') ? suffix.slice(1) : suffix;
-  return `${normalizedPrefix}/${sanitizedSuffix}`.replace(/\/{2,}/g, '/');
+  const sanitizedSuffix = suffix.startsWith("/") ? suffix.slice(1) : suffix;
+  return `${normalizedPrefix}/${sanitizedSuffix}`.replace(/\/{2,}/g, "/");
 };
 
 const normalizeUrl = (url?: string) => {
@@ -62,7 +65,7 @@ const normalizeUrl = (url?: string) => {
 
   const normalizedPrefix = ensureLeadingSlash(apiPrefix);
 
-  if (url.startsWith('/')) {
+  if (url.startsWith("/")) {
     if (url.startsWith(normalizedPrefix)) {
       return url;
     }
@@ -72,16 +75,20 @@ const normalizeUrl = (url?: string) => {
   return joinWithPrefix(url);
 };
 
-const withAuthorizationHeader = <T extends AxiosRequestConfig | InternalAxiosRequestConfig>(
+const withAuthorizationHeader = <
+  T extends AxiosRequestConfig | InternalAxiosRequestConfig,
+>(
   config: T,
 ): T => {
   const token =
-    authToken || (typeof window !== 'undefined' ? localStorage.getItem('token') : null);
+    authToken ||
+    (typeof window !== "undefined" ? localStorage.getItem("token") : null);
 
   if (token) {
     config.headers = config.headers || {};
-    (config.headers as Record<string, unknown>).Authorization = `Bearer ${token}`;
-  } else if (config.headers && 'Authorization' in config.headers) {
+    (config.headers as Record<string, unknown>).Authorization =
+      `Bearer ${token}`;
+  } else if (config.headers && "Authorization" in config.headers) {
     delete (config.headers as Record<string, unknown>).Authorization;
   }
 

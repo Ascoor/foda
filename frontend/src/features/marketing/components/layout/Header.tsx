@@ -5,7 +5,8 @@ import { useFloatingExperienceStore } from "./store";
 
 export const Header = () => {
   const { t, i18n } = useTranslation("floating");
-  const { theme, toggleTheme, language, setLanguage } = useFloatingExperienceStore();
+  const { theme, toggleTheme, language, setLanguage } =
+    useFloatingExperienceStore();
 
   const handleLanguageChange = () => {
     const nextLanguage = language === "ar" ? "en" : "ar";
@@ -27,8 +28,12 @@ export const Header = () => {
           <Flame className="size-5" />
         </div>
         <div className="leading-tight">
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-600 dark:text-slate-300">Aurora Election</p>
-          <h1 className="text-lg font-semibold text-slate-900 dark:text-white">Floating Command Center</h1>
+          <p className="text-xs uppercase tracking-[0.35em] text-slate-600 dark:text-slate-300">
+            Aurora Election
+          </p>
+          <h1 className="text-lg font-semibold text-slate-900 dark:text-white">
+            Floating Command Center
+          </h1>
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -37,7 +42,11 @@ export const Header = () => {
           onClick={toggleTheme}
           className="flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400/40 via-emerald-300/40 to-purple-400/40 px-4 py-2 text-xs font-medium text-slate-800 shadow-[0_0_25px_rgba(34,211,238,0.35)] backdrop-blur-xl transition hover:from-cyan-300/60 hover:to-purple-300/60 dark:text-slate-100"
         >
-          {theme === "day" ? <SunMedium className="size-4" /> : <MoonStar className="size-4" />}
+          {theme === "day" ? (
+            <SunMedium className="size-4" />
+          ) : (
+            <MoonStar className="size-4" />
+          )}
           {theme === "day" ? t("dayTheme") : t("nightTheme")}
         </motion.button>
         <motion.button

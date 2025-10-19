@@ -64,9 +64,21 @@ export const LineChartComponent = ({
       <div className="h-64 w-full">
         <ResponsiveContainer>
           <LineChart data={data}>
-            <CartesianGrid strokeDasharray="4 8" stroke="hsla(var(--border)/0.3)" />
-            <XAxis dataKey="label" stroke="hsla(var(--foreground)/0.5)" tickLine={false} axisLine={false} />
-            <YAxis stroke="hsla(var(--foreground)/0.5)" tickLine={false} axisLine={false} />
+            <CartesianGrid
+              strokeDasharray="4 8"
+              stroke="hsla(var(--border)/0.3)"
+            />
+            <XAxis
+              dataKey="label"
+              stroke="hsla(var(--foreground)/0.5)"
+              tickLine={false}
+              axisLine={false}
+            />
+            <YAxis
+              stroke="hsla(var(--foreground)/0.5)"
+              tickLine={false}
+              axisLine={false}
+            />
             <Tooltip
               contentStyle={{
                 borderRadius: 18,
@@ -75,9 +87,23 @@ export const LineChartComponent = ({
               }}
             />
             <defs>
-              <linearGradient id="dashboard-line-gradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="hsl(var(--accent))" stopOpacity={0.8} />
-                <stop offset="100%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
+              <linearGradient
+                id="dashboard-line-gradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop
+                  offset="0%"
+                  stopColor="hsl(var(--accent))"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="100%"
+                  stopColor="hsl(var(--primary))"
+                  stopOpacity={0.2}
+                />
               </linearGradient>
             </defs>
             <Line
@@ -86,7 +112,11 @@ export const LineChartComponent = ({
               stroke="url(#dashboard-line-gradient)"
               strokeWidth={3}
               dot={{ fill: "hsl(var(--accent))", r: 5 }}
-              activeDot={{ r: 7, strokeWidth: 2, stroke: "hsl(var(--primary))" }}
+              activeDot={{
+                r: 7,
+                strokeWidth: 2,
+                stroke: "hsl(var(--primary))",
+              }}
             />
           </LineChart>
         </ResponsiveContainer>

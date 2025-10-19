@@ -1,8 +1,8 @@
-import { useMemo } from 'react';
-import { mansouraZones } from '../data/mansouraZones';
-import type { ElectoralZone, ElectoralZoneStatus } from '../types';
+import { useMemo } from "react";
+import { mansouraZones } from "../data/mansouraZones";
+import type { ElectoralZone, ElectoralZoneStatus } from "../types";
 
-type StatusFilter = ElectoralZoneStatus | 'الكل' | undefined;
+type StatusFilter = ElectoralZoneStatus | "الكل" | undefined;
 
 interface UseZoneFilterResult {
   filteredZones: ElectoralZone[];
@@ -12,12 +12,12 @@ interface UseZoneFilterResult {
   totalCommittees: number;
 }
 
-const normalize = (value: string) => (value ? value.toLowerCase().trim() : '');
+const normalize = (value: string) => (value ? value.toLowerCase().trim() : "");
 
 export const useZoneFilter = (
   searchTerm: string,
   statusFilter?: StatusFilter,
-  sourceZones: ElectoralZone[] = mansouraZones
+  sourceZones: ElectoralZone[] = mansouraZones,
 ): UseZoneFilterResult => {
   const normalizedSearch = normalize(searchTerm);
 
@@ -25,16 +25,18 @@ export const useZoneFilter = (
     return sourceZones.filter((zone) => {
       const zoneNameNormalized = normalize(zone.name);
 
-      const matchesSearch = !normalizedSearch
-        || zoneNameNormalized.includes(normalizedSearch)
-        || zone.id.toLowerCase().includes(normalizedSearch)
-        || zone.voters.toString().includes(normalizedSearch)
-        || zone.volunteers.toString().includes(normalizedSearch)
-        || zone.committees.toString().includes(normalizedSearch);
+      const matchesSearch =
+        !normalizedSearch ||
+        zoneNameNormalized.includes(normalizedSearch) ||
+        zone.id.toLowerCase().includes(normalizedSearch) ||
+        zone.voters.toString().includes(normalizedSearch) ||
+        zone.volunteers.toString().includes(normalizedSearch) ||
+        zone.committees.toString().includes(normalizedSearch);
 
-      const matchesStatus = !statusFilter
-        || statusFilter === 'الكل'
-        || zone.status === statusFilter;
+      const matchesStatus =
+        !statusFilter ||
+        statusFilter === "الكل" ||
+        zone.status === statusFilter;
 
       return matchesSearch && matchesStatus;
     });
@@ -48,7 +50,7 @@ export const useZoneFilter = (
         acc.totalCommittees += zone.committees;
         return acc;
       },
-      { totalVoters: 0, totalVolunteers: 0, totalCommittees: 0 }
+      { totalVoters: 0, totalVolunteers: 0, totalCommittees: 0 },
     );
   }, [filteredZones]);
 

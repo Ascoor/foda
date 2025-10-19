@@ -39,13 +39,21 @@ const LandingPage = () => (
               منظومة متكاملة لإدارة الحملات والتحليلات الميدانية
             </h1>
             <p className="text-base text-muted-foreground sm:text-lg">
-              صممنا الواجهة لتجمع بين الجمال والفاعلية: لوحة قيادة زجاجية، تنقل سلس، وتكامل مع جميع فرقك.
+              صممنا الواجهة لتجمع بين الجمال والفاعلية: لوحة قيادة زجاجية، تنقل
+              سلس، وتكامل مع جميع فرقك.
             </p>
             <div className="flex flex-wrap items-center gap-4">
-              <Button asChild className="rounded-2xl bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] px-6 py-3 text-base font-semibold shadow-lg shadow-[hsla(var(--primary)/0.35)]">
+              <Button
+                asChild
+                className="rounded-2xl bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--accent))] px-6 py-3 text-base font-semibold shadow-lg shadow-[hsla(var(--primary)/0.35)]"
+              >
                 <a href="/auth/register">ابدأ رحلتك الآن</a>
               </Button>
-              <Button asChild variant="outline" className="rounded-2xl px-6 py-3 text-base">
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-2xl px-6 py-3 text-base"
+              >
                 <a href="/auth/login">تسجيل الدخول</a>
               </Button>
             </div>
@@ -60,9 +68,12 @@ const LandingPage = () => (
           transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-center"
         >
-          <h2 className="text-3xl font-semibold text-foreground">لماذا يثق بنا مدراء الحملات؟</h2>
+          <h2 className="text-3xl font-semibold text-foreground">
+            لماذا يثق بنا مدراء الحملات؟
+          </h2>
           <p className="mt-2 text-muted-foreground">
-            واجهة موحدة للتخطيط، المتابعة، والتحليل مع دعم كامل للغة العربية واتجاه RTL.
+            واجهة موحدة للتخطيط، المتابعة، والتحليل مع دعم كامل للغة العربية
+            واتجاه RTL.
           </p>
         </motion.div>
 
@@ -76,7 +87,9 @@ const LandingPage = () => (
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="rounded-[28px] border border-[hsla(var(--border)/0.15)] bg-[hsla(var(--surface)/0.85)] p-6 text-start shadow-[0_30px_80px_rgba(79,70,229,0.18)] backdrop-blur-2xl"
             >
-              <h3 className="text-lg font-semibold text-foreground">{feature}</h3>
+              <h3 className="text-lg font-semibold text-foreground">
+                {feature}
+              </h3>
             </motion.div>
           ))}
         </div>
