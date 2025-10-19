@@ -1,0 +1,15 @@
+<?php
+
+return [
+    'table' => 'permissions',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'name' => ['type' => 'string', 'length' => 150],
+        'slug' => ['type' => 'string', 'length' => 150],
+        'description' => ['type' => 'text', 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['slug'], 'name' => 'permissions_slug_unique'],
+        ['type' => 'unique', 'columns' => ['name'], 'name' => 'permissions_name_unique'],
+    ],
+];

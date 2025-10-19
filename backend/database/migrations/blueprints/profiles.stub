@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'table' => 'profiles',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'user_id' => ['type' => 'foreignId'],
+        'phone' => ['type' => 'string', 'length' => 30, 'nullable' => true],
+        'national_id' => ['type' => 'string', 'length' => 50, 'nullable' => true],
+        'avatar_path' => ['type' => 'string', 'length' => 255, 'nullable' => true],
+        'address' => ['type' => 'string', 'length' => 255, 'nullable' => true],
+        'bio' => ['type' => 'text', 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['user_id'], 'name' => 'profiles_user_id_unique'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['user_id'],
+            'references' => ['id'],
+            'on' => 'users',
+            'onDelete' => 'cascade',
+        ],
+    ],
+    'soft_deletes' => true,
+    'pii' => ['phone', 'national_id', 'address'],
+];

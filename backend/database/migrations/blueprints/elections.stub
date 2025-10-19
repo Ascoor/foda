@@ -6,23 +6,18 @@ return [
         'id' => ['type' => 'bigIncrements'],
         'name' => ['type' => 'string', 'length' => 255],
         'slug' => ['type' => 'string', 'length' => 150],
+        'election_type' => ['type' => 'string', 'length' => 80],
+        'country' => ['type' => 'string', 'length' => 120, 'nullable' => true],
+        'geo_scope' => ['type' => 'string', 'length' => 120, 'nullable' => true],
         'description' => ['type' => 'text', 'nullable' => true],
-        'geo_boundary_id' => ['type' => 'foreignId', 'nullable' => true],
         'starts_at' => ['type' => 'dateTime'],
         'ends_at' => ['type' => 'dateTime', 'nullable' => true],
-        'status' => ['type' => 'string', 'length' => 50, 'default' => 'draft'],
+        'status' => ['type' => 'string', 'length' => 30, 'default' => 'draft'],
     ],
     'indexes' => [
         ['type' => 'unique', 'columns' => ['slug'], 'name' => 'elections_slug_unique'],
         ['type' => 'index', 'columns' => ['status'], 'name' => 'elections_status_index'],
-    ],
-    'foreign_keys' => [
-        [
-            'columns' => ['geo_boundary_id'],
-            'references' => ['id'],
-            'on' => 'geo_boundaries',
-            'onDelete' => 'set null',
-        ],
+        ['type' => 'index', 'columns' => ['election_type'], 'name' => 'elections_type_index'],
     ],
     'soft_deletes' => true,
 ];

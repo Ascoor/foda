@@ -4,14 +4,15 @@ return [
     'table' => 'analytics_snapshots',
     'columns' => [
         'id' => ['type' => 'bigIncrements'],
-        'campaign_id' => ['type' => 'foreignId', 'nullable' => true],
-        'metric_key' => ['type' => 'string', 'length' => 120],
-        'snapshot_date' => ['type' => 'date'],
-        'payload' => ['type' => 'json'],
-        'forecast_value' => ['type' => 'decimal', 'precision' => 12, 'scale' => 2, 'nullable' => true],
+        'campaign_id' => ['type' => 'foreignId'],
+        'metric' => ['type' => 'string', 'length' => 120],
+        'value' => ['type' => 'decimal', 'precision' => 14, 'scale' => 4],
+        'captured_at' => ['type' => 'dateTime'],
+        'comparison_value' => ['type' => 'decimal', 'precision' => 14, 'scale' => 4, 'nullable' => true],
+        'metadata' => ['type' => 'json', 'nullable' => true],
     ],
     'indexes' => [
-        ['type' => 'unique', 'columns' => ['campaign_id', 'metric_key', 'snapshot_date'], 'name' => 'analytics_snapshots_unique_idx'],
+        ['type' => 'unique', 'columns' => ['campaign_id', 'metric', 'captured_at'], 'name' => 'analytics_snapshots_unique_idx'],
     ],
     'foreign_keys' => [
         [
