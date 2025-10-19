@@ -4,7 +4,7 @@ import { GotvDashboard } from "./components/gotv-dashboard";
 import { useGotv } from "./hooks/use-gotv";
 
 export const GotvPage = () => {
-  const { voters, totals, markVoted } = useGotv();
+  const { voters, totals, markVoted, isLoading } = useGotv();
 
   return (
     <div className="space-y-6 bg-gradient-to-br from-background via-white to-slate-100 p-6 dark:from-background-dark dark:via-slate-900 dark:to-slate-950">
@@ -16,7 +16,7 @@ export const GotvPage = () => {
       <GotvDashboard totals={totals} />
 
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-        <AttendanceTable voters={voters} onToggle={markVoted} />
+        <AttendanceTable voters={voters} onToggle={markVoted} isLoading={isLoading} />
         <AlertsPanel />
       </div>
     </div>

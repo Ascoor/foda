@@ -1,9 +1,17 @@
-export type VoterStatus = "supporter" | "leaning" | "undecided" | "opposed" | "unknown";
+import { apiClient, ApiResponse } from "@/shared/api/config";
+import { VoterDTO, VoterInteractionDTO } from "@/shared/api/dtos";
+
+export type VoterStatus =
+  | "supporter"
+  | "leaning"
+  | "undecided"
+  | "opposed"
+  | "unknown";
 
 export type VoterInteraction = {
   id: string;
   date: string;
-  channel: "call" | "door" | "sms" | "email";
+  channel: VoterInteractionDTO["channel"];
   outcome: string;
   notes?: string;
 };
@@ -15,7 +23,7 @@ export type Voter = {
   address: string;
   phone?: string;
   email?: string;
-  preferredContact: "phone" | "sms" | "email" | "in-person";
+  preferredContact: VoterDTO["preferred_contact"];
   status: VoterStatus;
   likelihoodScore: number;
   lastContacted?: string;
@@ -38,144 +46,90 @@ export type VoterInteractionInput = Omit<VoterInteraction, "id" | "date"> & {
   date?: string;
 };
 
-const createId = () => Math.random().toString(36).slice(2, 10);
+type VoterListResponse = ApiResponse<VoterDTO[]>;
+type VoterResponse = ApiResponse<VoterDTO>;
 
-const mockVoters: Voter[] = [
-  {
-    id: createId(),
-    fullName: "Layla Hassan",
-    precinct: "North Ridge",
-    address: "102 Greenway Ave",
-    phone: "555-218-4433",
-    email: "layla.hassan@example.com",
-    preferredContact: "phone",
-    status: "supporter",
-    likelihoodScore: 82,
-    lastContacted: "2024-08-17",
-    notes: "Requested yard sign and prefers morning calls.",
-    interactions: [
-      {
-        id: createId(),
-        date: "2024-08-17",
-        channel: "door",
-        outcome: "confirmed",
-        notes: "Met at home, confirmed early voting plan.",
-      },
-    ],
-  },
-  {
-    id: createId(),
-    fullName: "Omar Khaled",
-    precinct: "Riverfront",
-    address: "88 Lakeside Blvd",
-    phone: "555-339-1188",
-    email: "omar.khaled@example.com",
-    preferredContact: "sms",
-    status: "leaning",
-    likelihoodScore: 68,
-    lastContacted: "2024-08-10",
-    notes: "Works night shifts—best reached via SMS.",
-    interactions: [
-      {
-        id: createId(),
-        date: "2024-08-10",
-        channel: "sms",
-        outcome: "follow-up",
-        notes: "Asked for absentee ballot information.",
-      },
-    ],
-  },
-  {
-    id: createId(),
-    fullName: "Sara Ibrahim",
-    precinct: "Downtown",
-    address: "12 Market Street",
-    phone: "555-102-7788",
-    preferredContact: "in-person",
-    status: "undecided",
-    likelihoodScore: 55,
-    notes: "Interested in housing policy details.",
-    interactions: [],
-  },
-];
+type InteractionResponse = ApiResponse<VoterInteractionDTO>;
 
-let voters = [...mockVoters];
+const toInteraction = (dto: VoterInteractionDTO): VoterInteraction => ({
+  id: String(dto.id),
+  channel: dto.channel,
+  outcome: dto.outcome,
+  notes: dto.notes ?? undefined,
+  date: dto.occurred_at,
+});
 
-const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
+const toVoter = (dto: VoterDTO): Voter => ({
+  id: String(dto.id),
+  fullName: `${dto.first_name} ${dto.last_name}`.trim(),
+  precinct: dto.precinct,
+  address: dto.address ?? "",
+  phone: dto.phone,
+  email: dto.email,
+  preferredContact: dto.preferred_contact,
+  status: dto.status,
+  likelihoodScore: dto.likelihood_score,
+  lastContacted: dto.last_contacted ?? undefined,
+  notes: dto.notes ?? undefined,
+  interactions: (dto.interactions ?? []).map(toInteraction),
+});
 
-const applyFilters = (items: Voter[], filters?: VoterFilters) => {
-  if (!filters) return items;
+const fromInteractionInput = (input: VoterInteractionInput) => ({
+  channel: input.channel,
+  outcome: input.outcome,
+  notes: input.notes,
+  occurred_at: input.date ?? new Date().toISOString(),
+});
 
-  return items.filter((voter) => {
-    const matchesSearch = filters.search
-      ? voter.fullName.toLowerCase().includes(filters.search.toLowerCase()) ||
-        voter.precinct.toLowerCase().includes(filters.search.toLowerCase())
-      : true;
-
-    const matchesStatus = filters.status && filters.status !== "all" ? voter.status === filters.status : true;
-
-    const matchesPrecinct = filters.precinct ? voter.precinct === filters.precinct : true;
-
-    const matchesScore = typeof filters.minScore === "number" ? voter.likelihoodScore >= filters.minScore : true;
-
-    return matchesSearch && matchesStatus && matchesPrecinct && matchesScore;
-  });
-};
-
-const ensureDate = (value?: string) => value ?? new Date().toISOString().slice(0, 10);
+const fromCreateInput = (input: CreateVoterInput) => ({
+  first_name: input.fullName.split(" ")[0] ?? input.fullName,
+  last_name: input.fullName.split(" ").slice(1).join(" "),
+  precinct: input.precinct,
+  address: input.address,
+  phone: input.phone,
+  email: input.email,
+  preferred_contact: input.preferredContact,
+  status: input.status,
+  likelihood_score: input.likelihoodScore,
+  notes: input.notes,
+  interactions: input.interactions?.map((interaction) => ({
+    channel: interaction.channel,
+    outcome: interaction.outcome,
+    notes: interaction.notes,
+    occurred_at: interaction.date ?? new Date().toISOString(),
+  })),
+});
 
 export const voterService = {
   async getVoters(filters?: VoterFilters) {
-    return applyFilters(clone(voters), filters);
+    const { data } = await apiClient.get<VoterListResponse>("/voters", {
+      params: {
+        search: filters?.search,
+        status: filters?.status === "all" ? undefined : filters?.status,
+        precinct: filters?.precinct,
+        min_score: filters?.minScore,
+      },
+    });
+
+    return (data.data ?? []).map(toVoter);
   },
   async createVoter(input: CreateVoterInput) {
-    const newVoter: Voter = {
-      ...input,
-      id: createId(),
-      interactions: clone(input.interactions ?? []),
-      lastContacted: input.lastContacted,
-    };
-
-    voters = [...voters, newVoter];
-    return clone(newVoter);
+    const { data } = await apiClient.post<VoterResponse>("/voters", fromCreateInput(input));
+    return data.data ? toVoter(data.data) : undefined;
   },
   async updateVoterStatus(id: string, status: VoterStatus) {
-    voters = voters.map((voter) =>
-      voter.id === id
-        ? {
-            ...voter,
-            status,
-          }
-        : voter,
-    );
+    const { data } = await apiClient.patch<VoterResponse>(`/voters/${id}`, {
+      status,
+    });
 
-    const updated = voters.find((voter) => voter.id === id);
-    return updated ? clone(updated) : undefined;
+    return data.data ? toVoter(data.data) : undefined;
   },
   async logInteraction(id: string, interactionInput: VoterInteractionInput) {
-    const interaction: VoterInteraction = {
-      id: createId(),
-      date: ensureDate(interactionInput.date),
-      channel: interactionInput.channel,
-      outcome: interactionInput.outcome,
-      notes: interactionInput.notes,
-    };
-
-    voters = voters.map((voter) =>
-      voter.id === id
-        ? {
-            ...voter,
-            interactions: [interaction, ...voter.interactions],
-            lastContacted: interaction.date,
-          }
-        : voter,
+    const { data } = await apiClient.post<InteractionResponse>(
+      `/voters/${id}/interactions`,
+      fromInteractionInput(interactionInput),
     );
 
-    const updated = voters.find((voter) => voter.id === id);
-    return updated ? clone(updated) : undefined;
-  },
-  async getPrecincts() {
-    const uniquePrecincts = Array.from(new Set(voters.map((voter) => voter.precinct))).sort();
-    return uniquePrecincts;
+    return data.data ? toInteraction(data.data) : undefined;
   },
 };

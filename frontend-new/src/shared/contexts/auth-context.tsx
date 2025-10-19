@@ -5,12 +5,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { setAuthToken } from "@/shared/api/config";
 
 export type AuthUser = {
   id: string;
   name: string;
   role: "manager" | "volunteer";
   avatar?: string;
+  token?: string;
 };
 
 type AuthContextValue = {
@@ -23,20 +25,26 @@ type AuthContextValue = {
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<AuthUser | null>({
-    id: "1",
-    name: "Campaign Manager",
-    role: "manager",
-  });
+  const [user, setUser] = useState<AuthUser | null>(null);
 
   const value = useMemo(
     () => ({
       user,
       isAuthenticated: Boolean(user),
-      login: (nextUser: AuthUser) => setUser(nextUser),
-      logout: () => setUser(null),
+      login: (nextUser: AuthUser) => {
+        setUser(nextUser);
+        if (nextUser.token) {
+          setAuthToken(nextUser.token);
+          localStorage.setItem("access_token", nextUser.token);
+        }
+      },
+      logout: () => {
+        setUser(null);
+        setAuthToken(null);
+        localStorage.removeItem("access_token");
+      },
     }),
-    [user]
+    [user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,4 +1,7 @@
-export type MessageChannel = "sms" | "email";
+import { apiClient, ApiResponse } from "@/shared/api/config";
+import { CampaignMessageDTO, CampaignMessageInputDTO } from "@/shared/api/dtos";
+
+export type MessageChannel = CampaignMessageDTO["channel"];
 
 export type CampaignMessage = {
   id: string;
@@ -12,41 +15,38 @@ export type DraftMessage = {
   channel: MessageChannel;
   recipient: string;
   body: string;
+  segment?: string;
 };
 
-const createId = () => Math.random().toString(36).slice(2, 9);
+type MessageListResponse = ApiResponse<CampaignMessageDTO[]>;
+type MessageResponse = ApiResponse<CampaignMessageDTO>;
 
-let history: CampaignMessage[] = [
-  {
-    id: createId(),
-    channel: "sms",
-    recipient: "+1 (555) 123-9981",
-    body: "Hi Layla! Early voting starts Monday. Need help getting there?",
-    sentAt: "2024-08-16T14:32:00Z",
-  },
-  {
-    id: createId(),
-    channel: "email",
-    recipient: "organizers@north-ridge.org",
-    body: "Canvass launch this weekend — confirm your shift in Mobilize",
-    sentAt: "2024-08-15T09:12:00Z",
-  },
-];
+const mapMessage = (dto: CampaignMessageDTO): CampaignMessage => ({
+  id: String(dto.id),
+  channel: dto.channel,
+  recipient: dto.recipient,
+  body: dto.body,
+  sentAt: dto.sent_at,
+});
 
-const clone = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
+const serializeDraft = (draft: DraftMessage): CampaignMessageInputDTO => ({
+  channel: draft.channel,
+  recipient: draft.recipient,
+  body: draft.body,
+  segment: draft.segment,
+});
 
 export const messageService = {
   async list() {
-    return clone(history);
+    const { data } = await apiClient.get<MessageListResponse>("/messages");
+    return (data.data ?? []).map(mapMessage);
   },
   async send(message: DraftMessage) {
-    const record: CampaignMessage = {
-      ...message,
-      id: createId(),
-      sentAt: new Date().toISOString(),
-    };
+    const { data } = await apiClient.post<MessageResponse>(
+      "/messages/send",
+      serializeDraft(message),
+    );
 
-    history = [record, ...history];
-    return clone(record);
+    return data.data ? mapMessage(data.data) : undefined;
   },
 };
