@@ -1,5 +1,6 @@
 import { Suspense } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import type { ReactElement } from "react";
+import { RouterProvider, createBrowserRouter, Navigate, Outlet } from "react-router-dom";
 import { DashboardLayout } from "@app/layouts/dashboard-layout";
 import { DashboardPage } from "@features/dashboard/dashboard-page";
 import { VotersPage } from "@features/voters/voters-page";
@@ -10,20 +11,65 @@ import { GOTVPage } from "@features/gotv/gotv-page";
 import { SettingsPage } from "@features/settings/settings-page";
 import { MessagesPage } from "@features/messages/messages-page";
 import { FieldToursPage } from "@features/field-tours/field-tours-page";
+import { LandingPage } from "@features/landing/landing-page";
+import { LoginPage } from "@features/login/login-page";
+import { VolunteerApp } from "@features/volunteer/volunteer-app";
+import { useAuth } from "@/shared/hooks";
+import type { Role } from "@/shared/contexts/role-context";
+
+type ProtectedRouteProps = {
+  role?: Role;
+  children: ReactElement;
+};
+
+const ProtectedRoute = ({ role, children }: ProtectedRouteProps) => {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center">Loading…</div>;
+  }
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  if (role && user.role !== role) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
 
 export const router = createBrowserRouter([
   {
-    element: <DashboardLayout />,
+    path: "/",
+    element: <Outlet />,
     children: [
-      { path: "/", element: <DashboardPage /> },
-      { path: "/voters", element: <VotersPage /> },
-      { path: "/volunteers", element: <VolunteersPage /> },
-      { path: "/field-tours", element: <FieldToursPage /> },
-      { path: "/messages", element: <MessagesPage /> },
-      { path: "/donations", element: <DonationsPage /> },
-      { path: "/analytics", element: <AnalyticsPage /> },
-      { path: "/gotv", element: <GOTVPage /> },
-      { path: "/settings", element: <SettingsPage /> },
+      { index: true, element: <LandingPage /> },
+      { path: "login", element: <LoginPage /> },
+      {
+        path: "volunteer",
+        element: (
+          <ProtectedRoute role="volunteer">
+            <VolunteerApp />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "",
+        element: (
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          { path: "dashboard", element: <DashboardPage /> },
+          { path: "voters", element: <VotersPage /> },
+          { path: "volunteers", element: <VolunteersPage /> },
+          { path: "field-tours", element: <FieldToursPage /> },
+          { path: "messages", element: <MessagesPage /> },
+          { path: "donations", element: <DonationsPage /> },
+          { path: "analytics", element: <AnalyticsPage /> },
+          { path: "gotv", element: <GOTVPage /> },
+          { path: "settings", element: <SettingsPage /> },
+        ],
+      },
     ],
   },
 ]);

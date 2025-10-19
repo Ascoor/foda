@@ -29,7 +29,7 @@ export type SidebarNavItem = {
 };
 
 export const sidebarNavItems: SidebarNavItem[] = [
-  { icon: Home, labelKey: "dashboard", path: "/" },
+  { icon: Home, labelKey: "dashboard", path: "/dashboard" },
   { icon: Users, labelKey: "voters", path: "/voters" },
   { icon: Users, labelKey: "volunteers", path: "/volunteers" },
   { icon: Map, labelKey: "fieldTours", path: "/field-tours" },
@@ -54,7 +54,7 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
           <NavLink
             key={path}
             to={path}
-            end={path === "/"}
+            end={path === "/dashboard"}
             className="relative block"
             aria-label={t(labelKey)}
           >

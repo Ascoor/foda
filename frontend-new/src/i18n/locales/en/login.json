@@ -6,5 +6,8 @@
   "rememberMe": "Remember me",
   "forgotPassword": "Forgot your password?",
   "signin": "Sign in",
+  "loading": "Signing in...",
+  "requiredFields": "Please enter both email and password.",
+  "unknownError": "Something went wrong. Please try again.",
   "noAccount": "Need access? Contact the admin team."
 }

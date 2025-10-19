@@ -1,20 +1,37 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Button, Logo } from "@/shared/ui";
 import { useAuth } from "@/shared/hooks";
 
-export const Login = () => {
+export const LoginPage = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const { t } = useTranslation("login");
+  const [error, setError] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email")?.toString() ?? "";
-    login({ id: "1", name: email || "Campaign Manager", role: "manager" });
-    navigate("/dashboard");
+    const password = formData.get("password")?.toString() ?? "";
+
+    if (!email || !password) {
+      setError(t("requiredFields"));
+      return;
+    }
+
+    setError(undefined);
+    setIsSubmitting(true);
+    try {
+      await login(email, password);
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : t("unknownError"));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -23,9 +40,7 @@ export const Login = () => {
         <Logo className="text-2xl" />
         <div className="space-y-4">
           <h1 className="text-4xl font-bold">{t("title")}</h1>
-          <p className="max-w-md text-lg text-slate-600 dark:text-slate-300">
-            {t("subtitle")}
-          </p>
+          <p className="max-w-md text-lg text-slate-600 dark:text-slate-300">{t("subtitle")}</p>
         </div>
         <div className="hidden rounded-3xl bg-primary/10 p-8 text-primary shadow-lg lg:block">
           <p className="text-lg font-semibold">"Every conversation moves us closer to victory."</p>
@@ -47,6 +62,7 @@ export const Login = () => {
               type="email"
               required
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/40 dark:border-slate-700 dark:bg-slate-900"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -60,12 +76,15 @@ export const Login = () => {
               type="password"
               required
               className="w-full rounded-xl border border-slate-200 px-4 py-3 text-base shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/40 dark:border-slate-700 dark:bg-slate-900"
+              disabled={isSubmitting}
             />
           </div>
 
+          {error && <p className="text-sm text-red-500" role="alert">{error}</p>}
+
           <div className="flex items-center justify-between text-sm text-slate-500 dark:text-slate-400">
             <label className="flex items-center gap-2">
-              <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" />
+              <input type="checkbox" className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" disabled={isSubmitting} />
               {t("rememberMe")}
             </label>
             <a className="font-medium text-primary hover:text-primary/80" href="#">
@@ -73,8 +92,8 @@ export const Login = () => {
             </a>
           </div>
 
-          <Button type="submit" className="w-full rounded-xl text-base">
-            {t("signin")}
+          <Button type="submit" className="w-full rounded-xl text-base" disabled={isSubmitting}>
+            {isSubmitting ? t("loading") : t("signin")}
           </Button>
 
           <p className="text-center text-xs text-slate-400">{t("noAccount")}</p>
@@ -83,3 +102,5 @@ export const Login = () => {
     </div>
   );
 };
+
+export default LoginPage;
