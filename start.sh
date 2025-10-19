@@ -38,7 +38,7 @@ trap cleanup EXIT
 # === Define paths ===
 PROJECT_ROOT="$(cd "$(dirname "$0")" && pwd)"
 BACKEND_DIR="$PROJECT_ROOT/backend"
-FRONTEND_DIR="$PROJECT_ROOT/frontend"
+FRONTEND_DIR="$PROJECT_ROOT/frontend-new"
 REDIS_PORT=6379
 REDIS_CONTAINER_NAME="foda-dev-redis"
 
