@@ -9,3 +9,12 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </ErrorBoundary>,
 );
+
+if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    const swUrl = new URL("./shared/workers/service-worker.ts", import.meta.url);
+    navigator.serviceWorker
+      .register(swUrl, { type: "module" })
+      .catch((error) => console.error("Service worker registration failed", error));
+  });
+}

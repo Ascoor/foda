@@ -1,37 +1,92 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
 
 import { ProtectedRoute } from "@legacy/components/ProtectedRoute";
 import { MainLayout } from "@legacy/components/layout/MainLayout";
 import { BarbaTransitionProvider } from "@legacy/components/transition/BarbaTransitionProvider";
-
-import { Login } from "@legacy/pages/Login";
-import NotFound from "@legacy/pages/NotFound";
-import { AuthRedirect } from "@legacy/pages/AuthRedirect";
-
-import { EnhancedDashboard } from "@features/dashboard/EnhancedDashboard";
-import { ElectionsList } from "@features/elections/List";
-import { ElectionDetails } from "@features/elections/Details";
-import { GeoAreasDashboard } from "@features/geo-areas/Dashboard";
-import { GeoAreaDetails } from "@features/geo-areas/Details";
-import { VotersList } from "@features/voters/List";
-import { VoterDetails } from "@features/voters/Details";
-import { CandidatesList } from "@features/candidates/List";
-import { CandidateDetails } from "@features/candidates/Details";
-import { AgentsList } from "@features/agents/AgentsList";
-import { VolunteersList } from "@features/volunteers/VolunteersList";
-import { ZoneDashboard } from "@features/zones/ZoneDashboard";
-import { CommitteesList } from "@features/committees/List";
-import { CommitteeDetails } from "@features/committees/Details";
-import { Settings } from "@features/settings/Settings";
-import { ObservationsList } from "@features/observations/ObservationsList";
-import { CampaignsList } from "@features/campaigns/CampaignsList";
-import { AutomationDashboard } from "@features/automation/AutomationDashboard";
 import FloatingLandingPage from "@features/marketing/pages/LandingPage";
 import FloatingDashboard from "@features/marketing/pages/Dashboard";
 
+const lazyImport = <T extends Record<string, unknown>, K extends keyof T>(
+  loader: () => Promise<T>,
+  name: K,
+) =>
+  lazy(() => loader().then((module) => ({ default: module[name] as T[K] })));
+
+const Login = lazyImport(() => import("@legacy/pages/Login"), "Login");
+const NotFound = lazyImport(() => import("@legacy/pages/NotFound"), "default");
+const AuthRedirect = lazyImport(() => import("@legacy/pages/AuthRedirect"), "AuthRedirect");
+const EnhancedDashboard = lazyImport(
+  () => import("@features/dashboard/EnhancedDashboard"),
+  "EnhancedDashboard",
+);
+const ElectionsList = lazyImport(() => import("@features/elections/List"), "ElectionsList");
+const ElectionDetails = lazyImport(
+  () => import("@features/elections/Details"),
+  "ElectionDetails",
+);
+const GeoAreasDashboard = lazyImport(
+  () => import("@features/geo-areas/Dashboard"),
+  "GeoAreasDashboard",
+);
+const GeoAreaDetails = lazyImport(
+  () => import("@features/geo-areas/Details"),
+  "GeoAreaDetails",
+);
+const VotersList = lazyImport(() => import("@features/voters/List"), "VotersList");
+const VoterDetails = lazyImport(() => import("@features/voters/Details"), "VoterDetails");
+const CandidatesList = lazyImport(
+  () => import("@features/candidates/List"),
+  "CandidatesList",
+);
+const CandidateDetails = lazyImport(
+  () => import("@features/candidates/Details"),
+  "CandidateDetails",
+);
+const AgentsList = lazyImport(() => import("@features/agents/AgentsList"), "AgentsList");
+const VolunteersList = lazyImport(
+  () => import("@features/volunteers/VolunteersList"),
+  "VolunteersList",
+);
+const ZoneDashboard = lazyImport(
+  () => import("@features/zones/ZoneDashboard"),
+  "ZoneDashboard",
+);
+const CommitteesList = lazyImport(
+  () => import("@features/committees/List"),
+  "CommitteesList",
+);
+const CommitteeDetails = lazyImport(
+  () => import("@features/committees/Details"),
+  "CommitteeDetails",
+);
+const Settings = lazyImport(() => import("@features/settings/Settings"), "Settings");
+const ObservationsList = lazyImport(
+  () => import("@features/observations/ObservationsList"),
+  "ObservationsList",
+);
+const CampaignsList = lazyImport(
+  () => import("@features/campaigns/CampaignsList"),
+  "CampaignsList",
+);
+const AutomationDashboard = lazyImport(
+  () => import("@features/automation/AutomationDashboard"),
+  "AutomationDashboard",
+);
+const VolunteerApp = lazyImport(
+  () => import("@features/volunteer-mobile/volunteer-app"),
+  "VolunteerApp",
+);
+const MonitoringDashboard = lazyImport(
+  () => import("@/ops/monitoring-dashboard"),
+  "MonitoringDashboard",
+);
+
 const RouterShell = () => (
   <BarbaTransitionProvider>
-    <Outlet />
+    <Suspense fallback={<div className="p-6 text-center text-sm text-muted-foreground">جارٍ تحميل الواجهة...</div>}>
+      <Outlet />
+    </Suspense>
   </BarbaTransitionProvider>
 );
 
@@ -64,6 +119,7 @@ export const router = createBrowserRouter([
       { path: "/", element: <FloatingLandingPage /> },
       { path: "/experience", element: <FloatingDashboard /> },
       { path: "/app", element: <AuthRedirect /> },
+      { path: "/volunteer/mobile", element: <VolunteerApp /> },
       { path: "/login", element: <Login /> },
       {
         element: <ProtectedRoute />,
@@ -87,6 +143,7 @@ export const router = createBrowserRouter([
               { path: "/observations", element: <ObservationsList /> },
               { path: "/campaigns", element: <CampaignsList /> },
               { path: "/automation", element: <AutomationDashboard /> },
+              { path: "/ops/monitoring", element: <MonitoringDashboard /> },
               {
                 path: "/analytics",
                 element: <ComingSoon module="Analytics" />,
