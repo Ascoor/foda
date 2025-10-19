@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { Dashboard } from "@/features/dashboard";
 import { Login } from "@/features/login";
 import { Volunteers } from "@/features/volunteers";
+import { VotersPage } from "@/features/voters";
 
 export const AppRoutes = () => (
   <BrowserRouter>
@@ -11,6 +12,7 @@ export const AppRoutes = () => (
         <Route path="/" element={<Login />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/volunteers" element={<Volunteers />} />
+        <Route path="/voters" element={<VotersPage />} />
       </Routes>
     </Suspense>
   </BrowserRouter>
