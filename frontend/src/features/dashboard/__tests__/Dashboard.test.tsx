@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { vi, beforeEach } from 'vitest';
 import { Dashboard } from '../Dashboard';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import { LanguageProvider } from '@shared/contexts/LanguageContext';
 
 const mockUseApi = vi.fn();
 

@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { ActivityFeed } from '../components/ActivityFeed';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import { LanguageProvider } from '@shared/contexts/LanguageContext';
 import { Vote } from 'lucide-react';
 
 test('renders activity feed', () => {

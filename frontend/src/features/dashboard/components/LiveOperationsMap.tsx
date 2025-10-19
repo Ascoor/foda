@@ -1,14 +1,14 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import type { Feature, FeatureCollection, Point } from 'geojson';
 import { Filter, MapPin, RadioTower } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shared/ui/select';
+import { Badge } from '@shared/ui/badge';
+import { Skeleton } from '@shared/ui/skeleton';
 import { toast } from 'sonner';
 import { fetchCommitteeGeo, fetchRecentActivityGeo } from '../api';
 import { getEcho } from '@/lib/echo';
-import { Button } from '@/components/ui/button';
+import { Button } from '@shared/ui/button';
 
 const LiveOperationsMapCanvas = lazy(() =>
   import('./LiveOperationsMapCanvas').then((module) => ({ default: module.LiveOperationsMapCanvas })),

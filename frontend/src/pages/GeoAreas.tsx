@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { mockGeoAreas, GeoAreaData, getCampaignStatusLabel } from '@/data/mockGeoData';
 import { 
   Map, 
@@ -16,26 +16,26 @@ import {
 } from 'lucide-react';
 
 // Components
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Badge } from '@shared/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@shared/ui/tabs';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger,
   DropdownMenuSeparator 
-} from '@/components/ui/dropdown-menu';
+} from '@shared/ui/dropdown-menu';
 import { 
   Select, 
   SelectContent, 
   SelectItem, 
   SelectTrigger, 
   SelectValue 
-} from '@/components/ui/select';
-import { toast } from '@/hooks/use-toast';
+} from '@shared/ui/select';
+import { toast } from '@shared/hooks/use-toast';
 
 // Custom Components
 import InteractiveMap from '@/components/geo-areas/InteractiveMap';

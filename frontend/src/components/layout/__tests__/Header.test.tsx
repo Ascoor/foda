@@ -7,7 +7,7 @@ import { Header } from '../Header';
 const toggleThemeMock = vi.fn();
 let themeValue: 'light' | 'dark' = 'light';
 
-vi.mock('@/contexts/ThemeContext', () => ({
+vi.mock('@shared/contexts/ThemeContext', () => ({
   useTheme: () => ({
     theme: themeValue,
     toggleTheme: toggleThemeMock,
@@ -22,24 +22,24 @@ let languageValue: 'en' | 'ar' = 'en';
 const logoutMock = vi.fn(() => Promise.resolve());
 const userValue = { name: 'Test User' };
 
-vi.mock('@/contexts/AuthContext', () => ({
+vi.mock('@shared/contexts/AuthContext', () => ({
   useAuth: () => ({
     user: userValue,
     logout: logoutMock,
   }),
 }));
 
-vi.mock('@/contexts/NotificationContext', () => ({
+vi.mock('@shared/contexts/NotificationContext', () => ({
   useNotifications: () => ({
     unreadCount: 3,
   }),
 }));
 
-vi.mock('@/hooks/useWindowSize', () => ({
+vi.mock('@shared/hooks/useWindowSize', () => ({
   useWindowSize: () => ({ width: 1280, height: 720 }),
 }));
 
-vi.mock('@/components/ui/dropdown-menu', () => {
+vi.mock('@shared/ui/dropdown-menu', () => {
   const DropdownMenu = ({ children }: { children: ReactNode }) => <>{children}</>;
   const DropdownMenuTrigger = ({ children }: { children: ReactNode }) => <>{children}</>;
   const DropdownMenuContent = ({ children }: { children: ReactNode }) => <div>{children}</div>;

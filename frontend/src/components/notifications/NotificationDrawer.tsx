@@ -1,6 +1,6 @@
 import { ComponentProps } from "react";
 
-import { useNotifications } from "@/contexts/NotificationContext";
+import { useNotifications } from "@shared/contexts/NotificationContext";
 import { NotificationDrawer as LegacyNotificationDrawer } from "@/legacy/components/NotificationDrawer";
 
 export const NotificationDrawer = (props: ComponentProps<typeof LegacyNotificationDrawer>) => {

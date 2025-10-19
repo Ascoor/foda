@@ -14,19 +14,19 @@ import {
   Vote,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Button } from "@shared/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useNotifications } from "@/contexts/NotificationContext";
+} from "@shared/ui/dropdown-menu";
+import { useAuth } from "@shared/contexts/AuthContext";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useNotifications } from "@shared/contexts/NotificationContext";
 import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
-import { useTheme } from "@/contexts/ThemeContext";
-import { useWindowSize } from "@/hooks/useWindowSize";
+import { useTheme } from "@shared/contexts/ThemeContext";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
 
 const SPRING_TRANSITION = {
@@ -258,12 +258,14 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
         dir={direction}
         className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
       >
-        {/* 🟣 الشعار والاسم */}
-        <div className="flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
-            <Flame className="size-5" />
-          </div>
-  
+ 
+      <div className="flex items-center gap-3">
+        <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
+          <Flame className="size-5" />
+        </div>
+
+        <div className="flex items-center gap-2">
+ 
           {isMobile && onToggleSidebar && variant === "dashboard" && (
             <Button
               variant="ghost"
@@ -316,6 +318,7 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
                 {language === "ar" ? "التوقيت المحلي" : "Local time"}
               </span>
             </motion.div>
+ 
           )}
   
           <AnimatePresence initial={false} mode="popLayout">
@@ -333,8 +336,7 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
           </AnimatePresence>
         </div>
       </motion.header>
-  
-      {/* Notification Drawer should be inside the fragment */}
+ 
       <NotificationDrawer />
     </>
   );

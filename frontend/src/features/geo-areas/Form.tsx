@@ -8,18 +8,18 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+} from '@shared/ui/dialog';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Label } from '@shared/ui/label';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { useLanguage } from '@/contexts/LanguageContext';
+} from '@shared/ui/select';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { GeoArea, GeoAreaFormData } from './types';
 import { createGeoArea, updateGeoArea } from './api';
 

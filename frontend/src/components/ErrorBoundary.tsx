@@ -1,5 +1,5 @@
 import { Component, ReactNode } from 'react';
-import { Alert, AlertTitle, AlertDescription } from './ui/alert';
+import { Alert, AlertTitle, AlertDescription } from '@shared/ui/alert';
 import { logError } from '@/lib/logging';
 
 interface ErrorBoundaryProps {

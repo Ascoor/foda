@@ -6,8 +6,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
+} from "@shared/ui/table";
+import { Badge } from "@shared/ui/badge";
 
 const pageTransition = {
   initial: { opacity: 0, y: 12, filter: "blur(6px)" },

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Switch } from "@/components/ui/switch";
-import { Button } from "@/components/ui/button";
+import { Switch } from "@shared/ui/switch";
+import { Button } from "@shared/ui/button";
 import { useState } from "react";
 
 const pageTransition = {

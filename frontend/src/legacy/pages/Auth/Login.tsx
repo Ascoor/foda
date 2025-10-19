@@ -3,11 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { AuthLayout } from "./AuthLayout";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useAuth } from "@/contexts/AuthContext";
+import { Input } from "@shared/ui/input";
+import { Label } from "@shared/ui/label";
+import { Button } from "@shared/ui/button";
+import { Checkbox } from "@shared/ui/checkbox";
+import { useAuth } from "@shared/contexts/AuthContext";
 
 const fieldVariants = {
   initial: { opacity: 0, y: 12, filter: "blur(6px)" },

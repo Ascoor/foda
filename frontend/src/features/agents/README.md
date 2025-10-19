@@ -1,17 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Search, Eye, Edit, Trash2, UserCheck, Download } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AssignDialog } from '@/components/ui/assign-dialog';
-import { SafeDataRenderer } from '@/components/ui/safe-data-renderer';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shared/ui/select';
+import { AssignDialog } from '@shared/ui/assign-dialog';
+import { SafeDataRenderer } from '@shared/ui/safe-data-renderer';
 import { Agent, AgentFilters } from './types';
 import { fetchAgents, deleteAgent, assignAgent, mockCommittees, exportAgents } from './api';
 import { AgentForm } from './AgentForm';
 import { AgentDetails } from './AgentDetails';
 import { safeArray } from '@/lib/safeData';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@shared/hooks/use-toast';
 
 export const AgentsList = () => {
   const { t } = useTranslation();

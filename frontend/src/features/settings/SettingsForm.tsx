@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { fetchSettings, updateSettings } from './api';
 import { SystemSettings } from './types';
-import { Button } from '@/components/ui/button';
+import { Button } from '@shared/ui/button';
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { toast } from '@/components/ui/sonner';
+} from '@shared/ui/select';
+import { Input } from '@shared/ui/input';
+import { Switch } from '@shared/ui/switch';
+import { Label } from '@shared/ui/label';
+import { toast } from '@shared/ui/sonner';
 
 export const SettingsForm = () => {
   const { t } = useTranslation();

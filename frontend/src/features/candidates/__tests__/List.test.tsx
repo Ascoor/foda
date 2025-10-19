@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 import { CandidatesList } from '../List';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import { LanguageProvider } from '@shared/contexts/LanguageContext';
 
 vi.mock('../api', () => ({
   fetchCandidates: vi.fn().mockResolvedValue({

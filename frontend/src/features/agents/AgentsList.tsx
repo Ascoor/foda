@@ -1,12 +1,12 @@
 import { Component, ReactNode, Suspense, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Search, Eye, Edit, Trash2, UserCheck, Download } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AssignDialog } from '@/components/ui/assign-dialog';
-import { ErrorDisplay, LoadingSpinner, SafeDataRenderer } from '@/components/ui/safe-data-renderer';
-import { useToast } from '@/hooks/use-toast';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shared/ui/select';
+import { AssignDialog } from '@shared/ui/assign-dialog';
+import { ErrorDisplay, LoadingSpinner, SafeDataRenderer } from '@shared/ui/safe-data-renderer';
+import { useToast } from '@shared/hooks/use-toast';
 import { logError } from '@/lib/logging';
 import { Agent, AgentFilters } from './types';
 import { deleteAgent, assignAgent, mockCommittees, exportAgents } from './api';

@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { DataTableSkeleton, EmptyState } from '@/components/ui/data-table-skeleton';
+} from '@shared/ui/select';
+import { Alert, AlertDescription, AlertTitle } from '@shared/ui/alert';
+import { DataTableSkeleton, EmptyState } from '@shared/ui/data-table-skeleton';
 import { safeArray } from '@/lib/utils';
 import {
   fetchElections,

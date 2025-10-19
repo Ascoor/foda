@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, EffectFade } from "swiper/modules";
-import { Button } from "@/components/ui/button";
+import { Button } from "@shared/ui/button";
 import type { HeroSlide } from "@/data/landing";
 import { useHeroTimeline } from "../hooks/useHeroTimeline";
 

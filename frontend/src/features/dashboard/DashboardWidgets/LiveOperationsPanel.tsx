@@ -1,5 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shared/ui/card';
+import { Skeleton } from '@shared/ui/skeleton';
 import { LiveOperationsMap } from '../components/LiveOperationsMap';
 
 interface LiveOperationsPanelProps {

@@ -16,7 +16,7 @@ import { SafeDataRenderer } from './SafeDataRenderer';
 import { fetchGeoAreas, deleteGeoArea } from '@features/geo-areas/api';
 import { GeoArea } from '@features/geo-areas/types';
 import { safeArray, safeNumber } from '@/lib/safeData';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@shared/hooks/use-toast';
 
 const GeoAreaCard = ({ 
   area, 

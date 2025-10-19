@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { LanguageProvider } from '@/contexts/LanguageContext';
+import { LanguageProvider } from '@shared/contexts/LanguageContext';
 import { GeoAreasList } from '../List';
 import { vi } from 'vitest';
 

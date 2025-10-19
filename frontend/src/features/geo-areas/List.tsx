@@ -14,18 +14,18 @@ import {
   Eye,
   TreePine
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Badge } from '@shared/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { StatusBadge } from '@/components/ui/status-badge';
-import { DataTableSkeleton, EmptyState } from '@/components/ui/DataTableSkeleton';
-import { useLanguage } from '@/contexts/LanguageContext';
+} from '@shared/ui/dropdown-menu';
+import { StatusBadge } from '@shared/ui/status-badge';
+import { DataTableSkeleton, EmptyState } from '@shared/ui/DataTableSkeleton';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { GeoArea } from './types';
 import { fetchGeoAreas } from './api';
 import { GeoAreaForm } from './Form';

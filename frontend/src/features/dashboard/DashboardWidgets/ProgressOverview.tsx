@@ -1,8 +1,8 @@
 import { RefreshCcw } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@shared/ui/card';
+import { Button } from '@shared/ui/button';
+import { Skeleton } from '@shared/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@shared/ui/alert';
 import { ProgressChart } from '../components/ProgressChart';
 
 interface ProgressDatum {

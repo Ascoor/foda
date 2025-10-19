@@ -1,5 +1,5 @@
 // src/pages/AuthRedirect.tsx
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@shared/contexts/AuthContext';
 import { useEffect } from 'react';
 import FloatingLandingPage from '@features/marketing/pages/LandingPage';
 import { useNavigate } from 'react-router-dom';

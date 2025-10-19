@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Eye, Edit, Trash2, Send } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { DataTableSkeleton, EmptyState } from '@/components/ui/data-table-skeleton';
+import { Button } from '@shared/ui/button';
+import { DataTableSkeleton, EmptyState } from '@shared/ui/data-table-skeleton';
 import { Campaign } from './types';
 import { fetchCampaigns, deleteCampaign, sendCampaign } from './api';
 import { CampaignForm } from './CampaignForm';

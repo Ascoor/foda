@@ -4,23 +4,23 @@ import {
   TabsContent,
   TabsList,
   TabsTrigger,
-} from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
+} from '@shared/ui/tabs';
+import { Input } from '@shared/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
+} from '@shared/ui/select';
+import { Badge } from '@shared/ui/badge';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from '@shared/ui/card';
 import {
   Table,
   TableBody,
@@ -28,8 +28,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { useLanguage } from '@/contexts/LanguageContext';
+} from '@shared/ui/table';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { MapContainer, Polygon, TileLayer, Tooltip } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';

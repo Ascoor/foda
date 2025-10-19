@@ -1,4 +1,4 @@
-import { Badge as ShadBadge } from '@/components/ui/badge';
+import { Badge as ShadBadge } from '@shared/ui/badge';
 import { cn } from '@/lib/utils';
 
 interface StatusBadgeProps {

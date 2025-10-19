@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Loader2, MailCheck } from "lucide-react";
 import { AuthLayout } from "./AuthLayout";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
+import { Input } from "@shared/ui/input";
+import { Label } from "@shared/ui/label";
+import { Button } from "@shared/ui/button";
 import api from "@/lib/api";
 
 const fieldVariants = {

@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Vote, UserCheck, Users, Activity, TrendingUp } from 'lucide-react';
-import { SafeDataRenderer } from '@/components/ui/SafeDataRenderer';
+import { SafeDataRenderer } from '@shared/ui/SafeDataRenderer';
 import { ProgressChart } from '@features/dashboard/components/ProgressChart';
 import { ActivityFeed } from '@features/dashboard/components/ActivityFeed';
 import { LiveOperationsMap } from '@features/dashboard/components/LiveOperationsMap';
@@ -10,7 +10,7 @@ import { ActivitiesTimeline } from '@features/activities/ActivitiesTimeline';
 import { useApi } from '@/lib/api';   
 import { safeArray, safeNumber } from '@/lib/safeData';
 import { API_ENDPOINTS } from '@/lib/endpoints';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@shared/hooks/use-toast';
 
 interface DashboardData {
   stats: Record<string, { value: number; change?: string; trend?: 'up' | 'down' }>;
