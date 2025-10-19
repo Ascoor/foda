@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = useCallback<AuthContextValue["login"]>(async (email, password) => {
     setLoading(true);
     try {
-      const response = await api.post<{ token: string; user: Omit<User, "token"> }>("/auth/login", {
+      const response = await api.post<{ token: string; user: Omit<User, "token"> }>("/v1/login", {
         email,
         password,
       });
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser({ ...data, token });
       } catch (error) {
         try {
-          const { data } = await api.get<Omit<User, "token">>("/api/me");
+          const { data } = await api.get<Omit<User, "token">>("/api/v1/me");
           setUser({ ...data, token });
           return;
         } catch (innerError) {
