@@ -5,11 +5,12 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 import { apiClient, ApiResponse } from "@/shared/api/config";
 import { NotificationDTO } from "@/shared/api/dtos";
-import { useRealtime } from "@/shared/hooks";
+import { useLanguage, useRealtime } from "@/shared/hooks";
 
 type NotificationType = NotificationDTO["type"];
 
@@ -68,6 +69,8 @@ export const NotificationProvider = ({
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<NotificationFilter>("all");
   const [isDrawerOpen, setDrawerOpen] = useState(false);
+  const { language } = useLanguage();
+  const hasAnnouncedBrandRefresh = useRef(false);
 
   const fetchNotifications = useCallback(async () => {
     setLoading(true);
@@ -108,6 +111,28 @@ export const NotificationProvider = ({
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
+
+  useEffect(() => {
+    if (hasAnnouncedBrandRefresh.current) return;
+    hasAnnouncedBrandRefresh.current = true;
+    const now = new Date().toISOString();
+    push({
+      id: `brand-refresh-${now}`,
+      type: "success",
+      category: "brand",
+      title:
+        language === "ar"
+          ? "تم تحديث هوية التطبيق!"
+          : "Brand Identity Updated!",
+      message:
+        language === "ar"
+          ? "تم إطلاق الهوية الجديدة Foda Elections | فوده مننا بألوان مميزة وشعار جديد 🎨"
+          : "The new Foda Elections | Foda Minnna brand identity is now live! 🎨",
+      priority: "low",
+      read_at: null,
+      created_at: now,
+    });
+  }, [language, push]);
 // 🔒 مؤقتاً تم إيقاف التحديث الفوري أثناء التطوير
 // لتجنب أخطاء WebSocket وعدم الاتصال بالخادم
 /*

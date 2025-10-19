@@ -10,6 +10,7 @@ import { LanguageToggle } from "@shared/ui/language-toggle";
 import { ThemeToggle } from "@shared/ui/theme-toggle";
 import { UserMenu } from "@shared/ui/user-menu";
 import { sidebarNavItems } from "@shared/ui/sidebar";
+import { useNotifications } from "@shared/contexts/notification-context";
 
 const headerSpring = { type: "spring", stiffness: 240, damping: 30 } as const;
 
@@ -18,6 +19,7 @@ export const Header = () => {
   const { language } = useLanguage();
   const location = useLocation();
   const [now, setNow] = useState(() => new Date());
+  const { unreadCount } = useNotifications();
 
   useEffect(() => {
     const timer = window.setInterval(() => setNow(new Date()), 30_000);
@@ -55,8 +57,6 @@ export const Header = () => {
   }, [location.pathname]);
 
   const title = activeNav ? t(activeNav.labelKey) : t("appName");
-  const notifications = 3;
-
   return (
     <motion.header
       layout
@@ -70,9 +70,13 @@ export const Header = () => {
           <motion.div
             layout
             transition={headerSpring}
-            className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-lg)] bg-[hsla(var(--primary)/0.18)] text-primary shadow-[0_18px_40px_-28px_hsla(var(--primary)/0.55)]"
+            className="flex items-center"
           >
-            <span className="text-base font-semibold">CC</span>
+            <img
+              src="/assets/brand/foda-logo.svg"
+              alt="Foda Elections | فوده مننا"
+              className="h-11 w-auto drop-shadow-[0_12px_30px_rgba(37,99,235,0.35)]"
+            />
           </motion.div>
           <div className="flex flex-col gap-1">
             <span className="text-[11px] font-medium uppercase tracking-[0.32em] text-muted-foreground">
@@ -115,7 +119,7 @@ export const Header = () => {
             className="relative"
           >
             <Bell className="h-4 w-4" />
-            {notifications > 0 && (
+            {unreadCount > 0 && (
               <motion.span
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -125,7 +129,7 @@ export const Header = () => {
                   "absolute -right-1 -top-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-primary text-[10px] font-semibold text-primary-foreground shadow-sm",
                 )}
               >
-                {notifications}
+                {unreadCount}
               </motion.span>
             )}
           </Button>

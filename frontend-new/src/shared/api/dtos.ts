@@ -91,7 +91,7 @@ export interface GotvStreamPayload {
 
 export interface NotificationDTO {
   id: Identifier;
-  type: "performance" | "field" | "risk" | "other";
+  type: "performance" | "field" | "risk" | "other" | "success";
   category: string;
   title: string;
   message: string;
