@@ -21,14 +21,17 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@features/*": ["./src/features/*"],
+      "@shared/*": ["./src/shared/*"]
     }
   },
   "include": ["src"],
   "exclude": [
-    "src/components/ui/__tests__/Button.test.tsx",
-    "src/components/ui/__tests__/button.test.tsx",  // إضافة الملفات المكررة هنا
-    "src/components/ui/__tests__/Input.test.tsx",
-    "src/components/ui/__tests__/input.test.tsx"   // إضافة الملفات المكررة هنا
+    "src/shared/ui/__tests__/Button.test.tsx",
+    "src/shared/ui/__tests__/button.test.tsx",  // إضافة الملفات المكررة هنا
+    "src/shared/ui/__tests__/Input.test.tsx",
+    "src/shared/ui/__tests__/input.test.tsx"   // إضافة الملفات المكررة هنا
   ]
 }

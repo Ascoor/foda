@@ -1,1 +1,1 @@
-export { EnhancedDashboard } from '@/modules/dashboard/EnhancedDashboard';
+export { EnhancedDashboard } from '@features/dashboard/EnhancedDashboard';

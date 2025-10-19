@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthProvider } from '@/shared/contexts/AuthContext';
 import { Login } from '../Login';
 import api from '@/lib/api';
 
