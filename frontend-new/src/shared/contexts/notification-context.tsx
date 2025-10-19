@@ -108,15 +108,17 @@ export const NotificationProvider = ({
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
-
-  useRealtime<NotificationDTO>("notification.created", {
-    event: "notification.created",
-    namespace: "notifications",
-    onMessage: (payload) => {
-      push(mapNotification(payload));
-    },
-  });
-
+// 🔒 مؤقتاً تم إيقاف التحديث الفوري أثناء التطوير
+// لتجنب أخطاء WebSocket وعدم الاتصال بالخادم
+/*
+useRealtime<NotificationDTO>("notification.created", {
+  event: "notification.created",
+  namespace: "notifications",
+  onMessage: (payload) => {
+    push(mapNotification(payload));
+  },
+});
+*/
   const filteredNotifications = useMemo(() => {
     if (filter === "all") return notifications;
     return notifications.filter((notification) => notification.type === filter);
