@@ -1,0 +1,18 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGradient" x1="20" y1="14" x2="96" y2="106" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB" />
+      <stop offset="1" stop-color="#7C3AED" />
+    </linearGradient>
+    <linearGradient id="iconSheen" x1="34" y1="24" x2="86" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FACC15" stop-opacity="0.75" />
+      <stop offset="1" stop-color="#FACC15" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect x="18" y="18" width="84" height="84" rx="28" fill="url(#iconGradient)" />
+  <rect x="18" y="18" width="84" height="84" rx="28" fill="url(#iconSheen)" />
+  <path d="M44.6 76.4c-2 0-3.6-1.6-3.6-3.6V47.2c0-2 1.6-3.6 3.6-3.6h30.8c2 0 3.6 1.6 3.6 3.6v25.6c0 2-1.6 3.6-3.6 3.6H44.6z" fill="rgba(243,244,246,0.16)" stroke="#F8FAFC" stroke-width="1.6" stroke-opacity="0.35" />
+  <path d="M50.8 61l9 9.1 18.8-18.9" stroke="#F8FAFC" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="76.8" cy="43.8" r="6" fill="#FACC15" />
+  <text x="60" y="102" font-family="'Inter', 'DM Sans', 'Segoe UI', sans-serif" font-size="16" font-weight="600" fill="#F8FAFC" text-anchor="middle">F</text>
+</svg>

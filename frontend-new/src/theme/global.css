@@ -48,6 +48,11 @@
     margin: 0;
     font-family: var(--font-family-base);
     background-color: hsl(var(--background));
+    background-image: url('/assets/brand/pattern-bg.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.95;
     color: hsl(var(--foreground));
     transition:
       background-color 0.45s ease,

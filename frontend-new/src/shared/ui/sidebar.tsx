@@ -117,19 +117,24 @@ export const Sidebar = () => {
       initial={{ opacity: 0, x: direction === "rtl" ? 64 : -64 }}
       animate={{ opacity: 1, x: 0, width: isCollapsed ? 96 : 288 }}
       transition={sidebarSpring}
-      className="relative hidden h-full shrink-0 flex-col overflow-hidden border-r border-border/50 bg-surface/85 px-4 py-6 text-foreground shadow-[var(--shadow-md)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)] md:flex"
+      className="relative hidden h-full shrink-0 flex-col overflow-hidden border-r border-border/50 bg-[hsla(var(--background)/0.92)] px-4 py-6 text-foreground shadow-[var(--shadow-md)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)] md:flex"
+      style={{
+        backgroundImage: "url('/assets/brand/pattern-bg.svg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(140%_120%_at_20%_-20%,hsla(var(--primary)/0.18),transparent_62%),radial-gradient(120%_120%_at_85%_20%,hsla(var(--secondary)/0.16),transparent_68%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(140deg,hsla(var(--background)/0.88)_0%,hsla(var(--background)/0.62)_48%,hsla(var(--background)/0.78)_100%)]" />
       <div className="flex h-full flex-col gap-6">
         <div className={cn("flex items-center gap-3", isCollapsed ? "justify-center" : "justify-between")}
         >
           <motion.div layout className="flex items-center gap-3">
-            <motion.div
-              layout
-              transition={sidebarSpring}
-              className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-lg)] bg-[hsla(var(--primary)/0.18)] text-primary shadow-[0_16px_38px_-26px_hsla(var(--primary)/0.4)]"
-            >
-              <span className="text-sm font-semibold">AE</span>
+            <motion.div layout transition={sidebarSpring} className="flex items-center justify-center">
+              <img
+                src="/assets/brand/foda-icon.svg"
+                alt="Foda Elections icon"
+                className="h-10 w-10 drop-shadow-[0_16px_34px_rgba(124,58,237,0.32)]"
+              />
             </motion.div>
             <AnimatePresence initial={false}>
               {!isCollapsed && (
@@ -142,9 +147,9 @@ export const Sidebar = () => {
                   className="leading-tight"
                 >
                   <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-muted-foreground">
-                    Aurora Election
+                    Foda Elections
                   </p>
-                  <p className="text-sm font-semibold text-foreground">Control Center</p>
+                  <p className="text-sm font-semibold text-foreground">فوده مننا</p>
                 </motion.div>
               )}
             </AnimatePresence>

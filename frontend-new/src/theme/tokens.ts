@@ -47,12 +47,23 @@ export const radii = {
   pill: "999px",
 } as const;
 
+export const colors = {
+  brandPrimary: "#2563EB",
+  brandSecondary: "#7C3AED",
+  brandAccent: "#FACC15",
+  backgroundLight: "#F3F4F6",
+  backgroundDark: "#0F172A",
+  textPrimary: "#0B1220",
+  textMuted: "#475569",
+} as const;
+
 export const tokens = {
   spacing,
   typography,
   elevations,
   durations,
   radii,
+  colors,
 } as const;
 
 export type ThemeTokens = typeof tokens;
