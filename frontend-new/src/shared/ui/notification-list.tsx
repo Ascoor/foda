@@ -22,10 +22,10 @@ export const NotificationList = () => {
       <CardContent className="space-y-4">
         {notifications.map((item) => (
           <div key={item.id} className="flex items-center justify-between">
-            <div className="text-sm font-medium text-slate-700 dark:text-slate-200">
+            <div className="text-sm font-medium text-foreground">
               {t(`notificationsList.${item.titleKey}`)}
             </div>
-            <span className="text-xs text-slate-400">{item.time}</span>
+            <span className="text-xs text-muted-foreground">{item.time}</span>
           </div>
         ))}
       </CardContent>

@@ -63,7 +63,7 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
                 layout
                 transition={navSpring}
                 className={cn(
-                  "relative flex items-center gap-3 overflow-hidden rounded-2xl px-3 py-2 text-sm font-medium transition-colors",
+                  "relative flex items-center gap-3 overflow-hidden rounded-[var(--radius-lg)] px-3 py-2 text-sm font-medium transition-colors",
                   isCollapsed ? "justify-center" : "justify-start",
                   isActive
                     ? "text-primary"
@@ -74,7 +74,7 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
                   <motion.div
                     layoutId="active-nav"
                     transition={navSpring}
-                    className="absolute inset-0 rounded-2xl bg-primary/10 shadow-[0_12px_30px_rgba(79,70,229,0.18)]"
+                    className="absolute inset-0 rounded-[var(--radius-lg)] bg-[linear-gradient(135deg,_hsla(var(--primary)/0.18),_hsla(var(--secondary)/0.18))] shadow-[0_18px_42px_-28px_hsla(var(--primary)/0.35)]"
                   />
                 )}
                 <Icon className="relative z-10 h-5 w-5" />
@@ -117,8 +117,9 @@ export const Sidebar = () => {
       initial={{ opacity: 0, x: direction === "rtl" ? 64 : -64 }}
       animate={{ opacity: 1, x: 0, width: isCollapsed ? 96 : 288 }}
       transition={sidebarSpring}
-      className="relative hidden h-full shrink-0 flex-col overflow-hidden border-r border-border/50 bg-gradient-to-b from-background/95 via-background/90 to-background/70 px-4 py-6 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur-xl md:flex"
+      className="relative hidden h-full shrink-0 flex-col overflow-hidden border-r border-border/50 bg-surface/85 px-4 py-6 text-foreground shadow-[var(--shadow-md)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)] md:flex"
     >
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(140%_120%_at_20%_-20%,hsla(var(--primary)/0.18),transparent_62%),radial-gradient(120%_120%_at_85%_20%,hsla(var(--secondary)/0.16),transparent_68%)]" />
       <div className="flex h-full flex-col gap-6">
         <div className={cn("flex items-center gap-3", isCollapsed ? "justify-center" : "justify-between")}
         >
@@ -126,7 +127,7 @@ export const Sidebar = () => {
             <motion.div
               layout
               transition={sidebarSpring}
-              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/15 text-primary"
+              className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-lg)] bg-[hsla(var(--primary)/0.18)] text-primary shadow-[0_16px_38px_-26px_hsla(var(--primary)/0.4)]"
             >
               <span className="text-sm font-semibold">AE</span>
             </motion.div>
@@ -151,9 +152,9 @@ export const Sidebar = () => {
           <Button
             type="button"
             size="icon"
-            variant="ghost"
+            variant="glass"
             onClick={() => setIsCollapsed((prev) => !prev)}
-            className="hidden size-9 items-center justify-center rounded-2xl border border-border/60 bg-background/70 text-muted-foreground transition hover:text-foreground lg:flex"
+            className="hidden size-9 items-center justify-center rounded-full text-muted-foreground transition hover:text-foreground lg:flex"
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <ToggleIcon className="h-4 w-4" />
@@ -162,7 +163,7 @@ export const Sidebar = () => {
 
         <SidebarNav isCollapsed={isCollapsed} />
 
-        <div className="mt-auto rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-4 text-xs">
+        <div className="mt-auto rounded-[var(--radius-xl)] border border-dashed border-primary/40 bg-[hsla(var(--primary)/0.08)] p-4 text-xs shadow-[0_18px_45px_-30px_hsla(var(--primary)/0.35)]">
           <AnimatePresence initial={false}>
             {!isCollapsed && (
               <motion.div
