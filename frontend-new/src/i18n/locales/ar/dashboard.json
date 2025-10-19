@@ -1,0 +1,18 @@
+{
+  "welcome": "مرحباً، {{name}}",
+  "overview": "نظرة عامة على الحملة",
+  "notifications": "أحدث الإشعارات",
+  "mapTitle": "خريطة تغطية الميدان",
+  "chartTitle": "تفاعل الناخبين خلال الأسبوع",
+  "notificationsList": {
+    "newVolunteers": "انضم 3 متطوعين جدد إلى فريقك",
+    "donationReceived": "تم استلام تبرع من داعم رئيسي",
+    "rallyReminder": "تذكير: التجمع يبدأ خلال ساعتين"
+  },
+  "stats": {
+    "voterReach": "الوصول للناخبين",
+    "dailyCalls": "المكالمات اليومية",
+    "donations": "التبرعات",
+    "events": "الفعاليات"
+  }
+}

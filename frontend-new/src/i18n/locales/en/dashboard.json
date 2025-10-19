@@ -1,0 +1,18 @@
+{
+  "welcome": "Welcome, {{name}}",
+  "overview": "Campaign overview",
+  "notifications": "Latest notifications",
+  "mapTitle": "Field coverage map",
+  "chartTitle": "Weekly voter engagement",
+  "notificationsList": {
+    "newVolunteers": "3 new volunteers joined your team",
+    "donationReceived": "Donation received from key supporter",
+    "rallyReminder": "Town hall rally starts in 2 hours"
+  },
+  "stats": {
+    "voterReach": "Voter reach",
+    "dailyCalls": "Daily calls",
+    "donations": "Donations",
+    "events": "Events"
+  }
+}
