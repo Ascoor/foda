@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/shared/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Checkbox } from '@/shared/ui/checkbox';
-import { Input } from '@/shared/ui/input';
-import { Label } from '@/shared/ui/label';
-import { useAuth } from '@/shared/contexts/AuthContext';
+import { Button } from '@shared/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@shared/ui/card';
+import { Checkbox } from '@shared/ui/checkbox';
+import { Input } from '@shared/ui/input';
+import { Label } from '@shared/ui/label';
+import { useAuth } from '@shared/contexts/AuthContext';
 import { Loader2 } from 'lucide-react';
 
 /**

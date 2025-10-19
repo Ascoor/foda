@@ -1,17 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
+import { ReactNode, useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Outlet } from "react-router-dom";
 
 import { AuroraBackground } from "@features/marketing/components/ui/AuroraBackground";
 import { Header } from "@/components/layout/Header";
 import { Sidebar } from "@shared/layout/Sidebar";
-import { useTheme } from "@/shared/contexts/ThemeContext";
-import { useLanguage } from "@/shared/contexts/LanguageContext";
-import { useWindowSize } from "@/shared/hooks/useWindowSize";
+import { useTheme } from "@shared/contexts/ThemeContext";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
 
 const DESKTOP_BREAKPOINT = 1024;
 
-export const MainLayout = () => {
+type MainLayoutProps = {
+  children?: ReactNode;
+};
+
+export const MainLayout = ({ children }: MainLayoutProps) => {
   const { width } = useWindowSize();
   const isDesktop = width >= DESKTOP_BREAKPOINT;
   const [sidebarOpen, setSidebarOpen] = useState(isDesktop);
@@ -72,7 +76,7 @@ export const MainLayout = () => {
             layout
             className="relative z-10 flex-1 pb-10 pt-6"
           >
-            <Outlet />
+            {children ?? <Outlet />}
           </motion.main>
         </div>
       </div>

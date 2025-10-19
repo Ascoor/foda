@@ -7,7 +7,7 @@ i18n.changeLanguage('en');
 
 const mockUseLanguage = vi.hoisted(() => vi.fn());
 
-vi.mock('@/shared/contexts/LanguageContext', () => ({
+vi.mock('@shared/contexts/LanguageContext', () => ({
   useLanguage: mockUseLanguage,
   LanguageProvider: ({ children }: any) => children,
 }));

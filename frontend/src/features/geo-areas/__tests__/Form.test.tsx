@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { LanguageProvider } from '@/shared/contexts/LanguageContext';
+import { LanguageProvider } from '@shared/contexts/LanguageContext';
 import { GeoAreaForm } from '../Form';
 import { vi } from 'vitest';
 

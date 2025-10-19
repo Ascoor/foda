@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { StatsCard } from '../components/StatsCard';
-import { LanguageProvider } from '@/shared/contexts/LanguageContext';
+import { LanguageProvider } from '@shared/contexts/LanguageContext';
 import { Vote } from 'lucide-react';
 
 test('renders stats card with data', () => {

@@ -2,15 +2,15 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui/select';
+} from '@shared/ui/select';
 import { Candidate, CandidateFormData } from './types';
 import { fetchCandidates, deleteCandidate, createCandidate, updateCandidate } from './api';
 import { CandidateForm } from './Form';

@@ -1,5 +1,5 @@
 import { TrendingUp } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shared/ui/card';
 
 interface SummaryPanelProps {
   headline: string;

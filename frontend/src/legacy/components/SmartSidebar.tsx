@@ -19,8 +19,8 @@ import {
   X,
   ChevronDown
 } from 'lucide-react';
-import { Button } from '@/shared/ui/button';
-import { useLanguage } from '@/shared/contexts/LanguageContext';
+import { Button } from '@shared/ui/button';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface NavigationItem {

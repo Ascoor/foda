@@ -2,7 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { vi } from 'vitest';
 import { CommitteeForm } from '../Form';
-import { LanguageProvider } from '@/shared/contexts/LanguageContext';
+import { LanguageProvider } from '@shared/contexts/LanguageContext';
 
 vi.mock('../api', () => ({ fetchGeoAreas: vi.fn().mockResolvedValue({ data: [] }) }));
 

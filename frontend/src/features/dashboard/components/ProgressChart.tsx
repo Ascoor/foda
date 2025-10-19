@@ -14,7 +14,7 @@ import {
 } from 'recharts';
 import type { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 
-import { useThemePalette, type ColorToken, type ThemePalette } from '@/shared/hooks/useThemePalette';
+import { useThemePalette, type ColorToken, type ThemePalette } from '@shared/hooks/useThemePalette';
 
 interface ProgressItem {
   label: string;

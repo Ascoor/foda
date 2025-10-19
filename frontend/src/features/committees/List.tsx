@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@/shared/contexts/LanguageContext';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui/select';
+} from '@shared/ui/select';
 import {
   fetchCommittees,
   deleteCommittee,

@@ -15,19 +15,19 @@ import {
   Vote,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/shared/ui/button";
+import { Button } from "@shared/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/shared/ui/dropdown-menu";
-import { useAuth } from "@/shared/contexts/AuthContext";
-import { useLanguage } from "@/shared/contexts/LanguageContext";
-import { useNotifications } from "@/shared/contexts/NotificationContext";
+} from "@shared/ui/dropdown-menu";
+import { useAuth } from "@shared/contexts/AuthContext";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useNotifications } from "@shared/contexts/NotificationContext";
 import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
-import { useTheme } from "@/shared/contexts/ThemeContext";
-import { useWindowSize } from "@/shared/hooks/useWindowSize";
+import { useTheme } from "@shared/contexts/ThemeContext";
+import { useWindowSize } from "@shared/hooks/useWindowSize";
 import { cn } from "@/lib/utils";
 
 const SPRING_TRANSITION = {

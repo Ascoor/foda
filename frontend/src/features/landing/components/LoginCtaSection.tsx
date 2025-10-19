@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/shared/ui/dialog";
-import { Button } from "@/shared/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@shared/ui/dialog";
+import { Button } from "@shared/ui/button";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { useLoginCtaAnimation } from "../hooks/useLoginCtaAnimation";
 

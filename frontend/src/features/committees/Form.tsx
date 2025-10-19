@@ -2,19 +2,19 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslation } from 'react-i18next';
-import { useLanguage } from '@/shared/contexts/LanguageContext';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { CommitteeFormData, GeoArea } from './types';
 import { fetchGeoAreas } from './api';
 import { useQuery } from '@tanstack/react-query';
-import { Input } from '@/shared/ui/input';
-import { Button } from '@/shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Button } from '@shared/ui/button';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/shared/ui/select';
+} from '@shared/ui/select';
 
 const schema = z.object({
   name: z.string().min(1),

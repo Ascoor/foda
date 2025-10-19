@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Search, Eye, Edit, Trash2, UserCheck } from 'lucide-react';
-import { Button } from '@/shared/ui/button';
-import { Input } from '@/shared/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
-import { AssignDialog } from '@/shared/ui/assign-dialog';
+import { Button } from '@shared/ui/button';
+import { Input } from '@shared/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@shared/ui/select';
+import { AssignDialog } from '@shared/ui/assign-dialog';
 import { Volunteer, VolunteerFilters } from './types';
 import { fetchVolunteers, deleteVolunteer, assignVolunteer } from './api';
 import { VolunteerForm } from './VolunteerForm';

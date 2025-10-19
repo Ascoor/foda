@@ -3,7 +3,7 @@ import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { BarbaTransitionProvider } from "@/components/transition/BarbaTransitionProvider";
-import { NotificationProvider } from "@/shared/contexts/NotificationContext";
+import { NotificationProvider } from "@shared/contexts/NotificationContext";
 import { Login } from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
 import { AuthRedirect } from "@/pages/AuthRedirect";

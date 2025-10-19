@@ -1,9 +1,9 @@
 import { BellRing, CheckCheck, Loader2 } from 'lucide-react';
-import { useNotifications } from '@/shared/contexts/NotificationContext';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/shared/ui/sheet';
-import { Button } from '@/shared/ui/button';
-import { Badge } from '@/shared/ui/badge';
-import { ScrollArea } from '@/shared/ui/scroll-area';
+import { useNotifications } from '@shared/contexts/NotificationContext';
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@shared/ui/sheet';
+import { Button } from '@shared/ui/button';
+import { Badge } from '@shared/ui/badge';
+import { ScrollArea } from '@shared/ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 const filterOptions = [

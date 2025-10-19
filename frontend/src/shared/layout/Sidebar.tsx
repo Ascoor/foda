@@ -4,7 +4,7 @@ import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import { sidebarSections } from "@/config/sidebar-sections";
-import { useLanguage } from "@/shared/contexts/LanguageContext";
+import { useLanguage } from "@shared/contexts/LanguageContext";
 import { sidebarTranslations } from "@/i18n/sidebar";
 import { cn } from "@/lib/utils";
 

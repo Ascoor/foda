@@ -1,7 +1,7 @@
 import { GeoDistrict, GeoStatus } from '../data/mockGeoAreas';
-import { useLanguage } from '@/shared/contexts/LanguageContext';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/shared/ui/badge';
+import { Badge } from '@shared/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Props {

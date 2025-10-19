@@ -2,8 +2,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@/shared/ui/button';
-import { AssignDialog } from '@/shared/ui/assign-dialog';
+import { Button } from '@shared/ui/button';
+import { AssignDialog } from '@shared/ui/assign-dialog';
 import {
   fetchCommittee,
   deleteCommittee,

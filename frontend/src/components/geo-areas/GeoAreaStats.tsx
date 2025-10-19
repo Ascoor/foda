@@ -1,10 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { useLanguage } from '@/shared/contexts/LanguageContext';
+import { useLanguage } from '@shared/contexts/LanguageContext';
 import { GeoAreaData } from '@/data/mockGeoData';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Badge } from '@/shared/ui/badge';
-import { Progress } from '@/shared/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
+import { Badge } from '@shared/ui/badge';
+import { Progress } from '@shared/ui/progress';
 import { 
   Users, 
   UserCheck, 

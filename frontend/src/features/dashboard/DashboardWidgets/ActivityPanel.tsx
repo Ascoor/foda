@@ -14,9 +14,9 @@ import {
 } from 'recharts';
 import type { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
-import { Skeleton } from '@/shared/ui/skeleton';
-import { useThemePalette, type ColorToken, type ThemePalette } from '@/shared/hooks/useThemePalette';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@shared/ui/card';
+import { Skeleton } from '@shared/ui/skeleton';
+import { useThemePalette, type ColorToken, type ThemePalette } from '@shared/hooks/useThemePalette';
 import { ActivityFeed } from '../components/ActivityFeed';
 
 interface ActivityItem {

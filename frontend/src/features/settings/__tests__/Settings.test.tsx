@@ -9,13 +9,13 @@ vi.mock('../api', () => ({
   updateSettings: vi.fn(),
 }));
 
-vi.mock('@/shared/ui/sonner', () => ({
+vi.mock('@shared/ui/sonner', () => ({
   toast: { success: vi.fn(), error: vi.fn() },
 }));
 
 import { Settings } from '../Settings';
 import { fetchSettings, updateSettings } from '../api';
-import { toast } from '@/shared/ui/sonner';
+import { toast } from '@shared/ui/sonner';
 
 const renderWithClient = (ui: React.ReactElement) => {
   const client = new QueryClient();

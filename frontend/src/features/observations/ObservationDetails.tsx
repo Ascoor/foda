@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Eye } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/shared/ui/dialog';
-import { Button } from '@/shared/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@shared/ui/dialog';
+import { Button } from '@shared/ui/button';
 import { Observation } from './types';
 
 interface Props {
