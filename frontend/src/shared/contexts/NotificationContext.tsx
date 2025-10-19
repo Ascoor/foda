@@ -41,6 +41,7 @@ interface NotificationContextValue {
   refresh: () => Promise<void>;
   isDrawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;
+  pushNotification: (notification: NotificationItem) => void;
 }
 
 const NotificationContext = createContext<NotificationContextValue | undefined>(
@@ -201,6 +202,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       fetchNotifications({ showLoader: true, suppressToasts: true }),
     isDrawerOpen,
     setDrawerOpen,
+    pushNotification: prependNotification,
   };
 
   return (

@@ -32,6 +32,7 @@ vi.mock("@shared/contexts/AuthContext", () => ({
 vi.mock("@shared/contexts/NotificationContext", () => ({
   useNotifications: () => ({
     unreadCount: 3,
+    pushNotification: vi.fn(),
   }),
 }));
 
