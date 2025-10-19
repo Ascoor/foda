@@ -10,7 +10,7 @@ import { Agent, AgentFilters } from './types';
 import { fetchAgents, deleteAgent, assignAgent, mockCommittees, exportAgents } from './api';
 import { AgentForm } from './AgentForm';
 import { AgentDetails } from './AgentDetails';
-import { safeArray } from '@/lib/safeData';
+import { safeArray } from '@shared/lib/safeData';
 import { useToast } from '@shared/hooks/use-toast';
 
 export const AgentsList = () => {

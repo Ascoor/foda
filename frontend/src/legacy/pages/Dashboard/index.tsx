@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 
 import { Activity, Target, TrendingUp, Users } from "lucide-react";
 
-import { BarChartComponent } from "@/components/dashboard/BarChartComponent";
-import { DashboardCard } from "@/components/dashboard/DashboardCard";
-import { LineChartComponent } from "@/components/dashboard/LineChartComponent";
-import { PieChartComponent } from "@/components/dashboard/PieChartComponent";
+import { BarChartComponent } from "@legacy/components/dashboard/BarChartComponent";
+import { DashboardCard } from "@legacy/components/dashboard/DashboardCard";
+import { LineChartComponent } from "@legacy/components/dashboard/LineChartComponent";
+import { PieChartComponent } from "@legacy/components/dashboard/PieChartComponent";
 
 const pageTransition = {
   initial: { opacity: 0, y: 18, filter: "blur(10px)" },

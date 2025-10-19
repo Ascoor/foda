@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import type { Partner } from "@/data/landing";
+import type { Partner } from "@shared/data/landing";
 import { usePartnersAnimation } from "../hooks/usePartnersAnimation";
 
 interface PartnersSectionProps {

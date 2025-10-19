@@ -24,8 +24,7 @@ const StatsOverviewComponent = ({ metrics, loading }: StatsOverviewProps) => {
       <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
         {Array.from({ length: 4 }).map((_, index) => (
           <Skeleton
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
+            key={`skeleton-${index}`}
             className="h-32 rounded-[var(--radius-2xl)] bg-white/20 dark:bg-white/10"
           />
         ))}

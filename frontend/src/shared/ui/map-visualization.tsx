@@ -7,7 +7,7 @@ import { Input } from './input';
 import { Badge } from './badge';
 import { Card, CardContent, CardHeader, CardTitle } from './card';
 import { GeoArea } from '@features/geo-areas/types';
-import { safeArray } from '@/lib/safeData';
+import { safeArray } from '@shared/lib/safeData';
 
 interface MapVisualizationProps {
   geoAreas: GeoArea[];

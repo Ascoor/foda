@@ -5,7 +5,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { sidebarSections } from "@/config/sidebar-sections";
 import { useLanguage } from "@shared/contexts/LanguageContext";
 import { sidebarTranslations } from "@/i18n/sidebar";
-import { cn } from "@/lib/utils";
+import { cn } from "@shared/lib/utils";
 
 interface SidebarProps {
   isOpen: boolean;

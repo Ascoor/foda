@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { AssignDialog } from '@shared/ui/assign-dialog';
 import { ErrorDisplay, LoadingSpinner, SafeDataRenderer } from '@shared/ui/safe-data-renderer';
 import { useToast } from '@shared/hooks/use-toast';
-import { logError } from '@/lib/logging';
+import { logError } from '@shared/lib/logging';
 import { Agent, AgentFilters } from './types';
 import { deleteAgent, assignAgent, mockCommittees, exportAgents } from './api';
 import { AgentForm } from './AgentForm';

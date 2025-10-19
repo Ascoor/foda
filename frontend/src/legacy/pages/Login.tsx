@@ -1,4 +1,4 @@
-import { LoginForm } from '@/components/auth/LoginForm';
+import { LoginForm } from '@legacy/components/auth/LoginForm';
 
 // Standalone login page that centers the login card
 export const Login = () => (

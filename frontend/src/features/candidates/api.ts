@@ -1,5 +1,5 @@
-import { request } from '@/lib/api';
-import { API_ENDPOINTS } from '@/lib/endpoints';
+import { request } from '@shared/lib/api';
+import { API_ENDPOINTS } from '@shared/lib/endpoints';
 import type { Candidate, CandidateFormData, CandidateFilters } from './types';
 
 type PaginatedResponse<T> = {

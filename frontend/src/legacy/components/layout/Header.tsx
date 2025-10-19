@@ -24,10 +24,10 @@ import {
 import { useAuth } from "@shared/contexts/AuthContext";
 import { useLanguage } from "@shared/contexts/LanguageContext";
 import { useNotifications } from "@shared/contexts/NotificationContext";
-import { NotificationDrawer } from "@/components/notifications/NotificationDrawer";
+import { NotificationDrawer } from "@legacy/components/notifications/NotificationDrawer";
 import { useTheme } from "@shared/contexts/ThemeContext";
 import { useWindowSize } from "@shared/hooks/useWindowSize";
-import { cn } from "@/lib/utils";
+import { cn } from "@shared/lib/utils";
 
 const SPRING_TRANSITION = {
   type: "spring",

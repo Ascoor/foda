@@ -6,7 +6,7 @@ import { AuthLayout } from "./AuthLayout";
 import { Input } from "@shared/ui/input";
 import { Label } from "@shared/ui/label";
 import { Button } from "@shared/ui/button";
-import api from "@/lib/api";
+import api from "@shared/lib/api";
 
 const fieldVariants = {
   initial: { opacity: 0, y: 12, filter: "blur(6px)" },

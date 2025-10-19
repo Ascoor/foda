@@ -1,5 +1,5 @@
 import { use } from 'react';
-import { safeArray } from '@/lib/safeData';
+import { safeArray } from '@shared/lib/safeData';
 import { fetchAgents } from './api';
 import type { Agent, AgentFilters } from './types';
 

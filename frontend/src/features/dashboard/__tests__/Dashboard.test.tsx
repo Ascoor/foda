@@ -5,7 +5,7 @@ import { LanguageProvider } from '@shared/contexts/LanguageContext';
 
 const mockUseApi = vi.fn();
 
-vi.mock('@/lib/api', () => ({
+vi.mock('@shared/lib/api', () => ({
   useApi: (config: any) => mockUseApi(config),
 }));
 

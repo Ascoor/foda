@@ -7,7 +7,7 @@ import { Badge } from '@shared/ui/badge';
 import { Skeleton } from '@shared/ui/skeleton';
 import { toast } from 'sonner';
 import { fetchCommitteeGeo, fetchRecentActivityGeo } from '../api';
-import { getEcho } from '@/lib/echo';
+import { getEcho } from '@shared/lib/echo';
 import { Button } from '@shared/ui/button';
 
 const LiveOperationsMapCanvas = lazy(() =>

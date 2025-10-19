@@ -7,9 +7,9 @@ import { ProgressChart } from '@features/dashboard/components/ProgressChart';
 import { ActivityFeed } from '@features/dashboard/components/ActivityFeed';
 import { LiveOperationsMap } from '@features/dashboard/components/LiveOperationsMap';
 import { ActivitiesTimeline } from '@features/activities/ActivitiesTimeline';
-import { useApi } from '@/lib/api';   
-import { safeArray, safeNumber } from '@/lib/safeData';
-import { API_ENDPOINTS } from '@/lib/endpoints';
+import { useApi } from '@shared/lib/api';   
+import { safeArray, safeNumber } from '@shared/lib/safeData';
+import { API_ENDPOINTS } from '@shared/lib/endpoints';
 import { toast } from '@shared/hooks/use-toast';
 
 interface DashboardData {

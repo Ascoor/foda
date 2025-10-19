@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
 import { LinkProps, Link } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { cn } from "@shared/lib/utils";
 
 interface GlowButtonProps extends PropsWithChildren<LinkProps> {
   variant?: "primary" | "secondary";

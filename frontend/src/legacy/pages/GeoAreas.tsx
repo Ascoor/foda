@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@shared/contexts/LanguageContext';
-import { mockGeoAreas, GeoAreaData, getCampaignStatusLabel } from '@/data/mockGeoData';
+import { mockGeoAreas, GeoAreaData, getCampaignStatusLabel } from '@shared/data/mockGeoData';
 import { 
   Map, 
   List, 
@@ -38,8 +38,8 @@ import {
 import { toast } from '@shared/hooks/use-toast';
 
 // Custom Components
-import InteractiveMap from '@/components/geo-areas/InteractiveMap';
-import GeoAreaStats from '@/components/geo-areas/GeoAreaStats';
+import InteractiveMap from '@legacy/components/geo-areas/InteractiveMap';
+import GeoAreaStats from '@legacy/components/geo-areas/GeoAreaStats';
 // List component would be imported here
 
 const GeoAreas: React.FC = () => {

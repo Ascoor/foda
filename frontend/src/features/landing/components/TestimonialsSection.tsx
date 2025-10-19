@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
-import type { Testimonial } from "@/data/landing";
+import type { Testimonial } from "@shared/data/landing";
 import { useTestimonialsAnimation } from "../hooks/useTestimonialsAnimation";
 
 interface TestimonialsSectionProps {

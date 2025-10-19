@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { request } from '@/lib/api';
-import { getEcho } from '@/lib/echo';
+import { request } from "@shared/lib/api";
+import { getEcho } from "@shared/lib/echo";
 import { toast } from 'sonner';
 
 export type NotificationType = 'performance' | 'field' | 'risk' | 'other';

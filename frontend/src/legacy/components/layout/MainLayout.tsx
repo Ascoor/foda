@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Outlet } from "react-router-dom";
 
 import { AuroraBackground } from "@features/marketing/components/ui/AuroraBackground";
-import { Header } from "@/components/layout/Header";
+import { Header } from "@legacy/components/layout/Header";
 import { Sidebar } from "@shared/layout/Sidebar";
 import { useTheme } from "@shared/contexts/ThemeContext";
 import { useLanguage } from "@shared/contexts/LanguageContext";

@@ -9,8 +9,8 @@ import { Volunteer, VolunteerFilters } from './types';
 import { fetchVolunteers, deleteVolunteer, assignVolunteer } from './api';
 import { VolunteerForm } from './VolunteerForm';
 import { VolunteerDetails } from './VolunteerDetails';
-import { request } from '@/lib/api';
-import { API_ENDPOINTS } from '@/lib/endpoints';
+import { request } from '@shared/lib/api';
+import { API_ENDPOINTS } from '@shared/lib/endpoints';
 import type { Committee } from '@/types';
 
 const DEFAULT_META = { total: 0, per_page: 0, current_page: 0 };

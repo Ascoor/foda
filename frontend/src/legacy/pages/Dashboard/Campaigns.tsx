@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Megaphone, Users2, CalendarClock } from "lucide-react";
-import { DashboardCard } from "@/components/dashboard/DashboardCard";
+import { DashboardCard } from "@legacy/components/dashboard/DashboardCard";
 
 const pageTransition = {
   initial: { opacity: 0, y: 12, filter: "blur(6px)" },

@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 import { useEffect } from "react";
-import { gsap, registerGsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap, registerGsap, ScrollTrigger } from "@shared/lib/gsap";
 
 export const usePartnersAnimation = (sectionRef: RefObject<HTMLElement>) => {
   useEffect(() => {

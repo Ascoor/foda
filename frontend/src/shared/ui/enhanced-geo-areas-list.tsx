@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { SafeDataRenderer } from './SafeDataRenderer';
 import { fetchGeoAreas, deleteGeoArea } from '@features/geo-areas/api';
 import { GeoArea } from '@features/geo-areas/types';
-import { safeArray, safeNumber } from '@/lib/safeData';
+import { safeArray, safeNumber } from '@shared/lib/safeData';
 import { toast } from '@shared/hooks/use-toast';
 
 const GeoAreaCard = ({ 
