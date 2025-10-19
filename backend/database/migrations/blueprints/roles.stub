@@ -1,0 +1,16 @@
+<?php
+
+return [
+    'table' => 'roles',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'name' => ['type' => 'string', 'length' => 120],
+        'slug' => ['type' => 'string', 'length' => 120],
+        'description' => ['type' => 'text', 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['slug'], 'name' => 'roles_slug_unique'],
+        ['type' => 'unique', 'columns' => ['name'], 'name' => 'roles_name_unique'],
+    ],
+    'soft_deletes' => false,
+];

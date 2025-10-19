@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'table' => 'permission_role',
+    'columns' => [
+        'role_id' => ['type' => 'foreignId'],
+        'permission_id' => ['type' => 'foreignId'],
+    ],
+    'indexes' => [
+        ['type' => 'primary', 'columns' => ['role_id', 'permission_id'], 'name' => 'permission_role_primary'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['role_id'],
+            'references' => ['id'],
+            'on' => 'roles',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['permission_id'],
+            'references' => ['id'],
+            'on' => 'permissions',
+            'onDelete' => 'cascade',
+        ],
+    ],
+    'timestamps' => false,
+];

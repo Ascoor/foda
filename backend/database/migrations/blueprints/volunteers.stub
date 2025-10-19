@@ -1,0 +1,51 @@
+<?php
+
+return [
+    'table' => 'volunteers',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'user_id' => ['type' => 'foreignId', 'nullable' => true],
+        'campaign_id' => ['type' => 'foreignId'],
+        'team_id' => ['type' => 'foreignId', 'nullable' => true],
+        'assigned_area_id' => ['type' => 'foreignId', 'nullable' => true],
+        'phone' => ['type' => 'string', 'length' => 30, 'nullable' => true],
+        'is_active' => ['type' => 'boolean', 'default' => true],
+        'joined_at' => ['type' => 'dateTime', 'nullable' => true],
+        'last_assigned_at' => ['type' => 'dateTime', 'nullable' => true],
+        'notes' => ['type' => 'text', 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'volunteers_campaign_id_index'],
+        ['type' => 'index', 'columns' => ['team_id'], 'name' => 'volunteers_team_id_index'],
+        ['type' => 'index', 'columns' => ['assigned_area_id'], 'name' => 'volunteers_assigned_area_id_index'],
+        ['type' => 'index', 'columns' => ['is_active'], 'name' => 'volunteers_is_active_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['user_id'],
+            'references' => ['id'],
+            'on' => 'users',
+            'onDelete' => 'set null',
+        ],
+        [
+            'columns' => ['campaign_id'],
+            'references' => ['id'],
+            'on' => 'campaigns',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['team_id'],
+            'references' => ['id'],
+            'on' => 'teams',
+            'onDelete' => 'set null',
+        ],
+        [
+            'columns' => ['assigned_area_id'],
+            'references' => ['id'],
+            'on' => 'geo_areas',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+    'pii' => ['phone'],
+];

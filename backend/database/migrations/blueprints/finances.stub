@@ -1,0 +1,44 @@
+<?php
+
+return [
+    'table' => 'finances',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'campaign_id' => ['type' => 'foreignId'],
+        'category_id' => ['type' => 'foreignId', 'nullable' => true],
+        'type' => ['type' => 'string', 'length' => 20],
+        'amount' => ['type' => 'decimal', 'precision' => 14, 'scale' => 2],
+        'currency' => ['type' => 'string', 'length' => 3, 'default' => 'EGP'],
+        'transacted_at' => ['type' => 'date'],
+        'reference' => ['type' => 'string', 'length' => 100, 'nullable' => true],
+        'description' => ['type' => 'text', 'nullable' => true],
+        'recorded_by' => ['type' => 'foreignId', 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'finances_campaign_id_index'],
+        ['type' => 'index', 'columns' => ['category_id'], 'name' => 'finances_category_id_index'],
+        ['type' => 'index', 'columns' => ['recorded_by'], 'name' => 'finances_recorded_by_index'],
+        ['type' => 'index', 'columns' => ['type'], 'name' => 'finances_type_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['campaign_id'],
+            'references' => ['id'],
+            'on' => 'campaigns',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['category_id'],
+            'references' => ['id'],
+            'on' => 'expense_categories',
+            'onDelete' => 'set null',
+        ],
+        [
+            'columns' => ['recorded_by'],
+            'references' => ['id'],
+            'on' => 'users',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+];

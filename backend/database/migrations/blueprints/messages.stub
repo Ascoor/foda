@@ -1,0 +1,41 @@
+<?php
+
+return [
+    'table' => 'messages',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'campaign_id' => ['type' => 'foreignId'],
+        'sender_id' => ['type' => 'foreignId', 'nullable' => true],
+        'recipient_type' => ['type' => 'string', 'length' => 80],
+        'recipient_id' => ['type' => 'unsignedBigInteger'],
+        'channel' => ['type' => 'string', 'length' => 40, 'default' => 'sms'],
+        'subject' => ['type' => 'string', 'length' => 255, 'nullable' => true],
+        'content' => ['type' => 'text'],
+        'status' => ['type' => 'string', 'length' => 30, 'default' => 'queued'],
+        'scheduled_at' => ['type' => 'dateTime', 'nullable' => true],
+        'sent_at' => ['type' => 'dateTime', 'nullable' => true],
+        'response_payload' => ['type' => 'json', 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'messages_campaign_id_index'],
+        ['type' => 'index', 'columns' => ['sender_id'], 'name' => 'messages_sender_id_index'],
+        ['type' => 'index', 'columns' => ['recipient_type', 'recipient_id'], 'name' => 'messages_recipient_index'],
+        ['type' => 'index', 'columns' => ['status'], 'name' => 'messages_status_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['campaign_id'],
+            'references' => ['id'],
+            'on' => 'campaigns',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['sender_id'],
+            'references' => ['id'],
+            'on' => 'users',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+    'pii' => ['content'],
+];

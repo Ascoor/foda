@@ -4,23 +4,28 @@ return [
     'table' => 'voters',
     'columns' => [
         'id' => ['type' => 'bigIncrements'],
-        'election_id' => ['type' => 'foreignId'],
+        'campaign_id' => ['type' => 'foreignId'],
         'geo_area_id' => ['type' => 'foreignId', 'nullable' => true],
         'full_name' => ['type' => 'string', 'length' => 255],
         'national_id' => ['type' => 'string', 'length' => 50, 'nullable' => true],
         'phone' => ['type' => 'string', 'length' => 30, 'nullable' => true],
         'email' => ['type' => 'string', 'length' => 255, 'nullable' => true],
         'address' => ['type' => 'string', 'length' => 255, 'nullable' => true],
-        'status' => ['type' => 'string', 'length' => 50, 'default' => 'pending'],
+        'support_status' => ['type' => 'string', 'length' => 20, 'default' => 'undecided'],
+        'last_contact_at' => ['type' => 'dateTime', 'nullable' => true],
+        'notes' => ['type' => 'text', 'nullable' => true],
+        'source' => ['type' => 'string', 'length' => 120, 'nullable' => true],
     ],
     'indexes' => [
-        ['type' => 'index', 'columns' => ['election_id'], 'name' => 'voters_election_id_index'],
+        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'voters_campaign_id_index'],
+        ['type' => 'index', 'columns' => ['geo_area_id'], 'name' => 'voters_geo_area_id_index'],
+        ['type' => 'index', 'columns' => ['support_status'], 'name' => 'voters_support_status_index'],
     ],
     'foreign_keys' => [
         [
-            'columns' => ['election_id'],
+            'columns' => ['campaign_id'],
             'references' => ['id'],
-            'on' => 'elections',
+            'on' => 'campaigns',
             'onDelete' => 'cascade',
         ],
         [

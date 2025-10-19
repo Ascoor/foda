@@ -1,0 +1,35 @@
+<?php
+
+return [
+    'table' => 'teams',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'campaign_id' => ['type' => 'foreignId'],
+        'leader_id' => ['type' => 'foreignId', 'nullable' => true],
+        'name' => ['type' => 'string', 'length' => 150],
+        'slug' => ['type' => 'string', 'length' => 150],
+        'description' => ['type' => 'text', 'nullable' => true],
+        'color' => ['type' => 'string', 'length' => 20, 'nullable' => true],
+        'is_active' => ['type' => 'boolean', 'default' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['slug'], 'name' => 'teams_slug_unique'],
+        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'teams_campaign_id_index'],
+        ['type' => 'index', 'columns' => ['leader_id'], 'name' => 'teams_leader_id_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['campaign_id'],
+            'references' => ['id'],
+            'on' => 'campaigns',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['leader_id'],
+            'references' => ['id'],
+            'on' => 'users',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+];

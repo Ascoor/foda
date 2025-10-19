@@ -1,0 +1,17 @@
+<?php
+
+return [
+    'table' => 'settings',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'group' => ['type' => 'string', 'length' => 100, 'nullable' => true],
+        'key' => ['type' => 'string', 'length' => 150],
+        'value' => ['type' => 'text', 'nullable' => true],
+        'type' => ['type' => 'string', 'length' => 50, 'nullable' => true],
+        'is_encrypted' => ['type' => 'boolean', 'default' => false],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['group', 'key'], 'name' => 'settings_group_key_unique'],
+    ],
+    'soft_deletes' => false,
+];

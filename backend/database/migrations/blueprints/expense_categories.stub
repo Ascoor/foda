@@ -1,0 +1,15 @@
+<?php
+
+return [
+    'table' => 'expense_categories',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'name' => ['type' => 'string', 'length' => 150],
+        'type' => ['type' => 'string', 'length' => 20, 'default' => 'expense'],
+        'description' => ['type' => 'text', 'nullable' => true],
+        'is_active' => ['type' => 'boolean', 'default' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['name', 'type'], 'name' => 'expense_categories_name_type_unique'],
+    ],
+];

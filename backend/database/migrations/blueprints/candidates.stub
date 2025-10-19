@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'table' => 'candidates',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'user_id' => ['type' => 'foreignId', 'nullable' => true],
+        'full_name' => ['type' => 'string', 'length' => 255],
+        'slug' => ['type' => 'string', 'length' => 150],
+        'party' => ['type' => 'string', 'length' => 150, 'nullable' => true],
+        'biography' => ['type' => 'text', 'nullable' => true],
+        'photo_path' => ['type' => 'string', 'length' => 255, 'nullable' => true],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['slug'], 'name' => 'candidates_slug_unique'],
+        ['type' => 'index', 'columns' => ['user_id'], 'name' => 'candidates_user_id_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['user_id'],
+            'references' => ['id'],
+            'on' => 'users',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+];

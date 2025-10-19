@@ -7,11 +7,16 @@ return [
         'name' => ['type' => 'string', 'length' => 255],
         'email' => ['type' => 'string', 'length' => 255],
         'password' => ['type' => 'string', 'length' => 255],
-        'remember_token' => ['type' => 'string', 'length' => 100, 'nullable' => true],
+        'status' => ['type' => 'string', 'length' => 20, 'default' => 'active'],
         'role_id' => ['type' => 'foreignId', 'nullable' => true],
+        'team_id' => ['type' => 'foreignId', 'nullable' => true],
+        'email_verified_at' => ['type' => 'dateTime', 'nullable' => true],
+        'remember_token' => ['type' => 'string', 'length' => 100, 'nullable' => true],
     ],
     'indexes' => [
         ['type' => 'unique', 'columns' => ['email'], 'name' => 'users_email_unique'],
+        ['type' => 'index', 'columns' => ['role_id'], 'name' => 'users_role_id_index'],
+        ['type' => 'index', 'columns' => ['team_id'], 'name' => 'users_team_id_index'],
     ],
     'foreign_keys' => [
         [
@@ -20,7 +25,13 @@ return [
             'on' => 'roles',
             'onDelete' => 'set null',
         ],
+        [
+            'columns' => ['team_id'],
+            'references' => ['id'],
+            'on' => 'teams',
+            'onDelete' => 'set null',
+        ],
     ],
     'soft_deletes' => true,
-    'pii' => ['email'],
+    'pii' => ['email', 'name'],
 ];

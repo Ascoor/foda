@@ -1,0 +1,36 @@
+<?php
+
+return [
+    'table' => 'agents',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'committee_id' => ['type' => 'foreignId'],
+        'user_id' => ['type' => 'foreignId', 'nullable' => true],
+        'full_name' => ['type' => 'string', 'length' => 255],
+        'phone' => ['type' => 'string', 'length' => 30, 'nullable' => true],
+        'role' => ['type' => 'string', 'length' => 100, 'nullable' => true],
+        'notes' => ['type' => 'text', 'nullable' => true],
+        'is_active' => ['type' => 'boolean', 'default' => true],
+    ],
+    'indexes' => [
+        ['type' => 'index', 'columns' => ['committee_id'], 'name' => 'agents_committee_id_index'],
+        ['type' => 'index', 'columns' => ['user_id'], 'name' => 'agents_user_id_index'],
+        ['type' => 'index', 'columns' => ['is_active'], 'name' => 'agents_is_active_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['committee_id'],
+            'references' => ['id'],
+            'on' => 'committees',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['user_id'],
+            'references' => ['id'],
+            'on' => 'users',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+    'pii' => ['full_name', 'phone'],
+];
