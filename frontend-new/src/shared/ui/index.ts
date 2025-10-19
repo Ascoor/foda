@@ -8,3 +8,5 @@ export * from "./language-toggle";
 export * from "./theme-toggle";
 export * from "./logo";
 export * from "./user-menu";
+export * from "./role-gate";
+export * from "./error-boundary";

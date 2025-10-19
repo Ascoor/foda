@@ -1,3 +1,1 @@
-import { useThemeContext } from "@/shared/contexts/theme-context";
-
-export const useTheme = useThemeContext;
+export { useTheme } from "@/shared/contexts/theme-context";

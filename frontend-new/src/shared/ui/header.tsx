@@ -44,10 +44,14 @@ export const Header = () => {
   );
 
   const activeNav = useMemo(() => {
-    const currentPath = location.pathname === "/" ? "/" : location.pathname.replace(/\/$/, "");
-    return sidebarNavItems.find((item) =>
-      item.path === "/" ? currentPath === "/" : currentPath.startsWith(item.path),
-    );
+    const trimmed = location.pathname.replace(/\/$/, "");
+    const currentPath = trimmed === "" ? "/" : trimmed;
+    return sidebarNavItems.find((item) => {
+      if (item.path === "/dashboard") {
+        return currentPath === "/dashboard";
+      }
+      return currentPath.startsWith(item.path);
+    });
   }, [location.pathname]);
 
   const title = activeNav ? t(activeNav.labelKey) : t("appName");

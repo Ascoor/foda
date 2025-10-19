@@ -1,58 +1,69 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
-
-type Theme = "light" | "dark";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { themeTokens, type ThemeMode } from "@shared/lib/theme-tokens";
 
 type ThemeContextValue = {
-  theme: Theme;
+  theme: ThemeMode;
   toggleTheme: () => void;
-  setTheme: (theme: Theme) => void;
 };
 
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextValue>({
+  theme: "light",
+  toggleTheme: () => undefined,
+});
 
-const getPreferredTheme = (): Theme => {
+const getInitialTheme = (): ThemeMode => {
   if (typeof window === "undefined") {
     return "light";
   }
-  const stored = window.localStorage.getItem("campaign-theme") as Theme | null;
-  if (stored) return stored;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+
+  const stored = window.localStorage.getItem("theme-mode");
+  if (stored === "light" || stored === "dark") {
+    return stored;
+  }
+
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 };
 
-export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme>(getPreferredTheme);
+type ThemeProviderProps = {
+  children: ReactNode;
+};
+
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
+  const [theme, setTheme] = useState<ThemeMode>(() => getInitialTheme());
 
   useEffect(() => {
     if (typeof document === "undefined") return;
-    document.body.classList.toggle("dark", theme === "dark");
-    window.localStorage.setItem("campaign-theme", theme);
+
+    const root = document.documentElement;
+    root.classList.toggle("dark", theme === "dark");
+    root.style.backgroundColor = themeTokens[theme].background;
+    root.style.color = themeTokens[theme].foreground;
+
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("theme-mode", theme);
+    }
   }, [theme]);
 
-  const value = useMemo(
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const listener = (event: MediaQueryListEvent) => {
+      setTheme(event.matches ? "dark" : "light");
+    };
+
+    media.addEventListener("change", listener);
+    return () => media.removeEventListener("change", listener);
+  }, []);
+
+  const value = useMemo<ThemeContextValue>(
     () => ({
       theme,
-      toggleTheme: () => setThemeState((prev) => (prev === "light" ? "dark" : "light")),
-      setTheme: setThemeState,
+      toggleTheme: () => setTheme((prev) => (prev === "light" ? "dark" : "light")),
     }),
-    [theme]
+    [theme],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
-export const useThemeContext = () => {
-  const context = useContext(ThemeContext);
-  if (!context) {
-    throw new Error("useThemeContext must be used within ThemeProvider");
-  }
-  return context;
-};
+export const useTheme = () => useContext(ThemeContext);
