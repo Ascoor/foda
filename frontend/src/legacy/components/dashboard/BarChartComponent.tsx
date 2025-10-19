@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis } from "recharts";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@shared/lib/utils";
 
 export interface BarDataPoint {
   name: string;

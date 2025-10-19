@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@shared/contexts/LanguageContext';
-import { GeoAreaData } from '@/data/mockGeoData';
+import { GeoAreaData } from '@shared/data/mockGeoData';
 import { Card, CardContent, CardHeader, CardTitle } from '@shared/ui/card';
 import { Badge } from '@shared/ui/badge';
 import { Progress } from '@shared/ui/progress';

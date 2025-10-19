@@ -1,6 +1,6 @@
 import type { FeatureCollection } from 'geojson';
-import { request } from '@/lib/api';
-import { API_ENDPOINTS } from '@/lib/endpoints';
+import { request } from '@shared/lib/api';
+import { API_ENDPOINTS } from '@shared/lib/endpoints';
 
 export const fetchCommitteeGeo = async () =>
   request<FeatureCollection>(

@@ -3,9 +3,9 @@ import { MemoryRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 import { AuthProvider } from '@shared/contexts/AuthContext';
 import { Login } from '../Login';
-import api from '@/lib/api';
+import api from '@shared/lib/api';
 
-vi.mock('@/lib/api', () => ({
+vi.mock('@shared/lib/api', () => ({
   default: {
     post: vi.fn(() => Promise.resolve({ data: { token: 't' } })),
   },

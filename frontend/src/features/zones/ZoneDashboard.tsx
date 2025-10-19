@@ -30,7 +30,7 @@ import {
   TableRow,
 } from '@shared/ui/table';
 import { useLanguage } from '@shared/contexts/LanguageContext';
-import { cn } from '@/lib/utils';
+import { cn } from '@shared/lib/utils';
 import { MapContainer, Polygon, TileLayer, Tooltip } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';

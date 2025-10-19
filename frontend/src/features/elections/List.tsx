@@ -14,7 +14,7 @@ import {
 } from '@shared/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@shared/ui/alert';
 import { DataTableSkeleton, EmptyState } from '@shared/ui/data-table-skeleton';
-import { safeArray } from '@/lib/utils';
+import { safeArray } from '@shared/lib/utils';
 import {
   fetchElections,
   deleteElection,

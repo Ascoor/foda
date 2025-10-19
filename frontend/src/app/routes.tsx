@@ -1,14 +1,12 @@
 import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { MainLayout } from "@/components/layout/MainLayout";
-import { BarbaTransitionProvider } from "@/components/transition/BarbaTransitionProvider";
- 
-import { NotificationProvider } from "@shared/contexts/NotificationContext";
- 
-import { Login } from "@/pages/Login";
-import NotFound from "@/pages/NotFound";
-import { AuthRedirect } from "@/pages/AuthRedirect";
+import { ProtectedRoute } from "@legacy/components/ProtectedRoute";
+import { MainLayout } from "@legacy/components/layout/MainLayout";
+import { BarbaTransitionProvider } from "@legacy/components/transition/BarbaTransitionProvider";
+
+import { Login } from "@legacy/pages/Login";
+import NotFound from "@legacy/pages/NotFound";
+import { AuthRedirect } from "@legacy/pages/AuthRedirect";
 
 import { EnhancedDashboard } from "@features/dashboard/EnhancedDashboard";
 import { ElectionsList } from "@features/elections/List";
@@ -42,15 +40,13 @@ const MainLayoutWrapper = () => {
   const namespace = location.pathname.replace(/\//g, "-") || "app";
 
   return (
-    <NotificationProvider>
-      <div
-        data-barba="container"
-        data-barba-namespace={namespace}
-        className="min-h-screen"
-      >
-        <MainLayout />
-      </div>
-    </NotificationProvider>
+    <div
+      data-barba="container"
+      data-barba-namespace={namespace}
+      className="min-h-screen"
+    >
+      <MainLayout />
+    </div>
   );
 };
 

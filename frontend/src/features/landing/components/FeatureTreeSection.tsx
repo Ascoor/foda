@@ -1,6 +1,6 @@
 import { useMemo, useRef } from "react";
-import type { FeatureNode } from "@/data/landing";
-import { computeTreeLayout } from "@/vendor/treejs";
+import type { FeatureNode } from "@shared/data/landing";
+import { computeTreeLayout } from "@shared/vendor/treejs";
 import { useFeatureTreeAnimation } from "../hooks/useFeatureTreeAnimation";
 
 interface FeatureTreeSectionProps {

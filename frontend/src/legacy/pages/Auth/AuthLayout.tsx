@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { Header } from "@/components/layout/Header";
+import { Header } from "@legacy/components/layout/Header";
 import { useLanguage } from "@shared/contexts/LanguageContext";
-import { cn } from "@/lib/utils";
+import { cn } from "@shared/lib/utils";
 
 interface AuthLayoutProps {
   title: string;

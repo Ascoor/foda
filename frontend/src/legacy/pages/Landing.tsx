@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Header } from "@/components/layout/Header";
+import { Header } from "@legacy/components/layout/Header";
 import { Button } from "@shared/ui/button";
 import landingImage from "@/assets/img/landing.webp";
 

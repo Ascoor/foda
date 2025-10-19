@@ -1,6 +1,6 @@
 import { Component, ReactNode } from 'react';
 import { Alert, AlertTitle, AlertDescription } from '@shared/ui/alert';
-import { logError } from '@/lib/logging';
+import { logError } from '@shared/lib/logging';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
