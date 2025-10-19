@@ -1,64 +1,201 @@
-import { cn } from "@/shared/lib/utils";
-import { Button } from "@/shared/ui/button";
+import { useMemo, useState } from "react";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import {
-  Activity,
-  Gauge,
-  Group,
-  HandCoins,
-  MapPinned,
+  BarChart3,
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  Home,
+  Map,
+  MessageCircle,
   Settings,
   Users,
+  Vote,
 } from "lucide-react";
-import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import type { LucideIcon } from "lucide-react";
+import { cn } from "@shared/lib/utils";
+import { useLanguage } from "@shared/hooks";
+import { Button } from "@shared/ui/button";
 
-type SidebarProps = {
-  className?: string;
+const sidebarSpring = { type: "spring", stiffness: 260, damping: 30 } as const;
+const navSpring = { type: "spring", stiffness: 420, damping: 40 } as const;
+
+export type SidebarNavItem = {
+  icon: LucideIcon;
+  labelKey: string;
+  path: string;
 };
 
-const NAV_ITEMS = [
-  { to: "/dashboard", icon: Gauge, labelKey: "dashboard" },
-  { to: "/dashboard/voters", icon: Users, labelKey: "voters" },
-  { to: "/volunteers", icon: Group, labelKey: "volunteers" },
-  { to: "/dashboard/donations", icon: HandCoins, labelKey: "donations" },
-  { to: "/dashboard/reports", icon: Activity, labelKey: "reports" },
-  { to: "/dashboard/map", icon: MapPinned, labelKey: "map" },
-  { to: "/dashboard/settings", icon: Settings, labelKey: "settings" },
+export const sidebarNavItems: SidebarNavItem[] = [
+  { icon: Home, labelKey: "dashboard", path: "/" },
+  { icon: Users, labelKey: "voters", path: "/voters" },
+  { icon: Users, labelKey: "volunteers", path: "/volunteers" },
+  { icon: Map, labelKey: "fieldTours", path: "/field-tours" },
+  { icon: MessageCircle, labelKey: "messages", path: "/messages" },
+  { icon: Heart, labelKey: "donations", path: "/donations" },
+  { icon: BarChart3, labelKey: "analytics", path: "/analytics" },
+  { icon: Vote, labelKey: "gotv", path: "/gotv" },
+  { icon: Settings, labelKey: "settings", path: "/settings" },
 ];
 
-export const Sidebar = ({ className }: SidebarProps) => {
+type SidebarNavProps = {
+  isCollapsed?: boolean;
+};
+
+export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
   const { t } = useTranslation("common");
 
   return (
-    <aside
-      className={cn(
-        "hidden w-64 flex-col gap-2 border-r border-slate-200 bg-white/80 p-4 backdrop-blur dark:border-slate-800 dark:bg-slate-900/70 lg:flex",
-        className
-      )}
-    >
-      <nav className="flex flex-1 flex-col gap-1">
-        {NAV_ITEMS.map(({ to, icon: Icon, labelKey }) => (
-          <Button
-            key={to}
-            asChild
-            variant="ghost"
-            className="justify-start gap-3 text-slate-600 hover:bg-primary/10 hover:text-primary dark:text-slate-300"
+    <LayoutGroup id="sidebar-nav">
+      <nav className="mt-6 flex flex-col gap-1">
+        {sidebarNavItems.map(({ icon: Icon, labelKey, path }) => (
+          <NavLink
+            key={path}
+            to={path}
+            end={path === "/"}
+            className="relative block"
+            aria-label={t(labelKey)}
           >
-            <NavLink
-              to={to}
-              className={({ isActive }) =>
-                cn(
-                  "flex w-full items-center",
-                  isActive && "rounded-lg bg-primary/10 text-primary"
-                )
-              }
-            >
-              <Icon className="mr-3 h-4 w-4" />
-              <span className="text-sm font-medium">{t(labelKey)}</span>
-            </NavLink>
-          </Button>
+            {({ isActive }) => (
+              <motion.div
+                layout
+                transition={navSpring}
+                className={cn(
+                  "relative flex items-center gap-3 overflow-hidden rounded-2xl px-3 py-2 text-sm font-medium transition-colors",
+                  isCollapsed ? "justify-center" : "justify-start",
+                  isActive
+                    ? "text-primary"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="active-nav"
+                    transition={navSpring}
+                    className="absolute inset-0 rounded-2xl bg-primary/10 shadow-[0_12px_30px_rgba(79,70,229,0.18)]"
+                  />
+                )}
+                <Icon className="relative z-10 h-5 w-5" />
+                <AnimatePresence mode="wait" initial={false}>
+                  {!isCollapsed && (
+                    <motion.span
+                      key={labelKey}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -8 }}
+                      transition={{ duration: 0.18 }}
+                      className="relative z-10"
+                    >
+                      {t(labelKey)}
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </NavLink>
         ))}
       </nav>
-    </aside>
+    </LayoutGroup>
+  );
+};
+
+export const Sidebar = () => {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { direction } = useLanguage();
+  const ToggleIcon = useMemo(() => {
+    if (direction === "rtl") {
+      return isCollapsed ? ChevronLeft : ChevronRight;
+    }
+    return isCollapsed ? ChevronRight : ChevronLeft;
+  }, [direction, isCollapsed]);
+
+  return (
+    <motion.aside
+      layout
+      initial={{ opacity: 0, x: direction === "rtl" ? 64 : -64 }}
+      animate={{ opacity: 1, x: 0, width: isCollapsed ? 96 : 288 }}
+      transition={sidebarSpring}
+      className="relative hidden h-full shrink-0 flex-col overflow-hidden border-r border-border/50 bg-gradient-to-b from-background/95 via-background/90 to-background/70 px-4 py-6 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur-xl md:flex"
+    >
+      <div className="flex h-full flex-col gap-6">
+        <div className={cn("flex items-center gap-3", isCollapsed ? "justify-center" : "justify-between")}
+        >
+          <motion.div layout className="flex items-center gap-3">
+            <motion.div
+              layout
+              transition={sidebarSpring}
+              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/15 text-primary"
+            >
+              <span className="text-sm font-semibold">AE</span>
+            </motion.div>
+            <AnimatePresence initial={false}>
+              {!isCollapsed && (
+                <motion.div
+                  key="brand"
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.2 }}
+                  className="leading-tight"
+                >
+                  <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-muted-foreground">
+                    Aurora Election
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">Control Center</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+          <Button
+            type="button"
+            size="icon"
+            variant="ghost"
+            onClick={() => setIsCollapsed((prev) => !prev)}
+            className="hidden size-9 items-center justify-center rounded-2xl border border-border/60 bg-background/70 text-muted-foreground transition hover:text-foreground lg:flex"
+            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          >
+            <ToggleIcon className="h-4 w-4" />
+          </Button>
+        </div>
+
+        <SidebarNav isCollapsed={isCollapsed} />
+
+        <div className="mt-auto rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-4 text-xs">
+          <AnimatePresence initial={false}>
+            {!isCollapsed && (
+              <motion.div
+                key="campaign-info"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                transition={{ duration: 0.2 }}
+                className="space-y-2 text-muted-foreground"
+              >
+                <p className="text-sm font-semibold text-primary">Campaign Pulse</p>
+                <p>
+                  Monitor turnout, volunteer shifts, and outreach without leaving the command center.
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          <motion.div
+            layout
+            className={cn(
+              "mt-3 flex items-center gap-2 text-primary",
+              isCollapsed && "justify-center"
+            )}
+          >
+            <motion.span
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 2.4, repeat: Infinity }}
+              className="inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500"
+            />
+            {!isCollapsed && <span className="text-xs font-semibold uppercase tracking-[0.3em]">Live Sync</span>}
+          </motion.div>
+        </div>
+      </div>
+    </motion.aside>
   );
 };

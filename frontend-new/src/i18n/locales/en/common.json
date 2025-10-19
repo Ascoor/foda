@@ -14,5 +14,9 @@
   "volunteers": "Volunteers",
   "donations": "Donations",
   "reports": "Reports",
-  "map": "Campaign Map"
+  "map": "Campaign Map",
+  "messages": "Messages",
+  "fieldTours": "Field Tours",
+  "analytics": "Analytics",
+  "gotv": "GOTV Day"
 }

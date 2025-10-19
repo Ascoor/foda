@@ -1,17 +1,26 @@
+import { motion } from "framer-motion";
 import { AlertsPanel } from "./components/alerts-panel";
 import { AttendanceTable } from "./components/attendance-table";
 import { GotvDashboard } from "./components/gotv-dashboard";
 import { useGotv } from "./hooks/use-gotv";
 
-export const GotvPage = () => {
+const pageMotion = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+};
+
+export const GOTVPage = () => {
   const { voters, totals, markVoted, isLoading } = useGotv();
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-background via-white to-slate-100 p-6 dark:from-background-dark dark:via-slate-900 dark:to-slate-950">
-      <header className="rounded-3xl bg-primary/10 p-6 text-primary shadow">
+    <motion.div {...pageMotion} transition={{ duration: 0.3 }} className="space-y-6">
+      <section className="rounded-3xl bg-primary/10 p-6 text-primary shadow">
         <h1 className="text-3xl font-bold">GOTV Command</h1>
-        <p className="mt-1 text-sm opacity-80">Track turnout in real time and triage support needs.</p>
-      </header>
+        <p className="mt-1 text-sm opacity-80">
+          Track turnout in real time and triage support needs.
+        </p>
+      </section>
 
       <GotvDashboard totals={totals} />
 
@@ -19,6 +28,6 @@ export const GotvPage = () => {
         <AttendanceTable voters={voters} onToggle={markVoted} isLoading={isLoading} />
         <AlertsPanel />
       </div>
-    </div>
+    </motion.div>
   );
 };

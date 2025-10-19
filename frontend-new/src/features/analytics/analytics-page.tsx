@@ -1,17 +1,26 @@
+import { motion } from "framer-motion";
 import { HeatMap } from "./components/heat-map";
 import { VolunteerProgressChart } from "./components/volunteer-progress-chart";
 import { VoterStatsChart } from "./components/voter-stats-chart";
 import { useAnalytics } from "./hooks/use-analytics";
 
+const pageMotion = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+};
+
 export const AnalyticsPage = () => {
   const { kpis, voterStats, volunteerProgress, heatMap } = useAnalytics();
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-background via-white to-slate-100 p-6 dark:from-background-dark dark:via-slate-900 dark:to-slate-950">
-      <header className="rounded-3xl bg-primary/10 p-6 text-primary shadow">
+    <motion.div {...pageMotion} transition={{ duration: 0.3 }} className="space-y-6">
+      <section className="rounded-3xl bg-primary/10 p-6 text-primary shadow">
         <h1 className="text-3xl font-bold">Campaign analytics</h1>
-        <p className="mt-1 text-sm opacity-80">High-level KPIs to guide field, finance, and voter contact.</p>
-      </header>
+        <p className="mt-1 text-sm opacity-80">
+          High-level KPIs to guide field, finance, and voter contact.
+        </p>
+      </section>
 
       <section className="grid gap-4 md:grid-cols-3">
         {kpis.map((kpi) => (
@@ -38,6 +47,6 @@ export const AnalyticsPage = () => {
       <VoterStatsChart data={voterStats} />
       <VolunteerProgressChart data={volunteerProgress} />
       <HeatMap data={heatMap} />
-    </div>
+    </motion.div>
   );
 };

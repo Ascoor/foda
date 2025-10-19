@@ -1,17 +1,26 @@
+import { motion } from "framer-motion";
 import { DonationForm } from "./components/donation-form";
 import { DonationList } from "./components/donation-list";
 import { DonationSummary } from "./components/donation-summary";
 import { useDonations } from "./hooks/use-donations";
 
+const pageMotion = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+};
+
 export const DonationsPage = () => {
   const { donations, summary, addDonation } = useDonations();
 
   return (
-    <div className="space-y-6 bg-gradient-to-br from-background via-white to-slate-100 p-6 dark:from-background-dark dark:via-slate-900 dark:to-slate-950">
-      <header className="rounded-3xl bg-primary/10 p-6 text-primary shadow">
+    <motion.div {...pageMotion} transition={{ duration: 0.3 }} className="space-y-6">
+      <section className="rounded-3xl bg-primary/10 p-6 text-primary shadow">
         <h1 className="text-3xl font-bold">Finance Desk</h1>
-        <p className="mt-1 text-sm opacity-80">Capture field donations and monitor manual entries.</p>
-      </header>
+        <p className="mt-1 text-sm opacity-80">
+          Capture field donations and monitor manual entries.
+        </p>
+      </section>
 
       <DonationSummary summary={summary} />
 
@@ -19,6 +28,6 @@ export const DonationsPage = () => {
         <DonationForm onSubmit={addDonation} />
         <DonationList donations={donations} />
       </div>
-    </div>
+    </motion.div>
   );
 };
