@@ -8,7 +8,7 @@ import { Login } from "@legacy/pages/Login";
 import NotFound from "@legacy/pages/NotFound";
 import { AuthRedirect } from "@legacy/pages/AuthRedirect";
 
-import { ArchitecturalControlCenter } from "@features/dashboard/ArchitecturalControlCenter";
+import { EnhancedDashboard } from "@features/dashboard/EnhancedDashboard";
 import { ElectionsList } from "@features/elections/List";
 import { ElectionDetails } from "@features/elections/Details";
 import { GeoAreasDashboard } from "@features/geo-areas/Dashboard";
@@ -71,7 +71,7 @@ export const router = createBrowserRouter([
           {
             element: <MainLayoutWrapper />,
             children: [
-              { path: "/dashboard", element: <ArchitecturalControlCenter /> },
+              { path: "/dashboard", element: <EnhancedDashboard /> },
               { path: "/elections", element: <ElectionsList /> },
               { path: "/elections/:id", element: <ElectionDetails /> },
               { path: "/geo-areas", element: <GeoAreasDashboard /> },
