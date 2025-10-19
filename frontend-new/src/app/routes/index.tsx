@@ -59,6 +59,7 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
         children: [
+          { index: true, element: <Navigate to="/dashboard" replace /> },
           { path: "dashboard", element: <DashboardPage /> },
           { path: "voters", element: <VotersPage /> },
           { path: "volunteers", element: <VolunteersPage /> },
@@ -76,6 +77,9 @@ export const router = createBrowserRouter([
 
 export const AppRoutes = () => (
   <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading…</div>}>
-    <RouterProvider router={router} fallbackElement={<div className="flex h-screen items-center justify-center">Loading…</div>} />
+    <RouterProvider
+      router={router}
+      fallbackElement={<div className="flex h-screen items-center justify-center">Loading…</div>}
+    />
   </Suspense>
 );

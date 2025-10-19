@@ -35,14 +35,14 @@ export const UserMenu = () => {
       <DropdownMenu.Trigger asChild>
         <Button
           type="button"
-          variant="ghost"
+          variant="glass"
           size="sm"
-          className="h-10 gap-3 rounded-full border border-border/60 bg-background/70 px-3 text-sm font-semibold text-foreground transition hover:text-foreground"
+          className="h-10 gap-3 rounded-full px-3 text-sm font-semibold"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-primary">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsla(var(--primary)/0.18)] text-primary">
             {initials}
           </span>
-          <span className="hidden sm:inline-flex max-w-[140px] truncate text-left text-sm font-semibold">
+          <span className="hidden sm:inline-flex max-w-[140px] truncate text-left text-sm font-semibold text-foreground">
             {user?.name ?? t("guest")}
           </span>
         </Button>
@@ -55,9 +55,9 @@ export const UserMenu = () => {
               <motion.div
                 {...menuMotion}
                 transition={{ duration: 0.2 }}
-                className="min-w-[220px] rounded-2xl border border-border/60 bg-background/95 p-2 text-sm shadow-xl backdrop-blur-xl"
+                className="min-w-[220px] rounded-[var(--radius-xl)] border border-border/60 bg-surface/90 p-3 text-sm shadow-[var(--shadow-md)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)]"
               >
-                <div className="rounded-xl bg-muted/40 px-3 py-2 text-xs text-muted-foreground">
+                <div className="rounded-[var(--radius-md)] bg-muted/20 px-3 py-2 text-xs text-muted-foreground">
                   <p className="text-[11px] font-medium uppercase tracking-[0.3em] text-muted-foreground">
                     {t("account")}
                   </p>
@@ -68,7 +68,7 @@ export const UserMenu = () => {
 
                 <DropdownMenu.Item
                   className={cn(
-                    "mt-2 flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground outline-none transition hover:bg-muted/60 focus:bg-muted/60",
+                    "mt-2 flex cursor-pointer items-center gap-3 rounded-[var(--radius-md)] px-3 py-2 text-sm font-medium text-muted-foreground outline-none transition hover:bg-muted/50 focus:bg-muted/50",
                   )}
                 >
                   <User className="h-4 w-4" />
@@ -77,7 +77,7 @@ export const UserMenu = () => {
 
                 <DropdownMenu.Item
                   className={cn(
-                    "mt-1 flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground outline-none transition hover:bg-muted/60 focus:bg-muted/60",
+                    "mt-1 flex cursor-pointer items-center gap-3 rounded-[var(--radius-md)] px-3 py-2 text-sm font-medium text-muted-foreground outline-none transition hover:bg-muted/50 focus:bg-muted/50",
                   )}
                 >
                   <Settings className="h-4 w-4" />
@@ -89,7 +89,7 @@ export const UserMenu = () => {
                     event.preventDefault();
                     void logout();
                   }}
-                  className="mt-1 flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-red-500 outline-none transition hover:bg-red-500/10 focus:bg-red-500/10"
+                  className="mt-1 flex cursor-pointer items-center gap-3 rounded-[var(--radius-md)] px-3 py-2 text-sm font-semibold text-red-500 outline-none transition hover:bg-red-500/10 focus:bg-red-500/10"
                 >
                   <LogOut className="h-4 w-4" />
                   {t("logout")}

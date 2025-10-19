@@ -16,11 +16,11 @@ export const LanguageToggle = () => {
   return (
     <Button
       type="button"
-      variant="ghost"
+      variant="glass"
       size="sm"
       onClick={toggleLanguage}
       aria-label={t("switchLanguage")}
-      className="h-10 gap-2 rounded-full border border-border/60 bg-background/70 px-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-muted-foreground transition hover:text-foreground"
+      className="h-10 gap-2 rounded-full px-4 text-[11px] font-semibold uppercase tracking-[0.32em]"
     >
       <Globe className="h-4 w-4" />
       <AnimatePresence mode="wait" initial={false}>

@@ -11,11 +11,11 @@ export const ThemeToggle = () => {
   return (
     <Button
       type="button"
-      variant="ghost"
+      variant="glass"
       size="icon"
       onClick={toggleTheme}
       aria-label={t("switchTheme")}
-      className="relative overflow-hidden rounded-full border border-border/60 bg-background/70 text-muted-foreground transition hover:text-foreground"
+      className="relative overflow-hidden rounded-full"
     >
       <AnimatePresence initial={false} mode="wait">
         <motion.span
@@ -27,9 +27,9 @@ export const ThemeToggle = () => {
           className="flex h-10 w-10 items-center justify-center"
         >
           {theme === "light" ? (
-            <Moon className="h-4 w-4 text-primary" />
+            <Moon className="h-4 w-4 text-secondary" />
           ) : (
-            <Sun className="h-4 w-4 text-amber-400" />
+            <Sun className="h-4 w-4 text-accent" />
           )}
         </motion.span>
       </AnimatePresence>

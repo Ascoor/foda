@@ -63,14 +63,14 @@ export const Header = () => {
       initial={{ opacity: 0, y: -24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={headerSpring}
-      className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl"
+      className="sticky top-0 z-40 border-b border-border/50 bg-surface/70 shadow-[var(--shadow-sm)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)]"
     >
       <div className="flex items-center justify-between gap-6 px-6 py-4">
         <div className="flex items-center gap-3">
           <motion.div
             layout
             transition={headerSpring}
-            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary/15 text-primary"
+            className="flex h-11 w-11 items-center justify-center rounded-[var(--radius-lg)] bg-[hsla(var(--primary)/0.18)] text-primary shadow-[0_18px_40px_-28px_hsla(var(--primary)/0.55)]"
           >
             <span className="text-base font-semibold">CC</span>
           </motion.div>
@@ -101,7 +101,7 @@ export const Header = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2 }}
-              className="hidden min-w-[120px] flex-col rounded-xl border border-border/60 bg-background/80 px-3 py-2 text-right text-xs font-medium text-muted-foreground shadow-sm sm:flex"
+              className="hidden min-w-[120px] flex-col rounded-[var(--radius-md)] border border-border/50 bg-surface/70 px-3 py-2 text-right text-xs font-medium text-muted-foreground shadow-[var(--shadow-sm)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)] sm:flex"
             >
               <span className="text-foreground">{timeLabel}</span>
               <span>{dateLabel}</span>
@@ -109,10 +109,10 @@ export const Header = () => {
           </AnimatePresence>
 
           <Button
-            variant="ghost"
+            variant="glass"
             size="icon"
             aria-label={t("notifications")}
-            className="relative rounded-full border border-border/60 bg-background/70 text-muted-foreground transition hover:text-foreground"
+            className="relative"
           >
             <Bell className="h-4 w-4" />
             {notifications > 0 && (

@@ -1,18 +1,64 @@
 import type { Config } from "tailwindcss";
 
+const withOpacity = (variable: string) =>
+  ({ opacityValue }: { opacityValue?: string }) => {
+    if (opacityValue !== undefined) {
+      return `hsl(var(${variable}) / ${opacityValue})`;
+    }
+    return `hsl(var(${variable}))`;
+  };
+
 const config: Config = {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
   theme: {
     extend: {
       colors: {
-        primary: "#1E88E5",
-        accent: "#607D8B",
-        background: "#F7F9FC",
-        "background-dark": "#111827",
+        background: withOpacity("--background"),
+        foreground: withOpacity("--foreground"),
+        surface: {
+          DEFAULT: withOpacity("--surface"),
+          foreground: withOpacity("--surface-foreground"),
+          secondary: withOpacity("--surface-secondary"),
+          "secondary-foreground": withOpacity("--surface-secondary-foreground"),
+        },
+        primary: {
+          DEFAULT: withOpacity("--primary"),
+          foreground: withOpacity("--primary-foreground"),
+        },
+        secondary: {
+          DEFAULT: withOpacity("--secondary"),
+          foreground: withOpacity("--secondary-foreground"),
+        },
+        accent: {
+          DEFAULT: withOpacity("--accent"),
+          foreground: withOpacity("--accent-foreground"),
+        },
+        muted: {
+          DEFAULT: withOpacity("--muted"),
+          foreground: withOpacity("--muted-foreground"),
+        },
+        border: withOpacity("--border"),
+        ring: withOpacity("--ring"),
+      },
+      borderRadius: {
+        xs: "var(--radius-xs)",
+        sm: "var(--radius-sm)",
+        md: "var(--radius-md)",
+        lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
       },
       fontFamily: {
-        sans: ["'Inter'", "system-ui", "sans-serif"],
+        sans: ["var(--font-family-base)", "system-ui", "sans-serif"],
+        display: ["var(--font-family-display)", "system-ui", "sans-serif"],
+      },
+      boxShadow: {
+        glow: "var(--shadow-glow)",
+        glass: "var(--shadow-md)",
+        elevation: "var(--shadow-lg)",
+      },
+      backgroundImage: {
+        "brand-radial": "radial-gradient(120% 120% at 14% -12%, hsla(var(--primary) / 0.18) 0%, transparent 60%)",
       },
     },
   },

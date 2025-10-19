@@ -35,8 +35,19 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     i18n.changeLanguage(language);
     if (typeof document !== "undefined") {
+      const dir = language === "ar" ? "rtl" : "ltr";
       document.documentElement.lang = language;
-      document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+      document.documentElement.dir = dir;
+      document.documentElement.classList.toggle("rtl", dir === "rtl");
+      document.documentElement.classList.toggle("ltr", dir === "ltr");
+
+      document.body.dir = dir;
+      document.body.dataset.direction = dir;
+      document.body.classList.toggle("rtl", dir === "rtl");
+      document.body.classList.toggle("ltr", dir === "ltr");
+      document.body.style.fontFamily = dir === "rtl"
+        ? "var(--font-family-rtl)"
+        : "var(--font-family-base)";
     }
     if (typeof window !== "undefined") {
       window.localStorage.setItem("campaign-language", language);
