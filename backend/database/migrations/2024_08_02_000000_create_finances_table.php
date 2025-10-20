@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->id();
-            $table->decimal('amount', 15, 2);
-            $table->string('type');
+            $table->foreignId('campaign_id')->constrained('campaigns')->cascadeOnDelete();
+            $table->enum('type', ['expense', 'donation']);
+            $table->foreignId('category_id')->nullable()->constrained('expense_categories')->nullOnDelete();
+            $table->decimal('amount', 14, 2);
             $table->date('date');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('reference_id')->nullable();
-            $table->foreignId('category_id')->constrained('expense_categories');
             $table->timestamps();
         });
     }

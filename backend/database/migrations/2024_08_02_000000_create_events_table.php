@@ -10,14 +10,11 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('event_id')->unique();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('organiser');
+            $table->string('title');
+            $table->foreignId('campaign_id')->constrained('campaigns')->cascadeOnDelete();
             $table->string('location');
-            $table->date('date');
-            $table->foreignId('area_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
+            $table->dateTime('date');
+            $table->enum('type', ['conference', 'field', 'meeting']);
             $table->timestamps();
         });
     }

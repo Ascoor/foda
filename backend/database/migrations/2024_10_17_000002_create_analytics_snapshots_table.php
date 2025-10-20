@@ -10,15 +10,10 @@ return new class extends Migration
     {
         Schema::create('analytics_snapshots', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('election_id')->nullable()->constrained('elections')->nullOnDelete();
-            $table->foreignId('campaign_id')->nullable()->constrained('campaigns')->cascadeOnDelete();
-            $table->string('metric_key', 120);
-            $table->date('snapshot_date');
-            $table->json('payload');
-            $table->decimal('forecast_value', 12, 2)->nullable();
-            $table->timestamps();
-
-            $table->unique(['campaign_id', 'metric_key', 'snapshot_date'], 'analytics_snapshots_unique_idx');
+            $table->foreignId('campaign_id')->constrained('campaigns')->cascadeOnDelete();
+            $table->string('metric');
+            $table->decimal('value', 14, 4);
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

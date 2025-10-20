@@ -4,11 +4,9 @@ return [
     'table' => 'geo_areas',
     'columns' => [
         'id' => ['type' => 'bigIncrements'],
-        'parent_id' => ['type' => 'foreignId', 'nullable' => true],
         'name' => ['type' => 'string', 'length' => 150],
-        'code' => ['type' => 'string', 'length' => 50, 'nullable' => true],
-        'level' => ['type' => 'string', 'length' => 50],
-        'full_path' => ['type' => 'string', 'length' => 255, 'nullable' => true],
+        'parent_id' => ['type' => 'foreignId', 'nullable' => true],
+        'level' => ['type' => 'enum', 'allowed' => ['country', 'governorate', 'district', 'committee']],
     ],
     'indexes' => [
         ['type' => 'index', 'columns' => ['parent_id'], 'name' => 'geo_areas_parent_id_index'],
@@ -22,5 +20,4 @@ return [
             'onDelete' => 'cascade',
         ],
     ],
-    'soft_deletes' => false,
 ];

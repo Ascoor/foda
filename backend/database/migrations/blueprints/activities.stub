@@ -4,29 +4,20 @@ return [
     'table' => 'activities',
     'columns' => [
         'id' => ['type' => 'bigIncrements'],
-        'campaign_id' => ['type' => 'foreignId'],
+        'type' => ['type' => 'enum', 'allowed' => ['call', 'visit', 'message', 'event']],
         'volunteer_id' => ['type' => 'foreignId', 'nullable' => true],
         'voter_id' => ['type' => 'foreignId', 'nullable' => true],
-        'activity_type' => ['type' => 'string', 'length' => 50],
-        'status' => ['type' => 'string', 'length' => 30, 'default' => 'pending'],
-        'channel' => ['type' => 'string', 'length' => 50, 'nullable' => true],
-        'performed_at' => ['type' => 'dateTime'],
+        'campaign_id' => ['type' => 'foreignId'],
+        'status' => ['type' => 'enum', 'allowed' => ['success', 'pending', 'failed'], 'default' => 'pending'],
         'notes' => ['type' => 'text', 'nullable' => true],
-        'metadata' => ['type' => 'json', 'nullable' => true],
     ],
     'indexes' => [
         ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'activities_campaign_id_index'],
         ['type' => 'index', 'columns' => ['volunteer_id'], 'name' => 'activities_volunteer_id_index'],
         ['type' => 'index', 'columns' => ['voter_id'], 'name' => 'activities_voter_id_index'],
-        ['type' => 'index', 'columns' => ['performed_at'], 'name' => 'activities_performed_at_index'],
+        ['type' => 'index', 'columns' => ['type'], 'name' => 'activities_type_index'],
     ],
     'foreign_keys' => [
-        [
-            'columns' => ['campaign_id'],
-            'references' => ['id'],
-            'on' => 'campaigns',
-            'onDelete' => 'cascade',
-        ],
         [
             'columns' => ['volunteer_id'],
             'references' => ['id'],
@@ -39,6 +30,12 @@ return [
             'on' => 'voters',
             'onDelete' => 'set null',
         ],
+        [
+            'columns' => ['campaign_id'],
+            'references' => ['id'],
+            'on' => 'campaigns',
+            'onDelete' => 'cascade',
+        ],
     ],
-    'soft_deletes' => true,
+    'soft_deletes' => false,
 ];

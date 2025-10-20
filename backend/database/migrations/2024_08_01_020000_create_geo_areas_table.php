@@ -9,8 +9,9 @@ return new class extends Migration {
     {
         Schema::create('geo_areas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('election_id')->constrained('elections');
             $table->string('name');
+            $table->foreignId('parent_id')->nullable()->constrained('geo_areas')->cascadeOnDelete();
+            $table->enum('level', ['country', 'governorate', 'district', 'committee']);
             $table->timestamps();
         });
     }

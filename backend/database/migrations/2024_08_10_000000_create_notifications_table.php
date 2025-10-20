@@ -10,16 +10,11 @@ return new class extends Migration
     {
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
             $table->string('title');
-            $table->text('message');
-            $table->string('priority')->default('medium');
-            $table->json('meta')->nullable();
-            $table->timestamp('read_at')->nullable();
+            $table->text('body');
+            $table->boolean('read')->default(false);
             $table->timestamps();
-
-            $table->index(['type', 'priority']);
-            $table->index('read_at');
         });
     }
 

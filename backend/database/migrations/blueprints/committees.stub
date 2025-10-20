@@ -4,30 +4,27 @@ return [
     'table' => 'committees',
     'columns' => [
         'id' => ['type' => 'bigIncrements'],
-        'campaign_id' => ['type' => 'foreignId'],
         'geo_area_id' => ['type' => 'foreignId'],
+        'campaign_id' => ['type' => 'foreignId'],
         'supervisor_id' => ['type' => 'foreignId', 'nullable' => true],
-        'name' => ['type' => 'string', 'length' => 150],
-        'code' => ['type' => 'string', 'length' => 50, 'nullable' => true],
         'voters_count' => ['type' => 'integer', 'default' => 0],
-        'notes' => ['type' => 'text', 'nullable' => true],
     ],
     'indexes' => [
-        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'committees_campaign_id_index'],
         ['type' => 'index', 'columns' => ['geo_area_id'], 'name' => 'committees_geo_area_id_index'],
+        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'committees_campaign_id_index'],
         ['type' => 'index', 'columns' => ['supervisor_id'], 'name' => 'committees_supervisor_id_index'],
     ],
     'foreign_keys' => [
         [
-            'columns' => ['campaign_id'],
-            'references' => ['id'],
-            'on' => 'campaigns',
-            'onDelete' => 'cascade',
-        ],
-        [
             'columns' => ['geo_area_id'],
             'references' => ['id'],
             'on' => 'geo_areas',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['campaign_id'],
+            'references' => ['id'],
+            'on' => 'campaigns',
             'onDelete' => 'cascade',
         ],
         [
@@ -37,5 +34,5 @@ return [
             'onDelete' => 'set null',
         ],
     ],
-    'soft_deletes' => true,
+    'soft_deletes' => false,
 ];

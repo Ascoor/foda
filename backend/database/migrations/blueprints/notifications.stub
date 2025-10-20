@@ -3,19 +3,15 @@
 return [
     'table' => 'notifications',
     'columns' => [
-        'id' => ['type' => 'uuid'],
+        'id' => ['type' => 'bigIncrements'],
         'user_id' => ['type' => 'foreignId', 'nullable' => true],
-        'notifiable_type' => ['type' => 'string', 'length' => 120],
-        'notifiable_id' => ['type' => 'unsignedBigInteger'],
         'title' => ['type' => 'string', 'length' => 200],
         'body' => ['type' => 'text'],
-        'data' => ['type' => 'json', 'nullable' => true],
-        'read_at' => ['type' => 'dateTime', 'nullable' => true],
+        'read' => ['type' => 'boolean', 'default' => false],
     ],
     'indexes' => [
-        ['type' => 'primary', 'columns' => ['id'], 'name' => 'notifications_pkey'],
         ['type' => 'index', 'columns' => ['user_id'], 'name' => 'notifications_user_id_index'],
-        ['type' => 'index', 'columns' => ['notifiable_type', 'notifiable_id'], 'name' => 'notifications_notifiable_index'],
+        ['type' => 'index', 'columns' => ['read'], 'name' => 'notifications_read_index'],
     ],
     'foreign_keys' => [
         [

@@ -9,9 +9,10 @@ return new class extends Migration {
     {
         Schema::create('committees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('geo_area_id')->constrained('geo_areas');
-            $table->string('name');
-            $table->string('location')->nullable();
+            $table->foreignId('geo_area_id')->constrained('geo_areas')->cascadeOnDelete();
+            $table->foreignId('campaign_id')->constrained('campaigns')->cascadeOnDelete();
+            $table->foreignId('supervisor_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->unsignedInteger('voters_count')->default(0);
             $table->timestamps();
         });
     }

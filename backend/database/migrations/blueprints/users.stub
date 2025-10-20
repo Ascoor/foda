@@ -7,10 +7,9 @@ return [
         'name' => ['type' => 'string', 'length' => 255],
         'email' => ['type' => 'string', 'length' => 255],
         'password' => ['type' => 'string', 'length' => 255],
-        'status' => ['type' => 'string', 'length' => 20, 'default' => 'active'],
         'role_id' => ['type' => 'foreignId', 'nullable' => true],
         'team_id' => ['type' => 'foreignId', 'nullable' => true],
-        'email_verified_at' => ['type' => 'dateTime', 'nullable' => true],
+        'status' => ['type' => 'enum', 'allowed' => ['active', 'inactive'], 'default' => 'active'],
         'remember_token' => ['type' => 'string', 'length' => 100, 'nullable' => true],
     ],
     'indexes' => [
@@ -32,6 +31,6 @@ return [
             'onDelete' => 'set null',
         ],
     ],
-    'soft_deletes' => true,
-    'pii' => ['email', 'name'],
+    'soft_deletes' => false,
+    'pii' => ['name', 'email'],
 ];

@@ -10,20 +10,14 @@ return new class extends Migration
     {
         Schema::create('voters', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('committee_id');
-            $table->string('email')->nullable();
+            $table->string('full_name');
+            $table->string('national_id')->nullable()->unique();
             $table->string('phone')->nullable();
-            $table->foreignId('area_id')->constrained('areas');
-            $table->string('address')->nullable();
-            $table->enum('sex', ['male', 'female'])->nullable();
-            $table->date('birthdate')->nullable();
-            $table->unsignedTinyInteger('age')->nullable();
-            $table->string('bloodgroup')->nullable();
-            $table->string('img_url')->nullable();
-            $table->unsignedBigInteger('ion_user_id')->nullable();
-            $table->string('voter_id')->unique();
-            $table->date('add_date')->nullable();
+            $table->foreignId('area_id')->nullable()->constrained('geo_areas')->nullOnDelete();
+            $table->foreignId('campaign_id')->constrained('campaigns')->cascadeOnDelete();
+            $table->enum('support_status', ['supporter', 'opponent', 'undecided'])->default('undecided');
+            $table->dateTime('last_contact_at')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

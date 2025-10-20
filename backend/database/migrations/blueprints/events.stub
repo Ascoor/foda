@@ -4,20 +4,16 @@ return [
     'table' => 'events',
     'columns' => [
         'id' => ['type' => 'bigIncrements'],
-        'campaign_id' => ['type' => 'foreignId'],
         'title' => ['type' => 'string', 'length' => 200],
-        'event_type' => ['type' => 'string', 'length' => 50],
-        'location' => ['type' => 'string', 'length' => 255, 'nullable' => true],
-        'geo_area_id' => ['type' => 'foreignId', 'nullable' => true],
-        'starts_at' => ['type' => 'dateTime'],
-        'ends_at' => ['type' => 'dateTime', 'nullable' => true],
-        'status' => ['type' => 'string', 'length' => 30, 'default' => 'scheduled'],
-        'description' => ['type' => 'text', 'nullable' => true],
+        'campaign_id' => ['type' => 'foreignId'],
+        'location' => ['type' => 'string', 'length' => 255],
+        'date' => ['type' => 'dateTime'],
+        'type' => ['type' => 'enum', 'allowed' => ['conference', 'field', 'meeting']],
     ],
     'indexes' => [
         ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'events_campaign_id_index'],
-        ['type' => 'index', 'columns' => ['geo_area_id'], 'name' => 'events_geo_area_id_index'],
-        ['type' => 'index', 'columns' => ['starts_at'], 'name' => 'events_starts_at_index'],
+        ['type' => 'index', 'columns' => ['date'], 'name' => 'events_date_index'],
+        ['type' => 'index', 'columns' => ['type'], 'name' => 'events_type_index'],
     ],
     'foreign_keys' => [
         [
@@ -26,12 +22,6 @@ return [
             'on' => 'campaigns',
             'onDelete' => 'cascade',
         ],
-        [
-            'columns' => ['geo_area_id'],
-            'references' => ['id'],
-            'on' => 'geo_areas',
-            'onDelete' => 'set null',
-        ],
     ],
-    'soft_deletes' => true,
+    'soft_deletes' => false,
 ];

@@ -349,7 +349,9 @@ class SchemaSynchronizer
             'timestamp', 'timestamps' => 'datetime',
             'dateTimeTz', 'dateTime' => 'datetime',
             'longText' => 'text',
+            'enum' => 'string',
             'foreignId' => 'bigint',
+            'unsignedBigInteger' => 'bigint',
             default => $type,
         };
     }
@@ -430,6 +432,14 @@ class SchemaSynchronizer
             if (($definition['unsigned'] ?? false) && method_exists($column, 'unsigned')) {
                 $column->unsigned();
             }
+
+            if (($definition['use_current'] ?? false) && method_exists($column, 'useCurrent')) {
+                $column->useCurrent();
+            }
+
+            if (($definition['use_current_on_update'] ?? false) && method_exists($column, 'useCurrentOnUpdate')) {
+                $column->useCurrentOnUpdate();
+            }
         }
 
         if ($blueprint->timestamps()) {
@@ -448,6 +458,7 @@ class SchemaSynchronizer
             'increments' => $table->increments($name),
             'uuid' => $table->uuid($name),
             'foreignId' => $table->foreignId($name),
+            'enum' => $table->enum($name, $definition['allowed'] ?? []),
             'integer' => $table->integer($name),
             'bigInteger' => $table->bigInteger($name),
             'unsignedBigInteger' => $table->unsignedBigInteger($name),

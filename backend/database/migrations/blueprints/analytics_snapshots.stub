@@ -7,12 +7,11 @@ return [
         'campaign_id' => ['type' => 'foreignId'],
         'metric' => ['type' => 'string', 'length' => 120],
         'value' => ['type' => 'decimal', 'precision' => 14, 'scale' => 4],
-        'captured_at' => ['type' => 'dateTime'],
-        'comparison_value' => ['type' => 'decimal', 'precision' => 14, 'scale' => 4, 'nullable' => true],
-        'metadata' => ['type' => 'json', 'nullable' => true],
+        'created_at' => ['type' => 'timestamp', 'use_current' => true],
     ],
     'indexes' => [
-        ['type' => 'unique', 'columns' => ['campaign_id', 'metric', 'captured_at'], 'name' => 'analytics_snapshots_unique_idx'],
+        ['type' => 'index', 'columns' => ['campaign_id'], 'name' => 'analytics_snapshots_campaign_id_index'],
+        ['type' => 'index', 'columns' => ['metric'], 'name' => 'analytics_snapshots_metric_index'],
     ],
     'foreign_keys' => [
         [
@@ -22,5 +21,5 @@ return [
             'onDelete' => 'cascade',
         ],
     ],
-    'soft_deletes' => false,
+    'timestamps' => false,
 ];

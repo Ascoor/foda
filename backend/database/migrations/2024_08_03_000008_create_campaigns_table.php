@@ -9,8 +9,13 @@ return new class extends Migration {
     {
         Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('election_id')->nullable()->constrained('elections');
             $table->string('name');
+            $table->foreignId('election_id')->constrained('elections')->cascadeOnDelete();
+            $table->foreignId('candidate_id')->nullable()->constrained('candidates')->nullOnDelete();
+            $table->foreignId('area_id')->nullable()->constrained('geo_areas')->nullOnDelete();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
+            $table->decimal('budget', 14, 2)->default(0);
             $table->text('description')->nullable();
             $table->timestamps();
         });

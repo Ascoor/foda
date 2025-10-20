@@ -9,18 +9,12 @@ return new class extends Migration {
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('area_id')->nullable()->constrained('areas')->nullOnDelete();
-            $table->foreignId('committee_id')->nullable()->constrained('committees')->nullOnDelete();
-            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('type')->index();
-            $table->string('status')->nullable()->index();
-            $table->string('title');
-            $table->text('description')->nullable();
-            $table->decimal('latitude', 10, 7)->nullable();
-            $table->decimal('longitude', 10, 7)->nullable();
-            $table->unsignedTinyInteger('support_score')->nullable();
-            $table->timestamp('reported_at')->nullable()->index();
-            $table->json('meta')->nullable();
+            $table->enum('type', ['call', 'visit', 'message', 'event']);
+            $table->foreignId('volunteer_id')->nullable()->constrained('volunteers')->nullOnDelete();
+            $table->foreignId('voter_id')->nullable()->constrained('voters')->nullOnDelete();
+            $table->foreignId('campaign_id')->constrained('campaigns')->cascadeOnDelete();
+            $table->enum('status', ['success', 'pending', 'failed'])->default('pending');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
