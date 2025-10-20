@@ -9,9 +9,11 @@ return new class extends Migration {
     {
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('election_id')->constrained('elections');
-            $table->string('name');
+            $table->string('full_name');
+            $table->string('national_id')->unique();
             $table->string('party')->nullable();
+            $table->string('photo')->nullable();
+            $table->text('bio')->nullable();
             $table->timestamps();
         });
     }
