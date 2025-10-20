@@ -10,19 +10,13 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->string('event_id')->unique();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->string('organiser')->nullable();
+            $table->string('title');
+            $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->string('location')->nullable();
-            $table->dateTime('date');
-            $table->enum('type', ['conference', 'field', 'meeting']);
-            $table->foreignId('area_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('team_id')->constrained()->cascadeOnDelete();
+            $table->dateTime('date')->nullable();
+            $table->enum('type', ['conference', 'field', 'meeting'])->default('field');
+            $table->text('description')->nullable();
             $table->timestamps();
-            $table->softDeletes();
-
-            $table->index(['date', 'type']);
         });
     }
     public function down(): void

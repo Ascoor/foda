@@ -10,17 +10,13 @@ return new class extends Migration
     {
         Schema::create('volunteers', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('email', 150)->nullable()->unique();
-            $table->string('phone', 20)->nullable();
-            $table->boolean('active')->default(true);
+            $table->foreignId('user_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->foreignId('team_id')->nullable()->constrained('teams')->nullOnDelete();
-            $table->foreignId('assigned_area_id')->nullable()->constrained('geo_areas')->nullOnDelete();
+            $table->foreignId('assigned_area')->nullable()->constrained('geo_areas')->nullOnDelete();
+            $table->string('phone')->nullable();
+            $table->boolean('active')->default(true);
             $table->timestamps();
-            $table->softDeletes();
-
-            $table->index('active');
-            $table->index(['team_id', 'assigned_area_id']);
         });
     }
     public function down(): void
