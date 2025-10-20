@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\ElectionCircle\Campaign;
+use App\Models\ElectionCircle\GeoArea;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Event extends Model
@@ -11,27 +14,34 @@ class Event extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'event_id',
-        'name',
-        'description',
-        'organiser',
+        'campaign_id',
+        'title',
+        'event_type',
         'location',
-        'date',
-        'type',
-        'area_id',
+        'geo_area_id',
+        'starts_at',
+        'ends_at',
+        'status',
+        'description',
         'team_id',
     ];
 
     protected $casts = [
-        'date' => 'datetime',
+        'starts_at' => 'datetime',
+        'ends_at' => 'datetime',
     ];
 
-    public function area()
+    public function campaign(): BelongsTo
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Campaign::class);
     }
 
-    public function team()
+    public function geoArea(): BelongsTo
+    {
+        return $this->belongsTo(GeoArea::class, 'geo_area_id');
+    }
+
+    public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
     }

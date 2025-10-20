@@ -1,15 +1,24 @@
 <?php
 
 namespace Database\Seeders;
-use App\Models\ExpenseCategory; 
 
-use Illuminate\Database\Seeder; 
+use App\Models\ExpenseCategory;
+use Illuminate\Database\Seeder;
+
 class ExpenseCategorySeeder extends Seeder
 {
-    public function run()
+    public function run(): void
     {
-        ExpenseCategory::factory()->count(5)->create();
-        // أو يدويًا إذا لم يكن لديك factory
-        // ExpenseCategory::create(['name' => 'عام']);
+        $categories = [
+            'تبرعات مالية',
+            'مصروفات دعايا ميدانية',
+            'إعلانات رقمية',
+            'تنقلات الفرق الميدانية',
+            'تجهيز مقرات الحملة',
+        ];
+
+        foreach ($categories as $category) {
+            ExpenseCategory::query()->firstOrCreate(['name' => $category]);
+        }
     }
 }

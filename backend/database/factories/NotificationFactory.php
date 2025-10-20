@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ElectionCircle\Campaign;
 use App\Models\Notification;
 use App\Models\User;
 use Faker\Factory as FakerFactory;
@@ -15,39 +16,35 @@ class NotificationFactory extends Factory
 
     protected function withFaker(): Generator
     {
-        return FakerFactory::create('ar_SA');
+        return FakerFactory::create('ar_EG');
     }
 
     public function definition(): array
     {
-        $types = ['field', 'logistics', 'performance'];
-        $priorities = ['low', 'medium', 'high'];
-        $messages = [
-            'يرجى متابعة التغطية الإعلامية للحملة في الدائرة.',
-            'تم تحديث قائمة الناخبين، الرجاء مراجعتها والتأكد من الدقة.',
-            'هناك طلب دعم عاجل للفريق الميداني في الحي الشمالي.',
-            'يرجى إرسال تقرير موجز عن نشاط الأمس قبل الساعة 5 مساءً.',
+        $titles = ['تنبيه متابعة ميدانية', 'تقرير أداء الحملة', 'تذكير بفعالية اليوم', 'تنبيه دعم عاجل'];
+        $bodies = [
+            'تم رصد تجمع لمنافسنا في سوق إمبابة، يرجى تكثيف المرور على التجار المؤيدين.',
+            'رجاء مشاركة صور من جولة المرشح في المطرية قبل نهاية اليوم.',
+            'الفريق الإعلامي في انتظار تأكيد الحضور لفعالية الغد في قاعة الشباب.',
+            'متطوعي لجنة عزبة النخل بحاجة إلى مواد دعائية إضافية قبل نهاية الأسبوع.',
         ];
 
         $userId = $this->resolveUserId();
+        $campaign = $this->resolveCampaign();
 
         return [
             'user_id' => $userId,
-            'type' => $this->faker->randomElement($types),
-            'title' => $this->faker->randomElement([
-                'تنبيه متابعة ميدانية',
-                'تحديث بيانات الناخبين',
-                'طلب دعم عاجل',
-                'تذكير بالتقارير اليومية',
-            ]),
-            'message' => $this->faker->randomElement($messages),
-            'priority' => $this->faker->randomElement($priorities),
-            'meta' => [
-                'recipient_name' => User::find($userId)?->name,
-                'created_by' => 'منصة Elections360',
-                'requested_at' => Carbon::now()->subMinutes($this->faker->numberBetween(5, 180))->toIso8601String(),
+            'notifiable_type' => Campaign::class,
+            'notifiable_id' => $campaign?->id,
+            'title' => $this->faker->randomElement($titles),
+            'body' => $this->faker->randomElement($bodies),
+            'data' => [
+                'campaign' => $campaign?->name,
+                'priority' => $this->faker->randomElement(['منخفض', 'متوسط', 'عالٍ']),
+                'created_by' => 'لوحة التحكم',
+                'sent_at' => Carbon::now()->subMinutes($this->faker->numberBetween(5, 150))->toIso8601String(),
             ],
-            'read_at' => $this->faker->boolean(40) ? Carbon::now()->subMinutes($this->faker->numberBetween(1, 120)) : null,
+            'read_at' => $this->faker->boolean(45) ? Carbon::now()->subMinutes($this->faker->numberBetween(1, 90)) : null,
         ];
     }
 
@@ -60,5 +57,10 @@ class NotificationFactory extends Factory
         }
 
         return User::factory()->create()->id;
+    }
+
+    protected function resolveCampaign(): ?Campaign
+    {
+        return Campaign::query()->inRandomOrder()->first();
     }
 }

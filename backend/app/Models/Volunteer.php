@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ElectionCircle\Campaign;
 use App\Models\ElectionCircle\GeoArea;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +14,30 @@ class Volunteer extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['name', 'email', 'phone', 'team_id', 'active', 'assigned_area_id'];
+    protected $fillable = [
+        'user_id',
+        'campaign_id',
+        'team_id',
+        'assigned_area_id',
+        'full_name',
+        'email',
+        'phone',
+        'is_active',
+        'joined_at',
+        'last_assigned_at',
+        'notes',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'joined_at' => 'datetime',
+        'last_assigned_at' => 'datetime',
+    ];
+
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
 
     public function team(): BelongsTo
     {
