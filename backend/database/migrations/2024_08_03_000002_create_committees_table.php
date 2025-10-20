@@ -9,10 +9,15 @@ return new class extends Migration {
     {
         Schema::create('committees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('geo_area_id')->constrained('geo_areas');
+            $table->foreignId('geo_area_id')->constrained('geo_areas')->cascadeOnDelete();
             $table->string('name');
             $table->string('location')->nullable();
+            $table->unsignedInteger('voters_count')->default(0);
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('name');
+            $table->index('geo_area_id');
         });
     }
 
