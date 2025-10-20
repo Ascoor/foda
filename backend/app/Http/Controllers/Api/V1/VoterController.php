@@ -9,6 +9,8 @@ use App\Http\Requests\UpdateVoterRequest;
 use App\Http\Resources\VoterResource;
 use App\Models\Voter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Response;
 
 class VoterController extends Controller
@@ -19,11 +21,11 @@ class VoterController extends Controller
     {
         $voters = $this->handleIndex(
             $request,
-            Voter::with('area'),
-            ['name', 'email', 'phone', 'address'],
-            ['area_id', 'sex', 'voter_id'],
-            ['name', 'email', 'phone', 'address'],
-            ['name', 'created_at', 'updated_at']
+            Voter::with(['campaign', 'geoArea', 'committee']),
+            ['full_name', 'national_id', 'email', 'phone', 'address', 'notes'],
+            ['campaign_id', 'geo_area_id', 'committee_id', 'support_status'],
+            ['full_name', 'national_id', 'email', 'phone', 'address', 'notes'],
+            ['full_name', 'last_contact_at', 'created_at', 'updated_at']
         );
 
         return VoterResource::collection($voters);
@@ -33,19 +35,19 @@ class VoterController extends Controller
     {
         $voter = Voter::create($request->validated());
 
-        return (new VoterResource($voter->load('area')))->response()->setStatusCode(201);
+        return (new VoterResource($voter->load(['campaign', 'geoArea', 'committee'])))->response()->setStatusCode(201);
     }
 
     public function show(Voter $voter)
     {
-        return new VoterResource($voter->load('area'));
+        return new VoterResource($voter->load(['campaign', 'geoArea', 'committee']));
     }
 
     public function update(UpdateVoterRequest $request, Voter $voter)
     {
         $voter->update($request->validated());
 
-        return new VoterResource($voter->load('area'));
+        return new VoterResource($voter->load(['campaign', 'geoArea', 'committee']));
     }
 
     public function destroy(Voter $voter)
@@ -69,7 +71,24 @@ class VoterController extends Controller
             if (!$data) {
                 continue;
             }
-            Voter::create($data);
+
+            $payload = Arr::only($data, (new Voter())->getFillable());
+
+            if (isset($payload['last_contact_at']) && $payload['last_contact_at'] !== '') {
+                try {
+                    $payload['last_contact_at'] = Carbon::parse($payload['last_contact_at']);
+                } catch (\Throwable $exception) {
+                    unset($payload['last_contact_at']);
+                }
+            }
+
+            $payload = array_filter($payload, static fn ($value) => $value !== '');
+
+            if (!isset($payload['campaign_id']) || !isset($payload['full_name'])) {
+                continue;
+            }
+
+            Voter::create($payload);
         }
         fclose($handle);
 
@@ -78,13 +97,29 @@ class VoterController extends Controller
 
     public function export()
     {
-        $voters = Voter::with('area')->get();
+        $voters = Voter::with(['campaign', 'geoArea', 'committee'])->get();
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="voters.csv"',
         ];
 
-        $columns = ['id','name','email','phone','area_id','address','sex','birthdate','age','bloodgroup','img_url','ion_user_id','voter_id','add_date','created_at','updated_at'];
+        $columns = [
+            'id',
+            'campaign_id',
+            'geo_area_id',
+            'committee_id',
+            'full_name',
+            'national_id',
+            'phone',
+            'email',
+            'address',
+            'support_status',
+            'last_contact_at',
+            'notes',
+            'source',
+            'created_at',
+            'updated_at',
+        ];
 
         $callback = function() use ($voters, $columns) {
             $file = fopen('php://output', 'w');

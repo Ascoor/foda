@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateVoterRequest extends FormRequest
 {
@@ -15,19 +14,18 @@ class UpdateVoterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['sometimes', 'string', 'max:255'],
-            'email' => ['nullable', 'email'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'area_id' => ['sometimes', 'exists:areas,id'],
-            'address' => ['nullable', 'string', 'max:255'],
-            'sex' => ['nullable', 'in:male,female'],
-            'birthdate' => ['nullable', 'date'],
-            'age' => ['nullable', 'integer', 'min:0'],
-            'bloodgroup' => ['nullable', 'string', 'max:3'],
-            'img_url' => ['nullable', 'url'],
-            'ion_user_id' => ['nullable', 'integer'],
-            'voter_id' => ['sometimes', 'string', 'max:100', Rule::unique('voters', 'voter_id')->ignore($this->voter)],
-            'add_date' => ['nullable', 'date'],
+            'campaign_id' => ['sometimes', 'integer', 'exists:campaigns,id'],
+            'geo_area_id' => ['sometimes', 'nullable', 'integer', 'exists:geo_areas,id'],
+            'committee_id' => ['sometimes', 'nullable', 'integer', 'exists:committees,id'],
+            'full_name' => ['sometimes', 'string', 'max:255'],
+            'national_id' => ['sometimes', 'nullable', 'string', 'max:50'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:30'],
+            'email' => ['sometimes', 'nullable', 'email', 'max:255'],
+            'address' => ['sometimes', 'nullable', 'string', 'max:255'],
+            'support_status' => ['sometimes', 'nullable', 'string', 'max:20'],
+            'last_contact_at' => ['sometimes', 'nullable', 'date'],
+            'notes' => ['sometimes', 'nullable', 'string'],
+            'source' => ['sometimes', 'nullable', 'string', 'max:120'],
         ];
     }
 }

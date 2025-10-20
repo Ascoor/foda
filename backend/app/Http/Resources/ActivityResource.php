@@ -10,29 +10,26 @@ class ActivityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'area' => $this->whenLoaded('area', fn () => [
-                'id' => $this->area?->id,
-                'name' => $this->area?->name,
+            'campaign' => $this->whenLoaded('campaign', fn () => [
+                'id' => $this->campaign?->id,
+                'name' => $this->campaign?->name,
             ]),
-            'committee' => $this->whenLoaded('committee', fn () => [
-                'id' => $this->committee?->id,
-                'name' => $this->committee?->name,
+            'volunteer' => $this->whenLoaded('volunteer', fn () => [
+                'id' => $this->volunteer?->id,
+                'full_name' => $this->volunteer?->full_name,
             ]),
-            'creator' => $this->whenLoaded('creator', fn () => [
-                'id' => $this->creator?->id,
-                'name' => $this->creator?->name,
+            'voter' => $this->whenLoaded('voter', fn () => [
+                'id' => $this->voter?->id,
+                'full_name' => $this->voter?->full_name,
             ]),
-            'type' => $this->type,
+            'activity_type' => $this->activity_type,
             'status' => $this->status,
-            'title' => $this->title,
-            'description' => $this->description,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'support_score' => $this->support_score,
-            'reported_at' => optional($this->reported_at)->toIso8601String(),
+            'channel' => $this->channel,
+            'performed_at' => optional($this->performed_at)->toIso8601String(),
+            'notes' => $this->notes,
+            'metadata' => $this->metadata ?? new \stdClass(),
             'created_at' => optional($this->created_at)->toIso8601String(),
             'updated_at' => optional($this->updated_at)->toIso8601String(),
-            'meta' => $this->meta ?? new \stdClass(),
         ];
     }
 }
