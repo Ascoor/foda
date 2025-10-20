@@ -10,13 +10,18 @@ return new class extends Migration
     {
         Schema::create('finances', function (Blueprint $table) {
             $table->id();
+            $table->string('reference_id')->nullable();
+            $table->enum('type', ['expense', 'donation']);
             $table->decimal('amount', 15, 2);
-            $table->string('type');
             $table->date('date');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('reference_id')->nullable();
-            $table->foreignId('category_id')->constrained('expense_categories');
+            $table->foreignId('category_id')->nullable()->constrained('expense_categories')->nullOnDelete();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('reference_id');
+            $table->index('type');
+            $table->index('date');
         });
     }
     public function down(): void

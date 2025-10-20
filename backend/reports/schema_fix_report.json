@@ -1,0 +1,77 @@
+{
+  "synced_at": "2025-10-20T09:46:00Z",
+  "schema_alignment": {
+    "status": "success",
+    "blueprint_version": "electoral-blueprint v4.2",
+    "verification_steps": [
+      "Compared Laravel migrations against current model fillables and casts",
+      "Restored required enum/status fields and foreign key relationships",
+      "Re-enabled timestamps and soft deletes where controllers expect archival behaviour",
+      "Added targeted indexes on query-heavy columns"
+    ]
+  },
+  "tables": [
+    {
+      "name": "users",
+      "changes": [
+        "Enforced status enum with default",
+        "Linked optional team_id with null-on-delete cascade",
+        "Tracked login and soft deletion metadata"
+      ],
+      "indexes": ["status", "last_login_at"]
+    },
+    {
+      "name": "voters",
+      "changes": [
+        "Restored voter_id identity and committee relationship",
+        "Captured support_status workflow fields",
+        "Enabled soft deletion and contact audit trail"
+      ],
+      "indexes": ["support_status", "last_contact_at", "committee_id"]
+    },
+    {
+      "name": "volunteers",
+      "changes": [
+        "Added active toggle and assigned_area linkage",
+        "Enabled soft deletion for historical analytics"
+      ],
+      "indexes": ["active", "team_id", "assigned_area_id"]
+    },
+    {
+      "name": "events",
+      "changes": [
+        "Stored organiser metadata as optional",
+        "Captured event type taxonomy",
+        "Tracked scheduled datetime with soft deletes"
+      ],
+      "indexes": [["date", "type"]]
+    },
+    {
+      "name": "finances",
+      "changes": [
+        "Aligned reference_id format and donation/expense enum",
+        "Made category optional with null-on-delete semantics",
+        "Enabled soft deletion support"
+      ],
+      "indexes": ["reference_id", "type", "date"]
+    },
+    {
+      "name": "notifications",
+      "changes": [
+        "Defaulted system notification type",
+        "Allowed nullable body with JSON metadata",
+        "Enabled soft deletion archives"
+      ],
+      "indexes": [["type", "priority"], "read_at"]
+    },
+    {
+      "name": "committees",
+      "changes": [
+        "Cascaded geo area removal",
+        "Tracked voters_count metric",
+        "Enabled soft deletion"
+      ],
+      "indexes": ["name", "geo_area_id"]
+    }
+  ]
+}

@@ -10,11 +10,12 @@ return new class extends Migration
     {
         Schema::create('voters', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->foreignId('committee_id');
+            $table->string('name')->nullable();
+            $table->string('voter_id')->unique();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->foreignId('area_id')->constrained('areas');
+            $table->foreignId('committee_id')->nullable()->constrained('committees')->nullOnDelete();
+            $table->foreignId('area_id')->nullable()->constrained('areas')->cascadeOnDelete();
             $table->string('address')->nullable();
             $table->enum('sex', ['male', 'female'])->nullable();
             $table->date('birthdate')->nullable();
@@ -22,9 +23,16 @@ return new class extends Migration
             $table->string('bloodgroup')->nullable();
             $table->string('img_url')->nullable();
             $table->unsignedBigInteger('ion_user_id')->nullable();
-            $table->string('voter_id')->unique();
+            $table->enum('support_status', ['supporter', 'opponent', 'undecided'])->default('undecided');
+            $table->dateTime('last_contact_at')->nullable();
+            $table->text('notes')->nullable();
             $table->date('add_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('support_status');
+            $table->index('last_contact_at');
+            $table->index('committee_id');
         });
     }
     public function down(): void

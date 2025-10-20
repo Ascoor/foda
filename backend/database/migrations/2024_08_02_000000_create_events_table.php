@@ -13,12 +13,16 @@ return new class extends Migration
             $table->string('event_id')->unique();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->string('organiser');
-            $table->string('location');
-            $table->date('date');
+            $table->string('organiser')->nullable();
+            $table->string('location')->nullable();
+            $table->dateTime('date');
+            $table->enum('type', ['conference', 'field', 'meeting']);
             $table->foreignId('area_id')->constrained()->cascadeOnDelete();
             $table->foreignId('team_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index(['date', 'type']);
         });
     }
     public function down(): void
