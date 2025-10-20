@@ -6,38 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->string('name', 255);
+            $table->string('email', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->foreignId('role_id')->nullable()->constrained('roles');
-            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->string('password', 255);
+            $table->string('status', 20)->default('active');
+            $table->foreignId('role_id')->nullable()->constrained('roles')->nullOnDelete();
+            $table->foreignId('team_id')->nullable();
             $table->timestamp('last_login_at')->nullable();
-            $table->foreignId('team_id')->nullable()->constrained('teams')->nullOnDelete();
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('status');
-            $table->index('last_login_at');
+            $table->index('status', 'users_status_index');
+            $table->index('role_id', 'users_role_id_index');
+            $table->index('team_id', 'users_team_id_index');
+            $table->index('last_login_at', 'users_last_login_at_index');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('users');
     }

@@ -10,9 +10,13 @@ return new class extends Migration
     {
         Schema::create('expense_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('type', ['expense', 'donation'])->default('expense');
+            $table->string('name', 150);
+            $table->string('type', 20)->default('expense');
+            $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->unique(['name', 'type'], 'expense_categories_name_type_unique');
         });
     }
 
