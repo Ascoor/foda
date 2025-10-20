@@ -13,12 +13,18 @@ class TeamSeeder extends Seeder
     { 
         $supervisors = User::all();
 
+        if ($supervisors->isEmpty()) {
+            $supervisors = User::factory()->count(3)->create();
+        }
+
         Area::all()->each(function ($area) use ($supervisors) {
-            Team::factory()->count(3)->create([
-                'area_id' => $area->id,
-                'supervisor_id' => $supervisors->random()->id,
-            ]);
+            Team::factory()
+                ->count(3)
+                ->create([
+                    'area_id' => $area->id,
+                    'supervisor_id' => $supervisors->random()->id,
+                ]);
         });
- 
+
     }
 }
