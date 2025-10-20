@@ -11,9 +11,14 @@ return new class extends Migration
         Schema::create('analytics_snapshots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
-            $table->string('metric');
-            $table->decimal('value', 10, 2)->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->string('metric', 120);
+            $table->decimal('value', 14, 4);
+            $table->dateTime('captured_at');
+            $table->decimal('comparison_value', 14, 4)->nullable();
+            $table->json('metadata')->nullable();
+            $table->timestamps();
+
+            $table->unique(['campaign_id', 'metric', 'captured_at'], 'analytics_snapshots_unique_idx');
         });
     }
 

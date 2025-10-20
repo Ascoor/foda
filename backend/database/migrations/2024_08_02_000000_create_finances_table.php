@@ -12,11 +12,20 @@ return new class extends Migration
             $table->id();
             $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->nullable()->constrained('expense_categories')->nullOnDelete();
-            $table->enum('type', ['expense', 'donation']);
-            $table->decimal('amount', 12, 2);
-            $table->date('date');
+            $table->string('type', 20);
+            $table->decimal('amount', 14, 2);
+            $table->string('currency', 3)->default('EGP');
+            $table->date('transacted_at');
+            $table->string('reference', 100)->nullable();
             $table->text('description')->nullable();
+            $table->foreignId('recorded_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('campaign_id', 'finances_campaign_id_index');
+            $table->index('category_id', 'finances_category_id_index');
+            $table->index('recorded_by', 'finances_recorded_by_index');
+            $table->index('type', 'finances_type_index');
         });
     }
 
