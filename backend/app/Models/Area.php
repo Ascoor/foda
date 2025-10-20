@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\ElectionCircle\Campaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -11,7 +13,18 @@ class Area extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'campaign_id',
+        'name',
+        'description',
+        'x',
+        'y',
+    ];
+
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
 
     public function swots(): MorphMany
     {

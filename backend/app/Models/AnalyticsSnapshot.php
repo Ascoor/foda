@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ElectionCircle\Campaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,27 +12,23 @@ class AnalyticsSnapshot extends Model
     use HasFactory;
 
     protected $fillable = [
-        'election_id',
         'campaign_id',
-        'metric_key',
-        'snapshot_date',
-        'payload',
-        'forecast_value',
+        'metric',
+        'value',
+        'captured_at',
+        'comparison_value',
+        'metadata',
     ];
 
     protected $casts = [
-        'payload' => 'array',
-        'snapshot_date' => 'date',
-        'forecast_value' => 'float',
+        'captured_at' => 'datetime',
+        'value' => 'decimal:4',
+        'comparison_value' => 'decimal:4',
+        'metadata' => 'array',
     ];
 
     public function campaign(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ElectionCircle\Campaign::class);
-    }
-
-    public function election(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\ElectionCircle\Election::class);
+        return $this->belongsTo(Campaign::class);
     }
 }

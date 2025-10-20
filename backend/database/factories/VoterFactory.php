@@ -2,9 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Area;
-use App\Models\Voter;
+use App\Models\ElectionCircle\Campaign;
 use App\Models\ElectionCircle\Committee;
+use App\Models\ElectionCircle\GeoArea;
+use App\Models\Voter;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,41 +16,42 @@ class VoterFactory extends Factory
 
     protected function withFaker(): Generator
     {
-        return FakerFactory::create('ar_SA');
+        return FakerFactory::create('ar_EG');
     }
 
     public function definition(): array
     {
-        $districts = ['حي النسيم', 'حي الحمراء', 'حي الروضة', 'حي الشاطئ', 'حي النهضة'];
+        $districts = ['شبرا الخيمة', 'السيدة زينب', 'حي شرق الإسكندرية', 'منية النصر', 'كوم أمبو', 'المعادي'];
 
         return [
-            'name' => $this->faker->name(),
-            'email' => $this->faker->optional(0.4)->safeEmail(),
-            'phone' => '05' . $this->faker->numerify('########'),
-            'area_id' => $this->resolveAreaId(),
+            'campaign_id' => Campaign::factory(),
+            'geo_area_id' => $this->resolveGeoAreaId(),
             'committee_id' => $this->resolveCommitteeId(),
-        
+            'full_name' => $this->faker->name(),
+            'national_id' => '2' . $this->faker->numerify('###########'),
+            'phone' => '01' . $this->faker->numerify('0########'),
+            'email' => $this->faker->optional(0.35)->safeEmail(),
             'address' => $this->faker->randomElement($districts) . '، ' . $this->faker->city(),
-            'sex' => $this->faker->randomElement(['male', 'female']),
-            'birthdate' => $this->faker->dateTimeBetween('-65 years', '-18 years'),
-            'age' => $this->faker->numberBetween(18, 70),
-            'bloodgroup' => $this->faker->randomElement(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
-            'img_url' => null,
-            'ion_user_id' => $this->faker->optional()->randomNumber(),
-            'voter_id' => '10' . $this->faker->numerify('#########'),
-            'add_date' => $this->faker->dateTimeBetween('-30 days', 'now'),
+            'support_status' => $this->faker->randomElement(['مؤيد', 'متردد', 'معارض']),
+            'last_contact_at' => $this->faker->optional(0.55)->dateTimeBetween('-60 days', 'now'),
+            'notes' => $this->faker->optional(0.4)->sentence(10, true),
+            'source' => $this->faker->randomElement(['باب بيت', 'اتصال هاتفي', 'لقاء في فعالية', 'تواصل عبر السوشيال']),
         ];
-    }
-
-    protected function resolveAreaId(): int
-    {
-        $existing = Area::query()->inRandomOrder()->value('id');
-        return $existing ?: Area::factory()->create()->id;
     }
 
     protected function resolveCommitteeId(): int
     {
         $existing = Committee::query()->inRandomOrder()->value('id');
-        return $existing ?: Committee::factory()->create()->id;
+
+        if ($existing) {
+            return $existing;
+        }
+
+        return Committee::factory()->create()->id;
+    }
+
+    protected function resolveGeoAreaId(): ?int
+    {
+        return GeoArea::query()->inRandomOrder()->value('id');
     }
 }

@@ -2,32 +2,44 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 class Notification extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    protected $keyType = 'string';
+
+    public $incrementing = false;
 
     protected $fillable = [
+        'id',
         'user_id',
-        'type',
+        'notifiable_type',
+        'notifiable_id',
         'title',
-        'message',
-        'priority',
-        'meta',
+        'body',
+        'data',
         'read_at',
     ];
 
     protected $casts = [
-        'meta' => 'array',
+        'data' => 'array',
         'read_at' => 'datetime',
     ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Notification $notification) {
+            if (blank($notification->id)) {
+                $notification->id = (string) str()->uuid();
+            }
+        });
+    }
 
     public function user(): BelongsTo
     {
@@ -46,43 +58,7 @@ class Notification extends Model
         }
 
         $this->forceFill([
-            'read_at' => now(),
+            'read_at' => Carbon::now(),
         ])->save();
-    }
-
-    protected function category(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                if (!filled($this->type)) {
-                    return null;
-                }
-
-                $type = strtolower($this->type);
-
-                return match ($type) {
-                    'performance' => 'Performance',
-                    'risk' => 'Risk',
-                    'field' => 'Field',
-                    default => ucfirst($this->type),
-                };
-            }
-        );
-    }
-
-    protected function isHighPriority(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->priority === 'high'
-        );
-    }
-
-    protected function createdAgo(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => $this->created_at
-                ? Carbon::parse($this->created_at)->diffForHumans()
-                : null,
-        );
     }
 }
