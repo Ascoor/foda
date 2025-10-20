@@ -26,7 +26,7 @@ class ActivityCreated implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'data' => (new ActivityResource($this->activity->loadMissing(['area', 'committee', 'creator'])))->resolve(),
+            'data' => (new ActivityResource($this->activity->loadMissing(['campaign', 'volunteer', 'voter'])))->resolve(),
         ];
     }
 }
