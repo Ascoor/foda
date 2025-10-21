@@ -14,14 +14,23 @@ class CandidateSeeder extends Seeder
     public function run(): void
     {
         $faker = FakerFactory::create('ar_EG');
-
+    
         $election = Election::query()->firstOrCreate(
             ['name' => 'الانتخابات البرلمانية المصرية ٢٠٢٥'],
             [
-                'start_at' => now()->startOfYear(),
-                'end_at' => now()->endOfYear(),
+                'slug' => Str::slug('الانتخابات البرلمانية المصرية ٢٠٢٥'),
+                'election_type' => 'parliamentary',
+                'starts_at' => now()->startOfYear(),
+                'ends_at' => now()->endOfYear(),
+                'status' => 'active',
+                'country' => 'مصر',
+                'geo_scope' => 'وطني',
+                'description' => 'الانتخابات البرلمانية العامة لعام ٢٠٢٥ في مصر.',
             ]
         );
+        
+        
+
 
         $candidates = [
             [

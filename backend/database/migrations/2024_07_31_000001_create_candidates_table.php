@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('candidates', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('election_id')->nullable()->constrained()->nullOnDelete();
             $table->string('full_name', 255);
             $table->string('slug', 150)->unique();
             $table->string('party', 150)->nullable();
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index('user_id', 'candidates_user_id_index');
-        });
+        }); 
     }
 
     public function down(): void

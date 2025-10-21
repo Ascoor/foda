@@ -14,7 +14,8 @@ return new class extends Migration
             $table->foreignId('area_id')->constrained()->cascadeOnDelete();
             $table->foreignId('supervisor_id')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
-
+               $table->foreignId('campaign_id')->nullable()->constrained()->nullOnDelete();
+        
             $table->index('name', 'teams_name_index');
             $table->index('area_id', 'teams_area_id_index');
             $table->index('supervisor_id', 'teams_supervisor_id_index');
