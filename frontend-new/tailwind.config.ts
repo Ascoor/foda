@@ -10,7 +10,15 @@ const withOpacity = (variable: string) =>
 
 const config: Config = {
   darkMode: ["class"],
-  content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+  content: [
+    "./index.html",
+    "./App.tsx",
+    "./main.tsx",
+    "./components/**/*.{ts,tsx,js,jsx}",
+    "./layouts/**/*.{ts,tsx,js,jsx}",
+    "./utils/**/*.{ts,tsx,js,jsx}",
+    "./src/**/*.{ts,tsx,js,jsx}",
+  ],
   theme: {
     extend: {
       colors: {

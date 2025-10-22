@@ -25,6 +25,16 @@
       "@i18n/*": ["./src/i18n/*"]
     }
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "./*.ts",
+    "./*.tsx",
+    "./components/**/*.ts",
+    "./components/**/*.tsx",
+    "./layouts/**/*.ts",
+    "./layouts/**/*.tsx",
+    "./utils/**/*.ts",
+    "./utils/**/*.tsx"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
