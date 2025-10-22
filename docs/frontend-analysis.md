@@ -1,3 +1,11 @@
+---
+title: "Frontend Audit Command Reference"
+author: "Frontend Platform Team"
+last_updated: "2025-10-22"
+version: "v1.0"
+status: "Active"
+---
+
 # Frontend Audit Command Reference
 
 This project sometimes requires a comprehensive review of the `frontend-new` application to understand file usage, configuration health, and folder organization. When the `ai-inspect` CLI is available in your environment, you can trigger a deep scan with the following command:
