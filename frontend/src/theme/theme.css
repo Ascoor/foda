@@ -20,6 +20,12 @@
     --surface-secondary: 220 18% 92%;
     --surface-accent: 223 20% 88%;
 
+    /* Dashboard smart palette */
+    --color-bg: #f9fafb;
+    --color-sidebar-bg: #ffffff;
+    --color-text: #111827;
+    --color-hover: #e5e7eb;
+
     --primary: 221 83% 53%; /* Integrity Blue */
     --primary-foreground: 0 0% 100%;
     --primary-glow: 221 90% 60%;
@@ -198,6 +204,12 @@
     --surface-secondary: 223 45% 18%;
     --surface-accent: 224 45% 22%;
 
+    /* Dashboard smart palette */
+    --color-bg: #0f172a;
+    --color-sidebar-bg: #1e293b;
+    --color-text: #f1f5f9;
+    --color-hover: #334155;
+
     --primary: 221 83% 62%;
     --primary-foreground: 0 0% 100%;
     --primary-glow: 221 87% 70%;
@@ -265,9 +277,14 @@
 
   body {
     @apply bg-background text-foreground;
+    background-color: var(--color-bg);
+    color: var(--color-text);
     font-family: var(--font-family-base);
     scroll-behavior: smooth;
-    transition: background 0.6s ease, color 0.6s ease;
+    transition:
+      background 0.6s ease,
+      color 0.6s ease,
+      background-color 0.6s ease;
   }
 
   [dir="rtl"] {
