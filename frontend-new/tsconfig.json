@@ -11,5 +11,17 @@
       "@i18n/*": ["./src/i18n/*"]
     }
   },
-  "include": ["src", "vite.config.ts", "tsconfig.node.json"]
+  "include": [
+    "src",
+    "./*.ts",
+    "./*.tsx",
+    "./components/**/*.ts",
+    "./components/**/*.tsx",
+    "./layouts/**/*.ts",
+    "./layouts/**/*.tsx",
+    "./utils/**/*.ts",
+    "./utils/**/*.tsx",
+    "vite.config.ts",
+    "tsconfig.node.json"
+  ]
 }
