@@ -19,6 +19,7 @@ Welcome to the consolidated Elections360 documentation hub. The resources below 
 - [UI Components](frontend/ui-components.md)
 - [Feature Guides](frontend/feature-guides.md)
 - [Routing Structure](frontend/routing-structure.md)
+- [Frontend Audit Command Reference](frontend/frontend-audit-command-reference.md)
 
 ## Backend
 - [Data Models](backend/data-models.md)
