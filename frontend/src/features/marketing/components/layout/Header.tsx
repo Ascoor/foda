@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
-import { Flame, Globe2, MoonStar, SunMedium } from "lucide-react";
+import { Flame, Globe2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useFloatingExperienceStore } from "./store";
 
 export const Header = () => {
   const { t, i18n } = useTranslation("floating");
-  const { theme, toggleTheme, language, setLanguage } =
-    useFloatingExperienceStore();
+  const { language, setLanguage } = useFloatingExperienceStore();
 
   const handleLanguageChange = () => {
     const nextLanguage = language === "ar" ? "en" : "ar";
@@ -21,38 +20,29 @@ export const Header = () => {
       initial={{ opacity: 0, y: -40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
-      className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
+      className="relative flex flex-col gap-6 rounded-3xl bg-[color:var(--color-sidebar-bg)] px-6 py-6 text-[color:var(--color-text)] shadow-xl ring-1 ring-black/5 transition-colors duration-300 dark:bg-[color:var(--color-sidebar-bg)] dark:ring-white/10 md:flex-row md:items-center md:justify-between"
     >
       <div className="flex items-center gap-3">
-        <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
+        <div className="flex size-11 items-center justify-center rounded-2xl bg-[color:var(--color-hover)] text-[color:var(--color-text)] shadow-inner dark:bg-white/10">
           <Flame className="size-5" />
         </div>
         <div className="leading-tight">
-          <p className="text-xs uppercase tracking-[0.35em] text-slate-600 dark:text-slate-300">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[color:var(--color-text)] opacity-70">
             Aurora Election
           </p>
-          <h1 className="text-lg font-semibold text-slate-900 dark:text-white">
-            Floating Command Center
+          <h1 className="text-2xl font-bold">
+            {language === "ar" ? "مركز القيادة الذكي" : "Intelligent Command Center"}
           </h1>
         </div>
       </div>
-      <div className="flex items-center gap-2">
-        <motion.button
-          whileTap={{ scale: 0.95 }}
-          onClick={toggleTheme}
-          className="flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-400/40 via-emerald-300/40 to-purple-400/40 px-4 py-2 text-xs font-medium text-slate-800 shadow-[0_0_25px_rgba(34,211,238,0.35)] backdrop-blur-xl transition hover:from-cyan-300/60 hover:to-purple-300/60 dark:text-slate-100"
-        >
-          {theme === "day" ? (
-            <SunMedium className="size-4" />
-          ) : (
-            <MoonStar className="size-4" />
-          )}
-          {theme === "day" ? t("dayTheme") : t("nightTheme")}
-        </motion.button>
+      <div className="flex items-center gap-3">
+        <p className="text-sm text-[color:var(--color-text)] opacity-70">
+          {t("footerTagline")}
+        </p>
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={handleLanguageChange}
-          className="flex items-center gap-2 rounded-full border border-white/40 bg-white/50 px-4 py-2 text-xs font-semibold text-slate-900 shadow-[0_0_25px_rgba(129,140,248,0.35)] backdrop-blur-xl dark:bg-slate-900/60 dark:text-slate-100"
+          className="inline-flex items-center gap-2 rounded-lg bg-[color:var(--color-hover)] px-4 py-2 text-xs font-semibold text-[color:var(--color-text)] shadow-sm transition-transform duration-300 hover:scale-[1.02] dark:bg-white/10 dark:text-white"
         >
           <Globe2 className="size-4" />
           {language === "ar" ? "AR" : "EN"}

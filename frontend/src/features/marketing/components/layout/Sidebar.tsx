@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { Activity, BarChart3, Layers3, MapPin } from "lucide-react";
 import { useFloatingExperienceStore } from "./store";
 
@@ -17,43 +17,87 @@ export const Sidebar = () => {
       layout
       initial={{ opacity: 0, x: language === "ar" ? 40 : -40 }}
       animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-      className={`pointer-events-auto mx-auto mt-8 flex w-[94%] max-w-xs flex-col gap-5 rounded-3xl border border-white/15 bg-white/40 p-6 shadow-[0_20px_60px_rgba(45,212,191,0.25)] backdrop-blur-2xl dark:bg-slate-900/60 dark:shadow-[0_20px_70px_rgba(165,180,252,0.35)] ${language === "ar" ? "order-2" : ""}`}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={`relative mx-auto flex w-full max-w-xs flex-col overflow-hidden rounded-3xl bg-[color:var(--color-sidebar-bg)] text-[color:var(--color-text)] shadow-2xl ring-1 ring-black/5 transition-colors duration-300 dark:bg-[color:var(--color-sidebar-bg)] dark:ring-white/10 ${language === "ar" ? "lg:order-last" : ""}`}
     >
-      <button
-        onClick={toggleSidebar}
-        className="self-end rounded-full border border-white/30 bg-white/30 px-4 py-1 text-xs font-semibold text-slate-700 shadow-sm transition hover:bg-white/50 dark:bg-slate-800/60 dark:text-slate-100"
-      >
-        {sidebarOpen
-          ? language === "ar"
-            ? "إخفاء"
-            : "Hide"
-          : language === "ar"
-            ? "إظهار"
-            : "Show"}
-      </button>
-      {sidebarOpen && (
-        <nav className="space-y-3">
-          {navItems.map(({ to, label, icon: Icon }) => (
-            <motion.div
-              key={to}
-              whileHover={{ scale: 1.03, x: language === "ar" ? -6 : 6 }}
-              className="group relative overflow-hidden rounded-2xl border border-white/15 bg-white/40 p-4 shadow-lg backdrop-blur-xl transition dark:bg-slate-900/50"
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-white/40 to-transparent dark:from-white/5" />
+      <div className="relative flex items-center justify-between px-6 pb-4 pt-6">
+        <div>
+          <p className="text-base font-bold">
+            {language === "ar" ? "لوحة التحكم" : "Dashboard"}
+          </p>
+          <p className="text-xs opacity-70">
+            {language === "ar" ? "نظرة شاملة للحملات" : "Insightful campaign view"}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={toggleSidebar}
+          className="rounded-xl bg-[color:var(--color-hover)] px-4 py-2 text-xs font-semibold text-[color:var(--color-text)] shadow-sm transition duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:brightness-95 dark:bg-white/10 dark:text-white"
+        >
+          {sidebarOpen
+            ? language === "ar"
+              ? "إخفاء"
+              : "Hide"
+            : language === "ar"
+              ? "إظهار"
+              : "Show"}
+        </button>
+      </div>
+      <AnimatePresence initial={false} mode="wait">
+        {sidebarOpen ? (
+          <motion.nav
+            key="sidebar-nav"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            className="relative flex flex-1 flex-col gap-2 px-4 pb-6"
+          >
+            <ul className="space-y-2">
+              {navItems.map(({ to, label, icon: Icon }) => (
+                <motion.li
+                  key={to}
+                  whileHover={{ x: language === "ar" ? -6 : 6 }}
+                >
+                  <a
+                    href={to}
+                    className="group flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:bg-[color:var(--color-hover)] hover:shadow-lg hover:brightness-95 dark:hover:bg-white/10"
+                  >
+                    <span className="flex size-10 items-center justify-center rounded-2xl bg-[color:var(--color-hover)] text-[color:var(--color-text)] shadow-inner dark:bg-white/10 dark:text-white">
+                      <Icon className="size-4" />
+                    </span>
+                    <span>{label}</span>
+                  </a>
+                </motion.li>
+              ))}
+            </ul>
+            <div
+              className="mt-auto rounded-2xl p-4 text-xs font-medium text-[color:var(--color-text)] shadow-inner dark:bg-white/5 dark:text-white"
+              style={{
+                backgroundColor:
+                  "color-mix(in srgb, var(--color-hover) 70%, transparent)",
+              }}
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-300/20 via-emerald-200/15 to-indigo-300/20 opacity-0 transition group-hover:opacity-100" />
-              <a
-                href={to}
-                className="relative flex items-center gap-3 text-sm font-semibold text-slate-700 dark:text-slate-100"
-              >
-                <span className="flex size-10 items-center justify-center rounded-2xl bg-white/70 text-cyan-700 shadow-inner dark:bg-slate-800/80 dark:text-indigo-200">
-                  <Icon className="size-4" />
-                </span>
-                <span>{label}</span>
-              </a>
-            </motion.div>
-          ))}
-        </nav>
-      )}
+              {language === "ar"
+                ? "استخدم الشريط الجانبي للانتقال السريع بين أقسام التحليلات"
+                : "Use the sidebar to jump between analytics sections."}
+            </div>
+          </motion.nav>
+        ) : (
+          <motion.div
+            key="sidebar-collapsed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="flex flex-1 items-center justify-center px-6 pb-6 text-center text-xs opacity-70"
+          >
+            {language === "ar"
+              ? "تم إخفاء الشريط الجانبي — اضغط على الزر لإظهاره مرة أخرى"
+              : "Sidebar hidden — tap the button to reveal it again."}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.aside>
   );
 };

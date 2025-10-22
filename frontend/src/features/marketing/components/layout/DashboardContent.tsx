@@ -41,13 +41,13 @@ export const DashboardContent = () => (
         <GlassCard key={title} className="overflow-hidden">
           <div className="flex items-center justify-between">
             <div className="space-y-2">
-              <p className="text-sm font-semibold text-slate-500 dark:text-slate-300">
+              <p className="text-sm font-semibold text-[color:var(--color-text)] opacity-70">
                 {title}
               </p>
-              <h3 className="text-3xl font-bold text-slate-900 dark:text-white">
+              <h3 className="text-3xl font-bold text-[color:var(--color-text)]">
                 {value}
               </h3>
-              <span className="inline-flex items-center rounded-full bg-white/60 px-3 py-1 text-xs font-semibold text-emerald-600 shadow-sm dark:bg-slate-800/60 dark:text-emerald-300">
+              <span className="inline-flex items-center rounded-full bg-white/80 px-3 py-1 text-xs font-semibold text-emerald-600 shadow-sm dark:bg-[rgba(30,41,59,0.8)] dark:text-emerald-300">
                 {change}
               </span>
             </div>
