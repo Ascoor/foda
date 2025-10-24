@@ -1,8 +1,8 @@
 ---
 title: "Documentation Overview"
 author: "Knowledge Management"
-last_updated: "2024-05-19"
-version: "v1.0"
+last_updated: "2024-05-20"
+version: "v1.1"
 status: "Active"
 ---
 
@@ -29,6 +29,10 @@ Welcome to the consolidated Elections360 documentation hub. The resources below 
 - [Contexts and Hooks](shared/contexts-and-hooks.md)
 - [Utilities and Types](shared/utilities-and-types.md)
 - [Integrations](shared/integrations.md)
+
+## Project
+- [Repository Folder Structure](project/folder-structure.md)
+- [Repository Rebuild Checklist](project/rebuild-checklist.md)
 
 ## Governance
 - [Documentation Policy](governance/documentation-policy.md)

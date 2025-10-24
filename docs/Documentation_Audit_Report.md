@@ -1,8 +1,8 @@
 ---
 title: "Documentation Audit Report"
 author: "Knowledge Management"
-last_updated: "2024-05-19"
-version: "v1.0"
+last_updated: "2024-05-20"
+version: "v1.1"
 status: "Active"
 ---
 
@@ -48,6 +48,7 @@ status: "Active"
 | Frontend | 3 | منسق ✅ | 100% |
 | Backend | 3 | منظم جزئيًا ⚠️ | 85% |
 | Shared | 3 | منسق ✅ | 100% |
+| Project | 2 | جديد ✅ | 100% |
 | Governance | 3 | مكتمل ✅ | 100% |
 | Legacy | 2 | يحتاج مراجعة ⚠️ | 60% |
 

@@ -7,6 +7,8 @@ sections:
     path: "docs/backend/"
   - title: "Shared"
     path: "docs/shared/"
+  - title: "Project"
+    path: "docs/project/"
   - title: "Governance"
     path: "docs/governance/"
   - title: "Legacy"
