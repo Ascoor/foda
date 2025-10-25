@@ -1,10 +1,9 @@
+// tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const withOpacity = (variable: string) =>
   ({ opacityValue }: { opacityValue?: string }) => {
-    if (opacityValue !== undefined) {
-      return `hsl(var(${variable}) / ${opacityValue})`;
-    }
+    if (opacityValue !== undefined) return `hsl(var(${variable}) / ${opacityValue})`;
     return `hsl(var(${variable}))`;
   };
 
@@ -40,6 +39,19 @@ const config: Config = {
         },
         border: withOpacity("--border"),
         ring: withOpacity("--ring"),
+
+        // 🎯 جديد: ألوان الـSidebar حسب متغيرات الثيم
+        sidebar: {
+          DEFAULT: withOpacity("--sidebar-bg"),
+          foreground: withOpacity("--sidebar-foreground"),
+          muted: withOpacity("--sidebar-muted"),
+          border: withOpacity("--sidebar-border"),
+          active: withOpacity("--sidebar-active"),
+          "active-foreground": withOpacity("--sidebar-active-foreground"),
+          hover: withOpacity("--sidebar-hover"),
+          badge: withOpacity("--sidebar-badge"),
+          "badge-foreground": withOpacity("--sidebar-badge-foreground"),
+        },
       },
       borderRadius: {
         xs: "var(--radius-xs)",
@@ -58,7 +70,8 @@ const config: Config = {
         elevation: "var(--shadow-lg)",
       },
       backgroundImage: {
-        "brand-radial": "radial-gradient(120% 120% at 14% -12%, hsla(var(--primary) / 0.18) 0%, transparent 60%)",
+        "brand-radial":
+          "radial-gradient(120% 120% at 14% -12%, hsla(var(--primary) / 0.18) 0%, transparent 60%)",
       },
     },
   },
