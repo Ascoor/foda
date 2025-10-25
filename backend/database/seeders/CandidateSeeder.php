@@ -18,8 +18,8 @@ class CandidateSeeder extends Seeder
         $election = Election::query()->firstOrCreate(
             ['name' => 'الانتخابات البرلمانية المصرية ٢٠٢٥'],
             [
-                'start_date' => now()->startOfYear(),
-                'end_date' => now()->endOfYear(),
+                'start_at' => now()->startOfYear(),
+                'end_at' => now()->endOfYear(),
             ]
         );
 
