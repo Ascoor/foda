@@ -44,7 +44,7 @@ type FocusMetric = {
   tone: "primary" | "sky" | "emerald";
 };
 
-const sidebarNavSections: SidebarNavSection[] = [
+export const sidebarNavSections: SidebarNavSection[] = [
   {
     titleKey: "missionControl",
     items: [
@@ -70,6 +70,8 @@ const sidebarNavSections: SidebarNavSection[] = [
     ],
   },
 ];
+
+export const sidebarNavItems = sidebarNavSections.flatMap((section) => section.items);
 
 const badgeToneStyles: Record<SidebarNavItemBadgeTone, string> = {
   default: "bg-[hsla(var(--primary)/0.12)] text-primary",
