@@ -37,9 +37,18 @@ export const UserMenu = () => {
           type="button"
           variant="glass"
           size="sm"
-          className="h-10 gap-3 rounded-full px-3 text-sm font-semibold"
+          className="h-10 gap-3 rounded-full px-3 text-sm font-semibold text-[color:var(--header-widget-foreground)]"
+          style={{
+            background: "var(--header-widget-background)",
+            border: "1px solid var(--header-widget-border)",
+            boxShadow: "var(--header-widget-shadow)",
+            backdropFilter: "blur(var(--glass-blur)) saturate(var(--glass-saturation))",
+          }}
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsla(var(--primary)/0.18)] text-primary">
+          <span
+            className="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold text-white shadow-[var(--header-avatar-shadow)]"
+            style={{ background: "var(--header-avatar-gradient)" }}
+          >
             {initials}
           </span>
           <span className="hidden sm:inline-flex max-w-[140px] truncate text-left text-sm font-semibold text-foreground">

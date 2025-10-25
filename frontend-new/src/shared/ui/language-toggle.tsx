@@ -13,6 +13,14 @@ export const LanguageToggle = () => {
   const { language, toggleLanguage } = useLanguage();
   const { t } = useTranslation("common");
 
+  const controlStyle = {
+    background: "var(--header-widget-background)",
+    border: "1px solid var(--header-widget-border)",
+    boxShadow: "var(--header-widget-shadow)",
+    color: "var(--header-widget-foreground)",
+    backdropFilter: "blur(var(--glass-blur)) saturate(var(--glass-saturation))",
+  } as const;
+
   return (
     <Button
       type="button"
@@ -20,9 +28,10 @@ export const LanguageToggle = () => {
       size="sm"
       onClick={toggleLanguage}
       aria-label={t("switchLanguage")}
-      className="h-10 gap-2 rounded-full px-4 text-[11px] font-semibold uppercase tracking-[0.32em]"
+      className="h-10 gap-2 rounded-full px-4 text-[11px] font-semibold uppercase tracking-[0.32em] text-[color:var(--header-widget-foreground)]"
+      style={controlStyle}
     >
-      <Globe className="h-4 w-4" />
+      <Globe className="h-4 w-4 opacity-90" />
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={language}
