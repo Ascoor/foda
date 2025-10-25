@@ -13,6 +13,8 @@ return new class extends Migration
             $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
             $table->foreignId('geo_area_id')->nullable()->constrained('geo_areas')->nullOnDelete();
             $table->string('full_name', 255);
+            $table->foreignId('committee_id')->nullable()->constrained()->nullOnDelete();
+        
             $table->string('national_id', 50)->nullable();
             $table->string('phone', 30)->nullable();
             $table->string('email', 255)->nullable();

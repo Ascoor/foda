@@ -14,7 +14,8 @@ return new class extends Migration
             $table->string('description', 1000);
             $table->decimal('x', 12, 8);
             $table->decimal('y', 12, 8);
-
+   $table->foreignId('campaign_id')->nullable()->constrained()->nullOnDelete();
+        
             $table->timestamps();
         });
     }

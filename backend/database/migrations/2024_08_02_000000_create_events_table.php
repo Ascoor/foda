@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreignId('team_id')->nullable()->constrained()->nullOnDelete();
 
             $table->index('campaign_id', 'events_campaign_id_index');
             $table->index('geo_area_id', 'events_geo_area_id_index');

@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();
-
+           $table->string('avatar')->nullable();
             $table->index('status', 'users_status_index');
             $table->index('role_id', 'users_role_id_index');
             $table->index('team_id', 'users_team_id_index');
