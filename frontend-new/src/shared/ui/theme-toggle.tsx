@@ -15,7 +15,13 @@ export const ThemeToggle = () => {
       size="icon"
       onClick={toggleTheme}
       aria-label={t("switchTheme")}
-      className="relative overflow-hidden rounded-full"
+      className="relative overflow-hidden rounded-full text-[color:var(--header-widget-foreground)]"
+      style={{
+        background: "var(--header-widget-background)",
+        border: "1px solid var(--header-widget-border)",
+        boxShadow: "var(--header-widget-shadow)",
+        backdropFilter: "blur(var(--glass-blur)) saturate(var(--glass-saturation))",
+      }}
     >
       <AnimatePresence initial={false} mode="wait">
         <motion.span
@@ -27,9 +33,9 @@ export const ThemeToggle = () => {
           className="flex h-10 w-10 items-center justify-center"
         >
           {theme === "light" ? (
-            <Moon className="h-4 w-4 text-secondary" />
+            <Moon className="h-4 w-4" style={{ color: "var(--theme-toggle-moon)" }} />
           ) : (
-            <Sun className="h-4 w-4 text-accent" />
+            <Sun className="h-4 w-4" style={{ color: "var(--theme-toggle-sun)" }} />
           )}
         </motion.span>
       </AnimatePresence>

@@ -71,8 +71,10 @@ export const sidebarNavSections: SidebarNavSection[] = [
 ];
 export const sidebarNavItems = sidebarNavSections.flatMap((section) => section.items);
 
+export const sidebarNavItems: SidebarNavItem[] = sidebarNavSections.flatMap((section) => section.items);
+
 const badgeToneStyles: Record<SidebarNavItemBadgeTone, string> = {
-  default: "bg-[hsla(var(--primary)/0.12)] text-primary",
+  default: "bg-[var(--navigation-badge-background)] text-[color:var(--navigation-badge-foreground)]",
   success: "bg-emerald-500/15 text-emerald-400",
   warning: "bg-amber-400/15 text-amber-400",
   info: "bg-sky-400/15 text-sky-400",
@@ -116,7 +118,7 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
                 </motion.p>
               )}
             </AnimatePresence>
-            <nav className="flex flex-col gap-1">
+            <nav className="flex flex-col gap-2">
               {items.map(({ icon: Icon, labelKey, path, badge, badgeTone }) => (
                 <NavLink
                   key={path}
@@ -130,21 +132,51 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
                       layout
                       transition={navSpring}
                       className={cn(
-                        "relative flex items-center gap-3 overflow-visible rounded-[var(--radius-lg)] px-3 py-2 text-sm font-medium transition-colors",
+                        "relative flex items-center gap-3 overflow-visible rounded-[var(--radius-xl)] px-3 py-2 text-sm font-semibold tracking-tight transition-all duration-300",
                         isCollapsed ? "justify-center" : "justify-start",
-                        isActive
-                          ? "text-primary"
-                          : "text-muted-foreground hover:text-foreground",
                       )}
+                      style={{
+                        color: isActive ? "var(--navigation-text)" : "var(--navigation-text-muted)",
+                        background: isActive
+                          ? "var(--navigation-active-background)"
+                          : "var(--navigation-row-background)",
+                        border: isActive
+                          ? `1px solid var(--navigation-row-border-active)`
+                          : `1px solid var(--navigation-row-border)`,
+                        boxShadow: isActive
+                          ? "var(--navigation-active-glow)"
+                          : "var(--navigation-row-shadow)",
+                        backdropFilter: "blur(var(--glass-blur)) saturate(160%)",
+                      }}
                     >
                       {isActive && (
                         <motion.div
                           layoutId="active-nav"
                           transition={navSpring}
-                          className="absolute inset-0 rounded-[var(--radius-lg)] bg-[linear-gradient(135deg,_hsla(var(--primary)/0.18),_hsla(var(--secondary)/0.18))] shadow-[0_18px_42px_-28px_hsla(var(--primary)/0.35)]"
+                          className="absolute inset-0 rounded-[var(--radius-xl)]"
+                          style={{
+                            background: "var(--navigation-active-background)",
+                            boxShadow: "var(--navigation-active-glow)",
+                          }}
                         />
                       )}
-                      <Icon className="relative z-10 h-5 w-5" />
+                      <span
+                        className="relative z-10 flex h-9 w-9 items-center justify-center rounded-[var(--radius-lg)] transition-all duration-300 before:absolute before:inset-0 before:rounded-[inherit] before:bg-[radial-gradient(circle_at_top,var(--navigation-icon-highlight),transparent_70%)] before:opacity-0 before:transition-opacity before:duration-300 group-hover:before:opacity-100"
+                        style={{
+                          background: "var(--navigation-icon-background)",
+                          boxShadow: isActive
+                            ? "var(--navigation-icon-shadow-active)"
+                            : "var(--navigation-icon-shadow)",
+                          color: isActive
+                            ? "var(--navigation-icon-foreground)"
+                            : "var(--navigation-icon-foreground-muted)",
+                          border: isActive
+                            ? `1px solid var(--navigation-icon-ring-active)`
+                            : `1px solid var(--navigation-icon-ring)`,
+                        }}
+                      >
+                        <Icon className="relative z-10 h-4 w-4" />
+                      </span>
                       <AnimatePresence mode="wait" initial={false}>
                         {!isCollapsed && (
                           <motion.span
@@ -153,7 +185,7 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -8 }}
                             transition={{ duration: 0.18 }}
-                            className="relative z-10"
+                            className="relative z-10 drop-shadow-[0_6px_18px_rgba(15,23,42,0.18)]"
                           >
                             {t(labelKey)}
                           </motion.span>
@@ -168,7 +200,7 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
                             exit={{ opacity: 0, x: 8 }}
                             transition={{ duration: 0.18 }}
                             className={cn(
-                              "relative z-10 ml-auto inline-flex items-center rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.26em]",
+                              "relative z-10 ml-auto inline-flex items-center rounded-full px-2 py-1 text-[11px] font-semibold uppercase tracking-[0.26em] shadow-[0_12px_28px_rgba(15,23,42,0.18)]",
                               badgeToneStyles[badgeTone ?? "default"],
                             )}
                           >
@@ -177,7 +209,13 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
                         )}
                       </AnimatePresence>
                       {isCollapsed && (
-                        <span className="pointer-events-none absolute left-full top-1/2 z-50 -translate-y-1/2 translate-x-3 whitespace-nowrap rounded-[var(--radius-lg)] bg-foreground/90 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.3em] text-background opacity-0 shadow-[0_14px_38px_-28px_rgba(0,0,0,0.55)] transition-opacity duration-150 group-hover:opacity-100">
+                        <span
+                          className="pointer-events-none absolute left-full top-1/2 z-50 -translate-y-1/2 translate-x-3 whitespace-nowrap rounded-[var(--radius-lg)] px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.3em] opacity-0 shadow-[0_16px_38px_-28px_rgba(15,23,42,0.55)] transition-opacity duration-150 group-hover:opacity-100"
+                          style={{
+                            background: "var(--navigation-tooltip-background)",
+                            color: "var(--navigation-tooltip-foreground)",
+                          }}
+                        >
                           {t(labelKey)}
                           {badge ? (
                             <span
@@ -233,23 +271,38 @@ export const Sidebar = () => {
       initial={{ opacity: 0, x: direction === "rtl" ? 64 : -64 }}
       animate={{ opacity: 1, x: 0, width: isCollapsed ? 96 : 288 }}
       transition={sidebarSpring}
-      className="relative hidden h-full shrink-0 flex-col overflow-hidden border-r border-border/50 bg-[hsla(var(--background)/0.92)] px-4 py-6 text-foreground shadow-[var(--shadow-md)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)] md:flex"
+      className="relative hidden h-full shrink-0 flex-col overflow-hidden border-r px-4 py-6 text-foreground md:flex"
       style={{
-        backgroundImage: "url('/assets/brand/pattern-bg.svg')",
+        borderColor: "var(--sidebar-border)",
+        backgroundImage:
+          "linear-gradient(160deg, var(--sidebar-glass-from) 0%, var(--sidebar-glass-to) 100%), url('/assets/brand/pattern-bg.svg')",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        backgroundBlendMode: "overlay",
+        boxShadow: "var(--sidebar-glow)",
+        backdropFilter: "blur(var(--glass-blur)) saturate(var(--glass-saturation))",
       }}
     >
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(140deg,hsla(var(--background)/0.88)_0%,hsla(var(--background)/0.62)_48%,hsla(var(--background)/0.78)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <span className="absolute inset-0 bg-[radial-gradient(160%_140%_at_20%_-20%,var(--sidebar-accent)_0%,transparent_70%)] opacity-80" />
+        <span className="absolute inset-0 bg-[radial-gradient(140%_140%_at_85%_0%,rgba(56,189,248,0.22)_0%,transparent_70%)] opacity-70 mix-blend-screen" />
+        <span className="absolute inset-x-0 bottom-[-80px] h-44 bg-[radial-gradient(80%_60%_at_50%_100%,rgba(255,255,255,0.14),transparent_80%)]" />
+      </div>
       <div className="flex h-full flex-col gap-6">
         <div className={cn("flex items-center gap-3", isCollapsed ? "justify-center" : "justify-between")}>
           <motion.div layout className="flex items-center gap-3">
-            <motion.div layout transition={sidebarSpring} className="flex items-center justify-center">
-              <img
-                src="/assets/brand/foda-icon.svg"
-                alt="Foda Elections icon"
-                className="h-10 w-10 drop-shadow-[0_16px_34px_rgba(124,58,237,0.32)]"
-              />
+            <motion.div
+              layout
+              transition={sidebarSpring}
+              className="flex items-center justify-center"
+            >
+              <span className="relative flex h-12 w-12 items-center justify-center rounded-[var(--radius-xl)] bg-[radial-gradient(circle_at_top,var(--navigation-icon-highlight),transparent_70%)] shadow-[0_22px_48px_-28px_rgba(59,130,246,0.38)] ring-1 ring-[color:var(--navigation-icon-ring)]">
+                <img
+                  src="/assets/brand/foda-icon.svg"
+                  alt="Foda Elections icon"
+                  className="h-7 w-7 drop-shadow-[0_16px_34px_rgba(124,58,237,0.42)]"
+                />
+              </span>
             </motion.div>
             <AnimatePresence initial={false}>
               {!isCollapsed && (
@@ -261,10 +314,10 @@ export const Sidebar = () => {
                   transition={{ duration: 0.2 }}
                   className="leading-tight"
                 >
-                  <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-muted-foreground">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-muted-foreground">
                     Foda Elections
                   </p>
-                  <p className="text-sm font-semibold text-foreground">فوده مننا</p>
+                  <p className="bg-gradient-to-r from-[hsl(var(--header-title-from))] via-[hsl(var(--header-title-via))] to-[hsl(var(--header-title-to))] bg-clip-text text-sm font-semibold text-transparent">فوده مننا</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -275,6 +328,12 @@ export const Sidebar = () => {
             variant="glass"
             onClick={() => setIsCollapsed((prev) => !prev)}
             className="hidden size-9 items-center justify-center rounded-full text-muted-foreground transition hover:text-foreground lg:flex"
+            style={{
+              background: "var(--navigation-row-background)",
+              border: "1px solid var(--navigation-row-border)",
+              boxShadow: "var(--navigation-row-shadow)",
+              backdropFilter: "blur(var(--glass-blur)) saturate(160%)",
+            }}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
           >
             <ToggleIcon className="h-4 w-4" />
@@ -283,11 +342,18 @@ export const Sidebar = () => {
 
         <SidebarNav isCollapsed={isCollapsed} />
 
-        <div className="mt-auto rounded-[var(--radius-xl)] border border-dashed border-primary/40 bg-[hsla(var(--primary)/0.08)] p-4 text-xs shadow-[0_18px_45px_-30px_hsla(var(--primary)/0.35)]">
+        <div
+          className="mt-auto rounded-[var(--radius-xl)] border border-dashed p-4 text-xs"
+          style={{
+            borderColor: "var(--navigation-row-border-active)",
+            background: "linear-gradient(135deg, rgba(59,130,246,0.12), rgba(14,165,233,0.12))",
+            boxShadow: "var(--navigation-active-glow)",
+          }}
+        >
           <motion.div
             layout
             className={cn(
-              "flex items-center gap-2 text-primary",
+              "flex items-center gap-2 text-[color:var(--navigation-text)]",
               isCollapsed ? "justify-center" : "justify-start",
             )}
           >
@@ -355,7 +421,13 @@ export const Sidebar = () => {
                 <Button
                   variant="glass"
                   size="sm"
-                  className="w-full justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-primary"
+                  className="w-full justify-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em] text-[color:var(--navigation-text)]"
+                  style={{
+                    background: "var(--navigation-active-background)",
+                    border: "1px solid var(--navigation-row-border-active)",
+                    boxShadow: "var(--navigation-active-glow)",
+                    backdropFilter: "blur(var(--glass-blur)) saturate(160%)",
+                  }}
                 >
                   <Plus className="h-3.5 w-3.5" />
                   {t("newBriefing")}

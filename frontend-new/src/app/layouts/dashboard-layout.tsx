@@ -21,12 +21,24 @@ export const DashboardLayout = () => {
 
   return (
     <div className="relative flex h-screen overflow-hidden bg-background text-foreground">
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(140%_120%_at_20%_-20%,hsla(var(--primary)/0.14),transparent_60%),radial-gradient(120%_120%_at_90%_10%,hsla(var(--secondary)/0.1),transparent_65%)]" />
+      <div
+        className="pointer-events-none absolute inset-0 -z-10 opacity-95"
+        style={{
+          backgroundImage: "var(--shell-outer-gradient-1), var(--shell-outer-gradient-2)",
+          backgroundBlendMode: "screen",
+        }}
+      />
       <Sidebar />
       <div className="relative flex flex-1 flex-col">
         <Header />
         <main className="relative flex-1 overflow-y-auto px-6 pb-10 pt-8">
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(120%_120%_at_10%_0%,hsla(var(--primary)/0.12),transparent_55%),radial-gradient(120%_120%_at_80%_10%,hsla(var(--secondary)/0.08),transparent_60%)]" />
+          <div
+            className="pointer-events-none absolute inset-0 -z-10"
+            style={{
+              backgroundImage: "var(--shell-inner-gradient-1), var(--shell-inner-gradient-2)",
+              backgroundBlendMode: "soft-light",
+            }}
+          />
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={location.pathname}
