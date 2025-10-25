@@ -88,8 +88,12 @@ export const Sidebar = ({
         ? "Collapse sidebar"
         : "Expand sidebar";
 
+  const baseLinkClasses =
+    "group flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition-all duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--sidebar-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--sidebar-surface)]";
+
   const containerClasses = cn(
-    "group/sidebar relative z-30 flex shrink-0 flex-col overflow-hidden rounded-[28px] border border-border/40 bg-[hsla(var(--card)/0.88)] p-4 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur-xl transition-all",
+    "group/sidebar relative z-30 flex shrink-0 flex-col overflow-hidden rounded-[28px] border bg-[var(--sidebar-surface)] p-4 text-[var(--sidebar-foreground)] shadow-[var(--sidebar-elevation)] backdrop-blur-xl transition-all",
+    "border-[color:var(--sidebar-border)]",
     isMobile
       ? [
           "fixed inset-y-24 max-h-[calc(100vh-8rem)] w-[min(20rem,90vw)] overflow-y-auto",
@@ -130,11 +134,11 @@ export const Sidebar = ({
             />
           </div>
           {isOpen && (
-            <div className="leading-tight text-foreground">
+            <div className="leading-tight text-[var(--sidebar-foreground)]">
               <p className="bg-gradient-to-r from-[#2563EB] via-[#7C3AED] to-[#FACC15] bg-clip-text text-[11px] font-semibold uppercase tracking-[0.28em] text-transparent">
                 {language === "ar" ? "فوده مننا" : "Foda Minnna"}
               </p>
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-sm font-semibold text-[var(--sidebar-foreground)]">
                 {language === "ar" ? "منصة الحملات الذكية" : headerLabel}
               </p>
             </div>
@@ -146,7 +150,7 @@ export const Sidebar = ({
             type="button"
             onClick={onToggleCollapse}
             aria-label={toggleAriaLabel}
-            className="flex size-9 items-center justify-center rounded-2xl border border-border/40 bg-background/60 text-muted-foreground transition hover:text-foreground"
+            className="flex size-9 items-center justify-center rounded-2xl border border-[color:var(--sidebar-border)] bg-[var(--sidebar-button-bg)] text-[var(--sidebar-muted)] transition-colors hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-hover-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--sidebar-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--sidebar-surface)]"
           >
             <ToggleIcon className="h-4 w-4" />
           </button>
@@ -172,10 +176,10 @@ export const Sidebar = ({
               aria-label={!isOpen ? getLabel(item.key) : undefined}
               className={({ isActive }) =>
                 cn(
-                  "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition-all",
+                  baseLinkClasses,
                   isActive || isRouteActive(item.path)
-                    ? "bg-[hsla(var(--primary)/0.2)] text-[hsl(var(--primary))] shadow-sm"
-                    : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
+                    ? "bg-[var(--sidebar-active-bg)] text-[var(--sidebar-active-fg)] shadow-[var(--sidebar-active-shadow)]"
+                    : "text-[var(--sidebar-muted)] hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-hover-fg)] hover:shadow-[var(--sidebar-hover-shadow)]",
                   !isOpen && "justify-center px-0",
                 )
               }
@@ -195,7 +199,7 @@ export const Sidebar = ({
                 <button
                   type="button"
                   onClick={() => toggleSection(section.key)}
-                  className="flex w-full items-center justify-between rounded-2xl px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground transition hover:text-foreground"
+                  className="flex w-full items-center justify-between rounded-2xl px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-[var(--sidebar-section-label)] transition-colors hover:bg-[var(--sidebar-hover-bg)] hover:text-[var(--sidebar-hover-fg)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--sidebar-ring)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--sidebar-surface)]"
                 >
                   <span>{getLabel(section.key)}</span>
                   <ChevronDown
@@ -230,7 +234,7 @@ export const Sidebar = ({
       </nav>
 
       {/* 🪶 Footer */}
-      <div className="pt-4 text-center text-xs text-muted-foreground/80">
+      <div className="pt-4 text-center text-xs text-[var(--sidebar-footer)]">
         {language === "ar" ? "© جميع الحقوق محفوظة" : "© All rights reserved"}
       </div>
     </motion.aside>
