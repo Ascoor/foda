@@ -18,5 +18,15 @@
   "messages": "الرسائل",
   "fieldTours": "الجولات الميدانية",
   "analytics": "التحليلات",
-  "gotv": "يوم التصويت (GOTV)"
+  "gotv": "يوم التصويت (GOTV)",
+  "missionControl": "غرفة التحكم",
+  "groundGame": "العمل الميداني",
+  "intelHub": "مركز المعلومات",
+  "campaignPulseTitle": "نبض الحملة",
+  "campaignPulseDescription": "تابع نسبة الحضور ونوبات المتطوعين وجهود الوصول دون مغادرة مركز القيادة.",
+  "liveSync": "تحديث مباشر",
+  "doorKnocks": "الأبواب المطرقوة",
+  "phoneBanking": "الاتصالات الهاتفية",
+  "eventCoverage": "تغطية الفعاليات",
+  "newBriefing": "موجز جديد"
 }

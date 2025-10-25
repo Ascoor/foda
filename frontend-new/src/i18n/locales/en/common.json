@@ -18,5 +18,15 @@
   "messages": "Messages",
   "fieldTours": "Field Tours",
   "analytics": "Analytics",
-  "gotv": "GOTV Day"
+  "gotv": "GOTV Day",
+  "missionControl": "Mission Control",
+  "groundGame": "Ground Game",
+  "intelHub": "Intel Hub",
+  "campaignPulseTitle": "Campaign Pulse",
+  "campaignPulseDescription": "Monitor turnout, volunteer shifts, and outreach without leaving the command center.",
+  "liveSync": "Live Sync",
+  "doorKnocks": "Doors knocked",
+  "phoneBanking": "Phone banking",
+  "eventCoverage": "Event coverage",
+  "newBriefing": "New briefing"
 }
