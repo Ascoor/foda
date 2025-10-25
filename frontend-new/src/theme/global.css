@@ -5,25 +5,158 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ------------------------------
+   BASE: Colors, Fonts, Radii
+   ------------------------------*/
 @layer base {
   :root {
-    color-scheme: light dark;
-    --font-family-base: "Inter", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    --font-family-display: "DM Sans", "Inter", "Segoe UI", system-ui, sans-serif;
-    --font-family-rtl: "Tajawal", "Noto Kufi Arabic", "DM Sans", "Inter", sans-serif;
+    /* ===== Elections360 Palette (LIGHT) ===== */
+    /* Core */
+    --background: 220 25% 97%;
+    --foreground: 230 20% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 230 20% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 230 20% 12%;
+
+    /* Primary */
+    --primary: 239 65% 35%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 239 85% 65%;
+
+    /* Secondary */
+    --secondary: 220 15% 92%;
+    --secondary-foreground: 230 20% 12%;
+
+    /* Accent */
+    --accent: 270 60% 55%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 270 80% 75%;
+
+    /* Ui neutrals */
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 10% 45%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 88%;
+    --input: 220 13% 88%;
+    --ring: 239 65% 35%;
+
+    /* Radii (kept your legacy tokens to avoid breaking UI) */
+    --radius: 0.75rem;
     --radius-xs: 0.625rem;
     --radius-sm: 0.75rem;
     --radius-md: 1rem;
     --radius-lg: 1.5rem;
     --radius-xl: 2.25rem;
+
+    /* Glassmorphism */
+    --glass-background: 0 0% 100% / 0.7;
+    --glass-border: 220 13% 88% / 0.3;
+    --glass-shadow: 220 20% 20% / 0.1;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(239 65% 35%), hsl(270 60% 50%));
+    --gradient-accent: linear-gradient(135deg, hsl(270 60% 55%), hsl(280 70% 65%));
+    --gradient-subtle: linear-gradient(180deg, hsl(220 25% 97%), hsl(220 20% 95%));
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.9), hsl(220 25% 98% / 0.7));
+
+    /* Shadows & Motion */
+    --shadow-sm: 0 2px 8px hsl(var(--glass-shadow));
+    --shadow-md: 0 4px 16px hsl(var(--glass-shadow));
+    --shadow-lg: 0 8px 32px hsl(var(--glass-shadow));
+    --shadow-glow: 0 0 32px hsl(var(--primary-glow) / 0.3);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+    /* Sidebar tokens */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 230 20% 12%;
+    --sidebar-primary: 239 65% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 15% 94%;
+    --sidebar-accent-foreground: 230 20% 12%;
+    --sidebar-border: 220 13% 88%;
+    --sidebar-ring: 239 65% 35%;
+
+    /* ---- Aliases to keep your old classes working ---- */
+    /* You used bg-surface/.. earlier; map it to card for compatibility */
+    --surface: var(--card);
+    --surface-foreground: var(--card-foreground);
+
+    /* Glass effects used elsewhere */
     --glass-blur: 24px;
     --glass-saturation: 180%;
-    --shadow-glow: 0 0 50px hsla(221, 83%, 53%, 0.35);
-    --shadow-sm: 0 12px 32px -24px rgba(15, 23, 42, 0.2);
-    --shadow-md: 0 24px 64px -40px rgba(15, 23, 42, 0.24);
-    --shadow-lg: 0 48px 120px -60px rgba(37, 99, 235, 0.18);
+
+    /* Fonts */
+    color-scheme: light dark;
+    --font-family-base: "Inter", "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    --font-family-display: "DM Sans", "Inter", "Segoe UI", system-ui, sans-serif;
+    --font-family-rtl: "Tajawal", "Noto Kufi Arabic", "DM Sans", "Inter", sans-serif;
   }
 
+  /* DARK THEME */
+  .dark,
+  html[data-theme="dark"] {
+    --background: 230 25% 8%;
+    --foreground: 220 15% 95%;
+
+    --card: 230 20% 12%;
+    --card-foreground: 220 15% 95%;
+
+    --popover: 230 20% 12%;
+    --popover-foreground: 220 15% 95%;
+
+    --primary: 239 75% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 239 85% 70%;
+
+    --secondary: 230 20% 18%;
+    --secondary-foreground: 220 15% 95%;
+
+    --accent: 270 70% 60%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 270 80% 75%;
+
+    --muted: 230 20% 18%;
+    --muted-foreground: 220 15% 65%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 230 20% 22%;
+    --input: 230 20% 22%;
+    --ring: 239 75% 55%;
+
+    --glass-background: 230 20% 12% / 0.7;
+    --glass-border: 230 20% 25% / 0.3;
+    --glass-shadow: 0 0% 0% / 0.4;
+
+    --gradient-primary: linear-gradient(135deg, hsl(239 75% 55%), hsl(270 70% 60%));
+    --gradient-accent: linear-gradient(135deg, hsl(270 70% 60%), hsl(280 75% 70%));
+    --gradient-subtle: linear-gradient(180deg, hsl(230 25% 8%), hsl(230 22% 10%));
+    --gradient-glass: linear-gradient(135deg, hsl(230 20% 15% / 0.9), hsl(230 22% 12% / 0.7));
+
+    /* Keep aliases in sync */
+    --surface: var(--card);
+    --surface-foreground: var(--card-foreground);
+
+    /* Sidebar dark */
+    --sidebar-background: 230 20% 12%;
+    --sidebar-foreground: 220 15% 95%;
+    --sidebar-primary: 239 75% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 230 20% 18%;
+    --sidebar-accent-foreground: 220 15% 95%;
+    --sidebar-border: 230 20% 22%;
+    --sidebar-ring: 239 75% 55%;
+  }
+
+  /* Global element styling */
   *,
   *::before,
   *::after {
@@ -35,13 +168,8 @@
     background-color: hsl(var(--background));
   }
 
-  html[data-theme="dark"] {
-    color-scheme: dark;
-  }
-
-  html[data-theme="light"] {
-    color-scheme: light;
-  }
+  html[data-theme="light"] { color-scheme: light; }
+  html[data-theme="dark"]  { color-scheme: dark; }
 
   body {
     min-height: 100vh;
@@ -54,9 +182,7 @@
     background-size: cover;
     opacity: 0.95;
     color: hsl(var(--foreground));
-    transition:
-      background-color 0.45s ease,
-      color 0.45s ease;
+    transition: background-color 0.45s ease, color 0.45s ease;
     @apply antialiased;
   }
 
@@ -64,6 +190,7 @@
     font-family: var(--font-family-rtl);
   }
 
+  /* Ambient light layers */
   body::before {
     content: "";
     position: fixed;
@@ -76,18 +203,9 @@
       linear-gradient(180deg, hsla(var(--background) / 0.88) 0%, hsla(var(--background) / 1) 100%);
   }
 
-  #root {
-    min-height: 100vh;
-    position: relative;
-    isolation: isolate;
-  }
+  #root { min-height: 100vh; position: relative; isolation: isolate; }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
+  h1,h2,h3,h4,h5,h6 {
     font-family: var(--font-family-display);
     letter-spacing: -0.01em;
   }
@@ -98,9 +216,14 @@
   }
 }
 
+/* ------------------------------
+   COMPONENTS: Glass Panels, Utils
+   ------------------------------*/
 @layer components {
   .glass-panel {
-    @apply relative overflow-hidden rounded-[var(--radius-xl)] border border-border/60 bg-surface/80 text-foreground shadow-[var(--shadow-md)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)] transition-all duration-500;
+    /* switched from bg-surface/80 to glass var for consistent palette */
+    background-color: hsla(var(--glass-background));
+    @apply relative overflow-hidden rounded-[var(--radius-xl)] border border-border/60 text-foreground shadow-[var(--shadow-md)] backdrop-blur-[var(--glass-blur)] backdrop-saturate-[var(--glass-saturation)] transition-all duration-500;
   }
 
   .glass-panel::before {
@@ -129,17 +252,10 @@
     box-shadow: var(--shadow-lg);
   }
 
-  .glass-panel:hover::before {
-    opacity: 1;
-  }
+  .glass-panel:hover::before { opacity: 1; }
 }
 
 @layer utilities {
-  [dir="rtl"] .rtl\:flex-row-reverse {
-    flex-direction: row-reverse;
-  }
-
-  .text-balance {
-    text-wrap: balance;
-  }
+  [dir="rtl"] .rtl\:flex-row-reverse { flex-direction: row-reverse; }
+  .text-balance { text-wrap: balance; }
 }

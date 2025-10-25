@@ -1,58 +1,66 @@
 // tailwind.config.ts
 import type { Config } from "tailwindcss";
 
-const withOpacity = (variable: string) =>
-  ({ opacityValue }: { opacityValue?: string }) => {
-    if (opacityValue !== undefined) return `hsl(var(${variable}) / ${opacityValue})`;
-    return `hsl(var(${variable}))`;
-  };
-
 const config: Config = {
   darkMode: ["class"],
-  content: ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{ts,tsx,js,jsx}",
+    "./components/**/*.{ts,tsx,js,jsx}",
+    "./layouts/**/*.{ts,tsx,js,jsx}",
+    "./utils/**/*.{ts,tsx,js,jsx}",
+  ],
   theme: {
     extend: {
       colors: {
-        background: withOpacity("--background"),
-        foreground: withOpacity("--foreground"),
-        surface: {
-          DEFAULT: withOpacity("--surface"),
-          foreground: withOpacity("--surface-foreground"),
-          secondary: withOpacity("--surface-secondary"),
-          "secondary-foreground": withOpacity("--surface-secondary-foreground"),
-        },
-        primary: {
-          DEFAULT: withOpacity("--primary"),
-          foreground: withOpacity("--primary-foreground"),
-        },
-        secondary: {
-          DEFAULT: withOpacity("--secondary"),
-          foreground: withOpacity("--secondary-foreground"),
-        },
-        accent: {
-          DEFAULT: withOpacity("--accent"),
-          foreground: withOpacity("--accent-foreground"),
-        },
-        muted: {
-          DEFAULT: withOpacity("--muted"),
-          foreground: withOpacity("--muted-foreground"),
-        },
-        border: withOpacity("--border"),
-        ring: withOpacity("--ring"),
+        // Core palette (يدعم /opacity مثل bg-background/80)
+        background: "hsl(var(--background) / <alpha-value>)",
+        foreground: "hsl(var(--foreground) / <alpha-value>)",
 
-        // 🎯 جديد: ألوان الـSidebar حسب متغيرات الثيم
+        card: "hsl(var(--card) / <alpha-value>)",
+        "card-foreground": "hsl(var(--card-foreground) / <alpha-value>)",
+
+        popover: "hsl(var(--popover) / <alpha-value>)",
+        "popover-foreground": "hsl(var(--popover-foreground) / <alpha-value>)",
+
+        primary: "hsl(var(--primary) / <alpha-value>)",
+        "primary-foreground": "hsl(var(--primary-foreground) / <alpha-value>)",
+
+        secondary: "hsl(var(--secondary) / <alpha-value>)",
+        "secondary-foreground": "hsl(var(--secondary-foreground) / <alpha-value>)",
+
+        accent: "hsl(var(--accent) / <alpha-value>)",
+        "accent-foreground": "hsl(var(--accent-foreground) / <alpha-value>)",
+
+        muted: "hsl(var(--muted) / <alpha-value>)",
+        "muted-foreground": "hsl(var(--muted-foreground) / <alpha-value>)",
+
+        destructive: "hsl(var(--destructive) / <alpha-value>)",
+        "destructive-foreground": "hsl(var(--destructive-foreground) / <alpha-value>)",
+
+        border: "hsl(var(--border) / <alpha-value>)",
+        input: "hsl(var(--input) / <alpha-value>)",
+        ring: "hsl(var(--ring) / <alpha-value>)",
+
+        // Sidebar set (مُطابق لمتغيراتك الحالية بالضبط)
         sidebar: {
-          DEFAULT: withOpacity("--sidebar-bg"),
-          foreground: withOpacity("--sidebar-foreground"),
-          muted: withOpacity("--sidebar-muted"),
-          border: withOpacity("--sidebar-border"),
-          active: withOpacity("--sidebar-active"),
-          "active-foreground": withOpacity("--sidebar-active-foreground"),
-          hover: withOpacity("--sidebar-hover"),
-          badge: withOpacity("--sidebar-badge"),
-          "badge-foreground": withOpacity("--sidebar-badge-foreground"),
+          DEFAULT: "hsl(var(--sidebar-background) / <alpha-value>)",
+          foreground: "hsl(var(--sidebar-foreground) / <alpha-value>)",
+          border: "hsl(var(--sidebar-border) / <alpha-value>)",
+          primary: "hsl(var(--sidebar-primary) / <alpha-value>)",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground) / <alpha-value>)",
+          accent: "hsl(var(--sidebar-accent) / <alpha-value>)",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground) / <alpha-value>)",
+          ring: "hsl(var(--sidebar-ring) / <alpha-value>)",
+        },
+
+        // اختياري: aliases للسيرفس لو بتستخدمها بكثرة
+        surface: {
+          DEFAULT: "hsl(var(--surface) / <alpha-value>)",
+          foreground: "hsl(var(--surface-foreground) / <alpha-value>)",
         },
       },
+
       borderRadius: {
         xs: "var(--radius-xs)",
         sm: "var(--radius-sm)",
@@ -60,15 +68,19 @@ const config: Config = {
         lg: "var(--radius-lg)",
         xl: "var(--radius-xl)",
       },
+
       fontFamily: {
         sans: ["var(--font-family-base)", "system-ui", "sans-serif"],
         display: ["var(--font-family-display)", "system-ui", "sans-serif"],
       },
+
       boxShadow: {
         glow: "var(--shadow-glow)",
-        glass: "var(--shadow-md)",
-        elevation: "var(--shadow-lg)",
+        // الحفاظ على أسماءك:
+        "shadow-md": "var(--shadow-md)",
+        "shadow-lg": "var(--shadow-lg)",
       },
+
       backgroundImage: {
         "brand-radial":
           "radial-gradient(120% 120% at 14% -12%, hsla(var(--primary) / 0.18) 0%, transparent 60%)",
