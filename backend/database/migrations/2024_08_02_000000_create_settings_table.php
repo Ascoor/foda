@@ -10,13 +10,17 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('key')->unique();
-            $table->text('value');
-            $table->string('description')->nullable();
-            $table->string('type')->default('string');
+            $table->string('group', 100)->nullable();
+            $table->string('key', 150);
+            $table->text('value')->nullable();
+            $table->string('type', 50)->nullable();
+            $table->boolean('is_encrypted')->default(false);
             $table->timestamps();
+
+            $table->unique(['group', 'key'], 'settings_group_key_unique');
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists('settings');
