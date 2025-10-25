@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\ElectionCircle\Campaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,12 @@ class Team extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'area_id', 'supervisor_id'];
+    protected $fillable = ['campaign_id', 'name', 'area_id', 'supervisor_id'];
+
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
 
     public function area(): BelongsTo
     {

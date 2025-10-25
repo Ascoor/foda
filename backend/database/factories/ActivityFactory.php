@@ -3,10 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Activity;
-use App\Models\Area;
 use App\Models\ElectionCircle\Campaign;
-use App\Models\ElectionCircle\Committee;
-use App\Models\User;
+use App\Models\Volunteer;
 use App\Models\Voter;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
@@ -19,66 +17,30 @@ class ActivityFactory extends Factory
 
     protected function withFaker(): Generator
     {
-        return FakerFactory::create('ar_SA');
+        return FakerFactory::create('ar_EG');
     }
 
     public function definition(): array
     {
-        $latitude = $this->faker->latitude(16.0, 32.0);
-        $longitude = $this->faker->longitude(34.0, 55.0);
-        $types = ['اجتماع تنسيقي', 'زيارة ميدانية', 'حملة توعية', 'ندوة مجتمعية'];
-        $statuses = ['open', 'in_progress', 'closed'];
-        $status = $this->faker->randomElement($statuses);
-        $title = $this->faker->randomElement($types);
+        $types = ['زيارة ميدانية', 'مكالمة متابعة', 'جولة طرق الأبواب', 'متابعة بلاغ'];
+        $channels = ['ميداني', 'هاتف', 'تواصل اجتماعي'];
+        $status = $this->faker->randomElement(['pending', 'completed', 'rescheduled']);
 
         return [
-            'area_id' => $this->resolveAreaId(),
-            'committee_id' => $this->resolveCommitteeId(),
             'campaign_id' => $this->resolveCampaignId(),
+            'volunteer_id' => $this->resolveVolunteerId(),
             'voter_id' => $this->resolveVoterId(),
-            'created_by' => $this->resolveUserId(),
-            'type' => $this->faker->randomElement(['turnout', 'logistics', 'support', 'engagement']),
+            'activity_type' => $this->faker->randomElement($types),
             'status' => $status,
-            'title' => $title,
-            'description' => $this->faker->sentence(8),
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'support_score' => $this->faker->numberBetween(20, 100),
-            'reported_at' => Carbon::now()->subHours($this->faker->numberBetween(1, 120)),
-            'meta' => [
-                'source' => $this->faker->randomElement(['agent', 'volunteer', 'voter']),
-                'status_label' => match ($status) {
-                    'open' => 'قيد التنفيذ',
-                    'in_progress' => 'جارٍ المتابعة',
-                    'closed' => 'مكتمل',
-                    default => 'غير محدد',
-                },
-                'activity_title' => $title,
-                'notes' => $this->faker->sentence(6),
+            'channel' => $this->faker->randomElement($channels),
+            'performed_at' => Carbon::now()->subHours($this->faker->numberBetween(2, 120)),
+            'notes' => $this->faker->sentence(10, true),
+            'metadata' => [
+                'follow_up_required' => $status !== 'completed',
+                'location_hint' => $this->faker->streetName(),
+                'summary' => $this->faker->sentence(6, true),
             ],
         ];
-    }
-
-    protected function resolveAreaId(): int
-    {
-        $existing = Area::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return Area::factory()->create()->id;
-    }
-
-    protected function resolveCommitteeId(): ?int
-    {
-        $existing = Committee::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return Committee::factory()->create()->id;
     }
 
     protected function resolveCampaignId(): ?int
@@ -92,6 +54,11 @@ class ActivityFactory extends Factory
         return Campaign::factory()->create()->id;
     }
 
+    protected function resolveVolunteerId(): ?int
+    {
+        return Volunteer::query()->inRandomOrder()->value('id');
+    }
+
     protected function resolveVoterId(): ?int
     {
         $existing = Voter::query()->inRandomOrder()->value('id');
@@ -101,16 +68,5 @@ class ActivityFactory extends Factory
         }
 
         return Voter::factory()->create()->id;
-    }
-
-    protected function resolveUserId(): int
-    {
-        $existing = User::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return User::factory()->create()->id;
     }
 }

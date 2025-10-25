@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Area;
+use App\Models\ElectionCircle\Campaign;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -14,18 +15,20 @@ class AreaFactory extends Factory
 
     protected function withFaker(): Generator
     {
-        return FakerFactory::create('ar_SA');
+        return FakerFactory::create('ar_EG');
     }
 
     public function definition(): array
     {
-        $regions = ['منطقة الرياض', 'منطقة مكة المكرمة', 'منطقة القصيم', 'منطقة تبوك', 'المنطقة الشرقية'];
+        $regions = ['القاهرة', 'الجيزة', 'الإسكندرية', 'أسيوط', 'الدقهلية', 'البحيرة'];
+        $district = $this->faker->randomElement(['الزيتون', 'شبرا', 'السيدة زينب', 'الخانكة', 'أبو المطامير', 'سيدي جابر']);
 
         return [
-            'name' => $this->faker->unique()->randomElement($regions) . ' - ' . $this->faker->randomElement(['الوسطى', 'الشمالية', 'الجنوبية']),
-            'description' => $this->faker->sentence(8),
-            'x' => $this->faker->latitude(16.0, 32.0),
-            'y' => $this->faker->longitude(34.0, 55.0),
+            'campaign_id' => Campaign::factory(),
+            'name' => $this->faker->unique()->randomElement($regions) . ' - ' . $district,
+            'description' => $this->faker->sentence(8, true),
+            'x' => $this->faker->randomFloat(6, 24.0, 31.0),
+            'y' => $this->faker->randomFloat(6, 29.0, 33.0),
         ];
     }
 }

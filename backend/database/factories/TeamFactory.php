@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Area;
+use App\Models\ElectionCircle\Campaign;
 use App\Models\Team;
 use App\Models\User;
 use Faker\Factory as FakerFactory;
@@ -15,7 +16,7 @@ class TeamFactory extends Factory
 
     protected function withFaker(): Generator
     {
-        return FakerFactory::create('ar_SA');
+        return FakerFactory::create('ar_EG');
     }
 
     public function definition(): array
@@ -24,6 +25,7 @@ class TeamFactory extends Factory
         $teamFocus = ['التواصل', 'الميدان', 'التحليل', 'التعبئة', 'الدعم'];
 
         return [
+            'campaign_id' => Campaign::factory(),
             'name' => $this->faker->randomElement($teamPrefixes) . ' ' . $this->faker->randomElement($teamFocus),
             'area_id' => $this->resolveAreaId(),
             'supervisor_id' => $this->resolveSupervisorId(),
