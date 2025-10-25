@@ -69,8 +69,7 @@ export const sidebarNavSections: SidebarNavSection[] = [
     ],
   },
 ];
-export const sidebarNavItems = sidebarNavSections.flatMap((section) => section.items);
-
+ 
 export const sidebarNavItems: SidebarNavItem[] = sidebarNavSections.flatMap((section) => section.items);
 
 const badgeToneStyles: Record<SidebarNavItemBadgeTone, string> = {
