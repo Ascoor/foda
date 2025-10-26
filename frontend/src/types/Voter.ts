@@ -1,6 +1,11 @@
-import type { BaseEntity, Nullable } from './common';
+import type { BaseEntity, Nullable } from "./common";
 
-export type VoterStatus = 'active' | 'inactive' | 'suspended' | 'deceased' | 'moved';
+export type VoterStatus =
+  | "active"
+  | "inactive"
+  | "suspended"
+  | "deceased"
+  | "moved";
 
 export interface VoterContact {
   phone_primary?: string | null;
@@ -13,7 +18,7 @@ export interface VoterContact {
 export interface Voter extends BaseEntity {
   full_name: string;
   national_id: string;
-  gender: 'male' | 'female' | 'other';
+  gender: "male" | "female" | "other";
   birth_date: string;
   status: VoterStatus;
   election_uuid: string;

@@ -1,6 +1,6 @@
-import type { BaseEntity, Nullable } from './common';
+import type { BaseEntity, Nullable } from "./common";
 
-export type NotificationChannel = 'database' | 'mail' | 'sms' | 'push';
+export type NotificationChannel = "database" | "mail" | "sms" | "push";
 
 export interface Notification extends BaseEntity {
   type: string;

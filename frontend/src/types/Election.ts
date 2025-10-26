@@ -1,7 +1,7 @@
-import type { BaseEntity } from './common';
-import type { GeoArea } from './GeoArea';
+import type { BaseEntity } from "./common";
+import type { GeoArea } from "./GeoArea";
 
-export type ElectionStatus = 'draft' | 'scheduled' | 'active' | 'archived';
+export type ElectionStatus = "draft" | "scheduled" | "active" | "archived";
 
 export interface ElectionPhase {
   name: string;
@@ -16,5 +16,5 @@ export interface Election extends BaseEntity {
   status: ElectionStatus;
   cycle_year: number;
   phases: ElectionPhase[];
-  default_geo_scope: GeoArea['uuid'] | null;
+  default_geo_scope: GeoArea["uuid"] | null;
 }

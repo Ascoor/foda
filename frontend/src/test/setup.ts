@@ -1,20 +1,21 @@
-import '@testing-library/jest-dom';
-import '@/i18n';
-import i18n from '@/i18n';
-import { vi } from 'vitest';
+import "@testing-library/jest-dom";
+import "@/i18n";
+import i18n from "@/i18n";
+import { vi } from "vitest";
+import type { ReactNode } from "react";
 
-i18n.changeLanguage('en');
+i18n.changeLanguage("en");
 
 const mockUseLanguage = vi.hoisted(() => vi.fn());
 
-vi.mock('@/contexts/LanguageContext', () => ({
+vi.mock("@shared/contexts/LanguageContext", () => ({
   useLanguage: mockUseLanguage,
-  LanguageProvider: ({ children }: any) => children,
+  LanguageProvider: ({ children }: { children: ReactNode }) => children,
 }));
 
 mockUseLanguage.mockReturnValue({
-  language: 'en',
-  direction: 'ltr',
+  language: "en",
+  direction: "ltr",
   toggleLanguage: vi.fn(),
   setLanguage: vi.fn(),
   t: (key: string) => key,

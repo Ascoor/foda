@@ -1,0 +1,17 @@
+sections:
+  - title: "Architecture"
+    path: "docs/architecture/"
+  - title: "Frontend"
+    path: "docs/frontend/"
+  - title: "Backend"
+    path: "docs/backend/"
+  - title: "Shared"
+    path: "docs/shared/"
+  - title: "Governance"
+    path: "docs/governance/"
+  - title: "Legacy"
+    path: "docs/legacy/"
+metadata:
+  updated_by: "Doc Automation Task"
+  last_audit: "2025-10-19"
+  status: "Clean and Unified"

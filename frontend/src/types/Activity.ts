@@ -1,14 +1,18 @@
-import type { BaseEntity, Nullable } from './common';
+import type { BaseEntity, Nullable } from "./common";
 
 export type ActivityType =
-  | 'door_knock'
-  | 'phone_bank'
-  | 'rally'
-  | 'training'
-  | 'fundraising'
-  | 'digital';
+  | "door_knock"
+  | "phone_bank"
+  | "rally"
+  | "training"
+  | "fundraising"
+  | "digital";
 
-export type ActivityStatus = 'planned' | 'in_progress' | 'completed' | 'cancelled';
+export type ActivityStatus =
+  | "planned"
+  | "in_progress"
+  | "completed"
+  | "cancelled";
 
 export interface Activity extends BaseEntity {
   campaign_uuid: string;
