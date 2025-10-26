@@ -7,6 +7,8 @@ import {
   ReactNode,
 } from "react";
 
+import { getThemeCssVariables } from "@shared/lib/theme-tokens";
+
 type Theme = "light" | "dark";
 
 interface ThemeContextType {
@@ -53,9 +55,21 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     }
 
     const root = document.documentElement;
+    const body = document.body;
+
     root.classList.remove("light", "dark");
     root.classList.add(theme);
-    document.body.dataset.theme = theme;
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+
+    body.classList.remove("light", "dark");
+    body.classList.add(theme);
+    body.dataset.theme = theme;
+
+    const variables = getThemeCssVariables(theme);
+    Object.entries(variables).forEach(([token, value]) => {
+      root.style.setProperty(token, value);
+    });
   }, [theme]);
 
   useEffect(() => {

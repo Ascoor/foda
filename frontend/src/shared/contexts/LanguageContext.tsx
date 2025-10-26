@@ -68,10 +68,13 @@ export const LanguageProvider = ({ children }: LanguageProviderProps) => {
       return;
     }
 
-    document.dir = direction;
-    document.documentElement.lang = language;
-
+    const root = document.documentElement;
     const body = document.body;
+
+    root.dir = direction;
+    root.lang = language;
+    root.dataset.direction = direction;
+
     if (!body) {
       return;
     }
