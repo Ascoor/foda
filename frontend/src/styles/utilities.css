@@ -168,3 +168,14 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* === Layout Stability === */
+.scrollbar-stable {
+  scrollbar-gutter: stable both-edges;
+}
+
+@supports not (scrollbar-gutter: stable) {
+  .scrollbar-stable {
+    overflow-y: scroll;
+  }
+}

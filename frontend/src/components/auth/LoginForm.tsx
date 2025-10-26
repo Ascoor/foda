@@ -36,7 +36,7 @@ export const LoginForm = () => {
     setError(null);
     setLoading(true);
     try {
-      await login(email, password, remember); // استخدام login
+      await login({ email, password, remember }); // استخدام login
       navigate('/dashboard'); // استخدام navigate هنا بعد تسجيل الدخول الناجح
     } catch (err: unknown) {
       if (err instanceof Error && err.message.trim()) {

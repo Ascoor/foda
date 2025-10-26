@@ -20,7 +20,7 @@ const setLanguageMock = vi.fn();
 let languageValue: 'en' | 'ar' = 'en';
 
 const logoutMock = vi.fn(() => Promise.resolve());
-let userValue = { name: 'Test User' };
+const userValue = { name: 'Test User' };
 
 vi.mock('@/contexts/AuthContext', () => ({
   useAuth: () => ({
@@ -35,7 +35,7 @@ vi.mock('@/contexts/NotificationContext', () => ({
   }),
 }));
 
-vi.mock('@/hooks/use-window-size', () => ({
+vi.mock('@/hooks/useWindowSize', () => ({
   useWindowSize: () => ({ width: 1280, height: 720 }),
 }));
 
