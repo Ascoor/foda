@@ -27,18 +27,41 @@
     "confirm": "تأكيد",
     "yes": "نعم",
     "no": "لا",
-
     "view": "عرض",
-
     "close": "إغلاق",
-
     "all": "الكل",
     "no_data": "لا توجد بيانات",
-    "language": "اللغة"
-  },  "navigation": {
+    "language": "اللغة",
+    "appName": "منصة فوده الانتخابية",
+    "switchLanguage": "تغيير اللغة",
+    "switchTheme": "تبديل النمط",
+    "notifications": "الإشعارات",
+    "guest": "زائر",
+    "account": "الحساب",
+    "logout": "تسجيل الخروج",
+    "missionControl": "غرفة التحكم",
+    "groundGame": "العمل الميداني",
+    "intelHub": "مركز المعلومات",
+    "campaignPulseTitle": "نبض الحملة",
+    "campaignPulseDescription": "ابق على تزامن مع نوبات المتطوعين وحركة الميدان مباشرة.",
+    "liveSync": "تحديث مباشر",
+    "doorKnocks": "الأبواب المطرقوة",
+    "phoneBanking": "الاتصالات الهاتفية",
+    "eventCoverage": "تغطية الفعاليات",
+    "newBriefing": "موجز جديد",
+    "settings": "الإعدادات",
+    "dashboard": "الرئيسية",
+    "analytics": "التحليلات",
+    "messages": "الرسائل",
+    "voters": "الناخبون",
+    "volunteers": "المتطوعون",
+    "fieldTours": "الجولات الميدانية",
+    "gotv": "يوم التصويت",
+    "donations": "التبرعات"
+  },
+  "navigation": {
     "toggleSidebar": "تبديل الشريط الجانبي",
     "main": "القائمة الرئيسية",
-
     "section_overview": "نظرة عامة",
     "section_election_operations": "إدارة العملية الانتخابية",
     "section_field_resources": "إدارة الفرق الميدانية",
@@ -47,7 +70,6 @@
     "section_ai_and_automation": "الذكاء والتحكم الآلي",
     "section_system_admin": "الإدارة التقنية والأمنية",
     "section_admin": "الإدارة والإعدادات",
-
     "dashboard": "لوحة التحكم",
     "elections": "الانتخابات",
     "geo_areas": "المناطق الجغرافية",
@@ -55,32 +77,27 @@
     "voters": "الناخبون",
     "candidates": "المرشحون",
     "results_center": "مركز النتائج",
-
     "agents": "الوكلاء",
     "volunteers": "المتطوعون",
     "observers": "المراقبون",
     "field_reports": "التقارير الميدانية",
-
     "campaigns": "الحملات",
     "automation": "الأتمتة",
     "analytics": "التحليلات",
-
     "live_map": "الخريطة الحية",
     "statistics": "الإحصائيات",
     "alerts": "التنبيهات",
-
     "predictive_insights": "التحليلات التنبؤية",
     "user_roles": "صلاحيات المستخدمين",
     "system_logs": "سجلات النظام",
     "security_center": "مركز الأمان",
     "integrations": "التكاملات",
     "system_settings": "إعدادات النظام",
-
     "settings": "الإعدادات"
   },
   "dashboard": {
     "title": "لوحة التحكم",
-    "welcome": "مرحباً بك في دائرة الانتخابات",
+    "welcome": "مرحبًا بعودتك، {{name}}",
     "subtitle": "تابع وأدر عمليات الانتخابات ببيانات لحظية",
     "total_elections": "إجمالي الانتخابات",
     "active_voters": "الناخبون النشطون",
@@ -98,7 +115,57 @@
     "voter_turnout": "نسبة الإقبال",
     "load_success": "تم تحميل بيانات اللوحة",
     "load_error": "فشل تحميل بيانات اللوحة",
-    "area": "المنطقة {{number}}"
+    "area": "المنطقة {{number}}",
+    "overview": "نظرة سريعة على أداء الحملة",
+    "chartTitle": "النشاط الميداني اليومي",
+    "mapTitle": "خريطة نشاط الحملة",
+    "notifications": "التنبيهات والتحديثات",
+    "noNotifications": "كل شيء على ما يرام — لا توجد تنبيهات جديدة.",
+    "stats": {
+      "voterReach": "مدى الوصول للناخبين",
+      "dailyCalls": "المكالمات اليومية",
+      "donations": "التبرعات",
+      "events": "الفعاليات القادمة",
+      "changePercent": "+{{value}}٪",
+      "changeUpcoming": "+{{count}} فعالية قادمة"
+    }
+  },
+  "placeholders": {
+    "comingSoonTitle": "قريبًا",
+    "comingSoonBody": "نقوم بصقل هذه الوحدة لتتوافق مع تجربة الحملة الجديدة. تبقى مصادر البيانات الحالية متاحة في الخلفية.",
+    "backToDashboard": "العودة إلى لوحة التحكم",
+    "analytics": {
+      "title": "التحليلات",
+      "description": "ستظهر هنا قريبًا التصورات المتقدمة والرؤى التنبؤية."
+    },
+    "volunteers": {
+      "title": "المتطوعون",
+      "description": "أدِر عمليات الاستقطاب والتأهيل وتوزيع الفرق الميدانية في شاشة واحدة."
+    },
+    "voters": {
+      "title": "الناخبون",
+      "description": "قسّم المؤيدين والمترددين وأولويات التحفيز بسهولة."
+    },
+    "messages": {
+      "title": "الرسائل",
+      "description": "نسّق قنوات التواصل الخارجية وأتمت حملات المتابعة."
+    },
+    "fieldTours": {
+      "title": "الجولات الميدانية",
+      "description": "خطط مسارات الطرق الميدانية وتابع نقاط التسجيل المباشر عبر المناطق."
+    },
+    "donations": {
+      "title": "التبرعات",
+      "description": "تابع تقدّم جمع التبرعات وسلّط الضوء على رحلات الداعمين الأكثر تأثيرًا."
+    },
+    "gotv": {
+      "title": "حشد الناخبين",
+      "description": "جهّز أدوات الحشد الأخيرة لتحريك كل مؤيد يوم الاقتراع."
+    },
+    "settings": {
+      "title": "الإعدادات",
+      "description": "اضبط تفضيلات الحملة والتكاملات وسياسات الأمان."
+    }
   },
   "elections": {
     "title": "الانتخابات",
@@ -321,5 +388,18 @@
     "remember_me": "تذكرني",
     "login_error": "فشل تسجيل الدخول",
     "unknown_error": "حدث خطأ غير متوقع. حاول مرة أخرى لاحقاً."
+  },
+  "login": {
+    "title": "تسجيل الدخول إلى مساحة العمل",
+    "subtitle": "استخدم بيانات الحملة للوصول إلى مركز التحكم.",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكرني",
+    "forgotPassword": "هل نسيت كلمة المرور؟",
+    "loading": "جاري تسجيل الدخول...",
+    "signin": "تسجيل الدخول",
+    "noAccount": "تحتاج صلاحية الدخول؟ تواصل مع مسؤول الحملة.",
+    "requiredFields": "يرجى إدخال البريد الإلكتروني وكلمة المرور.",
+    "unknownError": "تعذر تسجيل الدخول، حاول مرة أخرى."
   }
 }

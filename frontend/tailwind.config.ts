@@ -114,6 +114,11 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        surface: "hsl(var(--surface))",
+        "surface-foreground": "hsl(var(--surface-foreground))",
+        "surface-secondary": "hsl(var(--surface-secondary))",
+        "surface-secondary-foreground": "hsl(var(--surface-secondary-foreground))",
+        "surface-accent": "hsl(var(--surface-accent))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

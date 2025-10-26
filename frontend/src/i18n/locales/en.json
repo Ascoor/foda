@@ -31,13 +31,37 @@
     "close": "Close",
     "all": "All",
     "no_data": "No data available",
-    "language": "Language"
+    "language": "Language",
+    "appName": "Foda Elections",
+    "switchLanguage": "Switch language",
+    "switchTheme": "Toggle theme",
+    "notifications": "Notifications",
+    "guest": "Guest",
+    "account": "Account",
+    "logout": "Log out",
+    "missionControl": "Mission control",
+    "groundGame": "Ground game",
+    "intelHub": "Intelligence hub",
+    "campaignPulseTitle": "Campaign pulse",
+    "campaignPulseDescription": "Stay synced with live volunteer shifts and field momentum.",
+    "liveSync": "Live sync",
+    "doorKnocks": "Door knocks",
+    "phoneBanking": "Phone banking",
+    "eventCoverage": "Event coverage",
+    "newBriefing": "New briefing",
+    "settings": "Settings",
+    "dashboard": "Dashboard",
+    "analytics": "Analytics",
+    "messages": "Messages",
+    "voters": "Voters",
+    "volunteers": "Volunteers",
+    "fieldTours": "Field tours",
+    "gotv": "GOTV",
+    "donations": "Donations"
   },
-  
   "navigation": {
     "toggleSidebar": "Toggle sidebar",
     "main": "Main navigation",
-
     "section_overview": "Overview",
     "section_election_operations": "Election Operations",
     "section_field_resources": "Field Resources",
@@ -46,7 +70,6 @@
     "section_ai_and_automation": "AI & Automation",
     "section_system_admin": "System Administration",
     "section_admin": "Administration",
-
     "dashboard": "Dashboard",
     "elections": "Elections",
     "geo_areas": "Geographic Areas",
@@ -54,32 +77,27 @@
     "voters": "Voters",
     "candidates": "Candidates",
     "results_center": "Results Center",
-
     "agents": "Agents",
     "volunteers": "Volunteers",
     "observers": "Observers",
     "field_reports": "Field Reports",
-
     "campaigns": "Campaigns",
     "automation": "Automation",
     "analytics": "Analytics",
-
     "live_map": "Live Map",
     "statistics": "Statistics",
     "alerts": "Alerts",
-
     "predictive_insights": "Predictive Insights",
     "user_roles": "User Roles",
     "system_logs": "System Logs",
     "security_center": "Security Center",
     "integrations": "Integrations",
     "system_settings": "System Settings",
-
     "settings": "Settings"
   },
   "dashboard": {
     "title": "Dashboard",
-    "welcome": "Welcome to the electoral operations hub",
+    "welcome": "Welcome back, {{name}}",
     "subtitle": "Monitor and manage every stage of the election with real-time data",
     "total_elections": "Total Elections",
     "active_voters": "Active Voters",
@@ -97,7 +115,57 @@
     "voter_turnout": "Voter Turnout",
     "load_success": "Dashboard data loaded successfully",
     "load_error": "Failed to load dashboard data",
-    "area": "Area {{number}}"
+    "area": "Area {{number}}",
+    "overview": "Quick snapshot of campaign performance",
+    "chartTitle": "Daily field activity",
+    "mapTitle": "Campaign activity map",
+    "notifications": "Alerts & updates",
+    "noNotifications": "All caught up — no new notifications.",
+    "stats": {
+      "voterReach": "Voter reach",
+      "dailyCalls": "Daily calls",
+      "donations": "Donations",
+      "events": "Upcoming events",
+      "changePercent": "+{{value}}%",
+      "changeUpcoming": "+{{count}} upcoming"
+    }
+  },
+  "placeholders": {
+    "comingSoonTitle": "Coming soon",
+    "comingSoonBody": "We are polishing this module to match the new campaign experience. Existing data sources remain intact in the background.",
+    "backToDashboard": "Back to dashboard",
+    "analytics": {
+      "title": "Analytics",
+      "description": "Advanced visualisations and predictive insights will appear here soon."
+    },
+    "volunteers": {
+      "title": "Volunteers",
+      "description": "Manage recruitment, onboarding, and field assignments in one view."
+    },
+    "voters": {
+      "title": "Voters",
+      "description": "Segment supporters, undecideds, and turnout priorities effortlessly."
+    },
+    "messages": {
+      "title": "Messages",
+      "description": "Coordinate outbound communication and automate campaign follow-ups."
+    },
+    "fieldTours": {
+      "title": "Field tours",
+      "description": "Plan canvassing routes and monitor live check-ins across districts."
+    },
+    "donations": {
+      "title": "Donations",
+      "description": "Track fundraising progress and highlight high-impact donor journeys."
+    },
+    "gotv": {
+      "title": "GOTV",
+      "description": "Final stretch tooling to mobilise every supporter on election day."
+    },
+    "settings": {
+      "title": "Settings",
+      "description": "Configure campaign preferences, integrations, and security policies."
+    }
   },
   "elections": {
     "title": "Elections",
@@ -320,5 +388,18 @@
     "remember_me": "Remember me",
     "login_error": "Unable to log in",
     "unknown_error": "An unexpected error occurred. Please try again later."
+  },
+  "login": {
+    "title": "Sign in to your workspace",
+    "subtitle": "Use your campaign credentials to access the control center.",
+    "email": "Email address",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "loading": "Signing in…",
+    "signin": "Sign in",
+    "noAccount": "Need access? Contact your campaign administrator.",
+    "requiredFields": "Please provide both email and password.",
+    "unknownError": "We couldn't sign you in. Please try again."
   }
 }

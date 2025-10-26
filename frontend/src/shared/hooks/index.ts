@@ -4,3 +4,6 @@ export * from "./useThemePalette";
 export * from "./useWindowSize";
 export type { QueuedMutation, OfflineSyncState, HttpMethod } from "./use-offline-sync";
 export { useOfflineSyncContext as useOfflineSync } from "@shared/contexts/offline-context";
+export { useAuth } from "@legacy/hooks/useAuth";
+export { useLanguage } from "@shared/contexts/LanguageContext";
+export { useTheme } from "@shared/contexts/ThemeContext";
