@@ -1,19 +1,22 @@
-import { request } from '../../lib/api';
-import { Campaign, CampaignFormData } from './types';
+import { request } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/endpoints';
+import type { Campaign } from '@/types';
+import type { CampaignFormData } from './types';
 
-export const fetchCampaigns = async (): Promise<Campaign[]> => {
+const CAMPAIGNS_ENDPOINT = API_ENDPOINTS.campaigns.campaigns;
+
+export const fetchCampaigns = async (params: Record<string, unknown> = {}) => {
   const { data } = await request<{ data: Campaign[] }>({
-    url: '/ec/campaigns',
+    url: CAMPAIGNS_ENDPOINT,
     method: 'get',
+    params,
   });
   return data;
 };
 
-export const createCampaign = async (
-  payload: CampaignFormData
-): Promise<Campaign> => {
+export const createCampaign = async (payload: CampaignFormData): Promise<Campaign> => {
   const { data } = await request<{ data: Campaign }>({
-    url: '/ec/campaigns',
+    url: CAMPAIGNS_ENDPOINT,
     method: 'post',
     data: payload,
   });
@@ -21,22 +24,21 @@ export const createCampaign = async (
 };
 
 export const updateCampaign = async (
-  id: string,
-  payload: Partial<CampaignFormData>
+  identifier: string | number,
+  payload: Partial<CampaignFormData>,
 ): Promise<Campaign> => {
   const { data } = await request<{ data: Campaign }>({
-    url: `/ec/campaigns/${id}`,
+    url: `${CAMPAIGNS_ENDPOINT}/${identifier}`,
     method: 'put',
     data: payload,
   });
   return data;
 };
 
-export const deleteCampaign = async (id: string): Promise<void> => {
-  await request({ url: `/ec/campaigns/${id}`, method: 'delete' });
+export const deleteCampaign = async (identifier: string | number): Promise<void> => {
+  await request({ url: `${CAMPAIGNS_ENDPOINT}/${identifier}`, method: 'delete' });
 };
 
-// Assumes backend provides an endpoint to trigger sending a campaign
-export const sendCampaign = async (id: string): Promise<void> => {
-  await request({ url: `/ec/campaigns/${id}/send`, method: 'post' });
+export const sendCampaign = async (identifier: string | number): Promise<void> => {
+  await request({ url: `${CAMPAIGNS_ENDPOINT}/${identifier}/send`, method: 'post' });
 };

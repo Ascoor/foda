@@ -36,7 +36,7 @@ interface AuthContextType {
   token: string | null;
   user: AuthUser | null;
   loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string, remember?: boolean) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<AuthUser | null>;
 }
@@ -121,7 +121,7 @@ export const AuthProvider = ({ children }: Props) => {
       }
 
       setAuthToken(activeToken);
-      const response = await api.get('/me');
+      const response = await api.get('/api/v1/me');
       const nextUser = normalizeUser(response.data);
       setUser(nextUser);
       return nextUser;
@@ -130,10 +130,10 @@ export const AuthProvider = ({ children }: Props) => {
   );
 
   const login = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string, remember = false) => {
       setIsFetchingUser(true);
       try {
-        const response = await api.post('/login', { email, password });
+        const response = await api.post('/api/v1/login', { email, password, remember });
         const body = response.data;
         const newToken: string | undefined =
           body?.token ||
@@ -161,7 +161,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   const logout = useCallback(async () => {
     try {
-      await api.post('/logout');
+      await api.post('/api/v1/logout');
     } catch (error) {
       console.error('Failed to revoke token during logout', error);
     } finally {

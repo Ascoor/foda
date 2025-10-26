@@ -1,0 +1,35 @@
+<?php
+
+return [
+    'table' => 'voters',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'election_id' => ['type' => 'foreignId'],
+        'geo_area_id' => ['type' => 'foreignId', 'nullable' => true],
+        'full_name' => ['type' => 'string', 'length' => 255],
+        'national_id' => ['type' => 'string', 'length' => 50, 'nullable' => true],
+        'phone' => ['type' => 'string', 'length' => 30, 'nullable' => true],
+        'email' => ['type' => 'string', 'length' => 255, 'nullable' => true],
+        'address' => ['type' => 'string', 'length' => 255, 'nullable' => true],
+        'status' => ['type' => 'string', 'length' => 50, 'default' => 'pending'],
+    ],
+    'indexes' => [
+        ['type' => 'index', 'columns' => ['election_id'], 'name' => 'voters_election_id_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['election_id'],
+            'references' => ['id'],
+            'on' => 'elections',
+            'onDelete' => 'cascade',
+        ],
+        [
+            'columns' => ['geo_area_id'],
+            'references' => ['id'],
+            'on' => 'geo_areas',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+    'pii' => ['full_name', 'national_id', 'phone', 'email', 'address'],
+];

@@ -8,15 +8,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { LoginForm } from "@/components/auth/LoginForm";
-
+import landingImage from '@/assets/img/landing.webp';
 export default function LandingPage() {
   const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0c1023] via-[#101735] to-[#162048] text-white flex flex-col">
-      {/* Cover Section */}
-      <header className="relative h-[90vh] flex items-center justify-center bg-[url('/img/landing.webp')] bg-cover bg-center shadow-xl">
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+      {/* Cover Section */} 
+<header className="relative h-[90vh] flex items-center justify-center" style={{ backgroundImage: `url(${landingImage})` }}>
+   <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         <div className="relative z-10 text-center max-w-4xl px-4 animate-fade-in-up">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight drop-shadow-md">
             منصة إدارة الحملات الانتخابية

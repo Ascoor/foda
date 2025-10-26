@@ -14,6 +14,8 @@ class Activity extends Model
     protected $fillable = [
         'area_id',
         'committee_id',
+        'campaign_id',
+        'voter_id',
         'created_by',
         'type',
         'status',
@@ -42,6 +44,16 @@ class Activity extends Model
     public function committee(): BelongsTo
     {
         return $this->belongsTo(\App\Models\ElectionCircle\Committee::class, 'committee_id');
+    }
+
+    public function campaign(): BelongsTo
+    {
+        return $this->belongsTo(\App\Models\ElectionCircle\Campaign::class);
+    }
+
+    public function voter(): BelongsTo
+    {
+        return $this->belongsTo(Voter::class);
     }
 
     public function creator(): BelongsTo

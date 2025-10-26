@@ -1,18 +1,13 @@
-export interface GeoArea {
-  id: string;
-  name: string;
-  parent_id: string | null;
-  type: 'governorate' | 'district' | 'city' | 'village';
-  total_voters: number;
-  total_committees: number;
-  created_at: string;
-  updated_at: string;
-  parent_name?: string;
-  children_count?: number;
-}
+import type { GeoArea as GeoAreaEntity, GeoAreaType } from '@/types';
+
+export type GeoArea = GeoAreaEntity;
 
 export interface GeoAreaFormData {
   name: string;
-  parent_id: string | null;
-  type: 'governorate' | 'district' | 'city' | 'village';
+  code: string;
+  type: GeoAreaType;
+  parent_uuid?: string | null;
+  boundary?: GeoAreaEntity['boundary'];
+  population?: number | null;
+  metadata?: Record<string, unknown>;
 }

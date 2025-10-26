@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Concerns\HandlesIndexRequests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVoterRequest;
 use App\Http\Requests\UpdateVoterRequest;
@@ -12,21 +13,20 @@ use Illuminate\Support\Facades\Response;
 
 class VoterController extends Controller
 {
+    use HandlesIndexRequests;
+
     public function index(Request $request)
     {
-        $query = Voter::with('area');
+        $voters = $this->handleIndex(
+            $request,
+            Voter::with('area'),
+            ['name', 'email', 'phone', 'address'],
+            ['area_id', 'sex', 'voter_id'],
+            ['name', 'email', 'phone', 'address'],
+            ['name', 'created_at', 'updated_at']
+        );
 
-        if ($name = $request->query('name')) {
-            $query->where('name', 'like', "%{$name}%");
-        }
-        if ($areaId = $request->query('area_id')) {
-            $query->where('area_id', $areaId);
-        }
-        if ($voterId = $request->query('voter_id')) {
-            $query->where('voter_id', $voterId);
-        }
-
-        return VoterResource::collection($query->get());
+        return VoterResource::collection($voters);
     }
 
     public function store(StoreVoterRequest $request)

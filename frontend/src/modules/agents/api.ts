@@ -1,52 +1,67 @@
-import { Agent, AgentFormData, AgentFilters } from './types';
+import { request } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/endpoints';
+import type { Agent } from '@/types';
+import type { AgentFilters, AgentFormData } from './types';
 
-export const mockAgents: Agent[] = [
-  { id: '1', name: 'Agent A', mobile: '+201000000000', role: 'observer', committee_id: '1', committee_name: 'Committee 001' },
-  { id: '2', name: 'Agent B', mobile: '+201111111111', role: 'supervisor', committee_id: null }
-];
-
-export const mockCommittees = [
-  { id: '1', name: 'Committee 001' },
-  { id: '2', name: 'Committee 002' }
-];
-
-export const fetchAgents = async (filters?: AgentFilters): Promise<Agent[]> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  let data = [...mockAgents];
-  if (filters?.role) data = data.filter(a => a.role === filters.role);
-  if (filters?.committee_id) data = data.filter(a => a.committee_id === filters.committee_id);
-  return data;
+type PaginatedResponse<T> = {
+  data: T[];
+  meta?: {
+    total: number;
+    per_page: number;
+    current_page: number;
+  };
 };
 
-export const createAgent = async (data: AgentFormData): Promise<Agent> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const agent: Agent = { ...data, id: Math.random().toString(36).slice(2, 9) };
-  mockAgents.push(agent);
-  return agent;
+const AGENTS_ENDPOINT = API_ENDPOINTS.crm.agents;
+export const mockCommittees = [{ id: 'placeholder', name: 'Committee 001' }];
+
+export const fetchAgents = async (
+  filters: AgentFilters & { page?: number; per_page?: number } = {},
+) => {
+  const response = await request<PaginatedResponse<Agent>>(
+    {
+      url: AGENTS_ENDPOINT,
+      method: 'get',
+      params: filters,
+    },
+    { useCache: true },
+  );
+  return response.data;
 };
 
-export const updateAgent = async (id: string, data: Partial<AgentFormData>): Promise<Agent> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const agent = mockAgents.find(a => a.id === id);
-  if (!agent) throw new Error('Agent not found');
-  Object.assign(agent, data);
-  return agent;
+export const createAgent = async (data: AgentFormData) => {
+  const response = await request<{ data: Agent }>({
+    url: AGENTS_ENDPOINT,
+    method: 'post',
+    data,
+  });
+  return response.data;
 };
 
-export const deleteAgent = async (id: string): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
+export const updateAgent = async (uuid: string, data: Partial<AgentFormData>) => {
+  const response = await request<{ data: Agent }>({
+    url: `${AGENTS_ENDPOINT}/${uuid}`,
+    method: 'put',
+    data,
+  });
+  return response.data;
 };
 
-export const assignAgent = async (id: string, committeeId: string): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const agent = mockAgents.find(a => a.id === id);
-  if (agent) {
-    agent.committee_id = committeeId;
-    const committee = mockCommittees.find(c => c.id === committeeId);
-    agent.committee_name = committee?.name;
-  }
+export const deleteAgent = async (uuid: string) => {
+  await request({ url: `${AGENTS_ENDPOINT}/${uuid}`, method: 'delete' });
 };
 
-export const exportAgents = async (): Promise<void> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
+export const assignAgent = async (uuid: string, assignment: AgentFormData['assignment']) => {
+  await request({
+    url: `${AGENTS_ENDPOINT}/${uuid}/assign`,
+    method: 'post',
+    data: assignment,
+  });
 };
+
+export const exportAgents = async () =>
+  request<Blob>({
+    url: `${AGENTS_ENDPOINT}/export`,
+    method: 'get',
+    responseType: 'blob',
+  });

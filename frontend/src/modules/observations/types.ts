@@ -1,23 +1,33 @@
+export type ObservationType = 'violation' | 'note' | 'complaint';
+
 export interface Observation {
-  id: string;
-  observer: string;
-  committee_id: string | null;
+  id: number;
+  uuid: string;
+  observer_name: string;
+  observer?: string;
+  committee_uuid: string | null;
   committee_name?: string;
-  type: 'violation' | 'note' | 'complaint';
+  type: ObservationType;
   description: string;
-  image_url?: string;
-  timestamp: string;
+  media_url?: string | null;
+  captured_at: string;
+  created_at: string;
+  updated_at: string;
+  timestamp?: string;
 }
 
 export interface ObservationFormData {
-  observer: string;
-  committee_id: string | null;
-  type: 'violation' | 'note' | 'complaint';
+  observer_name: string;
+  observer?: string;
+  committee_uuid: string | null;
+  type: ObservationType;
   description: string;
-  image?: File | null;
+  attachment?: File | null;
 }
 
 export interface ObservationFilters {
-  type?: string;
-  committee_id?: string;
+  type?: ObservationType;
+  committee_uuid?: string;
+  from?: string;
+  to?: string;
 }

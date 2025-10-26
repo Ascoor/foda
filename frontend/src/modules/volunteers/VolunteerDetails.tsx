@@ -2,16 +2,17 @@ import { useTranslation } from 'react-i18next';
 import { User } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Volunteer } from './types';
+import type { Volunteer } from './types';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   volunteer: Volunteer | null;
+  committeeName?: string;
   onEdit: (volunteer: Volunteer) => void;
 }
 
-export const VolunteerDetails = ({ isOpen, onClose, volunteer, onEdit }: Props) => {
+export const VolunteerDetails = ({ isOpen, onClose, volunteer, committeeName, onEdit }: Props) => {
   const { t } = useTranslation();
   if (!volunteer) return null;
 
@@ -27,11 +28,11 @@ export const VolunteerDetails = ({ isOpen, onClose, volunteer, onEdit }: Props) 
 
         <div className="space-y-4">
           <div>
-            <h3 className="font-semibold text-lg">{volunteer.name}</h3>
-            <p className="text-muted-foreground">{volunteer.role}</p>
-            {volunteer.committee_name && (
-              <p className="text-sm">{volunteer.committee_name}</p>
-            )}
+            <h3 className="font-semibold text-lg">{volunteer.full_name}</h3>
+            <p className="text-muted-foreground capitalize">{volunteer.status}</p>
+            {committeeName && <p className="text-sm">{committeeName}</p>}
+            {volunteer.email && <p className="text-sm text-muted-foreground">{volunteer.email}</p>}
+            {volunteer.phone && <p className="text-sm text-muted-foreground">{volunteer.phone}</p>}
           </div>
           <div className="flex gap-3 pt-4 border-t border-white/10">
             <Button variant="outline" onClick={onClose} className="flex-1 glass-button">

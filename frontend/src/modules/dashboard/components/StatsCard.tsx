@@ -34,7 +34,7 @@ export const StatsCard = ({ title, value, change, trend, icon: Icon, color }: St
         scale: 1.02,
         boxShadow: '0 20px 40px -10px rgba(0,0,0,0.2)'
       }}
-      className="glass-card group cursor-pointer relative overflow-hidden"
+      className="glass-card group relative overflow-hidden"
     >
       {/* Animated Background Gradient */}
       <div className={`
@@ -59,13 +59,13 @@ export const StatsCard = ({ title, value, change, trend, icon: Icon, color }: St
           </div>
           
           <div className={`
-            flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium
+            flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium
             ${trend === 'up' ? 'text-success bg-success/10' : 'text-destructive bg-destructive/10'}
           `}>
             {trend === 'up' ? (
-              <TrendingUp className="h-3 w-3" />
+              <TrendingUp className="h-4 w-4" />
             ) : (
-              <TrendingDown className="h-3 w-3" />
+              <TrendingDown className="h-4 w-4" />
             )}
             {change}
           </div>

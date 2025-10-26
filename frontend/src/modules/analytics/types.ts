@@ -1,5 +1,7 @@
+import type { AnalyticsSnapshot, AnalyticsScope } from '@/types';
+
 export interface RegionAnalytics {
-  area_id: number;
+  geo_area_uuid: string;
   region: string;
   total_voters: number;
   active_agents: number;
@@ -23,16 +25,19 @@ export interface AnalyticsSummary {
   coverage_gap: number;
 }
 
-export interface AnalyticsResponse {
+export interface AnalyticsResponse extends AnalyticsSnapshot {
+  scope: AnalyticsScope;
+  scope_uuid: string;
+  generated_at: string;
+  summary: AnalyticsSummary;
   regions: RegionAnalytics[];
   support_trends: SupportTrendPoint[];
   report_distribution: ReportDistributionSlice[];
-  summary: AnalyticsSummary;
-  generated_at: string;
 }
 
 export interface AnalyticsFilters {
-  areaId?: number;
+  scope?: AnalyticsScope;
+  scope_uuid?: string;
   from?: string;
   to?: string;
 }

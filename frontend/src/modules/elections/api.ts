@@ -1,38 +1,53 @@
-import api, { request } from '../../lib/api';
-import { Election, ElectionFormData, ElectionFilters } from './types';
+import { request } from '@/lib/api';
+import { API_ENDPOINTS } from '@/lib/endpoints';
+import type { Election } from '@/types';
+import type { ElectionFormData, ElectionFilters } from './types';
 
-export const fetchElections = async (params: ElectionFilters = {}) => {
-  return request<{ data: Election[]; total: number }>({
-    url: '/ec/elections',
-    method: 'get',
-    params,
-  }, { useCache: true });
+type PaginatedResponse<T> = {
+  data: T[];
+  meta?: {
+    total: number;
+    per_page: number;
+    current_page: number;
+  };
 };
 
-export const fetchElection = async (id: string) => {
-  return request<Election>({ url: `/ec/elections/${id}`, method: 'get' }, { useCache: true });
-};
+const ELECTIONS_ENDPOINT = API_ENDPOINTS.elections.elections;
+
+export const fetchElections = async (params: ElectionFilters = {}) =>
+  request<PaginatedResponse<Election>>(
+    {
+      url: ELECTIONS_ENDPOINT,
+      method: 'get',
+      params,
+    },
+    { useCache: true },
+  );
+
+export const fetchElection = async (uuid: string) =>
+  request<{ data: Election }>(
+    { url: `${ELECTIONS_ENDPOINT}/${uuid}`, method: 'get' },
+    { useCache: true },
+  );
 
 export const createElection = async (payload: ElectionFormData) => {
   const data = await request<{ data: Election }>({
-    url: '/ec/elections',
+    url: ELECTIONS_ENDPOINT,
     method: 'post',
     data: payload,
   });
   return data.data;
 };
 
-export const updateElection = async (id: string, payload: ElectionFormData) => {
+export const updateElection = async (uuid: string, payload: ElectionFormData) => {
   const data = await request<{ data: Election }>({
-    url: `/ec/elections/${id}`,
+    url: `${ELECTIONS_ENDPOINT}/${uuid}`,
     method: 'put',
     data: payload,
   });
   return data.data;
 };
 
-export const deleteElection = async (id: string) => {
-  await request({ url: `/ec/elections/${id}`, method: 'delete' });
+export const deleteElection = async (uuid: string) => {
+  await request({ url: `${ELECTIONS_ENDPOINT}/${uuid}`, method: 'delete' });
 };
-
-export default api;

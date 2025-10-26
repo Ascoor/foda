@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Concerns\HandlesIndexRequests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreSmsRequest;
 use App\Http\Resources\SmsResource;
@@ -12,6 +13,8 @@ use Illuminate\Http\Request;
 
 class SmsController extends Controller
 {
+    use HandlesIndexRequests;
+
     public function __construct()
     {
         $this->authorizeResource(Sms::class, 'sms');
@@ -19,13 +22,17 @@ class SmsController extends Controller
 
     public function index(Request $request)
     {
-        $query = Sms::where('user_id', $request->user()->id);
+        $sms = $this->handleIndex(
+            $request,
+            Sms::query()->where('user_id', $request->user()->id)->latest(),
+            ['message', 'recipient'],
+            ['status'],
+            ['message', 'recipient'],
+            ['created_at'],
+            15
+        );
 
-        if ($status = $request->query('status')) {
-            $query->where('status', $status);
-        }
-
-        return SmsResource::collection($query->latest()->paginate());
+        return SmsResource::collection($sms);
     }
 
     public function store(StoreSmsRequest $request, SmsService $service)
@@ -56,7 +63,7 @@ class SmsController extends Controller
         $data = $request->validated();
         $sms->update($data);
 
-        if ($request->boolean('resend') || (!$sms->scheduled_for && $sms->status !== 'sent')) {
+        if ((bool) $request->input('resend', false) || (!$sms->scheduled_for && $sms->status !== 'sent')) {
             $service->send($sms);
         }
 

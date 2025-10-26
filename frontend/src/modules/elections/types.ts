@@ -1,25 +1,21 @@
-export interface Election {
-  id: string;
-  name: string;
-  type: 'presidential' | 'parliamentary' | 'local' | 'referendum';
-  status: 'draft' | 'active' | 'completed' | 'cancelled';
-  start_date: string;
-  end_date: string;
-  description?: string;
-}
+import type { Election as ElectionEntity, ElectionStatus } from '@/types';
+
+export type Election = ElectionEntity;
 
 export interface ElectionFormData {
   name: string;
-  type: Election['type'];
-  start_date: string;
-  end_date: string;
-  description?: string;
+  code: string;
+  description?: string | null;
+  status?: ElectionStatus;
+  cycle_year: number;
+  phases: ElectionEntity['phases'];
+  default_geo_scope?: string | null;
 }
 
 export interface ElectionFilters {
   search?: string;
   page?: number;
   per_page?: number;
-  status?: Election['status'];
-  type?: Election['type'];
+  status?: ElectionStatus;
+  cycle_year?: number;
 }

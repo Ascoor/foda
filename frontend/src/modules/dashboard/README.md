@@ -1,10 +1,10 @@
 # Dashboard Module
 
-لوحة التحكم تعرض إحصائيات حية حول العملية الانتخابية. يتم استهلاك البيانات من واجهة `/dashboard` في الـAPI باستخدام خدمة `useApi` التي تعتمد على التوكن المأخوذ من سياق المصادقة.
+لوحة التحكم تعرض إحصائيات حية حول العملية الانتخابية. يتم استهلاك البيانات من واجهة `/api/v1/dashboard` في الـAPI باستخدام خدمة `useApi` التي تعتمد على التوكن المأخوذ من سياق المصادقة.
 
 ## استهلاك الـAPI
 ```ts
-const { data, execute } = useApi<DashboardResponse>({ url: '/dashboard', method: 'GET' });
+const { data, execute } = useApi<DashboardResponse>({ url: '/api/v1/dashboard', method: 'GET' });
 useEffect(() => { execute(); }, []);
 ```
 يعتمد كل استدعاء على التوكن الموجود في `AuthContext` ويتم إظهار رسائل نجاح أو خطأ عبر `toast`.
@@ -14,4 +14,4 @@ useEffect(() => { execute(); }, []);
 
 ## فجوات البيانات المقترحة
 في حال عدم توفر بيانات خريطة الإقبال الحراري يقترح إضافة Endpoint مثل:
-`GET /dashboard/turnout` ليعيد مصفوفة من نسب الإقبال لكل منطقة.
+`GET /api/v1/dashboard/turnout` ليعيد مصفوفة من نسب الإقبال لكل منطقة.

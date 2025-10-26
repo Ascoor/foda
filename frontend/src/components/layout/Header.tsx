@@ -1,118 +1,288 @@
-import { motion } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { Moon, Sun, Globe, User, Bell, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useTheme } from '@/contexts/ThemeContext';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Moon,
+  Sun,
+  Bell,
+  Globe,
+  User,
+  Menu,
+  LogOut,
+  Settings,
+  UserCircle,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useNotifications } from '@/contexts/NotificationContext';
+} from "@/components/ui/dropdown-menu";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useNotifications } from "@/contexts/NotificationContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { cn } from "@/lib/utils";
+import { useWindowSize } from "@/hooks/use-window-size";
+import { useNavigate } from "react-router-dom";
 
-export const Header = () => {
-  const { t } = useTranslation();
+const SPRING_TRANSITION = {
+  type: "spring",
+  stiffness: 90,
+  damping: 20,
+} as const;
+
+interface HeaderProps {
+  layoutId?: string;
+  onToggleSidebar: () => void;
+}
+
+export const Header = ({ layoutId, onToggleSidebar }: HeaderProps) => {
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, direction } = useLanguage();
-  const { logout, user } = useAuth();
+  const { unreadCount } = useNotifications();
+  const { user, logout } = useAuth();
+  const { width } = useWindowSize();
   const navigate = useNavigate();
-  const { unreadCount, setDrawerOpen } = useNotifications();
+  const isMobile = width < 768;
+  const isRTL = direction === "rtl";
+
+  // 🕒 الساعة الرقمية الذكية
+  const [dateTime, setDateTime] = useState(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => setDateTime(new Date()), 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const formattedTime = dateTime.toLocaleTimeString(language, {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  const formattedDate = dateTime.toLocaleDateString(language, {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  });
+
+  const surfaceControlClass =
+    theme === "dark"
+      ? "bg-[hsla(var(--color-surface)/0.45)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.65)]"
+      : "bg-[hsla(var(--color-surface)/0.75)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.95)] shadow-sm";
+
+  const themeToggleLabel = language === "ar"
+    ? theme === "light" ? "تفعيل الوضع الداكن" : "تفعيل الوضع الفاتح"
+    : theme === "light" ? "Switch to dark mode" : "Switch to light mode";
+
+  const languageToggleLabel = language === "ar" ? "تغيير اللغة" : "Toggle language";
+
+  const userMenuLabel = language === "ar" ? "قائمة المستخدم" : "User menu";
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleLogout = async () => {
+    if (isLoggingOut) return;
+    setIsLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      navigate("/", { replace: true });
+      setIsLoggingOut(false);
+    }
+  };
+
+  const themeToggle = (
+    <Button
+      key="theme"
+      variant="ghost"
+      size="icon"
+      aria-label={themeToggleLabel}
+      onClick={toggleTheme}
+      className={cn(
+        "relative rounded-full p-2 transition-all hover:scale-105",
+        surfaceControlClass,
+      )}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={theme}
+          initial={{ rotate: -90, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          exit={{ rotate: 90, opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {theme === "light" ? (
+            <Moon className="h-5 w-5 text-[hsl(var(--primary))]" />
+          ) : (
+            <Sun className="h-5 w-5 text-[hsl(var(--accent))]" />
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </Button>
+  );
+
+  const languageToggle = (
+    <Button
+      key="language"
+      variant="ghost"
+      size="icon"
+      aria-label={languageToggleLabel}
+      onClick={toggleLanguage}
+      className={cn(
+        "rounded-full p-2 transition-all hover:scale-105",
+        surfaceControlClass,
+      )}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={language}
+          initial={{ rotateY: 180, opacity: 0 }}
+          animate={{ rotateY: 0, opacity: 1 }}
+          exit={{ rotateY: -180, opacity: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <Globe
+            className={cn(
+              "h-5 w-5",
+              language === "ar" ? "text-[hsl(var(--accent))]" : "text-[hsl(var(--primary))]",
+            )}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </Button>
+  );
+
+  const notificationsToggle = (
+    <Button
+      key="notifications"
+      variant="ghost"
+      size="icon"
+      aria-label={language === "ar" ? "الإشعارات" : "Notifications"}
+      className={cn(
+        "relative rounded-full p-2 hover:scale-105 transition-all",
+        surfaceControlClass,
+      )}
+    >
+      <Bell className="h-5 w-5" />
+      {unreadCount > 0 && (
+        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-white shadow-md">
+          {unreadCount}
+        </span>
+      )}
+    </Button>
+  );
+
+  const userMenu = (
+    <DropdownMenu key="user">
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={userMenuLabel}
+          className={cn(
+            "rounded-full p-2 hover:scale-105 transition-all",
+            surfaceControlClass,
+          )}
+        >
+          <User className="h-5 w-5" />
+        </Button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent
+        align={isRTL ? "start" : "end"}
+        sideOffset={8}
+        className={cn(
+          "min-w-[180px] rounded-2xl border p-2 backdrop-blur-lg shadow-lg",
+          "border-[hsla(var(--border)/0.2)] text-[hsl(var(--foreground))]",
+          theme === "dark"
+            ? "bg-[hsla(var(--color-surface)/0.92)]"
+            : "bg-[hsla(var(--color-surface)/0.97)]",
+        )}
+      >
+        <DropdownMenuItem className="flex items-center gap-2">
+          <UserCircle className="h-4 w-4" />
+          {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
+        </DropdownMenuItem>
+        <DropdownMenuItem className="flex items-center gap-2">
+          <Settings className="h-4 w-4" />
+          {language === "ar" ? "الإعدادات" : "Settings"}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          className="flex items-center gap-2 text-destructive"
+          disabled={isLoggingOut}
+          onSelect={(event) => {
+            event.preventDefault();
+            void handleLogout();
+          }}
+        >
+          <LogOut className="h-4 w-4" />
+          {isLoggingOut
+            ? language === "ar"
+              ? "جاري تسجيل الخروج..."
+              : "Logging out..."
+            : language === "ar"
+              ? "تسجيل الخروج"
+              : "Logout"}
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
+  const orderedControls = isRTL
+    ? [userMenu, notificationsToggle, languageToggle, themeToggle]
+    : [themeToggle, languageToggle, notificationsToggle, userMenu];
 
   return (
     <motion.header
-      initial={{ opacity: 0, y: -20 }}
+      layoutId={layoutId}
+      initial={{ opacity: 0, y: -15 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card rounded-none border-x-0 border-t-0 sticky top-0 z-40"
+      transition={SPRING_TRANSITION}
+      dir={direction}
+      className={cn(
+        "sticky top-0 z-50 w-full border-b backdrop-blur-xl transition-all duration-300",
+        theme === "dark"
+          ? "border-[hsla(var(--border)/0.35)] bg-[hsla(var(--color-surface)/0.9)] text-[hsl(var(--foreground))]"
+          : "border-[hsla(var(--border)/0.25)] bg-[hsla(var(--color-surface)/0.85)] text-[hsl(var(--foreground))]",
+      )}
     >
-      <div className="flex items-center justify-between h-16 px-6">
-        {/* Search */}
-        <div className="flex items-center flex-1 max-w-md">
-          <div className="relative w-full">
-            <Search className={`absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground ${direction === 'rtl' ? 'right-3' : 'left-3'}`} />
-            <Input
-              placeholder={t('common.search')}
-              className={`glass border-0 ${direction === 'rtl' ? 'pr-10' : 'pl-10'}`}
-            />
-          </div>
+      <div className="mx-auto flex h-[var(--layout-header-height)] w-full max-w-[1440px] items-center justify-between px-4 sm:px-6 lg:px-10">
+        {/* ================== Left Section ================== */}
+        <div
+          className={cn(
+            "flex items-center gap-4",
+            isRTL ? "flex-row-reverse" : "flex-row",
+          )}
+        >
+          {/* Sidebar Toggle (mobile) */}
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label={language === "ar" ? "فتح القائمة الجانبية" : "Open sidebar"}
+              className={cn(
+                "rounded-2xl p-2 shadow-md transition-colors",
+                surfaceControlClass,
+              )}
+              onClick={onToggleSidebar}
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          )}
+        </div>
+        {/* ================== Center Section (Clock) ================== */}
+        <div className="hidden sm:flex flex-col items-center  justify-center select-none text-center">
+          <span className="text-[0.8rem] text-muted-foreground uppercase tracking-wide">
+            {formattedDate}
+          </span>
+          <span className="font-mono text-lg font-semibold tracking-tight">
+            {formattedTime}
+          </span>
         </div>
 
-        {/* Right Side Controls */}
-        <div className="flex items-center gap-2">
-          {/* Language Toggle */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleLanguage}
-            className="glass-button"
-          >
-            <Globe className="h-4 w-4" />
-            <span className="ml-2 font-medium">
-              {language === 'ar' ? 'العربية' : 'English'}
-            </span>
-          </Button>
-
-          {/* Theme Toggle */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleTheme}
-            className="glass-button"
-          >
-            {theme === 'light' ? (
-              <Moon className="h-4 w-4" />
-            ) : (
-              <Sun className="h-4 w-4" />
-            )}
-          </Button>
-
-          {/* Notifications */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="glass-button relative"
-            onClick={() => setDrawerOpen(true)}
-          >
-            <Bell className="h-4 w-4" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-white">
-                {unreadCount > 9 ? '9+' : unreadCount}
-              </span>
-            )}
-          </Button>
-
-          {/* User Menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="glass-button">
-                <User className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="glass-card border-white/20">
-              <DropdownMenuItem className="flex flex-col items-start gap-1">
-                <span className="text-sm font-medium">{user?.name ?? t('settings.profile')}</span>
-                <span className="text-xs text-muted-foreground">{user?.email}</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                {t('settings.title')}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                className="text-destructive"
-                onSelect={async () => {
-                  await logout();
-                  navigate('/login');
-                }}
-              >
-                {t('auth.logout')}
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        {/* ================== Right Section ================== */}
+        <div className="flex items-center gap-2 sm:gap-3" dir={direction}>
+          {orderedControls.map((control) => control)}
         </div>
       </div>
     </motion.header>

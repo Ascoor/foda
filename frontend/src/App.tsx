@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -10,7 +10,7 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { MainLayout } from "@/components/layout/MainLayout";
 import { Login } from "@/pages/Login";
 import NotFound from "@/pages/NotFound";
-import { Dashboard } from "@/modules/dashboard/Dashboard";
+import  {EnhancedDashboard}  from "@/modules/dashboard/EnhancedDashboard";
 import { ElectionsList } from "@/modules/elections/List";
 import { ElectionDetails } from "@/modules/elections/Details";
 import { GeoAreasDashboard } from "@/modules/geo-areas/Dashboard";
@@ -21,16 +21,17 @@ import { CandidatesList } from "@/modules/candidates/List";
 import { CandidateDetails } from "@/modules/candidates/Details";
 import { AgentsList } from "@/modules/agents/AgentsList";
 import { VolunteersList } from "@/modules/volunteers/VolunteersList";
+import { ZoneDashboard } from "@/modules/zones/ZoneDashboard";
 
 import { CommitteesList } from "@/modules/committees/List";
 import { CommitteeDetails } from "@/modules/committees/Details";
-import { Analytics } from "@/modules/analytics/Analytics";
 import { Settings } from "@/modules/settings/Settings";
 
 import { ObservationsList } from "@/modules/observations/ObservationsList";
 import { CampaignsList } from "@/modules/campaigns/CampaignsList";
 import { AutomationDashboard } from "@/modules/automation/AutomationDashboard";
 import { NotificationProvider } from "@/contexts/NotificationContext";
+import { BarbaTransitionProvider } from "@/components/transition/BarbaTransitionProvider";
  
 
  
@@ -48,17 +49,13 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
-              <Routes>
-                <Route
-  path="/"
-  element={
-    <AuthRedirect />
-  }
-/>
-                <Route path="/login" element={<Login />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route element={<MainLayoutWrapper />}>
-     <Route path="/dashboard" element={<Dashboard />} />
+              <BarbaTransitionProvider>
+                <Routes>
+                  <Route path="/" element={<AuthRedirect />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route element={<MainLayoutWrapper />}>
+     <Route path="/dashboard" element={<EnhancedDashboard />} />
 
                     <Route path="/elections" element={<ElectionsList />} />
                     <Route path="/elections/:id" element={<ElectionDetails />} />
@@ -77,13 +74,15 @@ const App = () => (
                     <Route path="/campaigns" element={<CampaignsList />} />
                     <Route path="/automation" element={<AutomationDashboard />} />
                     <Route path="/analytics" element={<ComingSoon module="Analytics" />} />
+                    <Route path="/zones/mansoura" element={<ZoneDashboard />} />
                     <Route path="/settings" element={<Settings />} />
 
                     {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
+                      <Route path="*" element={<NotFound />} />
+                    </Route>
                   </Route>
-                </Route>
-              </Routes>
+                </Routes>
+              </BarbaTransitionProvider>
             </BrowserRouter>
           </TooltipProvider>
         </LanguageProvider>
@@ -91,14 +90,24 @@ const App = () => (
     </AuthProvider>
   </QueryClientProvider>
 );
+const MainLayoutWrapper = () => {
+  const location = useLocation();
+  const namespace = location.pathname.replace(/\//g, "-") || "app";
 
-const MainLayoutWrapper = () => (
-  <NotificationProvider>
-    <MainLayout>
-      <Outlet />
-    </MainLayout>
-  </NotificationProvider>
-);
+  return (
+    <NotificationProvider>
+      <div
+        data-barba="container"
+        data-barba-namespace={namespace}
+        className="min-h-screen"
+      >
+        <MainLayout>
+          <Outlet />
+        </MainLayout>
+      </div>
+    </NotificationProvider>
+  );
+};
 
 // Temporary component for modules under development
 const ComingSoon = ({ module }: { module: string }) => (

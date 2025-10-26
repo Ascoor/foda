@@ -1,0 +1,28 @@
+<?php
+
+return [
+    'table' => 'elections',
+    'columns' => [
+        'id' => ['type' => 'bigIncrements'],
+        'name' => ['type' => 'string', 'length' => 255],
+        'slug' => ['type' => 'string', 'length' => 150],
+        'description' => ['type' => 'text', 'nullable' => true],
+        'geo_boundary_id' => ['type' => 'foreignId', 'nullable' => true],
+        'starts_at' => ['type' => 'dateTime'],
+        'ends_at' => ['type' => 'dateTime', 'nullable' => true],
+        'status' => ['type' => 'string', 'length' => 50, 'default' => 'draft'],
+    ],
+    'indexes' => [
+        ['type' => 'unique', 'columns' => ['slug'], 'name' => 'elections_slug_unique'],
+        ['type' => 'index', 'columns' => ['status'], 'name' => 'elections_status_index'],
+    ],
+    'foreign_keys' => [
+        [
+            'columns' => ['geo_boundary_id'],
+            'references' => ['id'],
+            'on' => 'geo_boundaries',
+            'onDelete' => 'set null',
+        ],
+    ],
+    'soft_deletes' => true,
+];

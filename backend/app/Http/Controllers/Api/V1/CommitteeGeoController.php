@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\ElectionCircle\Committee;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
+use Throwable;
 
 class CommitteeGeoController extends Controller
 {
@@ -13,7 +16,7 @@ class CommitteeGeoController extends Controller
     {
         $cacheKey = 'committees.geojson';
 
-        $features = Cache::remember($cacheKey, now()->addMinutes(5), function () {
+        $featuresResolver = function (): Collection {
             return Committee::query()
                 ->with('geoArea')
                 ->withCount(['agents', 'voters'])
@@ -42,7 +45,21 @@ class CommitteeGeoController extends Controller
                 })
                 ->filter()
                 ->values();
-        });
+        };
+
+        try {
+            $features = Cache::remember($cacheKey, now()->addMinutes(5), $featuresResolver);
+        } catch (QueryException $exception) {
+            report($exception);
+            $features = collect();
+        } catch (Throwable $exception) {
+            report($exception);
+            $features = $featuresResolver();
+        }
+
+        if ($features instanceof Collection) {
+            $features = $features->all();
+        }
 
         return response()->json([
             'type' => 'FeatureCollection',

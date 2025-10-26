@@ -36,4 +36,25 @@ return [
         'from' => env('TWILIO_FROM', ''),
     ],
 
+    'election' => [
+        'base_url' => env('ELECTION_API_BASE_URL'),
+        'api_key' => env('ELECTION_API_KEY'),
+        'timeout' => env('ELECTION_API_TIMEOUT', 10),
+        'cache_ttl' => env('ELECTION_API_CACHE_TTL', 30),
+    ],
+
+    'geo' => [
+        'base_url' => env('GEO_API_BASE_URL'),
+        'api_key' => env('GEO_API_KEY'),
+        'timeout' => env('GEO_API_TIMEOUT', 10),
+        'cache_ttl' => env('GEO_API_CACHE_TTL', 300),
+    ],
+
+    'google_maps' => [
+        'base_url' => env('GOOGLE_MAPS_BASE_URL', 'https://maps.googleapis.com/maps/api'),
+        'api_key' => env('GOOGLE_MAPS_API_KEY'),
+        'timeout' => env('GOOGLE_MAPS_TIMEOUT', 10),
+        'cache_ttl' => env('GOOGLE_MAPS_CACHE_TTL', 3600),
+    ],
+
 ];

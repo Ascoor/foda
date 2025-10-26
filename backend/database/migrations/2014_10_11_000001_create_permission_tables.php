@@ -12,6 +12,9 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('guard_name')->default('web');
+            $table->enum('scope', ['system', 'election', 'committee'])->default('system');
+            $table->json('permissions_json')->nullable();
+            $table->json('auto_assign_rules')->nullable();
             $table->timestamps();
         });
 

@@ -1,0 +1,170 @@
+/* Foda Design System - Utility Classes */
+
+/* === Text Gradients === */
+.text-gradient-primary {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-secondary {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* === Background Gradients === */
+.bg-gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.bg-gradient-secondary {
+  background: var(--gradient-secondary);
+}
+
+.bg-gradient-glass {
+  background: var(--gradient-glass);
+}
+
+/* === RTL/LTR Utilities === */
+.rtl\:mr-auto[dir="rtl"] {
+  margin-right: auto;
+}
+
+.rtl\:ml-auto[dir="rtl"] {
+  margin-left: auto;
+}
+
+.ltr\:ml-auto[dir="ltr"] {
+  margin-left: auto;
+}
+
+.ltr\:mr-auto[dir="ltr"] {
+  margin-right: auto;
+}
+
+.rtl\:rotate-180[dir="rtl"] {
+  transform: rotate(180deg);
+}
+
+.rtl\:flex-row-reverse[dir="rtl"] {
+  flex-direction: row-reverse;
+}
+
+/* === Animation Utilities === */
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+.animate-fade-out {
+  animation: fade-out 0.3s ease-out;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.2s ease-out;
+}
+
+.animate-scale-out {
+  animation: scale-out 0.2s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out;
+}
+
+.animate-slide-out-right {
+  animation: slide-out-right 0.3s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out;
+}
+
+.animate-slide-out-left {
+  animation: slide-out-left 0.3s ease-out;
+}
+
+.animate-accordion-down {
+  animation: accordion-down 0.2s ease-out;
+}
+
+.animate-accordion-up {
+  animation: accordion-up 0.2s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* === Shadow Utilities === */
+.shadow-soft {
+  box-shadow: var(--shadow-soft);
+}
+
+.shadow-elegant {
+  box-shadow: var(--shadow-elegant);
+}
+
+.shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+.shadow-glass {
+  box-shadow: var(--shadow-glass);
+}
+
+/* === Backdrop Blur === */
+.backdrop-glass {
+  backdrop-filter: var(--glass-backdrop);
+}
+
+/* === Transition Utilities === */
+.transition-smooth {
+  transition: var(--transition-smooth);
+}
+
+.transition-glass {
+  transition: var(--transition-glass);
+}
+
+/* === Display Utilities === */
+.full-center {
+  @apply flex items-center justify-center;
+}
+
+.full-between {
+  @apply flex items-center justify-between;
+}
+
+.full-start {
+  @apply flex items-center justify-start;
+}
+
+.full-end {
+  @apply flex items-center justify-end;
+}
+
+/* === Truncate Text === */
+.truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

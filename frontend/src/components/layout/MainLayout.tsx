@@ -1,50 +1,145 @@
-import { ReactNode } from 'react';
-import { motion } from 'framer-motion';
+import { ReactNode, useMemo, useState, useEffect, useRef } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
-import { Header } from './Header';
-import { NotificationDrawer } from '@/components/notifications/NotificationDrawer';
+import { Header } from './Header'; 
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useWindowSize } from '@/hooks/use-window-size';
+import { cn } from '@/lib/utils';
 
-interface MainLayoutProps {
-  children: ReactNode;
-}
+const DESKTOP_BREAKPOINT = 1024;
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export const MainLayout = ({ children }: { children: ReactNode }) => {
   const { direction } = useLanguage();
+  const { theme } = useTheme();
+  const { width } = useWindowSize();
+  const location = useLocation();
+  const shouldReduceMotion = useReducedMotion();
+  const contentRef = useRef<HTMLElement | null>(null);
+
+  // ✅ الحالات (states)
+  const [isMobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
+
+  // ✅ تحديد وضع الموبايل أو الديسكتوب
+  const isMobile = width < DESKTOP_BREAKPOINT;
+  const sidebarWidth = isMobile ? 0 : collapsed ? 80 : 272;
+
+  const hideFooterRoutes = useMemo(() => ['/dashboard'], []);
+  const shouldRenderFooter = useMemo(
+    () => !hideFooterRoutes.some((route) => location.pathname.startsWith(route)),
+    [hideFooterRoutes, location.pathname],
+  );
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    contentRef.current.scrollTo({
+      top: 0,
+      behavior: shouldReduceMotion ? 'auto' : 'smooth',
+    });
+  }, [location.pathname, shouldReduceMotion]);
+
+  const pageKey = `${location.pathname}${location.search}`;
   const isRTL = direction === 'rtl';
 
+  // ✅ التبديل التلقائي عند تغير حجم الشاشة
+  useEffect(() => {
+    if (!isMobile) {
+      setMobileSidebarOpen(false);
+      return;
+    }
+    // تعطيل الطي في الموبايل
+    setCollapsed(false);
+  }, [isMobile]);
+
+  // ✅ محاذاة padding للغة RTL / LTR
+  const paddingStyle = useMemo(
+    () => {
+      const paddingValue = `${sidebarWidth}px`;
+      return {
+        paddingInlineStart: paddingValue,
+        transition: 'padding-inline-start 0.3s ease',
+        ...(direction === 'rtl'
+          ? { paddingRight: paddingValue }
+          : { paddingLeft: paddingValue }),
+      } as React.CSSProperties; // إضافة النوع كـ React.CSSProperties
+    },
+    [direction, sidebarWidth],
+  );
+
+  const layoutVariables = useMemo(
+    () => ({
+      '--sidebar-width': `${sidebarWidth}px`,
+      '--layout-header-height': '4.25rem',  // خصائص CSS مخصصة
+      '--layout-footer-height': '3.5rem',  // خصائص CSS مخصصة
+    } as React.CSSProperties), // إضافة النوع كـ React.CSSProperties
+    [sidebarWidth],
+  );
+
   return (
-    <div className={`min-h-screen w-full ${isRTL ? 'rtl' : 'ltr'}`} dir={direction}>
-      <div className={`min-h-screen flex w-full ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
-        {/* Animated Background */}
-        <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
-        </div>
+    <div
+      dir={direction}
+      className={cn(
+        'relative min-h-screen w-full transition-colors duration-500',
+        'bg-[hsl(var(--background))] text-[hsl(var(--foreground))]'
+      )}
+      style={{
+        ...layoutVariables, // إضافة المتغيرات المخصصة هنا
+      }}
+      data-theme={theme}
+    >
+      {/* ✅ الشريط الجانبي */}
 
-        {/* Sidebar */}
-        <Sidebar />
-
-        {/* Main Content Area */}
-        <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Header */}
-          <Header />
-          <NotificationDrawer />
-
-          {/* Page Content */}
-          <main className="flex-1 overflow-auto custom-scrollbar">
+      {/* ✅ الهيكل الرئيسي */}
+      <div className="flex min-h-screen flex-col" style={paddingStyle}>
+        <Header onToggleSidebar={() => setMobileSidebarOpen(true)} />
+        <Sidebar
+          collapsed={collapsed}
+          onCollapseChange={setCollapsed}
+          isMobile={isMobile}
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          setMobileSidebarOpen={setMobileSidebarOpen}
+        />
+        {/* ✅ المحتوى */}
+        <main
+          ref={contentRef}
+          className="relative overflow-y-auto scrollbar-stable"
+        >
+          <AnimatePresence mode="wait" initial={false}>
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="p-6"
+              key={pageKey}
+              initial={
+                shouldReduceMotion
+                  ? { opacity: 0 }
+                  : {
+                      opacity: 0,
+                      x: isMobile ? 0 : isRTL ? 28 : -28,
+                      y: isMobile ? 24 : 12,
+                      filter: 'blur(10px)',
+                    }
+              }
+              animate={{ opacity: 1, x: 0, y: 0, filter: 'blur(0px)' }}
+              exit={
+                shouldReduceMotion
+                  ? { opacity: 0 }
+                  : {
+                      opacity: 0,
+                      x: isMobile ? 0 : isRTL ? -20 : 20,
+                      y: isMobile ? 16 : 8,
+                      filter: 'blur(8px)',
+                    }
+              }
+              transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              className="flex min-h-full flex-col gap-6 p-4 sm:p-6"
             >
               {children}
             </motion.div>
-          </main>
-        </div>
+          </AnimatePresence>
+        </main>
+
+        {/* ✅ الفوتر */}
       </div>
     </div>
   );

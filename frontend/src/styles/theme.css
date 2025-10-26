@@ -1,0 +1,309 @@
+
+/* ElectionCircle Design System - Modern Glassmorphism with RTL/LTR Support */
+
+@layer base {
+  :root {
+    /* Professional Brand Colors - Light Mode */
+    --primary: 220 95% 50%;       /* Professional Blue */
+    --primary-glow: 220 85% 65%;  /* Light Blue Glow */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 15 95% 55%;      /* Vibrant Orange */
+    --secondary-glow: 15 85% 70%; /* Light Orange Glow */
+    --secondary-foreground: 0 0% 100%;
+    
+    --accent: 280 75% 60%;        /* Modern Purple */
+    --accent-glow: 280 65% 75%;   /* Light Purple Glow */
+    --accent-foreground: 0 0% 100%;
+    
+    --surface: 210 25% 98%;       /* Clean Surface */
+    --surface-secondary: 210 20% 95%;
+    --surface-accent: 210 30% 92%;
+    
+    /* Backgrounds & Surfaces */
+    --background: 220 15% 97%;
+    --background-secondary: 220 20% 95%;
+    --foreground: 220 15% 15%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+    --card-glass: 0 0% 100% / 0.7;
+    
+    /* Glass Effects */
+    --glass-bg: 255 255 255 / 0.1;
+    --glass-border: 255 255 255 / 0.2;
+    --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    --glass-backdrop: blur(8px);
+    
+    /* Interactive States */
+    --muted: 220 15% 92%;
+    --muted-foreground: 220 10% 45%;
+    
+    --border: 220 15% 88%;
+    --input: 220 15% 90%;
+    --ring: 240 100% 45%;
+    
+    --success: 120 100% 35%;
+    --success-foreground: 0 0% 100%;
+    --warning: 45 100% 50%;
+    --warning-foreground: 45 100% 10%;
+    --destructive: 0 85% 55%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-glow)));
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    --gradient-glow: radial-gradient(ellipse at center, hsl(var(--primary-glow) / 0.3), transparent);
+    
+    /* Shadows & Glows */
+    --shadow-elegant: 0 10px 40px -10px hsl(var(--primary) / 0.25);
+    --shadow-glow: 0 0 50px hsl(var(--primary-glow) / 0.4);
+    --shadow-glass: 0 8px 32px rgba(31, 38, 135, 0.37);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-glass: backdrop-filter 0.3s ease, background-color 0.3s ease;
+    
+    --radius: 1rem;
+    --radius-lg: 1.5rem;
+    --radius-xl: 2rem;
+  }
+
+  .dark {
+    /* Neo-Neon Night Design - Enhanced Dark Mode */
+    --background: 222 47% 6%;     /* Deep dark blue-black */
+    --foreground: 210 40% 95%;    /* Crisp white text */
+    --card: 221 39% 11%;          /* Dark blue card backgrounds */
+    --card-foreground: 210 40% 95%;
+    --popover: 221 39% 11%;
+    --popover-foreground: 210 40% 95%;
+    
+    --primary: 217 91% 60%;       /* Neon cyan blue */
+    --primary-foreground: 222 84% 4.9%;
+    --primary-glow: 217 91% 70%;  /* Brighter glow version */
+    
+    --secondary: 262 83% 58%;     /* Neon purple */
+    --secondary-foreground: 210 40% 98%;
+    --secondary-glow: 262 83% 68%;
+    
+    --accent: 30 100% 60%;        /* Neon orange */
+    --accent-foreground: 222 84% 4.9%;
+    --accent-glow: 30 100% 70%;
+    
+    --success: 142 76% 36%;       /* Success green */
+    --destructive: 0 62.8% 50%;   /* Destructive red */
+    --destructive-foreground: 210 40% 98%;
+    
+    --muted: 215 27.9% 16.9%;     /* Muted backgrounds */
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 217 91% 60%;
+    
+    /* Enhanced Glass Effects for Neo-Neon */
+    --glass-background: rgba(10, 15, 26, 0.92);
+    --glass-border: rgba(69, 243, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(69, 243, 255, 0.1);
+    
+    /* Neon Glow Effects */
+    --neon-glow: 0 0 20px rgba(69, 243, 255, 0.4);
+    --neon-glow-secondary: 0 0 20px rgba(168, 85, 247, 0.4);
+    --neon-glow-accent: 0 0 20px rgba(251, 146, 60, 0.4);
+    
+    /* Interactive States */
+    --hover-background: rgba(69, 243, 255, 0.05);
+    --active-background: rgba(69, 243, 255, 0.1);
+    --hover-glow: 0 0 16px rgba(69, 243, 255, 0.3);
+    
+    /* Enhanced Gradients */
+    --gradient-glass: linear-gradient(135deg, rgba(69,243,255,0.08), rgba(168,85,247,0.03));
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+    --gradient-secondary: linear-gradient(135deg, hsl(var(--secondary)), hsl(var(--secondary-glow)));
+  }
+  
+  /* Professional Typography */
+  [dir="rtl"] {
+    font-family: 'Noto Kufi Arabic', 'Tajawal', 'Cairo', 'Poppins', 'Inter', system-ui, sans-serif;
+  }
+  
+  [dir="ltr"] {
+    font-family: 'Inter', 'DM Sans', 'Poppins', 'Cairo', 'Tajawal', system-ui, sans-serif;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', 'DM Sans', 'Poppins', 'Cairo', 'Tajawal', 'Noto Kufi Arabic', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+  
+  [dir="rtl"] {
+    direction: rtl;
+  }
+  
+  [dir="ltr"] {
+    direction: ltr;
+  }
+}
+
+@layer components {
+  /* Neo-Glass Effects with Enhanced Neon Styling */
+  .glass {
+    background: var(--glass-background);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    position: relative;
+  }
+  
+  .glass-card {
+    @apply glass rounded-3xl p-6 transition-all duration-500;
+  }
+  
+  .glass-card:hover {
+    box-shadow: var(--glass-shadow), var(--hover-glow);
+    transform: translateY(-2px) scale(1.01);
+  }
+  
+  .glass-button {
+    @apply glass rounded-xl px-6 py-3 transition-all duration-300;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .glass-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transition: left 0.5s;
+  }
+  
+  .glass-button:hover::before {
+    left: 100%;
+  }
+  
+  .glass-button:hover {
+    background: var(--hover-background);
+    transform: translateY(-2px);
+    box-shadow: var(--hover-glow);
+  }
+  
+  /* Enhanced Glow Effects */
+  .glow-border {
+    box-shadow: var(--neon-glow);
+  }
+  
+  .glow-border-secondary {
+    box-shadow: var(--neon-glow-secondary);
+  }
+  
+  .glow-border-accent {
+    box-shadow: var(--neon-glow-accent);
+  }
+  
+  /* Neon Text Effects */
+  .neon-text {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
+  }
+  
+  /* Pulsing Glow Animation */
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes pulse-glow {
+    from {
+      box-shadow: 0 0 20px rgba(69, 243, 255, 0.4);
+    }
+    to {
+      box-shadow: 0 0 30px rgba(69, 243, 255, 0.8), 0 0 40px rgba(69, 243, 255, 0.4);
+    }
+  }
+  
+  /* Animated Backgrounds */
+  .animated-gradient {
+    background: linear-gradient(-45deg, 
+      hsl(var(--primary)), 
+      hsl(var(--secondary)), 
+      hsl(var(--accent)), 
+      hsl(var(--primary-glow))
+    );
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+  
+  /* Floating Animation */
+  .float {
+    @apply animate-float;
+  }
+  
+  /* Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-muted/30 rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-primary/50 rounded-full;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/70;
+  }
+}
+
+@layer utilities {
+  /* Text Gradients */
+  .text-gradient-primary {
+    @apply bg-gradient-primary bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-secondary {
+    @apply bg-gradient-secondary bg-clip-text text-transparent;
+  }
+  
+  /* RTL/LTR Utilities */
+  .rtl\:mr-auto[dir="rtl"] {
+    margin-right: auto;
+  }
+  
+  .rtl\:ml-auto[dir="rtl"] {
+    margin-left: auto;
+  }
+  
+  .ltr\:ml-auto[dir="ltr"] {
+    margin-left: auto;
+  }
+  
+  .ltr\:mr-auto[dir="ltr"] {
+    margin-right: auto;
+  }
+}
+
+/* Additional Keyframes */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

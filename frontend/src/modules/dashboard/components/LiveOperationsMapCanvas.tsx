@@ -1,7 +1,7 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import type { FeatureCollection, Feature, Point } from 'geojson';
-import L, { HeatLayer, LatLngExpression } from 'leaflet';
+import L, { LatLngExpression } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import '@/vendor/leaflet-heat-stub';
 
@@ -33,13 +33,22 @@ const extractHeatPoints = (
       const weight = typeof feature.properties?.support_score === 'number'
         ? Math.max(0.1, feature.properties.support_score / 100)
         : 0.4;
-      return [lat, lng, weight];
+      return [lat, lng, weight] as [number, number, number];
     })
-    .filter((point) => Number.isFinite(point[0]) && Number.isFinite(point[1]));
+    .filter((point): point is [number, number, number] => Number.isFinite(point[0]) && Number.isFinite(point[1]));
+
+// Map hook to capture map instance
+const MapHandler = ({ onMapReady }: { onMapReady: (map: L.Map) => void }) => {
+  const map = useMapEvents({});
+  useEffect(() => {
+    onMapReady(map);
+  }, [map, onMapReady]);
+  return null;
+};
 
 export const LiveOperationsMapCanvas = memo(({ committees, activities }: LiveOperationsMapCanvasProps) => {
   const mapRef = useRef<L.Map | null>(null);
-  const heatRef = useRef<HeatLayer | null>(null);
+  const heatRef = useRef<any | null>(null);
 
   const heatPoints = useMemo(() => extractHeatPoints(activities), [activities]);
 
@@ -56,7 +65,7 @@ export const LiveOperationsMapCanvas = memo(({ committees, activities }: LiveOpe
       return;
     }
 
-    heatRef.current = (L as unknown as { heatLayer(points: [number, number, number][], options: any): HeatLayer })
+    heatRef.current = (L as any)
       .heatLayer(heatPoints, { radius: 28, blur: 20, maxZoom: 12, minOpacity: 0.35 })
       .addTo(map);
   }, [heatPoints]);
@@ -87,10 +96,8 @@ export const LiveOperationsMapCanvas = memo(({ committees, activities }: LiveOpe
       className="h-[480px] w-full rounded-xl"
       center={DEFAULT_CENTER}
       zoom={6}
-      whenCreated={(map) => {
-        mapRef.current = map;
-      }}
     >
+      <MapHandler onMapReady={(map) => { mapRef.current = map; }} />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -1,197 +1,525 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation } from 'react-i18next';
-import { NavLink, useLocation } from 'react-router-dom';
+import { Fragment, useMemo, useState, useCallback, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { NavLink, useLocation } from "react-router-dom";
 import {
-  LayoutDashboard,
-  Vote,
-  MapPin,
-  Users,
-  UserCheck,
-  Crown,
-  Shield,
-  Heart,
-  Eye,
-  Megaphone,
-  BarChart3,
-  Settings,
   ChevronLeft,
   ChevronRight,
-  Menu,
-  Cpu
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useLanguage } from '@/contexts/LanguageContext';
-import { useAuth } from '@/contexts/AuthContext';
+  ChevronDown,
+  Vote,
+  X,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
+  sidebarSections,
+  type SidebarSectionConfig,
+  type SidebarItemConfig,
+} from "./sidebarItems";
 
-interface NavigationItem {
-  key: string;
-  icon: any;
-  path: string;
-  roles?: string[];
+interface SidebarProps {
+  collapsed: boolean;
+  onCollapseChange: (collapsed: boolean) => void;
+  isMobile: boolean;
+  isMobileSidebarOpen: boolean;
+  setMobileSidebarOpen: (open: boolean) => void;
 }
 
-const navigationItems: NavigationItem[] = [
-  { key: 'dashboard', icon: LayoutDashboard, path: '/dashboard' },
-  { key: 'elections', icon: Vote, path: '/elections', roles: ['Admin', 'FieldLead'] },
-  { key: 'geo_areas', icon: MapPin, path: '/geo-areas', roles: ['Admin', 'FieldLead'] },
-  { key: 'committees', icon: Users, path: '/committees', roles: ['Admin', 'FieldLead'] },
-  { key: 'voters', icon: UserCheck, path: '/voters', roles: ['Admin', 'FieldLead'] },
-  { key: 'candidates', icon: Crown, path: '/candidates', roles: ['Admin', 'FieldLead'] },
-  { key: 'agents', icon: Shield, path: '/agents', roles: ['Admin', 'FieldLead'] },
-  { key: 'volunteers', icon: Heart, path: '/volunteers', roles: ['Admin', 'FieldLead'] },
-  { key: 'observations', icon: Eye, path: '/observations', roles: ['Admin', 'FieldLead', 'Agent'] },
-  { key: 'campaigns', icon: Megaphone, path: '/campaigns', roles: ['Admin', 'FieldLead'] },
-  { key: 'automation', icon: Cpu, path: '/automation', roles: ['Admin'] },
-  { key: 'analytics', icon: BarChart3, path: '/analytics', roles: ['Admin'] },
-  { key: 'settings', icon: Settings, path: '/settings', roles: ['Admin'] },
-];
-
-export const Sidebar = () => {
-  const { t } = useTranslation();
-  const location = useLocation();
-  const { direction } = useLanguage();
+export const Sidebar = ({
+  collapsed,
+  onCollapseChange,
+  isMobile,
+  isMobileSidebarOpen,
+  setMobileSidebarOpen,
+}: SidebarProps) => {
+  const { language, direction, t } = useLanguage();
+  const { theme } = useTheme();
   const { user } = useAuth();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const location = useLocation();
+  const isRTL = direction === "rtl";
+  const [openSections, setOpenSections] = useState<Record<string, boolean>>({});
 
-  const isActive = (path: string) => {
-    return location.pathname.startsWith(path);
-  };
+  const sidebarSurfaceClass =
+    theme === "dark"
+      ? "bg-[hsla(var(--surface-secondary)/0.92)] text-[hsl(var(--foreground))]"
+      : "bg-[hsla(var(--surface)/0.97)] text-[hsl(var(--foreground))]";
 
-  const availableRoles = new Set((user?.roleNames ?? user?.roles?.map((role) => role.name) ?? []).map((role) => role.toLowerCase()));
+  const sidebarMobileSurfaceClass =
+    theme === "dark"
+      ? "bg-[hsla(var(--surface-secondary)/0.88)] text-[hsl(var(--foreground))]"
+      : "bg-[hsla(var(--surface)/0.94)] text-[hsl(var(--foreground))]";
 
-  const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+  const sidebarBorderClass =
+    theme === "dark"
+      ? "border-[hsla(var(--border)/0.35)]"
+      : "border-[hsla(var(--border)/0.25)]";
 
-  return (
-    <motion.aside
-      initial={{ x: direction === 'rtl' ? 100 : -100, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      transition={{ duration: 0.3 }}
-      className={`
-        glass-card rounded-none border-y-0
-        flex flex-col h-screen sticky top-0 z-50
-        transition-all duration-300 ease-in-out
-        ${isCollapsed ? 'w-16' : 'w-64'}
-        ${direction === 'rtl' ? 'border-l border-r-0' : 'border-r border-l-0'}
-      `}
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
-        <AnimatePresence>
-          {!isCollapsed && (
-            <motion.div
-              initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-              className="flex items-center gap-3"
-            >
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-                <Vote className="h-5 w-5 text-white" />
-              </div>
-              <span className="font-bold text-lg text-gradient-primary">
-                ElectionCircle
-              </span>
-            </motion.div>
-          )}
-        </AnimatePresence>
-        
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={toggleSidebar}
-          className="glass-button p-2"
+  const accentSurfaceClass =
+    theme === "dark"
+      ? "bg-[hsla(var(--surface-secondary)/0.65)]"
+      : "bg-[hsla(var(--surface-secondary)/0.55)]";
+
+  const navBaseClass =
+    "group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-all duration-300 text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]";
+
+  const navActiveClass =
+    "bg-[hsla(var(--primary)/0.18)] text-[hsl(var(--foreground))] font-semibold ring-1 ring-[hsla(var(--primary)/0.35)] opacity-100 shadow-sm";
+
+  const iconButtonClass =
+    "flex items-center justify-center rounded-xl text-[hsl(var(--foreground))] opacity-80 transition-colors hover:bg-[hsla(var(--primary)/0.12)] hover:opacity-100";
+
+  const brandBadgeClass =
+    "flex h-11 w-11 items-center justify-center rounded-xl bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-lg";
+
+  const footerTextClass = "px-4 pb-6 text-center text-xs text-[hsl(var(--foreground))] opacity-60";
+
+
+  const desktopShellClass =
+    theme === "dark"
+      ? "shadow-[0_0_45px_rgba(125,106,255,0.35)] backdrop-blur-2xl bg-gradient-to-br from-slate-950/95 via-slate-900/90 to-slate-950/95 ring-1 ring-[hsla(var(--primary)/0.25)]"
+      : "shadow-2xl backdrop-blur-xl";
+
+  const mobileShellClass =
+    theme === "dark"
+      ? "shadow-[0_0_35px_rgba(125,106,255,0.35)] backdrop-blur-2xl bg-gradient-to-br from-slate-950/95 via-slate-900/90 to-slate-950/92 ring-1 ring-[hsla(var(--primary)/0.2)]"
+      : "shadow-2xl backdrop-blur-xl";  // 🧩 صلاحيات المستخدم
+  const availableRoles = useMemo(() => {
+    const rawRoles = user?.roleNames ?? user?.roles?.map((r) => r.name) ?? [];
+    return new Set(rawRoles.map((r) => r.toLowerCase()));
+  }, [user]);
+
+  // ✅ فلترة الأقسام حسب الصلاحيات
+  const filteredSections = useMemo(() => {
+    const allow = (roles?: string[]) =>
+      !roles?.length || roles.some((r) => availableRoles.has(r.toLowerCase()));
+
+    return sidebarSections
+      .map((section) => {
+        if (!allow(section.roles)) return null;
+        if (section.items)
+          return {
+            ...section,
+            items: section.items.filter((item) => allow(item.roles)),
+          };
+        return section;
+      })
+      .filter(Boolean) as SidebarSectionConfig[];
+  }, [availableRoles]);
+
+  // 🔍 تحديد المسار النشط
+  const isPathActive = useCallback(
+    (path: string) =>
+      location.pathname === path || location.pathname.startsWith(`${path}/`),
+    [location.pathname]
+  );
+
+  // افتح القسم الذي يحتوي على مسار نشط
+  useEffect(() => {
+    setOpenSections((prev) => {
+      const next: Record<string, boolean> = {};
+      filteredSections.forEach((s) => {
+        const hasActive = s.items?.some((i) => isPathActive(i.path));
+        next[s.key] = hasActive || prev[s.key] || false;
+      });
+      return next;
+    });
+  }, [filteredSections, isPathActive]);
+
+  const toggleSection = (key: string) =>
+    setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  const renderLabel = (key: string) =>
+    t(`navigation.${key}`, { defaultValue: key.replace("_", " ") });
+
+  // 🔹 عنصر فرعي
+  const renderItem = (
+    item: SidebarItemConfig,
+    options?: {
+      onNavigate?: () => void;
+      variant?: 'desktop' | 'mobile';
+    },
+  ) => {
+    const Icon = item.icon;
+    const handleNavigate = () => {
+      options?.onNavigate?.();
+    };
+    const isMobileVariant = options?.variant === 'mobile';
+    return (
+      <li key={item.key}>
+        <NavLink
+          to={item.path}
+          className={({ isActive }) =>
+            cn(
+              navBaseClass,
+              (isActive || isPathActive(item.path)) && navActiveClass,
+              isRTL ? "flex-row" : "flex-row-reverse",
+              isMobileVariant && "text-base"
+            )
+          }
+          onClick={handleNavigate}
         >
-          {isCollapsed ? (
-            direction === 'rtl' ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />
-          ) : (
-            direction === 'rtl' ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />
+          <Icon className="mx-2 h-5 w-5 shrink-0" />
+          {!(isMobileVariant ? false : collapsed) && (
+            <span className="truncate">{renderLabel(item.key)}</span>
           )}
-        </Button>
-      </div>
+        </NavLink>
+      </li>
+    );
+  };
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto custom-scrollbar p-4">
-        <ul className="space-y-2">
-          {navigationItems.map((item) => {
-            const requiredRoles = item.roles?.map((role) => role.toLowerCase());
-            const hasAccess = !requiredRoles || requiredRoles.some((role) => availableRoles.has(role));
+  // 🔸 الأقسام الرئيسية
+  const renderDesktopNav = () => (
+    <TooltipProvider delayDuration={100}>
+      <nav className="flex-1 overflow-y-auto px-3 pb-6" dir={direction}>
+        <ul className="flex flex-col gap-2">
+          {filteredSections.map((section) => {
+            const SectionIcon = section.icon;
+            const isOpen = openSections[section.key] ?? false;
+            const hasItems = section.items && section.items.length > 0;
 
-            if (!hasAccess) {
-              return null;
+            // 📌 حالة القسم بدون قائمة فرعية
+            if (section.path && !hasItems) {
+              return (
+                <li key={section.key}>
+                  <NavLink
+                    to={section.path}
+                    className={({ isActive }) =>
+                      cn(
+                        navBaseClass,
+                        "font-semibold",
+                        (isActive || isPathActive(section.path!)) && navActiveClass,
+                        isRTL ? "flex-row" : "flex-row-reverse",
+                        collapsed && "justify-center px-0"
+                      )
+                    }
+                  >
+                    {SectionIcon && <SectionIcon className="mx-2 h-5 w-5" />}
+                    {!collapsed && (
+                      <span className="truncate">{renderLabel(section.key)}</span>
+                    )}
+                  </NavLink>
+                </li>
+              );
             }
 
-            const Icon = item.icon;
-            const active = isActive(item.path);
-            
+            // 📂 حالة وجود قائمة فرعية
             return (
-              <motion.li
-                key={item.key}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <NavLink
-                  to={item.path}
-                  className={`
-                    flex items-center gap-3 px-3 py-2.5 rounded-lg
-                    transition-all duration-200 group relative
-                    ${active 
-                      ? 'bg-gradient-primary text-white shadow-glow' 
-                      : 'hover:bg-white/10 text-foreground hover:text-primary'
-                    }
-                    ${isCollapsed ? 'justify-center' : ''}
-                  `}
-                >
-                  <Icon className={`h-5 w-5 ${active ? 'animate-glow-pulse' : ''}`} />
-                  
-                  <AnimatePresence>
-                    {!isCollapsed && (
-                      <motion.span
-                        initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-                        className="font-medium"
+              <li key={section.key}>
+                {collapsed ? (
+                  // 🧭 عرض أيقونة فقط مع Tooltip عندما يكون مصغّر
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div
+                        className={cn(
+                          "h-10 w-10 cursor-pointer",
+                          iconButtonClass,
+                          accentSurfaceClass,
+                        )}
                       >
-                        {t(`navigation.${item.key}`)}
-                      </motion.span>
-                    )}
-                  </AnimatePresence>
+                        {SectionIcon && <SectionIcon className="h-5 w-5" />}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side={isRTL ? "left" : "right"}>
+                      {renderLabel(section.key)}
+                    </TooltipContent>
+                  </Tooltip>
+                ) : (
+                  // 🧾 في الحالة الموسعة: عرض النص + السهم + القوائم الفرعية
+                  <>
+                    <motion.button
+                      onClick={() => toggleSection(section.key)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={cn(
+                        "group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold transition-all duration-300",
+                        "text-[hsl(var(--foreground))] opacity-80 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
+                        isOpen && navActiveClass,
+                        isRTL ? "flex-row" : "flex-row-reverse"
+                      )}
+                    >
+                      <span
+                        className={cn(
+                          "flex items-center gap-2",
+                          isRTL ? "flex-row" : "flex-row-reverse"
+                        )}
+                      >
+                        {SectionIcon && <SectionIcon className="h-5 w-5" />}
+                        {!collapsed && <span>{renderLabel(section.key)}</span>}
+                      </span>
 
-                  {/* Tooltip for collapsed state */}
-                  {isCollapsed && (
-                    <div className={`
-                      absolute ${direction === 'rtl' ? 'right-full mr-2' : 'left-full ml-2'} 
-                      top-1/2 transform -translate-y-1/2
-                      bg-foreground text-background px-2 py-1 rounded text-sm
-                      opacity-0 group-hover:opacity-100 transition-opacity
-                      pointer-events-none whitespace-nowrap z-50
-                    `}>
-                      {t(`navigation.${item.key}`)}
-                    </div>
-                  )}
-                </NavLink>
-              </motion.li>
+                      <motion.span
+                        animate={{ rotate: isOpen ? (isRTL ? -180 : 180) : 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="opacity-70"
+                      >
+                        <ChevronDown className="h-4 w-4" />
+                      </motion.span>
+                    </motion.button>
+
+                    <AnimatePresence initial={false}>
+                      {isOpen && hasItems && (
+                        <motion.ul
+                          initial={{ height: 0, opacity: 0, y: -10 }}
+                          animate={{ height: "auto", opacity: 1, y: 0 }}
+                          exit={{ height: 0, opacity: 0, y: -10 }}
+                          transition={{ duration: 0.3 }}
+                          className={cn(
+                            "ml-2 mt-1 flex flex-col gap-1 overflow-hidden border-l border-[hsla(var(--primary)/0.25)] pl-2",
+                            isRTL && "mr-2 ml-0 border-r pr-2 border-l-0"
+                          )}
+                        >
+                          {section.items!.map((item) => renderItem(item))}
+                        </motion.ul>
+                      )}
+                    </AnimatePresence>
+                  </>
+                )}
+              </li>
             );
           })}
         </ul>
       </nav>
+    </TooltipProvider>
+  );
 
-      {/* Footer */}
-      <div className="p-4 border-t border-white/10">
+  const brandLabel = language === "ar" ? "فودا برو" : "Foda Pro";
+  const versionLabel = language === "ar" ? "الإصدار 1.0.0" : "Version 1.0.0";
+  const expandedWidth = collapsed ? "5rem" : "17rem";
+
+  const renderMobileNav = () => (
+    <nav className="flex-1 overflow-y-auto px-4 pb-10" dir={direction}>
+      <ul className="flex flex-col gap-3">
+        {filteredSections.map((section) => {
+          const SectionIcon = section.icon;
+          const isOpen = openSections[section.key] ?? false;
+          const hasItems = section.items && section.items.length > 0;
+
+          if (section.path && !hasItems) {
+            return (
+              <li key={section.key}>
+                <NavLink
+                  to={section.path}
+                  onClick={() => setMobileSidebarOpen(false)}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex items-center justify-between rounded-xl px-4 py-3 text-base font-semibold transition-all duration-300",
+                      accentSurfaceClass,
+                      "text-[hsl(var(--foreground))] opacity-85 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
+                      isActive || isPathActive(section.path!)
+                        ? navActiveClass
+                        : null
+                    )
+                  }
+                  dir={direction}
+                >
+                  <span
+                    className={cn(
+                      "flex items-center gap-3",
+                      isRTL ? "flex-row-reverse" : "flex-row"
+                    )}
+                  >
+                    {SectionIcon && <SectionIcon className="h-5 w-5" />}
+                    <span className="truncate">{renderLabel(section.key)}</span>
+                  </span>
+                  <ChevronRight
+                    className={cn(
+                      "h-4 w-4 opacity-60",
+                      isRTL ? "rotate-180" : "rotate-0"
+                    )}
+                  />
+                </NavLink>
+              </li>
+            );
+          }
+
+          return (
+            <li key={section.key} className={cn("rounded-xl", accentSurfaceClass)}>
+              <motion.button
+                onClick={() => toggleSection(section.key)}
+                whileTap={{ scale: 0.98 }}
+                className={cn(
+                  "flex w-full items-center justify-between px-4 py-3 text-base font-semibold text-[hsl(var(--foreground))]",
+                  "opacity-85 hover:opacity-100 hover:bg-[hsla(var(--primary)/0.12)]",
+                  isRTL ? "flex-row-reverse" : "flex-row"
+                )}
+              >
+                <span className="flex items-center gap-3">
+                  {SectionIcon && <SectionIcon className="h-5 w-5" />}
+                  <span>{renderLabel(section.key)}</span>
+                </span>
+                <motion.span
+                  animate={{ rotate: isOpen ? (isRTL ? -180 : 180) : 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="opacity-70"
+                >
+                  <ChevronDown className="h-4 w-4" />
+                </motion.span>
+              </motion.button>
+
+              <AnimatePresence initial={false}>
+                {isOpen && hasItems && (
+                  <motion.ul
+                    initial={{ height: 0, opacity: 0, y: -8 }}
+                    animate={{ height: "auto", opacity: 1, y: 0 }}
+                    exit={{ height: 0, opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25 }}
+                  className="flex flex-col gap-1 px-4 pb-3"
+                >
+                  {section.items!.map((item) =>
+                    renderItem(item, {
+                      onNavigate: () => setMobileSidebarOpen(false),
+                      variant: 'mobile',
+                    }),
+                  )}
+                </motion.ul>
+                )}
+              </AnimatePresence>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+
+  return (
+    <Fragment>
+      {!isMobile && (
+        <aside
+          dir={direction}
+          className={cn(
+            "fixed top-0 z-40 hidden h-full flex-col shadow-2xl transition-[width] duration-300 ease-in-out md:flex",
+            desktopShellClass,
+                        sidebarSurfaceClass,
+            isRTL ? "right-0 border-l" : "left-0 border-r",
+            sidebarBorderClass,
+          )}
+          style={{ width: expandedWidth }}
+        >
+          {/* الرأس */}
+          <div
+            className={cn(
+              "flex h-20 items-center px-4",
+              collapsed ? "justify-center" : "justify-between",
+              isRTL ? "flex-row-reverse" : "flex-row"
+            )}
+          >
+            <div
+              className={cn(
+                "flex items-center gap-3",
+                collapsed && "gap-0",
+                isRTL && !collapsed && "flex-row-reverse"
+              )}
+            >
+              <div className={brandBadgeClass}>
+                <Vote className="h-5 w-5" />
+              </div>
+              {!collapsed && <span className="text-lg font-semibold">{brandLabel}</span>}
+            </div>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn(
+                "h-10 w-10 border",
+                iconButtonClass,
+                accentSurfaceClass,
+                sidebarBorderClass,
+                isRTL ? "order-first" : "order-last"
+              )}
+              onClick={() => onCollapseChange(!collapsed)}
+            >
+              {isRTL ? (
+                collapsed ? (
+                  <ChevronLeft />
+                ) : (
+                  <ChevronRight />
+                )
+              ) : collapsed ? (
+                <ChevronRight />
+              ) : (
+                <ChevronLeft />
+              )}
+            </Button>
+          </div>
+
+          {renderDesktopNav()}
+
+          <div className={footerTextClass}>{versionLabel}</div>
+        </aside>
+      )}
+
+      {isMobile && (
         <AnimatePresence>
-          {!isCollapsed && (
+          {isMobileSidebarOpen && (
             <motion.div
+              className="fixed inset-0 z-50"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-xs text-muted-foreground text-center"
             >
-              ElectionCircle v2.0
+              <div
+                className="absolute inset-0 bg-black/50"
+                onClick={() => setMobileSidebarOpen(false)}
+              />
+              <motion.aside
+                dir={direction}
+                className={cn(
+                  "relative flex h-full w-full flex-col",
+                  mobileShellClass,                  sidebarMobileSurfaceClass,
+                )}
+                initial={{ x: isRTL ? 80 : -80, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: isRTL ? 60 : -60, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 260, damping: 28 }}
+              >
+                <div
+                  className={cn(
+                    "flex items-center justify-between px-4 py-4",
+                    isRTL ? "flex-row-reverse" : "flex-row"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "flex items-center gap-3",
+                      isRTL ? "flex-row-reverse" : "flex-row"
+                    )}
+                  >
+                    <div className={brandBadgeClass}>
+                      <Vote className="h-5 w-5" />
+                    </div>
+                    <span className="text-lg font-semibold">{brandLabel}</span>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className={cn(
+                      "h-10 w-10 border",
+                      iconButtonClass,
+                      accentSurfaceClass,
+                      sidebarBorderClass,
+                    )}
+                    onClick={() => setMobileSidebarOpen(false)}
+                  >
+                    <X className="h-5 w-5" />
+                  </Button>
+                </div>
+
+                {renderMobileNav()}
+
+                <div className={footerTextClass}>{versionLabel}</div>
+              </motion.aside>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </motion.aside>
+      )}
+    </Fragment>
   );
 };

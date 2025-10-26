@@ -97,3 +97,30 @@ POST /api/v1/sms
     "scheduled_for": "2024-08-03T10:00:00Z"
 }
 ```
+
+## External data integrations
+
+Authenticated clients can access real-time electoral and geographic information through the `/api/v1/integrations` namespace.
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /api/v1/integrations/geo-areas` | Proxy live geographic areas and committee boundaries from the configured external geo service. Supports filtering by `province`, `state`, `committee`, `search`, `page`, and `per_page`. |
+| `GET /api/v1/integrations/elections/summary` | Combines the summary and turnout feeds from the election service to power dashboards and report builders. |
+| `GET /api/v1/integrations/elections/live-results` | Streams the latest candidate results. Pass `broadcast=true` to emit a `results.updated` broadcast on the `elections.live` channel for WebSocket subscribers. |
+| `GET /api/v1/integrations/maps/configuration` | Returns map configuration, an embeddable Static Maps URL, and the set of visible data layers for interactive UIs. |
+
+Set the following environment variables (see `.env.example`) to point the platform at your production or staging data providers:
+
+```
+EXTERNAL_GEO_BASE_URL
+EXTERNAL_GEO_AREAS_ENDPOINT
+EXTERNAL_GEO_API_KEY
+ELECTION_API_BASE_URL
+ELECTION_API_SUMMARY_ENDPOINT
+ELECTION_API_RESULTS_ENDPOINT
+ELECTION_API_TURNOUT_ENDPOINT
+ELECTION_API_KEY
+GOOGLE_MAPS_API_KEY
+```
+
+The services leverage response caching via `EXTERNAL_CACHE_TTL` to limit redundant requests while keeping the experience responsive.

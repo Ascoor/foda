@@ -6,10 +6,13 @@ use App\Events\ActivityCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ActivityResource;
 use App\Models\Activity;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 
 class ActivityController extends Controller
 {
@@ -25,24 +28,30 @@ class ActivityController extends Controller
 
         $activities = Activity::query()
             ->with(['area', 'committee', 'creator'])
-            ->forType($request->string('type')->toString())
-            ->forStatus($request->string('status')->toString())
-            ->forRegion($request->integer('area_id'))
+            ->forType((string) $request->input('type', ''))
+            ->forStatus((string) $request->input('status', ''))
+            ->forRegion((int) $request->input('area_id', 0))
             ->when($request->filled('from') || $request->filled('to'), function ($query) use ($request) {
-                $from = $request->filled('from') ? Carbon::parse($request->string('from')->toString())->startOfDay() : null;
-                $to = $request->filled('to') ? Carbon::parse($request->string('to')->toString())->endOfDay() : null;
+                $from = $request->filled('from') ? Carbon::parse((string) $request->input('from', ''))->startOfDay() : null;
+                $to = $request->filled('to') ? Carbon::parse((string) $request->input('to', ''))->endOfDay() : null;
                 $query->betweenDates($from, $to);
             })
             ->orderByDesc('reported_at')
             ->orderByDesc('created_at');
 
         return ActivityResource::collection(
-            $activities->paginate($request->integer('per_page', 15))->withQueryString()
+            $activities->paginate((int) $request->input('per_page', 15))->withQueryString()
         );
     }
 
     public function store(Request $request)
     {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
         $validated = $request->validate([
             'area_id' => ['nullable', 'integer', 'exists:areas,id'],
             'committee_id' => ['nullable', 'integer', 'exists:committees,id'],
@@ -58,7 +67,7 @@ class ActivityController extends Controller
         ]);
 
         $activity = Activity::create(array_merge($validated, [
-            'created_by' => $request->user()?->id,
+            'created_by' => $user->id,
         ]));
 
         $activity->load(['area', 'committee', 'creator']);
@@ -66,6 +75,8 @@ class ActivityController extends Controller
         Cache::forget('analytics.v1.overview');
         Cache::forget('activities.recent.50');
         Cache::forget('activities.recent.100');
+        Cache::forget(sprintf('activities.recent.%d.%d', $user->id, 50));
+        Cache::forget(sprintf('activities.recent.%d.%d', $user->id, 100));
 
         broadcast(new ActivityCreated($activity))->toOthers();
 
@@ -109,13 +120,20 @@ class ActivityController extends Controller
 
     public function recent(Request $request)
     {
-        $limit = max(1, min(200, $request->integer('limit', 50)));
+        $user = $request->user();
 
-        $cacheKey = sprintf('activities.recent.%d', $limit);
+        if (!$user) {
+            return response()->json(['error' => 'Unauthenticated'], Response::HTTP_UNAUTHORIZED);
+        }
 
-        $features = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($limit) {
+        $limit = max(1, min(200, (int) $request->input('limit', 50)));
+
+        $cacheKey = sprintf('activities.recent.%d.%d', $user->id, $limit);
+
+        $featuresResolver = function () use ($limit, $user) {
             return Activity::query()
                 ->with('area')
+                ->where('created_by', $user->id)
                 ->whereNotNull('latitude')
                 ->whereNotNull('longitude')
                 ->orderByDesc('reported_at')
@@ -145,7 +163,18 @@ class ActivityController extends Controller
                     ];
                 })
                 ->values();
-        });
+        };
+
+        try {
+            $features = Cache::remember($cacheKey, now()->addMinutes(5), $featuresResolver);
+        } catch (QueryException $exception) {
+            report($exception);
+            $features = collect();
+        }
+
+        if ($features instanceof Collection) {
+            $features = $features->all();
+        }
 
         return response()->json([
             'type' => 'FeatureCollection',

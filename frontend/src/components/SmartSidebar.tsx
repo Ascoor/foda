@@ -53,12 +53,16 @@ const navigationItems: NavigationItem[] = [
 
 interface SmartSidebarProps {
   defaultCollapsed?: boolean;
+  side?: 'left' | 'right';
 }
 
-export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => {
+export const SmartSidebar = ({ defaultCollapsed = true, side }: SmartSidebarProps) => {
   const { t } = useTranslation();
   const location = useLocation();
   const { direction } = useLanguage();
+  const isRTL = direction === 'rtl';
+  const computedSide = side ?? (isRTL ? 'right' : 'left');
+  const isRightAligned = computedSide === 'right';
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<string[]>([]);
@@ -101,10 +105,15 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
     );
   };
 
-  const sidebarWidth = isCollapsed ? 'w-16' : 'w-64';
-  const mobileClasses = isMobile 
-    ? 'fixed inset-y-0 z-50 transform transition-transform duration-300 ease-in-out'
-    : 'relative';
+  const mobileClasses = isMobile
+    ? cn(
+        'fixed inset-y-0 z-50 transform transition-transform duration-300 ease-in-out',
+        isRightAligned ? 'right-0' : 'left-0'
+      )
+    : cn('relative', isRightAligned ? 'order-2' : 'order-1');
+
+  const ExpandIcon = isRightAligned ? ChevronLeft : ChevronRight;
+  const CollapseIcon = isRightAligned ? ChevronRight : ChevronLeft;
 
   return (
     <>
@@ -114,7 +123,9 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
           variant="ghost"
           size="icon"
           onClick={toggleSidebar}
-          className="fixed top-4 left-4 z-50 lg:hidden glass-button"
+          className={`fixed top-4 z-50 lg:hidden glass-button ${
+            isRightAligned ? 'right-4' : 'left-4'
+          }`}
         >
           {isMobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
@@ -133,13 +144,14 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
         initial={false}
         animate={{
           width: isCollapsed ? 64 : 256,
-          x: isMobile ? (isMobileOpen ? 0 : -256) : 0
+          x: isMobile ? (isMobileOpen ? 0 : isRightAligned ? 256 : -256) : 0
         }}
         transition={{ type: "spring", damping: 20, stiffness: 100 }}
+        dir={direction}
         className={cn(
-          "glass-card rounded-none border-y-0 border-l-0 flex flex-col h-screen z-40",
+          'glass-card rounded-none border-y-0 flex flex-col h-screen z-40',
           mobileClasses,
-          direction === 'rtl' ? 'border-r border-l-0' : 'border-r border-l-0'
+          isRightAligned ? 'border-l-0 border-r' : 'border-r border-l-0'
         )}
       >
         {/* Header */}
@@ -147,10 +159,13 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
           <AnimatePresence>
             {!isCollapsed && (
               <motion.div
-                initial={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
+                initial={{ opacity: 0, x: isRightAligned ? 20 : -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: direction === 'rtl' ? 20 : -20 }}
-                className="flex items-center gap-3"
+                exit={{ opacity: 0, x: isRightAligned ? 20 : -20 }}
+                className={cn(
+                  'flex items-center gap-3',
+                  isRTL && 'flex-row-reverse text-right'
+                )}
               >
                 <div className="w-8 h-8 bg-gradient-primary rounded-xl flex items-center justify-center shadow-glow">
                   <LayoutDashboard className="h-5 w-5 text-white" />
@@ -170,9 +185,9 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
               className="p-2"
             >
               {isCollapsed ? (
-                direction === 'rtl' ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />
+                <ExpandIcon className="h-4 w-4" />
               ) : (
-                direction === 'rtl' ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />
+                <CollapseIcon className="h-4 w-4" />
               )}
             </Button>
           )}
@@ -192,10 +207,11 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                   <div
                     className={cn(
                       "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative cursor-pointer",
-                      active 
-                        ? 'bg-gradient-primary text-white shadow-glow' 
+                      active
+                        ? 'bg-gradient-primary text-white shadow-glow'
                         : 'hover:bg-white/10 text-foreground hover:text-primary',
-                      isCollapsed ? 'justify-center' : ''
+                      isCollapsed ? 'justify-center' : '',
+                      !isCollapsed && direction === 'rtl' ? 'flex-row-reverse text-right' : 'text-left'
                     )}
                     onClick={() => {
                       if (hasChildren && !isCollapsed) {
@@ -204,20 +220,35 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                     }}
                   >
                     {hasChildren && !isCollapsed ? (
-                      <div className="flex items-center gap-3 w-full">
+                      <div
+                        className={cn(
+                          'flex w-full items-center gap-3',
+                          direction === 'rtl' && 'flex-row-reverse text-right'
+                        )}
+                      >
                         <Icon className={cn("h-5 w-5", active && "animate-glow-pulse")} />
-                        <span className="font-medium flex-1">{t(`navigation.${item.key}`)}</span>
-                        <ChevronDown 
+                        <span
+                          className={cn(
+                            'font-medium flex-1',
+                            direction === 'rtl' && 'text-right'
+                          )}
+                        >
+                          {t(`navigation.${item.key}`)}
+                        </span>
+                        <ChevronDown
                           className={cn(
                             "h-4 w-4 transition-transform duration-200",
                             isExpanded && "rotate-180"
-                          )} 
+                          )}
                         />
                       </div>
                     ) : (
                       <NavLink
                         to={item.path}
-                        className="flex items-center gap-3 w-full"
+                        className={cn(
+                          'flex w-full items-center gap-3',
+                          direction === 'rtl' && 'flex-row-reverse text-right'
+                        )}
                         onClick={() => isMobile && setIsMobileOpen(false)}
                       >
                         <div className="relative">
@@ -229,7 +260,9 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                           )}
                         </div>
                         {!isCollapsed && (
-                          <span className="font-medium">{t(`navigation.${item.key}`)}</span>
+                          <span className={cn('font-medium', direction === 'rtl' && 'text-right')}>
+                            {t(`navigation.${item.key}`)}
+                          </span>
                         )}
                       </NavLink>
                     )}
@@ -239,8 +272,8 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                       <div className={cn(
                         "absolute z-50 px-2 py-1 bg-foreground text-background rounded text-sm",
                         "opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap",
-                        direction === 'rtl' 
-                          ? 'right-full mr-2 top-1/2 transform -translate-y-1/2' 
+                        isRightAligned
+                          ? 'right-full mr-2 top-1/2 transform -translate-y-1/2'
                           : 'left-full ml-2 top-1/2 transform -translate-y-1/2'
                       )}>
                         {t(`navigation.${item.key}`)}
@@ -256,7 +289,10 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="ml-6 mt-2 space-y-1 overflow-hidden"
+                        className={cn(
+                          'mt-2 space-y-1 overflow-hidden',
+                          isRightAligned ? 'mr-6' : 'ml-6'
+                        )}
                       >
                         {item.children?.map((child) => {
                           const ChildIcon = child.icon;
@@ -268,14 +304,17 @@ export const SmartSidebar = ({ defaultCollapsed = true }: SmartSidebarProps) => 
                                 to={child.path}
                                 className={cn(
                                   "flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
-                                  childActive 
-                                    ? 'bg-primary/20 text-primary' 
-                                    : 'hover:bg-white/5 text-muted-foreground hover:text-foreground'
+                                  childActive
+                                    ? 'bg-primary/20 text-primary'
+                                    : 'hover:bg-white/5 text-muted-foreground hover:text-foreground',
+                                  direction === 'rtl' && 'flex-row-reverse text-right'
                                 )}
                                 onClick={() => isMobile && setIsMobileOpen(false)}
                               >
                                 <ChildIcon className="h-4 w-4" />
-                                <span className="text-sm">{t(`navigation.${child.key}`)}</span>
+                                <span className={cn('text-sm', direction === 'rtl' && 'text-right')}>
+                                  {t(`navigation.${child.key}`)}
+                                </span>
                               </NavLink>
                             </li>
                           );

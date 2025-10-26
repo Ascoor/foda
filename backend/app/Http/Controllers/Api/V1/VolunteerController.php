@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Concerns\HandlesIndexRequests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVolunteerRequest;
 use App\Http\Requests\UpdateVolunteerRequest;
@@ -11,19 +12,20 @@ use Illuminate\Http\Request;
 
 class VolunteerController extends Controller
 {
+    use HandlesIndexRequests;
+
     public function index(Request $request)
     {
-        $query = Volunteer::with('team');
+        $volunteers = $this->handleIndex(
+            $request,
+            Volunteer::with('team'),
+            ['name'],
+            ['name', 'team_id'],
+            ['name'],
+            ['name']
+        );
 
-        if ($name = $request->query('name')) {
-            $query->where('name', 'like', "%{$name}%");
-        }
-
-        if ($teamId = $request->query('team_id')) {
-            $query->where('team_id', $teamId);
-        }
-
-        return VolunteerResource::collection($query->get());
+        return VolunteerResource::collection($volunteers);
     }
 
     public function store(StoreVolunteerRequest $request)

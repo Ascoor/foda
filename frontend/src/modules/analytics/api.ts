@@ -1,5 +1,6 @@
 import { request } from '@/lib/api';
-import { AnalyticsFilters, AnalyticsResponse } from './types';
+import { API_ENDPOINTS } from '@/lib/endpoints';
+import type { AnalyticsFilters, AnalyticsResponse } from './types';
 
 type AnalyticsEnvelope = {
   data: AnalyticsResponse;
@@ -10,7 +11,7 @@ export const fetchAnalytics = async (
 ): Promise<AnalyticsResponse> => {
   const response = await request<AnalyticsEnvelope>(
     {
-      url: '/analytics',
+      url: API_ENDPOINTS.analytics.metrics,
       method: 'get',
       params: filters,
     },

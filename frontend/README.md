@@ -1,73 +1,27 @@
-# Welcome to your Lovable project
+# FODA Frontend Workflow Guide
 
-## Project info
+This document summarizes the current workflow for building the FODA election management interface in both Arabic and English. It reflects the latest performance improvements, asset handling strategy, and automated tests introduced during the UI enhancement phase.
 
-**URL**: https://lovable.dev/projects/644ee328-cc94-4636-965e-4af0e13fcb5c
+## UI and performance guidelines
 
-## How can I edit this code?
+- **Tailwind glassmorphism utilities**: reusable classes such as `glass`, `glass-card`, and `glass-button` are provided through a custom Tailwind CSS plugin (`glassmorphismPlugin`). They automatically consume the design tokens defined in `src/styles/variables.css`, so avoid redefining these classes in component-level styles.
+- **Font loading**: Google Fonts are linked once in `index.html`, requesting the shared `Inter` and `Noto Kufi Arabic` families with the weights we actually use (400, 500, 600, 700). This avoids runtime `@import` calls and keeps Arabic and English typography aligned without extra round trips.
+- **Design tokens**: continue relying on CSS variables in `src/styles/variables.css` for colors, spacing, and typography. Primary, secondary, and accent hues now mirror the shared palette defined in `src/styles/colorTokens.ts`, ensuring consistent rendering between RTL and LTR layouts.
+- **Palette source of truth**: when introducing new UI elements, import from `src/styles/colorTokens.ts` to keep unit tests and CSS variables synchronized. The accompanying Vitest suite (`src/styles/__tests__/tokens.test.ts`) guards against accidental palette drift.
 
-There are several ways of editing your application.
+## Asset management
 
-**Use Lovable**
+- Place static media under `src/assets`. Images previously served from `public/img` now live in `src/assets/img` so that Vite can hash and optimize them during the build.
+- Import assets via the `@` alias (for example, `import logo from '@/assets/img/partner-1.svg'`) instead of hard-coding `/img/...` paths.
+- When referencing assets in JSON-like data files, import them at the top of the file before assigning them to your configuration objects. This allows TypeScript and the bundler to validate paths at compile time.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/644ee328-cc94-4636-965e-4af0e13fcb5c) and start prompting.
+## Testing workflow
 
-Changes made via Lovable will be committed automatically to this repo.
+- Run the UI test suite with:
+  - `npm run test`
+- Vitest is configured with Testing Library in `src/test/setup.ts`. The suite now includes coverage for the shared `Button` and `Input` components, verifying class composition, RTL friendliness, and the `asChild` slot behaviour. Use these examples when adding new component tests, especially when validating Arabic and English content simultaneously.
 
-**Use your preferred IDE**
+## Development tooling
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/644ee328-cc94-4636-965e-4af0e13fcb5c) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- Tailwind configuration resides in `tailwind.config.ts`. Custom plugins should be added there to keep utility classes colocated with the design system.
+- Keep the documentation up to date when you introduce new build steps or shared conventions so the bilingual engineering team can follow the same workflow.

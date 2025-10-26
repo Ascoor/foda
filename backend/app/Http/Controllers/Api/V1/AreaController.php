@@ -2,23 +2,30 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Concerns\HandlesIndexRequests;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAreaRequest;
 use App\Http\Requests\UpdateAreaRequest;
 use App\Http\Resources\AreaResource;
-use Illuminate\Http\Request;
 use App\Models\Area;
+use Illuminate\Http\Request;
 
 class AreaController extends Controller
 {
+    use HandlesIndexRequests;
+
     public function index(Request $request)
     {
-        $query = Area::query();
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
+        $areas = $this->handleIndex(
+            $request,
+            Area::query(),
+            ['name'],
+            ['name'],
+            ['name'],
+            ['name']
+        );
 
-        return AreaResource::collection($query->get());
+        return AreaResource::collection($areas);
     }
 
     public function store(StoreAreaRequest $request)

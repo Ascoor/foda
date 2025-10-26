@@ -1,4 +1,8 @@
 {
+  "app": {
+    "name": "فودا",
+    "tagline": "نظام إدارة الحملات الانتخابية الذكي"
+  },
   "common": {
     "loading": "جاري التحميل...",
     "save": "حفظ",
@@ -29,21 +33,49 @@
     "close": "إغلاق",
 
     "all": "الكل",
-    "no_data": "لا توجد بيانات"
-  },
-  "navigation": {
+    "no_data": "لا توجد بيانات",
+    "language": "اللغة"
+  },  "navigation": {
+    "toggleSidebar": "تبديل الشريط الجانبي",
+    "main": "القائمة الرئيسية",
+
+    "section_overview": "نظرة عامة",
+    "section_election_operations": "إدارة العملية الانتخابية",
+    "section_field_resources": "إدارة الفرق الميدانية",
+    "section_campaign_intelligence": "منصة الحملات والتحليلات",
+    "section_monitoring_and_analytics": "المراقبة والتحليل",
+    "section_ai_and_automation": "الذكاء والتحكم الآلي",
+    "section_system_admin": "الإدارة التقنية والأمنية",
+    "section_admin": "الإدارة والإعدادات",
+
     "dashboard": "لوحة التحكم",
     "elections": "الانتخابات",
     "geo_areas": "المناطق الجغرافية",
     "committees": "اللجان",
     "voters": "الناخبون",
     "candidates": "المرشحون",
+    "results_center": "مركز النتائج",
+
     "agents": "الوكلاء",
     "volunteers": "المتطوعون",
-    "observations": "المراقبات",
+    "observers": "المراقبون",
+    "field_reports": "التقارير الميدانية",
+
     "campaigns": "الحملات",
     "automation": "الأتمتة",
     "analytics": "التحليلات",
+
+    "live_map": "الخريطة الحية",
+    "statistics": "الإحصائيات",
+    "alerts": "التنبيهات",
+
+    "predictive_insights": "التحليلات التنبؤية",
+    "user_roles": "صلاحيات المستخدمين",
+    "system_logs": "سجلات النظام",
+    "security_center": "مركز الأمان",
+    "integrations": "التكاملات",
+    "system_settings": "إعدادات النظام",
+
     "settings": "الإعدادات"
   },
   "dashboard": {
@@ -279,9 +311,15 @@
   "auth": {
     "login": "تسجيل الدخول",
     "logout": "تسجيل الخروج",
+    "login_subtitle": "أدخل بيانات حسابك للوصول إلى لوحة التحكم",
     "username": "اسم المستخدم",
+    "email": "البريد الإلكتروني",
+    "email_placeholder": "example@mail.com",
+    "email_invalid": "يرجى إدخال بريد إلكتروني صالح",
     "password": "كلمة المرور",
+    "password_placeholder": "••••••••",
     "remember_me": "تذكرني",
-    "login_error": "فشل تسجيل الدخول"
+    "login_error": "فشل تسجيل الدخول",
+    "unknown_error": "حدث خطأ غير متوقع. حاول مرة أخرى لاحقاً."
   }
 }
