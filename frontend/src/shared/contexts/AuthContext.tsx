@@ -22,6 +22,7 @@ export interface User {
   email: string;
   roles?: Role[];
   roleNames?: string[];
+  role?: string;
   [key: string]: unknown;
 }
 
@@ -117,10 +118,18 @@ const normalizeUser = (payload: unknown): User => {
     name: String(role?.name ?? role),
   }));
 
+  const explicitRole = (() => {
+    const candidate = (raw as Record<string, unknown>).role;
+    return typeof candidate === "string" ? candidate : undefined;
+  })();
+
+  const primaryRole = explicitRole ?? roles[0]?.name;
+
   return {
     ...(raw as Record<string, unknown>),
     roles,
     roleNames: roles.map((role) => role.name),
+    role: primaryRole,
   } as User;
 };
 

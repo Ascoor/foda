@@ -12,19 +12,25 @@ import { getEcho } from "@shared/lib/echo";
 import { toast } from "sonner";
 import { useLanguage } from "@shared/contexts/LanguageContext";
 
-export type NotificationType = "performance" | "field" | "risk" | "other";
+export type NotificationType =
+  | "performance"
+  | "field"
+  | "risk"
+  | "other"
+  | "success";
 
 export interface NotificationItem {
-  id: number;
+  id: number | string;
   type: NotificationType;
   category: string;
   title: string;
   message: string;
   priority: "low" | "medium" | "high";
-  meta: Record<string, unknown>;
+  meta?: Record<string, unknown>;
   read_at: string | null;
   created_at: string;
   created_ago?: string;
+  createdAgo?: string;
   is_high_priority?: boolean;
 }
 
@@ -37,12 +43,13 @@ interface NotificationContextValue {
   loading: boolean;
   filter: NotificationFilter;
   setFilter: (filter: NotificationFilter) => void;
-  markAsRead: (id: number) => Promise<void>;
+  markAsRead: (id: NotificationItem["id"]) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   refresh: () => Promise<void>;
   isDrawerOpen: boolean;
   setDrawerOpen: (open: boolean) => void;
   pushNotification: (notification: NotificationItem) => void;
+  push: (notification: NotificationItem) => void;
 }
 
 const NotificationContext = createContext<NotificationContextValue | undefined>(
@@ -52,6 +59,17 @@ const NotificationContext = createContext<NotificationContextValue | undefined>(
 interface PaginatedNotificationResponse {
   data: NotificationItem[];
 }
+
+const normalizeNotification = (incoming: NotificationItem): NotificationItem => {
+  const fallback = new Date(incoming.created_at).toLocaleString();
+  const createdAgo = incoming.createdAgo ?? incoming.created_ago ?? fallback;
+
+  return {
+    ...incoming,
+    createdAgo,
+    created_ago: incoming.created_ago ?? createdAgo,
+  };
+};
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   const { language } = useLanguage();
@@ -74,10 +92,12 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
           },
         });
 
-        const incoming = [...(response.data ?? [])].sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        );
+        const incoming = [...(response.data ?? [])]
+          .map(normalizeNotification)
+          .sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+          );
 
         setNotifications((previous) => {
           const previousIds = new Set(previous.map((item) => item.id));
@@ -107,9 +127,10 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const prependNotification = useCallback((incoming: NotificationItem) => {
+    const normalized = normalizeNotification(incoming);
     setNotifications((prev) => {
-      const existing = prev.filter((item) => item.id !== incoming.id);
-      const next = [incoming, ...existing];
+      const existing = prev.filter((item) => item.id !== normalized.id);
+      const next = [normalized, ...existing];
       return next.sort(
         (a, b) =>
           new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
@@ -179,6 +200,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
       meta: { source: "brand-refresh", tone: "success" },
       read_at: null,
       created_at: now,
+      createdAgo: new Date(now).toLocaleString(),
       is_high_priority: false,
     };
 
@@ -186,7 +208,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     window.localStorage.setItem(storageKey, "done");
   }, [language, prependNotification]);
 
-  const markAsRead = useCallback(async (id: number) => {
+  const markAsRead = useCallback(async (id: NotificationItem["id"]) => {
     await request<{ data: NotificationItem }>({
       url: `/notifications/${id}/read`,
       method: "patch",
@@ -239,6 +261,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     isDrawerOpen,
     setDrawerOpen,
     pushNotification: prependNotification,
+    push: prependNotification,
   };
 
   return (

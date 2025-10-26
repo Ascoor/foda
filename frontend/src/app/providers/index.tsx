@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useEffect, useMemo, useState } from "react";
 import {
   QueryClient,
   QueryClientProvider,
@@ -14,12 +14,33 @@ import {
   NotificationProvider,
   OfflineProvider,
   ThemeProvider,
+  RoleContext,
 } from "@shared/contexts";
 import { reportWebVitals } from "@shared/lib/web-vitals";
 import { Toaster } from "@shared/ui/toaster";
 import { Toaster as Sonner } from "@shared/ui/sonner";
 import { TooltipProvider } from "@shared/ui/tooltip";
-import { AuthProvider } from "@legacy/hooks/useAuth";
+import { AuthProvider, useAuth } from "@legacy/hooks/useAuth";
+import type { Role } from "@shared/contexts/role-context";
+
+const RoleProviderBridge = ({ children }: PropsWithChildren) => {
+  const { user } = useAuth();
+
+  const role = useMemo<Role | undefined>(() => {
+    if (!user) {
+      return undefined;
+    }
+
+    if (typeof user.role === "string" && user.role.length > 0) {
+      return user.role as Role;
+    }
+
+    const fallback = user.roleNames?.find((name) => typeof name === "string");
+    return fallback as Role | undefined;
+  }, [user]);
+
+  return <RoleContext.Provider value={{ role }}>{children}</RoleContext.Provider>;
+};
 
 const QUERY_DB = "foda-app";
 const QUERY_STORE = "react-query-cache";
@@ -101,12 +122,14 @@ export const AppProviders = ({ children }: PropsWithChildren) => {
           <LanguageProvider>
             <NotificationProvider>
               <AuthProvider>
-                <TooltipProvider>
-                  {children}
-                  <Toaster />
-                  <Sonner />
-                  {import.meta.env.DEV && <DevTools />}
-                </TooltipProvider>
+                <RoleProviderBridge>
+                  <TooltipProvider>
+                    {children}
+                    <Toaster />
+                    <Sonner />
+                    {import.meta.env.DEV && <DevTools />}
+                  </TooltipProvider>
+                </RoleProviderBridge>
               </AuthProvider>
             </NotificationProvider>
           </LanguageProvider>

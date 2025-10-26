@@ -255,7 +255,7 @@ export const SidebarNav = ({ isCollapsed = false }: SidebarNavProps) => {
 export const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const { direction } = useLanguage();
-  const { t } = useTranslation("common");
+  const { t } = useTranslation();
 
   const ToggleIcon = useMemo(() => {
     if (direction === "rtl") {

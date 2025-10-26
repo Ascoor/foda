@@ -10,11 +10,25 @@ import { DashboardLayout } from "@app/layouts/dashboard-layout";
 import { DashboardPage } from "@features/dashboard/dashboard-page";
 import { LandingPage } from "@features/landing/landing-page";
 import { LoginPage } from "@features/login/login-page";
-import { createPlaceholderPage } from "@features/placeholders";
-import { useAuth } from "@legacy/hooks/useAuth";
+import { AnalyticsPage } from "@features/analytics/analytics-page";
+import { VolunteersPage } from "@features/volunteers/volunteers-page";
+import { VotersPage } from "@features/voters/voters-page";
+import { MessagesPage } from "@features/messages/messages-page";
+import { FieldToursPage } from "@features/field-tours/field-tours-page";
+import { DonationsPage } from "@features/donations/donations-page";
+import { GOTVPage } from "@features/gotv/gotv-page";
+import { SettingsPage } from "@features/settings/settings-page";
+import { VolunteerApp } from "@features/volunteer/volunteer-app";
+import { useAuth } from "@shared/hooks";
+import type { Role } from "@shared/contexts/role-context";
 
-const ProtectedRoute = ({ children }: { children: ReactElement }) => {
-  const { isAuthenticated, loading } = useAuth();
+interface ProtectedRouteProps {
+  children: ReactElement;
+  role?: Role;
+}
+
+const ProtectedRoute = ({ children, role }: ProtectedRouteProps) => {
+  const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) {
     return (
@@ -28,6 +42,10 @@ const ProtectedRoute = ({ children }: { children: ReactElement }) => {
     return <Navigate to="/login" replace />;
   }
 
+  if (role && user?.role && user.role !== role) {
+    return <Navigate to="/" replace />;
+  }
+
   return children;
 };
 
@@ -37,52 +55,20 @@ const DashboardShell = () => (
   </ProtectedRoute>
 );
 
-const AnalyticsPage = createPlaceholderPage({
-  titleKey: "placeholders.analytics.title",
-  descriptionKey: "placeholders.analytics.description",
-});
-
-const VolunteersPage = createPlaceholderPage({
-  titleKey: "placeholders.volunteers.title",
-  descriptionKey: "placeholders.volunteers.description",
-});
-
-const VotersPage = createPlaceholderPage({
-  titleKey: "placeholders.voters.title",
-  descriptionKey: "placeholders.voters.description",
-});
-
-const MessagesPage = createPlaceholderPage({
-  titleKey: "placeholders.messages.title",
-  descriptionKey: "placeholders.messages.description",
-});
-
-const FieldToursPage = createPlaceholderPage({
-  titleKey: "placeholders.fieldTours.title",
-  descriptionKey: "placeholders.fieldTours.description",
-});
-
-const DonationsPage = createPlaceholderPage({
-  titleKey: "placeholders.donations.title",
-  descriptionKey: "placeholders.donations.description",
-});
-
-const GOTVPage = createPlaceholderPage({
-  titleKey: "placeholders.gotv.title",
-  descriptionKey: "placeholders.gotv.description",
-});
-
-const SettingsPage = createPlaceholderPage({
-  titleKey: "placeholders.settings.title",
-  descriptionKey: "placeholders.settings.description",
-});
-
 const router = createBrowserRouter([
   {
     element: <Outlet />,
     children: [
       { index: true, element: <LandingPage /> },
       { path: "login", element: <LoginPage /> },
+      {
+        path: "volunteer",
+        element: (
+          <ProtectedRoute role="volunteer">
+            <VolunteerApp />
+          </ProtectedRoute>
+        ),
+      },
       {
         element: <DashboardShell />,
         children: [

@@ -7,3 +7,5 @@ export { useOfflineSyncContext as useOfflineSync } from "@shared/contexts/offlin
 export { useAuth } from "@legacy/hooks/useAuth";
 export { useLanguage } from "@shared/contexts/LanguageContext";
 export { useTheme } from "@shared/contexts/ThemeContext";
+export { useRole } from "@shared/contexts/role-context";
+export { useRealtime } from "./use-realtime";
