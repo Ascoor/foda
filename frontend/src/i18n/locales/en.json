@@ -48,6 +48,7 @@
     "section_admin": "Administration",
 
     "dashboard": "Dashboard",
+    "reports": "Operational Reports",
     "elections": "Elections",
     "geo_areas": "Geographic Areas",
     "committees": "Committees",
@@ -75,7 +76,12 @@
     "integrations": "Integrations",
     "system_settings": "System Settings",
 
-    "settings": "Settings"
+    "settings": "Settings",
+    "election_detail": "Election details",
+    "geo_area_detail": "Area details",
+    "committee_detail": "Committee details",
+    "voter_detail": "Voter profile",
+    "candidate_detail": "Candidate profile"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -320,5 +326,50 @@
     "remember_me": "Remember me",
     "login_error": "Unable to log in",
     "unknown_error": "An unexpected error occurred. Please try again later."
+  },
+  "reports": {
+    "toolbar": {
+      "title": "Campaign intelligence overview",
+      "subtitle": "Track turnout momentum and outreach performance across the region"
+    },
+    "actions": {
+      "export": "Export snapshot",
+      "schedule": "Schedule briefing"
+    },
+    "filters": {
+      "all": "All districts",
+      "urban": "Urban",
+      "rural": "Rural",
+      "priority": "Priority"
+    },
+    "metrics": {
+      "turnout": "Turnout rate",
+      "turnoutFooter": "Compared to last week",
+      "volunteers": "Active volunteers",
+      "volunteersFooter": "Field-ready teams",
+      "coverage": "Coverage achieved",
+      "coverageFooter": "Precincts reported",
+      "alerts": "Open alerts",
+      "alertsFooter": "Requires review"
+    },
+    "sections": {
+      "turnoutTrend": "Turnout progression",
+      "turnoutTrendSubtitle": "Daily turnout percentage for the last 7 days",
+      "outreach": "Outreach touchpoints",
+      "outreachSubtitle": "Field and digital interactions per region",
+      "districts": "Top performing districts",
+      "districtsSubtitle": "Turnout and volunteer distribution",
+      "updated": "Updated {{time}} ago"
+    },
+    "series": {
+      "field": "Field outreach",
+      "digital": "Digital outreach"
+    },
+    "table": {
+      "district": "District",
+      "turnout": "Turnout",
+      "volunteers": "Volunteers",
+      "alerts": "Alerts"
+    }
   }
 }

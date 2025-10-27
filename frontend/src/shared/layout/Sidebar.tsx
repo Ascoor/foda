@@ -2,9 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
-import { sidebarSections } from "@/config/sidebar-sections";
+import { useTranslation } from "react-i18next";
+
+import { notifyNavClick, findRouteMatch } from "@/nav/nav.map";
+import { useNavTree, useNavigationContext } from "@/nav/useNavigationContext";
+import type { NavNode } from "@/nav/nav.schema";
 import { useLanguage } from "@shared/contexts/LanguageContext";
-import { sidebarTranslations } from "@/i18n/sidebar";
+import { useNotifications } from "@shared/contexts/NotificationContext";
 import { cn } from "@shared/lib/utils";
 
 interface SidebarProps {
@@ -19,21 +23,76 @@ const SPRING_TRANSITION = {
   damping: 30,
 } as const;
 
+const useBadgeValue = () => {
+  try {
+    const { unreadCount } = useNotifications();
+    return { alerts: unreadCount };
+  } catch {
+    return { alerts: 0 };
+  }
+};
+
+const collectAncestorIds = (node: NavNode | null | undefined): string[] => {
+  const ids: string[] = [];
+  let current = node?.parent;
+  while (current) {
+    ids.push(current.id);
+    current = current.parent ?? undefined;
+  }
+  return ids;
+};
+
 export const Sidebar = ({
   isOpen,
   onToggleCollapse,
   isMobile = false,
 }: SidebarProps) => {
   const { language, direction } = useLanguage();
+  const { t } = useTranslation();
+  const navContext = useNavigationContext();
+  const sidebarTree = useNavTree("sidebar");
+  const badgeValues = useBadgeValue();
   const location = useLocation();
-
-  const [expandedSections, setExpandedSections] = useState<string[]>(() =>
-    sidebarSections.filter((s) => s.items?.length).map((s) => s.key),
-  );
-
   const [isVisible, setIsVisible] = useState(true);
 
-  // ✅ Scroll Hide Logic
+  const activeMatch = useMemo(
+    () => findRouteMatch(location.pathname, navContext),
+    [location.pathname, navContext],
+  );
+
+  const activeIds = useMemo(() => {
+    if (!activeMatch) return new Set<string>();
+    return new Set<string>([
+      activeMatch.id,
+      ...collectAncestorIds(activeMatch.node),
+    ]);
+  }, [activeMatch]);
+
+  const sectionIds = useMemo(
+    () => sidebarTree.filter((node) => node.children?.length).map((node) => node.id),
+    [sidebarTree],
+  );
+
+  const [expandedSections, setExpandedSections] = useState<string[]>(sectionIds);
+
+  useEffect(() => {
+    setExpandedSections((prev) => {
+      if (prev.length > 0) {
+        return prev;
+      }
+      return sectionIds;
+    });
+  }, [sectionIds]);
+
+  useEffect(() => {
+    if (!activeMatch) return;
+    setExpandedSections((prev) => {
+      const next = new Set(prev);
+      collectAncestorIds(activeMatch.node).forEach((id) => next.add(id));
+      return Array.from(next);
+    });
+  }, [activeMatch]);
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
@@ -46,26 +105,10 @@ export const Sidebar = ({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    setExpandedSections((prev) => {
-      if (prev.length > 0) return prev;
-      return sidebarSections.filter((s) => s.items?.length).map((s) => s.key);
-    });
-  }, [isOpen]);
-
-  const toggleSection = (key: string) =>
+  const toggleSection = (id: string) =>
     setExpandedSections((prev) =>
-      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key],
+      prev.includes(id) ? prev.filter((section) => section !== id) : [...prev, id],
     );
-
-  const getLabel = (key: string) =>
-    sidebarTranslations[language][
-      key as keyof (typeof sidebarTranslations)["en"]
-    ] ?? key;
-
-  const isRouteActive = (path?: string): boolean =>
-    !!path && location.pathname.startsWith(path);
 
   const ToggleIcon = useMemo(
     () =>
@@ -88,6 +131,97 @@ export const Sidebar = ({
         ? "Collapse sidebar"
         : "Expand sidebar";
 
+  const isNodeActive = (node: NavNode) => activeIds.has(node.id);
+
+  const getBadge = (node: NavNode) => {
+    if (!node.badge) return null;
+    if (node.badge.type === "dot") {
+      return <span className="inline-flex size-2 rounded-full bg-[hsl(var(--primary))]" />;
+    }
+
+    if (node.badge.type === "count") {
+      const value = node.badge.source
+        ? badgeValues[node.badge.source as keyof typeof badgeValues] ?? 0
+        : 0;
+      if (!value) return null;
+      return (
+        <span className="ml-auto inline-flex min-w-[1.5rem] items-center justify-center rounded-xl bg-[hsla(var(--primary)/0.15)] px-2 text-xs font-semibold text-[hsl(var(--primary))]">
+          {value}
+        </span>
+      );
+    }
+
+    return null;
+  };
+
+  const renderNode = (node: NavNode) => {
+    const label = t(node.i18nKey);
+    const hasChildren = Boolean(node.children?.length);
+    const sectionExpanded = hasChildren ? expandedSections.includes(node.id) : false;
+    const Icon = node.icon;
+
+    if (hasChildren && !node.path) {
+      return (
+        <div key={node.id} className="mb-3 last:mb-0">
+          <button
+            type="button"
+            onClick={() => toggleSection(node.id)}
+            className="flex w-full items-center justify-between rounded-2xl px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground transition hover:text-foreground"
+          >
+            <span>{label}</span>
+            <ChevronDown
+              className={cn(
+                "h-4 w-4 transition-transform",
+                sectionExpanded ? "rotate-0" : "-rotate-90",
+              )}
+            />
+          </button>
+          <AnimatePresence initial={false}>
+            {sectionExpanded && (
+              <motion.div
+                key={`${node.id}-children`}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className={cn("flex flex-col gap-1", isOpen && "mt-1")}
+              >
+                {node.children?.map((child) => renderNode(child))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      );
+    }
+
+    if (node.path) {
+      return (
+        <NavLink
+          key={node.id}
+          to={node.path}
+          end={node.exact}
+          aria-label={!isOpen ? label : undefined}
+          onClick={() => notifyNavClick(node.id, node.path, navContext, "sidebar")}
+          className={() =>
+            cn(
+              "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition-all",
+              isNodeActive(node)
+                ? "bg-[hsla(var(--primary)/0.2)] text-[hsl(var(--primary))] shadow-sm"
+                : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
+              !isOpen && "justify-center px-0",
+            )
+          }
+        >
+          {Icon && <Icon className="h-5 w-5 shrink-0" />}
+          {isOpen ? <span className="truncate">{label}</span> : <span className="sr-only">{label}</span>}
+          {isOpen && getBadge(node)}
+        </NavLink>
+      );
+    }
+
+    return null;
+  };
+
   const containerClasses = cn(
     "group/sidebar relative z-30 flex shrink-0 flex-col overflow-hidden rounded-[28px] border border-border/40 bg-[hsla(var(--card)/0.88)] p-4 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur-xl transition-all",
     isMobile
@@ -98,7 +232,7 @@ export const Sidebar = ({
       : "sticky top-28 max-h-[calc(100vh-12rem)] self-start",
   );
 
-  const headerLabel = getLabel("dashboard");
+  const headerLabel = t("navigation.main", { defaultValue: "Navigation" });
 
   return (
     <motion.aside
@@ -111,8 +245,8 @@ export const Sidebar = ({
       }}
       transition={{ ...SPRING_TRANSITION, duration: 0.4 }}
       className={containerClasses}
+      aria-label={t("navigation.main")}
     >
-      {/* 🟣 Header */}
       <div className="flex items-center justify-between gap-2 pb-4">
         <div className="flex items-center gap-2">
           <div className="flex size-9 items-center justify-center rounded-2xl bg-[hsla(var(--primary)/0.15)] text-[hsl(var(--primary))]">
@@ -123,9 +257,7 @@ export const Sidebar = ({
               <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
                 Aurora Election
               </p>
-              <p className="text-sm font-semibold text-foreground">
-                {headerLabel}
-              </p>
+              <p className="text-sm font-semibold text-foreground">{headerLabel}</p>
             </div>
           )}
         </div>
@@ -142,83 +274,10 @@ export const Sidebar = ({
         )}
       </div>
 
-      {/* 🧭 Navigation */}
       <nav className="flex-1 overflow-y-auto pr-1">
-        {sidebarSections.map((section) => {
-          const hasChildren = Boolean(section.items?.length);
-          const sectionIsExpanded =
-            !hasChildren || !isOpen || expandedSections.includes(section.key);
-
-          const links = (
-            section.items ??
-            (section.path
-              ? [{ key: section.key, icon: section.icon, path: section.path }]
-              : [])
-          ).map((item) => (
-            <NavLink
-              key={item.key}
-              to={item.path ?? "#"}
-              aria-label={!isOpen ? getLabel(item.key) : undefined}
-              className={({ isActive }) =>
-                cn(
-                  "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition-all",
-                  isActive || isRouteActive(item.path)
-                    ? "bg-[hsla(var(--primary)/0.2)] text-[hsl(var(--primary))] shadow-sm"
-                    : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
-                  !isOpen && "justify-center px-0",
-                )
-              }
-            >
-              {item.icon && <item.icon className="h-5 w-5 shrink-0" />}
-              {isOpen ? (
-                <span className="truncate">{getLabel(item.key)}</span>
-              ) : (
-                <span className="sr-only">{getLabel(item.key)}</span>
-              )}
-            </NavLink>
-          ));
-
-          return (
-            <div key={section.key} className="mb-3 last:mb-0">
-              {hasChildren && isOpen && (
-                <button
-                  type="button"
-                  onClick={() => toggleSection(section.key)}
-                  className="flex w-full items-center justify-between rounded-2xl px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-muted-foreground transition hover:text-foreground"
-                >
-                  <span>{getLabel(section.key)}</span>
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 transition-transform",
-                      sectionIsExpanded ? "rotate-0" : "-rotate-90",
-                    )}
-                  />
-                </button>
-              )}
-
-              <AnimatePresence initial={false}>
-                {sectionIsExpanded && (
-                  <motion.div
-                    key={`${section.key}-links`}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: "easeInOut" }}
-                    className={cn(
-                      "flex flex-col gap-1",
-                      isOpen && hasChildren && "mt-1",
-                    )}
-                  >
-                    {links}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+        {sidebarTree.map((node) => renderNode(node))}
       </nav>
 
-      {/* 🪶 Footer */}
       <div className="pt-4 text-center text-xs text-muted-foreground/80">
         {language === "ar" ? "© جميع الحقوق محفوظة" : "© All rights reserved"}
       </div>
