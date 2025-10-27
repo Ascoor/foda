@@ -1,0 +1,83 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`DashboardShell > renders layout chrome with toolbar and children 1`] = `
+<div
+  data-testid="aurora"
+>
+  <div
+    class="relative flex min-h-screen flex-col gap-6 pb-16"
+    style="padding-inline: 1rem;"
+  >
+    <header
+      data-testid="header"
+    >
+      <button
+        type="button"
+      >
+        toggle-sidebar
+      </button>
+    </header>
+    <div
+      class="relative mx-auto flex w-full max-w-6xl flex-1 gap-6 px-3 md:px-0"
+    >
+      <aside
+        data-testid="sidebar"
+      >
+        <span>
+          sidebar-open
+        </span>
+        <button
+          type="button"
+        >
+          collapse
+        </button>
+      </aside>
+      <main
+        class="relative z-10 flex-1 rounded-[32px] border border-white/20 bg-white/80 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.18)] backdrop-blur-2xl dark:border-white/10 dark:bg-slate-900/70 space-y-6"
+      >
+        <div
+          class="flex flex-col gap-4 border-b border-white/30 pb-4 dark:border-white/10"
+        >
+          <nav
+            data-testid="breadcrumbs"
+          >
+            breadcrumbs
+          </nav>
+          <div
+            class="flex flex-wrap items-center gap-3"
+          >
+            <span>
+              toolbar-action
+            </span>
+          </div>
+        </div>
+        <div
+          class="flex-1"
+        >
+          <div>
+            main-content
+          </div>
+        </div>
+      </main>
+    </div>
+    <footer
+      class="mx-auto w-full max-w-6xl rounded-3xl border border-white/20 bg-white/30 px-6 py-4 text-xs text-muted-foreground backdrop-blur-2xl dark:border-white/10 dark:bg-slate-900/40"
+    >
+      <div
+        class="flex flex-wrap items-center justify-between gap-2"
+      >
+        <span>
+          © 
+          2024
+           Aurora Elections
+        </span>
+        <span>
+          navigation.main
+          : v
+          1
+        </span>
+      </div>
+    </footer>
+  </div>
+</div>
+`;
