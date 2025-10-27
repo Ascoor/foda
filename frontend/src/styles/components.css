@@ -152,7 +152,7 @@
 }
 
 .card-flat {
-  @apply rounded-xl bg-surface border border-border/30;
+  @apply rounded-xl bg-card border border-border/30;
 }
 
 /* === Button Shimmer === */

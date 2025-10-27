@@ -7,10 +7,12 @@ import {
   ReactNode,
 } from "react";
 
-type Theme = "light" | "dark";
+type Theme = "light" | "dark" | "system";
+type ResolvedTheme = "light" | "dark";
 
 interface ThemeContextType {
   theme: Theme;
+  resolvedTheme: ResolvedTheme;
   toggleTheme: () => void;
   setTheme: (theme: Theme) => void;
 }
@@ -32,15 +34,28 @@ interface ThemeProviderProps {
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setThemeState] = useState<Theme>(() => {
     if (typeof window === "undefined") {
+      return "system";
+    }
+    const stored = window.localStorage.getItem("theme");
+    return (stored as Theme) || "system";
+  });
+
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>(() => {
+    if (typeof window === "undefined") {
       return "light";
     }
-
-    const stored = window.localStorage.getItem("theme");
-    return (stored as Theme) || "light";
+    if (theme === "system") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    return theme as ResolvedTheme;
   });
 
   const toggleTheme = () => {
-    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
+    setThemeState((prev) => {
+      if (prev === "light") return "dark";
+      if (prev === "dark") return "system";
+      return "light";
+    });
   };
 
   const setTheme = (newTheme: Theme) => {
@@ -48,31 +63,49 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   };
 
   useEffect(() => {
-    if (typeof document === "undefined") {
-      return;
-    }
+    if (typeof window === "undefined") return;
 
-    const root = document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
-    document.body.dataset.theme = theme;
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    
+    const updateResolvedTheme = () => {
+      if (theme === "system") {
+        setResolvedTheme(mediaQuery.matches ? "dark" : "light");
+      } else {
+        setResolvedTheme(theme as ResolvedTheme);
+      }
+    };
+
+    updateResolvedTheme();
+    mediaQuery.addEventListener("change", updateResolvedTheme);
+    
+    return () => mediaQuery.removeEventListener("change", updateResolvedTheme);
   }, [theme]);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
+    if (typeof document === "undefined") return;
 
+    const root = document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(resolvedTheme);
+    document.body.dataset.theme = resolvedTheme;
+    
+    const event = new CustomEvent("themechange", { detail: { theme: resolvedTheme } });
+    window.dispatchEvent(event);
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     window.localStorage.setItem("theme", theme);
   }, [theme]);
 
   const value = useMemo(
     () => ({
       theme,
+      resolvedTheme,
       toggleTheme,
       setTheme,
     }),
-    [theme],
+    [theme, resolvedTheme],
   );
 
   return (
