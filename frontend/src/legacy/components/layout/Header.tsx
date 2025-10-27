@@ -13,7 +13,8 @@ import {
   UserCircle,
   Vote,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button } from "@shared/ui/button";
 import {
   DropdownMenu,
@@ -28,12 +29,41 @@ import { NotificationDrawer } from "@legacy/components/notifications/Notificatio
 import { useTheme } from "@shared/contexts/ThemeContext";
 import { useWindowSize } from "@shared/hooks/useWindowSize";
 import { cn } from "@shared/lib/utils";
+import { notifyNavClick, findRouteMatch } from "@/nav/nav.map";
+import { useNavTree, useNavigationContext } from "@/nav/useNavigationContext";
+import type { NavNode } from "@/nav/nav.schema";
 
 const SPRING_TRANSITION = {
   type: "spring",
   stiffness: 160,
   damping: 22,
 } as const;
+
+const flattenNavNodes = (nodes: NavNode[]): NavNode[] => {
+  const acc: NavNode[] = [];
+  const walk = (list: NavNode[]) => {
+    list.forEach((node) => {
+      if (node.path) {
+        acc.push(node);
+      }
+      if (node.children) {
+        walk(node.children as NavNode[]);
+      }
+    });
+  };
+  walk(nodes);
+  return acc;
+};
+
+const collectAncestorIds = (node: NavNode | undefined | null): string[] => {
+  const ids: string[] = [];
+  let current = node?.parent;
+  while (current) {
+    ids.push(current.id);
+    current = current.parent ?? undefined;
+  }
+  return ids;
+};
 
 interface HeaderProps {
   onToggleSidebar?: () => void;
@@ -44,15 +74,30 @@ export const Header = ({
   onToggleSidebar,
   variant = "dashboard",
 }: HeaderProps) => {
+  const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, direction } = useLanguage();
   const { width } = useWindowSize();
   const navigate = useNavigate();
   const { user, logout, isAuthenticated } = useAuth();
+  const navContext = useNavigationContext();
+  const topNavTree = useNavTree("top");
+  const location = useLocation();
 
   const isMobile = width < 768;
   const [now, setNow] = useState(new Date());
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const topNavItems = useMemo(() => flattenNavNodes(topNavTree), [topNavTree]);
+  const activeMatch = useMemo(
+    () => findRouteMatch(location.pathname, navContext),
+    [location.pathname, navContext],
+  );
+  const activeTopIds = useMemo(() => {
+    if (!activeMatch) return new Set<string>();
+    const chain = [activeMatch.id, ...collectAncestorIds(activeMatch.node)];
+    return new Set(chain.filter(Boolean) as string[]);
+  }, [activeMatch]);
 
   // ✅ ضبط اتجاه الصفحة ديناميكياً (RTL / LTR)
   useEffect(() => {
@@ -274,7 +319,7 @@ export const Header = ({
   ].filter(Boolean) as JSX.Element[];
 
   const controls = direction === "rtl" ? controlsBase.reverse() : controlsBase;
-  const brandLabel = language === "ar" ? "لوحة التحكم" : "Dashboard";
+  const brandLabel = t("navigation.dashboard", { defaultValue: language === "ar" ? "لوحة التحكم" : "Dashboard" });
   return (
     <>
       <motion.header
@@ -291,7 +336,12 @@ export const Header = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div
+          className={cn(
+            "flex flex-1 items-center gap-3",
+            variant === "dashboard" ? "justify-center" : "justify-end",
+          )}
+        >
           {isMobile && onToggleSidebar && variant === "dashboard" && (
             <Button
               variant="ghost"
@@ -329,6 +379,38 @@ export const Header = ({
               <span>{formattedDate}</span>
             </div>
           </motion.div>
+
+          {variant === "dashboard" && topNavItems.length > 0 && (
+            <nav
+              aria-label={t("navigation.main")}
+              className={cn(
+                "hidden max-w-md flex-1 items-center gap-1 overflow-x-auto rounded-full border px-2 py-1 text-sm shadow-inner backdrop-blur",
+                theme === "dark"
+                  ? "border-white/10 bg-slate-900/40"
+                  : "border-white/30 bg-white/40",
+                "md:flex",
+              )}
+            >
+              {topNavItems.map((item) => (
+                <NavLink
+                  key={item.id}
+                  to={item.path ?? "#"}
+                  end={item.exact}
+                  onClick={() => notifyNavClick(item.id, item.path, navContext, "top")}
+                  className={({ isActive }) =>
+                    cn(
+                      "flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--primary))]",
+                      isActive || activeTopIds.has(item.id)
+                        ? "bg-[hsla(var(--primary)/0.18)] text-[hsl(var(--primary))]"
+                        : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
+                    )
+                  }
+                >
+                  {t(item.i18nKey)}
+                </NavLink>
+              ))}
+            </nav>
+          )}
         </div>
 
         {/* 🟢 عناصر التحكم */}

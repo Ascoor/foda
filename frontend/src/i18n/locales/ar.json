@@ -49,6 +49,7 @@
     "section_admin": "الإدارة والإعدادات",
 
     "dashboard": "لوحة التحكم",
+    "reports": "تقارير الأداء",
     "elections": "الانتخابات",
     "geo_areas": "المناطق الجغرافية",
     "committees": "اللجان",
@@ -76,7 +77,12 @@
     "integrations": "التكاملات",
     "system_settings": "إعدادات النظام",
 
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "election_detail": "تفاصيل الانتخاب",
+    "geo_area_detail": "تفاصيل المنطقة",
+    "committee_detail": "تفاصيل اللجنة",
+    "voter_detail": "ملف الناخب",
+    "candidate_detail": "ملف المرشح"
   },
   "dashboard": {
     "title": "لوحة التحكم",
@@ -321,5 +327,50 @@
     "remember_me": "تذكرني",
     "login_error": "فشل تسجيل الدخول",
     "unknown_error": "حدث خطأ غير متوقع. حاول مرة أخرى لاحقاً."
+  },
+  "reports": {
+    "toolbar": {
+      "title": "نظرة عامة على استخبارات الحملة",
+      "subtitle": "تتبّع زخم الإقبال وأداء التغطية عبر المناطق"
+    },
+    "actions": {
+      "export": "تصدير لقطة",
+      "schedule": "جدولة موجز"
+    },
+    "filters": {
+      "all": "جميع الدوائر",
+      "urban": "حضرية",
+      "rural": "ريفية",
+      "priority": "أولوية"
+    },
+    "metrics": {
+      "turnout": "معدل الإقبال",
+      "turnoutFooter": "مقارنة بالأسبوع الماضي",
+      "volunteers": "المتطوعون النشطون",
+      "volunteersFooter": "فرق جاهزة ميدانياً",
+      "coverage": "نسبة التغطية",
+      "coverageFooter": "مراكز تم الإبلاغ عنها",
+      "alerts": "التنبيهات المفتوحة",
+      "alertsFooter": "بحاجة للمراجعة"
+    },
+    "sections": {
+      "turnoutTrend": "تطور الإقبال",
+      "turnoutTrendSubtitle": "نسبة الإقبال اليومية خلال آخر ٧ أيام",
+      "outreach": "نقاط تواصل الحملة",
+      "outreachSubtitle": "التفاعلات الميدانية والرقمية حسب المنطقة",
+      "districts": "أعلى الدوائر أداءً",
+      "districtsSubtitle": "توزيع الإقبال والمتطوعين",
+      "updated": "تم التحديث قبل {{time}}"
+    },
+    "series": {
+      "field": "تواصل ميداني",
+      "digital": "تواصل رقمي"
+    },
+    "table": {
+      "district": "المنطقة",
+      "turnout": "نسبة الإقبال",
+      "volunteers": "عدد المتطوعين",
+      "alerts": "التنبيهات"
+    }
   }
 }
