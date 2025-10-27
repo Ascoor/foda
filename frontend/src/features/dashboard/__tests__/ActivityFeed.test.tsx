@@ -19,5 +19,5 @@ test("renders activity feed", () => {
     </LanguageProvider>,
   );
   expect(screen.getByText("Election created")).toBeInTheDocument();
-  expect(screen.getByText("View All Activities")).toBeInTheDocument();
+  expect(screen.getByText(/view all activity/i)).toBeInTheDocument();
 });

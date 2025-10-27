@@ -10,6 +10,7 @@ export default defineConfig({
       "@app": path.resolve(__dirname, "./src/app"),
       "@features": path.resolve(__dirname, "./src/features"),
       "@shared": path.resolve(__dirname, "./src/shared"),
+      "@modules": path.resolve(__dirname, "./src/modules"),
       "@legacy": path.resolve(__dirname, "./src/legacy"),
       "@theme": path.resolve(__dirname, "./src/theme"),
     },

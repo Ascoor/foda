@@ -22,7 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@shared/ui/dropdown-menu";
-import { useAuth } from "@shared/contexts/AuthContext";
+import { useAuth } from "@modules/auth";
 import { useLanguage } from "@shared/contexts/LanguageContext";
 import { useNotifications } from "@shared/contexts/NotificationContext";
 import { NotificationDrawer } from "@legacy/components/notifications/NotificationDrawer";

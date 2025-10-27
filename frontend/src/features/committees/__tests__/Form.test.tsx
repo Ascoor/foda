@@ -22,10 +22,10 @@ test("submits committee form", async () => {
       </LanguageProvider>
     </QueryClientProvider>,
   );
-  fireEvent.change(screen.getByPlaceholderText("Committee Name"), {
+  fireEvent.change(screen.getByPlaceholderText(/committee name/i), {
     target: { value: "New" },
   });
-  fireEvent.change(screen.getByPlaceholderText("Location"), {
+  fireEvent.change(screen.getByPlaceholderText(/location/i), {
     target: { value: "Loc" },
   });
   fireEvent.click(screen.getByText(/save/i));

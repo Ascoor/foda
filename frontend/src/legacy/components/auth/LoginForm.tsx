@@ -13,7 +13,7 @@ import {
 import { Checkbox } from "@shared/ui/checkbox";
 import { Input } from "@shared/ui/input";
 import { Label } from "@shared/ui/label";
-import { useAuth } from "@shared/contexts/AuthContext";
+import { useAuth } from "@modules/auth";
 import { Loader2 } from "lucide-react";
 
 /**
