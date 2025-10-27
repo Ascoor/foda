@@ -1,25 +1,55 @@
+import { useMemo } from "react";
+import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+
+import { useNavBreadcrumbs } from "@/nav/useNavigationContext";
+import type { BreadcrumbMatch } from "@/nav/nav.schema";
+
 interface DashboardBreadcrumb {
   id: string;
   label: string;
-  level: "module" | "submodule" | "panel";
+  level?: "module" | "submodule" | "panel";
+  path?: string;
 }
 
 interface DashboardBreadcrumbsProps {
-  items: DashboardBreadcrumb[];
+  items?: DashboardBreadcrumb[];
   onNavigate?: (item: DashboardBreadcrumb) => void;
 }
+
+const transformTrail = (
+  trail: BreadcrumbMatch[],
+  translate: ReturnType<typeof useTranslation>["t"],
+): DashboardBreadcrumb[] =>
+  trail.map((crumb) => ({
+    id: crumb.id,
+    label: translate(crumb.breadcrumbKey ?? crumb.i18nKey),
+    level: "module",
+    path: crumb.path,
+  }));
 
 export const DashboardBreadcrumbs = ({
   items,
   onNavigate,
 }: DashboardBreadcrumbsProps) => {
+  const { t } = useTranslation();
+  const navTrail = useNavBreadcrumbs();
+  const resolvedItems = useMemo(
+    () => items ?? transformTrail(navTrail, t),
+    [items, navTrail, t],
+  );
+
+  if (!resolvedItems.length) {
+    return null;
+  }
+
   return (
     <nav
       className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground"
-      aria-label="التنقل الهرمي"
+      aria-label={t("navigation.main")}
     >
-      {items.map((item, index) => {
-        const isLast = index === items.length - 1;
+      {resolvedItems.map((item, index) => {
+        const isLast = index === resolvedItems.length - 1;
         if (isLast) {
           return (
             <span
@@ -31,18 +61,30 @@ export const DashboardBreadcrumbs = ({
           );
         }
 
-        return (
-          <span key={item.id} className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => onNavigate?.(item)}
-              className="rounded-full bg-background/80 px-3 py-1 text-foreground transition hover:bg-primary/10 hover:text-primary"
-            >
-              {item.label}
-            </button>
+        const target = (
+          <span className="flex items-center gap-2" key={item.id}>
+            {item.path ? (
+              <NavLink
+                to={item.path}
+                className="rounded-full bg-background/80 px-3 py-1 text-foreground transition hover:bg-primary/10 hover:text-primary"
+                onClick={() => onNavigate?.(item)}
+              >
+                {item.label}
+              </NavLink>
+            ) : (
+              <button
+                type="button"
+                onClick={() => onNavigate?.(item)}
+                className="rounded-full bg-background/80 px-3 py-1 text-foreground transition hover:bg-primary/10 hover:text-primary"
+              >
+                {item.label}
+              </button>
+            )}
             <span className="text-foreground/40">›</span>
           </span>
         );
+
+        return target;
       })}
     </nav>
   );

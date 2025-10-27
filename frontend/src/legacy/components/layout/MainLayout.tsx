@@ -1,75 +1,12 @@
-import { ReactNode, useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import type { ReactNode } from "react";
 import { Outlet } from "react-router-dom";
 
-import { AuroraBackground } from "@features/marketing/components/ui/AuroraBackground";
-import { Header } from "@legacy/components/layout/Header";
-import { Sidebar } from "@shared/layout/Sidebar";
-import { useTheme } from "@shared/contexts/ThemeContext";
-import { useLanguage } from "@shared/contexts/LanguageContext";
-import { useWindowSize } from "@shared/hooks/useWindowSize";
-
-const DESKTOP_BREAKPOINT = 1024;
+import { DashboardShell } from "@/layouts/DashboardShell";
 
 type MainLayoutProps = {
   children?: ReactNode;
 };
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
-  const { width } = useWindowSize();
-  const isDesktop = width >= DESKTOP_BREAKPOINT;
-  const [sidebarOpen, setSidebarOpen] = useState(isDesktop);
-  const { theme } = useTheme();
-  const { language, direction } = useLanguage();
-
-  useEffect(() => {
-    setSidebarOpen(isDesktop);
-  }, [isDesktop]);
-
-  const toggleSidebar = () => setSidebarOpen((prev) => !prev);
-
-  const layoutClassName = useMemo(
-    () =>
-      [
-        "relative flex min-h-screen flex-col gap-2 pb-16",
-        `theme-${theme}`,
-        `lang-${language}`,
-      ].join(" "),
-    [language, theme],
-  );
-
-  return (
-    <AuroraBackground>
-      <div className={layoutClassName} dir={direction}>
-        <Header onToggleSidebar={toggleSidebar} />
-
-        <div className="relative mx-auto flex w-full max-w-6xl flex-1 gap-6 px-4 md:px-0">
-          {isDesktop ? (
-            <Sidebar isOpen={sidebarOpen} onToggleCollapse={toggleSidebar} />
-          ) : (
-            <AnimatePresence>
-              {sidebarOpen && (
-                <>
-                  <motion.button
-                    type="button"
-                    aria-label="Close sidebar"
-                    className="fixed inset-0 z-20 bg-black/25 backdrop-blur-sm"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onClick={toggleSidebar}
-                  />
-                  <Sidebar isOpen isMobile onToggleCollapse={toggleSidebar} />
-                </>
-              )}
-            </AnimatePresence>
-          )}
-
-          <motion.main layout className="relative z-10 flex-1 pb-10 pt-6">
-            {children ?? <Outlet />}
-          </motion.main>
-        </div>
-      </div>
-    </AuroraBackground>
-  );
-};
+export const MainLayout = ({ children }: MainLayoutProps) => (
+  <DashboardShell>{children ?? <Outlet />}</DashboardShell>
+);

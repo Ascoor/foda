@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
+import { createBrowserRouter, Navigate, Outlet, useLocation } from "react-router-dom";
 
 import { ProtectedRoute } from "@legacy/components/ProtectedRoute";
 import { MainLayout } from "@legacy/components/layout/MainLayout";
@@ -6,9 +6,8 @@ import { BarbaTransitionProvider } from "@legacy/components/transition/BarbaTran
 
 import { Login } from "@legacy/pages/Login";
 import NotFound from "@legacy/pages/NotFound";
-import { AuthRedirect } from "@legacy/pages/AuthRedirect";
 
-import { EnhancedDashboard } from "@features/dashboard/EnhancedDashboard";
+import { ReportsDashboard } from "@features/reports/ReportsDashboard";
 import { ElectionsList } from "@features/elections/List";
 import { ElectionDetails } from "@features/elections/Details";
 import { GeoAreasDashboard } from "@features/geo-areas/Dashboard";
@@ -28,6 +27,8 @@ import { CampaignsList } from "@features/campaigns/CampaignsList";
 import { AutomationDashboard } from "@features/automation/AutomationDashboard";
 import FloatingLandingPage from "@features/marketing/pages/LandingPage";
 import FloatingDashboard from "@features/marketing/pages/Dashboard";
+import PostAuthRedirect from "@/routes/post-auth";
+import { NavGuard } from "@/nav/NavGuard";
 
 const RouterShell = () => (
   <BarbaTransitionProvider>
@@ -63,7 +64,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <FloatingLandingPage /> },
       { path: "/experience", element: <FloatingDashboard /> },
-      { path: "/app", element: <AuthRedirect /> },
+      { path: "/app", element: <PostAuthRedirect /> },
       { path: "/login", element: <Login /> },
       {
         element: <ProtectedRoute />,
@@ -71,28 +72,162 @@ export const router = createBrowserRouter([
           {
             element: <MainLayoutWrapper />,
             children: [
-              { path: "/dashboard", element: <EnhancedDashboard /> },
-              { path: "/elections", element: <ElectionsList /> },
-              { path: "/elections/:id", element: <ElectionDetails /> },
-              { path: "/geo-areas", element: <GeoAreasDashboard /> },
-              { path: "/geo-areas/:id", element: <GeoAreaDetails /> },
-              { path: "/committees", element: <CommitteesList /> },
-              { path: "/committees/:id", element: <CommitteeDetails /> },
-              { path: "/voters", element: <VotersList /> },
-              { path: "/voters/:id", element: <VoterDetails /> },
-              { path: "/candidates", element: <CandidatesList /> },
-              { path: "/candidates/:id", element: <CandidateDetails /> },
-              { path: "/agents", element: <AgentsList /> },
-              { path: "/volunteers", element: <VolunteersList /> },
-              { path: "/observations", element: <ObservationsList /> },
-              { path: "/campaigns", element: <CampaignsList /> },
-              { path: "/automation", element: <AutomationDashboard /> },
+              {
+                path: "/reports",
+                element: (
+                  <NavGuard>
+                    <ReportsDashboard />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/dashboard",
+                element: <Navigate to="/reports" replace />,
+              },
+              {
+                path: "/elections",
+                element: (
+                  <NavGuard>
+                    <ElectionsList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/elections/:id",
+                element: (
+                  <NavGuard>
+                    <ElectionDetails />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/geo-areas",
+                element: (
+                  <NavGuard>
+                    <GeoAreasDashboard />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/geo-areas/:id",
+                element: (
+                  <NavGuard>
+                    <GeoAreaDetails />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/committees",
+                element: (
+                  <NavGuard>
+                    <CommitteesList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/committees/:id",
+                element: (
+                  <NavGuard>
+                    <CommitteeDetails />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/voters",
+                element: (
+                  <NavGuard>
+                    <VotersList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/voters/:id",
+                element: (
+                  <NavGuard>
+                    <VoterDetails />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/candidates",
+                element: (
+                  <NavGuard>
+                    <CandidatesList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/candidates/:id",
+                element: (
+                  <NavGuard>
+                    <CandidateDetails />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/agents",
+                element: (
+                  <NavGuard>
+                    <AgentsList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/volunteers",
+                element: (
+                  <NavGuard>
+                    <VolunteersList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/observations",
+                element: (
+                  <NavGuard>
+                    <ObservationsList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/campaigns",
+                element: (
+                  <NavGuard>
+                    <CampaignsList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/automation",
+                element: (
+                  <NavGuard>
+                    <AutomationDashboard />
+                  </NavGuard>
+                ),
+              },
               {
                 path: "/analytics",
-                element: <ComingSoon module="Analytics" />,
+                element: (
+                  <NavGuard>
+                    <ComingSoon module="Analytics" />
+                  </NavGuard>
+                ),
               },
-              { path: "/zones/mansoura", element: <ZoneDashboard /> },
-              { path: "/settings", element: <Settings /> },
+              {
+                path: "/zones/mansoura",
+                element: (
+                  <NavGuard>
+                    <ZoneDashboard />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/settings",
+                element: (
+                  <NavGuard>
+                    <Settings />
+                  </NavGuard>
+                ),
+              },
               { path: "*", element: <NotFound /> },
             ],
           },
