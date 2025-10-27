@@ -23,7 +23,7 @@ test("submits candidate form", async () => {
       </LanguageProvider>
     </QueryClientProvider>,
   );
-  fireEvent.change(screen.getByPlaceholderText("Candidate Name"), {
+  fireEvent.change(screen.getByPlaceholderText(/candidate name/i), {
     target: { value: "New" },
   });
   fireEvent.change(screen.getByPlaceholderText("Party"), {

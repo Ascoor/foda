@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { vi } from "vitest";
-import { AuthProvider } from "@shared/contexts/AuthContext";
+import { AuthProvider } from "@modules/auth";
 import { Login } from "../Login";
 import api from "@shared/lib/api";
 
@@ -21,13 +21,13 @@ test("renders login form and submits", async () => {
     </AuthProvider>,
   );
 
-  fireEvent.change(screen.getByLabelText("Username"), {
-    target: { value: "a" },
+  fireEvent.change(screen.getByLabelText("Email"), {
+    target: { value: "user@example.com" },
   });
   fireEvent.change(screen.getByLabelText("Password"), {
-    target: { value: "b" },
+    target: { value: "secret123" },
   });
-  fireEvent.click(screen.getByRole("button", { name: "Login" }));
+  fireEvent.click(screen.getByRole("button", { name: /log in/i }));
 
   await waitFor(() => {
     expect(api.post).toHaveBeenCalled();

@@ -44,11 +44,14 @@ test("saves updated settings", async () => {
   fireEvent.change(region, { target: { value: "CA" } });
   fireEvent.click(screen.getByRole("button", { name: /save/i }));
   await waitFor(() =>
-    expect(updateSettings).toHaveBeenCalledWith({
-      language: "en",
-      region: "CA",
-      allowRegistration: true,
-    }),
+    expect(updateSettings).toHaveBeenCalledWith(
+      {
+        language: "en",
+        region: "CA",
+        allowRegistration: true,
+      },
+      expect.anything(),
+    ),
   );
   expect(toast.success).toHaveBeenCalled();
 });
