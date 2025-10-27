@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { AuroraBackground } from "../components/ui/AuroraBackground";
+import { AuroraBackground } from "@/components/ui/AuroraBackground";
 import {
   Header,
   Sidebar,
   DashboardContent,
   FloatingActions,
   useFloatingExperienceStore,
-} from "../components/layout";
-import "../components/layout/i18n";
+} from "@/components/layout";
+import "@/components/layout/i18n";
 
 export const FloatingDashboard = () => {
   const { theme, language } = useFloatingExperienceStore();
