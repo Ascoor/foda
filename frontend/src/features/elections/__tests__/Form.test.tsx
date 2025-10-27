@@ -24,7 +24,7 @@ test("submits election form", async () => {
       </LanguageProvider>
     </QueryClientProvider>,
   );
-  fireEvent.change(screen.getByPlaceholderText("Election Name"), {
+  fireEvent.change(screen.getByPlaceholderText(/election name/i), {
     target: { value: "New" },
   });
   fireEvent.click(screen.getByText(/save/i));

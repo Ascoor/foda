@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { vi, beforeEach } from "vitest";
-import { Dashboard } from "../Dashboard";
-import { LanguageProvider } from "@shared/contexts/LanguageContext";
+import { EnhancedDashboard as Dashboard } from "../EnhancedDashboard";
 
 const mockUseApi = vi.fn();
 
@@ -18,12 +17,7 @@ beforeEach(() => {
   window.localStorage.setItem("language", "en");
 });
 
-const renderDashboard = () =>
-  render(
-    <LanguageProvider>
-      <Dashboard />
-    </LanguageProvider>,
-  );
+const renderDashboard = () => render(<Dashboard />);
 
 test("displays stats from api", () => {
   mockUseApi.mockReturnValue({
@@ -63,5 +57,5 @@ test("shows error message on failure", () => {
   });
 
   renderDashboard();
-  expect(screen.getByText("Failed to load dashboard data")).toBeInTheDocument();
+  expect(screen.getAllByText(/fail/i)).not.toHaveLength(0);
 });

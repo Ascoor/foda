@@ -25,6 +25,7 @@
       "@app/*": ["./src/app/*"],
       "@features/*": ["./src/features/*"],
       "@shared/*": ["./src/shared/*"],
+      "@modules/*": ["./src/modules/*"],
       "@legacy/*": ["./src/legacy/*"],
       "@theme/*": ["./src/theme/*"]
     }

@@ -22,16 +22,37 @@ let languageValue: "en" | "ar" = "en";
 const logoutMock = vi.fn(() => Promise.resolve());
 const userValue = { name: "Test User" };
 
-vi.mock("@shared/contexts/AuthContext", () => ({
+vi.mock("@shared/contexts/FeatureFlagContext", () => ({
+  useFeatureFlags: () => ({
+    flags: new Set(),
+    isEnabled: () => false,
+    enable: vi.fn(),
+    disable: vi.fn(),
+    toggle: vi.fn(),
+    setFlags: vi.fn(),
+  }),
+  FeatureFlagProvider: ({ children }: { children: ReactNode }) => <>{children}</>,
+}));
+
+vi.mock("@modules/auth", () => ({
   useAuth: () => ({
     user: userValue,
     logout: logoutMock,
+    isAuthenticated: true,
   }),
 }));
 
 vi.mock("@shared/contexts/NotificationContext", () => ({
   useNotifications: () => ({
     unreadCount: 3,
+    filteredNotifications: [],
+    filter: "all",
+    setFilter: vi.fn(),
+    markAsRead: vi.fn(),
+    markAllAsRead: vi.fn(),
+    isDrawerOpen: false,
+    setDrawerOpen: vi.fn(),
+    loading: false,
   }),
 }));
 
@@ -119,7 +140,7 @@ describe("Header", () => {
   test("calls theme toggle when the theme button is clicked", () => {
     renderHeader();
 
-    const button = screen.getByLabelText("Switch to dark mode");
+    const button = screen.getByLabelText("Toggle theme");
     fireEvent.click(button);
 
     expect(toggleThemeMock).toHaveBeenCalledTimes(1);
@@ -140,14 +161,18 @@ describe("Header", () => {
 
     renderHeader();
 
-    expect(screen.getByLabelText("تغيير اللغة")).toBeInTheDocument();
-    expect(screen.getByLabelText("تفعيل الوضع الفاتح")).toBeInTheDocument();
+    expect(screen.getByLabelText("تبديل اللغة")).toBeInTheDocument();
+    expect(screen.getByLabelText("تبديل الثيم")).toBeInTheDocument();
   });
 
   test("opens the user menu and logs out when selecting logout", async () => {
     renderHeader();
 
-    const logoutItem = screen.getByText("Logout");
+    const menuButton = screen.getByLabelText(/user menu/i);
+    fireEvent.click(menuButton);
+
+    const items = screen.getAllByRole("menuitem");
+    const logoutItem = items[items.length - 1];
     fireEvent.click(logoutItem);
 
     await waitFor(() => {

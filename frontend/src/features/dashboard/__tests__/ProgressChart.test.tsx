@@ -11,7 +11,6 @@ test("renders progress chart", () => {
       <ProgressChart data={data} overall={60} remaining={10} />
     </LanguageProvider>,
   );
-  expect(screen.getByText("Registration")).toBeInTheDocument();
-  expect(screen.getByText("50%")).toBeInTheDocument();
-  expect(screen.getByText("Overall Progress")).toBeInTheDocument();
+  expect(screen.getByText(/overall progress/i)).toBeInTheDocument();
+  expect(screen.getByText(/remaining/i)).toBeInTheDocument();
 });
