@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
 
 import { router } from "@app/routes";
-import { DevTools } from "@shared/devtools";
+  import { DevTools } from "@shared/devtools";
 import { NotificationProvider } from "@shared/contexts/NotificationContext";
 import { LanguageProvider } from "@shared/contexts/LanguageContext";
 import { ThemeProvider } from "@shared/contexts/ThemeContext";
