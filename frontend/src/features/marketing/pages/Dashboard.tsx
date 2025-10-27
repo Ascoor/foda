@@ -7,7 +7,7 @@ import {
   DashboardContent,
   FloatingActions,
   useFloatingExperienceStore,
-} from "@features/marketing/components/layout";
+} from "@features/marketing/components/layout/index";
 import "@features/marketing/components/layout/i18n";
 
 export const FloatingDashboard = () => {
