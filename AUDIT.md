@@ -27,6 +27,15 @@
 | `/zones/mansoura` | ZoneDashboard | Guarded |
 | `/settings` | Settings | Admin-only |
 
+## Visual Migration Summary
+| Legacy surface | Aurora replacement | Notes |
+| -------------- | ------------------ | ----- |
+| `legacy/components/layout/MainLayout` | `src/layouts/DashboardShell.tsx` | Keeps existing nav + breadcrumbs while adopting the landing demo chrome. |
+| `legacy/components/layout/Header` (marketing variant) | `DashboardShell` + `@legacy/components/layout/Header` in Aurora theme | Shared header now reads nav config, icons remapped to Aurora palette. |
+| `legacy/components/layout/Sidebar` (stacked menu) | `src/shared/layout/Sidebar.tsx` | Sidebar consumes unified nav tree; glass treatment + badges brought over from demo. |
+| `legacy/components/dashboard/*` cards | `src/components/dashboard` exports (`DashboardCard`, `StatMetric`, `FilterBar`, charts) | Drop-in replacements keep the same props but render with Aurora gradients and iconography. |
+| `legacy/pages/Dashboard` | `src/features/reports/ReportsDashboard.tsx` | Marketing landing content now powers the authenticated landing page with identical routes. |
+
 ## Issues Resolved
 - Introduced `ReportsDashboard` as the unified landing experience and redirected legacy `/dashboard`.
 - Centralised navigation data in `src/nav/nav.config.ts`, eliminating ad-hoc sidebar definitions.

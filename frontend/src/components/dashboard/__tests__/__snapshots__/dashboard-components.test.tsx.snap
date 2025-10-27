@@ -1,0 +1,318 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`dashboard component library > renders the primary building blocks 1`] = `
+<div
+  class="space-y-6"
+>
+  <div
+    class="group/dashboard-card relative overflow-hidden rounded-[28px] border backdrop-blur-xl transition-shadow border-white/20 bg-white/65 shadow-[0_20px_60px_rgba(20,20,60,0.25)] dark:border-white/10 dark:bg-slate-900/65"
+  >
+    <div
+      class="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-br from-white/10 via-cyan-100/10 to-purple-200/10 opacity-70 mix-blend-soft-light"
+    />
+    <div
+      class="relative h-full w-full"
+    >
+      <div
+        class="flex flex-col gap-2 px-6 pb-4 pt-6"
+      >
+        <h3
+          class="text-lg font-semibold tracking-tight text-foreground/90 dark:text-white"
+        >
+          Turnout Progress
+        </h3>
+        <p
+          class="text-sm text-muted-foreground"
+        >
+          Week-over-week comparison
+        </p>
+      </div>
+      <div
+        class="px-6 pb-6"
+      >
+        <p>
+          Card body content
+        </p>
+      </div>
+      <div
+        class="flex items-center justify-between gap-4 px-6 pb-6"
+      >
+        <span>
+          Footer meta
+        </span>
+        <span>
+          Last updated 2h ago
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="flex flex-wrap items-center gap-2 rounded-full border border-white/30 bg-white/60 px-3 py-2 backdrop-blur dark:border-white/10 dark:bg-slate-900/50"
+  >
+    <button
+      class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--primary))] bg-[hsla(var(--primary)/0.18)] text-[hsl(var(--primary))] shadow-[0_10px_24px_rgba(15,23,42,0.18)]"
+      type="button"
+    >
+      <span
+        class="whitespace-nowrap"
+      >
+        All
+      </span>
+    </button>
+    <button
+      class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--primary))] text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground"
+      type="button"
+    >
+      <span
+        class="whitespace-nowrap"
+      >
+        North
+      </span>
+      <span
+        class="rounded-full bg-black/10 px-2 py-0.5 text-[10px] font-semibold text-muted-foreground"
+      >
+        4
+      </span>
+    </button>
+    <button
+      class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--primary))] text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground"
+      type="button"
+    >
+      <span
+        class="whitespace-nowrap"
+      >
+        South
+      </span>
+    </button>
+  </div>
+  <div
+    class="group/dashboard-card relative overflow-hidden rounded-[28px] border backdrop-blur-xl transition-shadow border-white/20 bg-white/65 shadow-[0_20px_60px_rgba(20,20,60,0.25)] dark:border-white/10 dark:bg-slate-900/65 h-full"
+  >
+    <div
+      class="pointer-events-none absolute inset-0 rounded-[inherit] bg-gradient-to-br from-white/10 via-cyan-100/10 to-purple-200/10 opacity-70 mix-blend-soft-light"
+    />
+    <div
+      class="relative h-full w-full"
+    >
+      <div
+        class="relative flex h-full flex-col justify-between gap-4 p-6"
+      >
+        <div
+          class="flex items-start justify-between gap-3"
+        >
+          <div
+            class="flex flex-col gap-2"
+          >
+            <span
+              class="text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground/70"
+            >
+              Active volunteers
+            </span>
+            <span
+              class="text-3xl font-semibold text-foreground lg:text-4xl"
+            >
+              1,864
+            </span>
+          </div>
+          <div
+            class="flex items-center gap-2 rounded-2xl bg-gradient-to-br px-3 py-2 text-xs font-semibold shadow-sm from-green-500/15 to-emerald-500/15 text-emerald-600"
+          >
+            <svg
+              class="lucide lucide-trending-up h-3 w-3"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <polyline
+                points="22 7 13.5 15.5 8.5 10.5 2 17"
+              />
+              <polyline
+                points="16 7 22 7 22 13"
+              />
+            </svg>
+            +128
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    class="overflow-hidden rounded-[28px] border border-white/20 bg-white/70 shadow-[0_18px_40px_rgba(15,23,42,0.16)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/60"
+  >
+    <table
+      class="min-w-full border-collapse text-sm"
+    >
+      <thead>
+        <tr
+          class="bg-white/30 text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground/80 dark:bg-slate-900/30"
+        >
+          <th
+            class="px-6 py-3 text-left"
+            scope="col"
+          >
+            District
+          </th>
+          <th
+            class="px-6 py-3 text-right"
+            scope="col"
+          >
+            Turnout
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="group border-t border-white/10 text-foreground transition hover:bg-white/50 dark:border-white/5 dark:hover:bg-slate-900/70"
+        >
+          <td
+            class="px-6 py-4 align-middle text-sm"
+          >
+            Mansoura
+          </td>
+          <td
+            class="px-6 py-4 align-middle text-sm text-right"
+          >
+            72%
+          </td>
+        </tr>
+        <tr
+          class="group border-t border-white/10 text-foreground transition hover:bg-white/50 dark:border-white/5 dark:hover:bg-slate-900/70"
+        >
+          <td
+            class="px-6 py-4 align-middle text-sm"
+          >
+            Aga
+          </td>
+          <td
+            class="px-6 py-4 align-middle text-sm text-right"
+          >
+            68%
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div
+    data-recharts="ResponsiveContainer"
+    height="280"
+    width="100%"
+  >
+    <div
+      data="[object Object],[object Object]"
+      data-recharts="LineChart"
+      margin="[object Object]"
+    >
+      <defs>
+        <lineargradient
+          id="trendLine"
+          x1="0"
+          x2="0"
+          y1="0"
+          y2="1"
+        >
+          <stop
+            offset="5%"
+            stop-color="hsl(var(--primary))"
+            stop-opacity="0.4"
+          />
+          <stop
+            offset="95%"
+            stop-color="hsl(var(--primary))"
+            stop-opacity="0"
+          />
+        </lineargradient>
+      </defs>
+      <div
+        data-recharts="CartesianGrid"
+        stroke="rgba(148, 163, 184, 0.25)"
+        stroke-dasharray="4 4"
+      />
+      <div
+        data-recharts="XAxis"
+        datakey="name"
+        stroke="rgba(15, 23, 42, 0.6)"
+        tickmargin="8"
+      />
+      <div
+        data-recharts="YAxis"
+        stroke="rgba(15, 23, 42, 0.4)"
+        tickmargin="12"
+      />
+      <div
+        contentstyle="[object Object]"
+        cursor="[object Object]"
+        data-recharts="Tooltip"
+      />
+      <div
+        activedot="[object Object]"
+        data-recharts="Line"
+        datakey="value"
+        fill="url(#trendLine)"
+        stroke="hsl(var(--primary))"
+        stroke-width="3"
+        type="monotone"
+      />
+    </div>
+  </div>
+  <div
+    data-recharts="ResponsiveContainer"
+    height="280"
+    width="100%"
+  >
+    <div
+      data="[object Object],[object Object]"
+      data-recharts="BarChart"
+      margin="[object Object]"
+    >
+      <div
+        data-recharts="CartesianGrid"
+        stroke="rgba(148, 163, 184, 0.25)"
+        stroke-dasharray="3 3"
+      />
+      <div
+        data-recharts="XAxis"
+        datakey="name"
+        stroke="rgba(15, 23, 42, 0.6)"
+      />
+      <div
+        data-recharts="YAxis"
+        stroke="rgba(15, 23, 42, 0.4)"
+      />
+      <div
+        contentstyle="[object Object]"
+        cursor="[object Object]"
+        data-recharts="Tooltip"
+      />
+      <div
+        data-recharts="Legend"
+        icontype="circle"
+        wrapperstyle="[object Object]"
+      />
+      <div
+        barsize="18"
+        data-recharts="Bar"
+        datakey="valueA"
+        fill="hsl(var(--primary))"
+        name="Series A"
+        radius="12,12,0,0"
+        stackid="total"
+      />
+      <div
+        barsize="18"
+        data-recharts="Bar"
+        datakey="valueB"
+        fill="hsl(var(--secondary))"
+        name="Series B"
+        radius="12,12,0,0"
+        stackid="total"
+      />
+    </div>
+  </div>
+</div>
+`;
