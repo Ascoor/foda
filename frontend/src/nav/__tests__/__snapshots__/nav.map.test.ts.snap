@@ -11,6 +11,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
     },
     "id": "dashboard",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -36,6 +37,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
     },
     "id": "elections",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -59,6 +61,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
     },
     "id": "geoAreas",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -295,6 +298,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
     },
     "id": "dashboard",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -320,6 +324,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
     },
     "id": "elections",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -343,6 +348,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
     },
     "id": "geoAreas",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -556,6 +562,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
     },
     "id": "dashboard",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -581,6 +588,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
     },
     "id": "elections",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",
@@ -604,6 +612,7 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
     },
     "id": "geoAreas",
     "meta": {
+      "quickAction": true,
       "surfaces": [
         "sidebar",
         "top",

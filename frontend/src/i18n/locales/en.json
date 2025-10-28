@@ -57,7 +57,8 @@
     "campaigns.automation": "Automation",
     "reports": "Insights & Reports",
     "settings": "Settings",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "quickActions": "Quick actions"
   },
   "dashboard": {
     "title": "Dashboard",

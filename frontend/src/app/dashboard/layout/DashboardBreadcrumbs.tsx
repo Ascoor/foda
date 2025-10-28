@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { useNavBreadcrumbs } from "@/nav/useNavigationContext";
-import type { BreadcrumbMatch } from "@/nav/nav.schema";
+import type { NavBreadcrumb } from "@/nav/nav.schema";
 
 interface DashboardBreadcrumb {
   id: string;
@@ -18,7 +18,7 @@ interface DashboardBreadcrumbsProps {
 }
 
 const transformTrail = (
-  trail: BreadcrumbMatch[],
+  trail: NavBreadcrumb[],
   translate: ReturnType<typeof useTranslation>["t"],
 ): DashboardBreadcrumb[] =>
   trail.map((crumb) => ({

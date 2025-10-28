@@ -1,15 +1,15 @@
 import { navConfig } from './nav.config';
 import type {
   NavBreadcrumb,
+  NavGuardReason,
   NavItem,
   NavMatch,
   NavNode,
+  NavSurface,
   NavTelemetryEvent,
   NavTelemetryHandler,
   NavigationContext,
 } from './nav.schema';
-
-export type NavSurface = 'sidebar' | 'top' | 'breadcrumb';
 
 const DEFAULT_ORDER = 999;
 const DEFAULT_SURFACES: NavSurface[] = ['sidebar', 'breadcrumb'];
@@ -173,6 +173,8 @@ export const createNavigationContext = (
 export const getNavTree = (ctx: NavigationContext, surface?: NavSurface): NavNode[] =>
   buildTree(navConfig.items, ctx, null, 0, surface);
 
+export const getNavVersion = () => navConfig.version;
+
 export const flattenRoutes = (items: NavItem[] = navConfig.items) => {
   const out: Array<{ id: string; path: string; exact?: boolean }> = [];
   const walk = (list: NavItem[]) => {
@@ -238,33 +240,39 @@ export const findRouteMatch = (pathname: string, ctx: NavigationContext): NavMat
 };
 
 export const getBreadcrumbTrail = (pathname: string, ctx: NavigationContext): NavBreadcrumb[] => {
-  const match = findRouteMatch(pathname, ctx);
-  if (!match) return [];
-  const crumbs: NavBreadcrumb[] = [];
-  let current: NavNode | undefined | null = match.node;
-  while (current) {
-    if (!current.breadcrumb?.hide) {
-      crumbs.unshift({
-        id: current.id,
-        i18nKey: current.breadcrumb?.i18nKey ?? current.i18nKey,
-        path: current.path ? normalisePath(current.path) : undefined,
-        breadcrumbKey: current.breadcrumb?.i18nKey,
-      });
-    }
-    current = current.parent ?? undefined;
-  }
-  return crumbs;
+  const ids = matchBreadcrumbs(pathname);
+  if (ids.length === 0) return [];
+  const nodes = new Map<string, NavNode>();
+  flattenNodes(getNavTree(ctx)).forEach((node) => {
+    nodes.set(node.id, node);
+  });
+  return ids
+    .map((id) => nodes.get(id))
+    .filter((node): node is NavNode => Boolean(node) && !node.breadcrumb?.hide)
+    .map((node) => ({
+      id: node.id,
+      i18nKey: node.breadcrumb?.i18nKey ?? node.i18nKey,
+      path: node.path ? normalisePath(node.path) : undefined,
+      breadcrumbKey: node.breadcrumb?.i18nKey,
+    }));
 };
 
 export const canAccessPath = (pathname: string, ctx: NavigationContext): boolean => {
-  const routes = flattenVisibleRoutes(ctx);
+  const visibleRoutes = flattenVisibleRoutes(ctx);
+  const allRoutes = flattenRoutes();
   const normalisedPath = normalisePath(pathname) ?? '/';
-  const allowed = routes.some((route) => pathToRegex(route.path, route.exact).test(normalisedPath));
+  const allowed = visibleRoutes.some((route) => pathToRegex(route.path, route.exact).test(normalisedPath));
+  const bestAnyMatch = findBestMatch(normalisedPath, allRoutes);
+  let reason: NavGuardReason = 'allowed';
+  if (!allowed) {
+    reason = bestAnyMatch ? 'forbidden' : 'not-found';
+  }
   emitTelemetry({
     type: 'nav:guard',
-    id: findBestMatch(normalisedPath, routes) ?? 'unknown',
+    id: bestAnyMatch ?? 'unknown',
     path: pathname,
     allowed,
+    reason,
     role: ctx.role ?? null,
     flags: Array.from(ctx.flags),
   });

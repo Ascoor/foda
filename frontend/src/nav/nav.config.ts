@@ -24,7 +24,7 @@ export const navConfig: NavConfig = {
       icon: Gauge,
       order: 10,
       visibility: { roles: ['admin', 'manager', 'staff'] },
-      meta: { surfaces: ['sidebar', 'top'] },
+      meta: { surfaces: ['sidebar', 'top'], quickAction: true },
     },
     {
       id: 'elections',
@@ -32,7 +32,7 @@ export const navConfig: NavConfig = {
       path: '/elections',
       icon: ClipboardList,
       order: 20,
-      meta: { surfaces: ['sidebar', 'top'] },
+      meta: { surfaces: ['sidebar', 'top'], quickAction: true },
       visibility: { hideWhen: ['unauthenticated'] },
       children: [
         {
@@ -52,7 +52,7 @@ export const navConfig: NavConfig = {
       path: '/geo-areas',
       icon: Globe2,
       order: 30,
-      meta: { surfaces: ['sidebar', 'top'] },
+      meta: { surfaces: ['sidebar', 'top'], quickAction: true },
       visibility: { hideWhen: ['unauthenticated'] },
       children: [
         {

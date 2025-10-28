@@ -8,6 +8,14 @@ export type NavVisibilityRule = {
   hideWhen?: Array<'unauthenticated' | 'readonly' | 'mobile' | 'desktop'>;
 };
 
+export type NavSurface = 'sidebar' | 'top' | 'breadcrumb';
+
+export type NavMeta = {
+  surfaces?: NavSurface[];
+  quickAction?: boolean;
+  [key: string]: unknown;
+};
+
 export type NavItem = {
   id: string;
   i18nKey: string;
@@ -19,7 +27,7 @@ export type NavItem = {
   order?: number;
   visibility?: NavVisibilityRule;
   breadcrumb?: { i18nKey?: string; hide?: boolean };
-  meta?: Record<string, unknown>;
+  meta?: NavMeta;
 };
 
 export type NavConfig = { version: number; items: NavItem[] };
@@ -51,6 +59,8 @@ export type NavBreadcrumb = {
   breadcrumbKey?: string;
 };
 
+export type NavGuardReason = 'allowed' | 'not-found' | 'forbidden';
+
 export type NavTelemetryEvent =
   | {
       type: 'nav:click';
@@ -65,6 +75,7 @@ export type NavTelemetryEvent =
       id: string;
       path?: string;
       allowed: boolean;
+      reason: NavGuardReason;
       role: Role | null;
       flags: FeatureFlag[];
     };

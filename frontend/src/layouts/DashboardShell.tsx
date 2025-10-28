@@ -10,7 +10,7 @@ import { useNavBreadcrumbs } from "@/nav/useNavigationContext";
 import { useWindowSize } from "@shared/hooks/useWindowSize";
 import { cn } from "@shared/lib/utils";
 import { dashboardTokens } from "@/theme/tokens";
-import { navConfig } from "@/nav/nav.config";
+import { getNavVersion } from "@/nav/nav.map";
 import { AuroraBackground } from "@features/marketing/components/ui/AuroraBackground";
 
 const DESKTOP_BREAKPOINT = 1024;
@@ -60,6 +60,8 @@ export const DashboardShell = ({ children, toolbar }: DashboardShellProps) => {
     );
   }, [isDesktop, sidebarOpen, t, toggleSidebar]);
 
+  const navVersion = useMemo(() => getNavVersion(), []);
+
   return (
     <AuroraBackground>
       <div
@@ -103,7 +105,7 @@ export const DashboardShell = ({ children, toolbar }: DashboardShellProps) => {
             <span>
               {t('nav.main')}
               {": v"}
-              {navConfig.version}
+              {navVersion}
             </span>
           </div>
         </footer>

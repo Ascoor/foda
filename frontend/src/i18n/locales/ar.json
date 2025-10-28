@@ -59,7 +59,8 @@
     "campaigns.automation": "الأتمتة",
     "reports": "التقارير",
     "settings": "الإعدادات",
-    "notifications": "الإشعارات"
+    "notifications": "الإشعارات",
+    "quickActions": "إجراءات سريعة"
   },
   "dashboard": {
     "title": "لوحة التحكم",

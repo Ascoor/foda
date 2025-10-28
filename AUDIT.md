@@ -35,6 +35,6 @@
 - 🔄 Redirect target for `ProtectedRoute` standardised to `/login` to avoid `/auth/login` dead link.
 - 📦 Navigation metadata consolidated in `src/nav/nav.config.ts` with EG-ready modules and feature flag coverage.
 - 🌐 Translation keys migrated to `nav.*` namespace for easier localisation parity (AR/EN).
-- 🧭 Legacy sidebar/header now hydrate from config-derived trees; remove remaining ad-hoc menus in `legacy/components/sidebar/smart` when modules are retired.
-- 📊 Wire badge sources for volunteers/alerts once notification counters are live APIs.
+- 🧭 Legacy header top navigation removed – sidebar is now the single navigation source via `nav.map`.
+- 📊 Badge counts flow through the shared React Query hook; wire real volunteer totals once APIs are available.
 - 🛰️ Connect `/analytics` once the `betaReports` flag is rolled out to production tenants.

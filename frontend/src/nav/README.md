@@ -1,6 +1,6 @@
 # Navigation System
 
-This folder contains the config-first navigation layer used across the dashboard. A single `nav.config.ts` file is the source of truth for the sidebar, top navigation, breadcrumbs and route guards.
+This folder contains the config-first navigation layer used across the dashboard. A single `nav.config.ts` file is the source of truth for the smart sidebar, breadcrumbs, quick actions and route guards.
 
 ## Files
 
@@ -18,26 +18,24 @@ This folder contains the config-first navigation layer used across the dashboard
      i18nKey: 'nav.reports.trends',
      path: '/reports/trends',
      order: 30,
-     meta: { surfaces: ['sidebar', 'breadcrumb'] },
+     meta: { surfaces: ['sidebar', 'breadcrumb'], quickAction: true },
      visibility: { roles: ['manager', 'admin'], flagsAny: ['betaReports'] },
    }
    ```
-    Use the `meta.surfaces` array to decide where the item should appear (`sidebar`, `top`, `breadcrumb`). Leave it undefined to fall back to sensible defaults.
+    Use the `meta.surfaces` array to decide where the item should appear (`sidebar`, `breadcrumb`). Leave it undefined to fall back to sensible defaults. Set `meta.quickAction = true` to pin the item to the sidebar's quick actions.
 
 2. **Add translations** for the new `i18nKey` in `src/i18n/locales/en.json` (and other locales).
 
 3. **Create the route** in `src/app/routes.tsx` by pointing it to the relevant React component. Wrap the element with the provided guard (e.g. `<NavGuard path="/reports/trends">`).
 
-4. **Use the breadcrumbs** if needed – components can call `getBreadcrumbTrail(location.pathname, ctx)` or rely on the shared hook exposed by the layout.
+4. **Use the breadcrumbs** if needed – components can call `matchBreadcrumbs(pathname)`/`getBreadcrumbTrail(pathname, ctx)` or rely on the shared hook exposed by the layout.
 
 Navigation state, telemetry and badges are all derived from the config – no extra wiring is necessary.
 
 ## Styling guardrails
 
-- The Aurora dashboard shell reads directly from this config for the sidebar, header breadcrumbs and quick actions. Do **not** hand-
-  code navigation links inside feature modules – add them here so the new glass sidebar can render badges, icons and section labels
-  consistently.
+- The Aurora dashboard shell reads directly from this config for the sidebar, quick actions, header breadcrumbs and guards. Do **not** hand-code navigation links inside feature modules – add them here so the sidebar can render badges, icons and section labels consistently.
 - Icons must come from the existing `lucide-react` import set used in `nav.config.ts`; pick the closest match to the marketing demo if
   an exact glyph is unavailable.
-- Keep `meta.surfaces` accurate. Omitting `"sidebar"` or `"top"` will remove the link from the styled chrome and produce gaps in the
+- Keep `meta.surfaces` accurate. Omitting `"sidebar"` or `"breadcrumb"` will remove the link from the chrome and produce gaps in the
    Aurora layout.

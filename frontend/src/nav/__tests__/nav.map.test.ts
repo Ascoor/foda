@@ -69,8 +69,8 @@ describe('navigation mapping', () => {
   });
 
   it('only shows flag-gated analytics when flag is enabled', () => {
-    const topWithoutFlag = getNavTree(adminContext, 'top');
-    expect(topWithoutFlag.some((node) => node.id === 'reports')).toBe(false);
+    const sidebarWithoutFlag = getNavTree(adminContext, 'sidebar');
+    expect(sidebarWithoutFlag.some((node) => node.id === 'reports')).toBe(false);
 
     const flaggedContext = createNavigationContext({
       role: 'admin',
@@ -78,8 +78,8 @@ describe('navigation mapping', () => {
       flags: new Set(['betaReports']),
     });
 
-    const topWithFlag = getNavTree(flaggedContext, 'top');
-    expect(topWithFlag.some((node) => node.id === 'reports')).toBe(true);
+    const sidebarWithFlag = getNavTree(flaggedContext, 'sidebar');
+    expect(sidebarWithFlag.some((node) => node.id === 'reports')).toBe(true);
   });
 
   it('emits telemetry for guard checks and navigation', () => {
@@ -98,7 +98,9 @@ describe('navigation mapping', () => {
     const [guardAllowed, guardDenied, navEvent] = handler.mock.calls.map((call) => call[0]);
     expect(guardAllowed.type).toBe('nav:guard');
     expect(guardAllowed.allowed).toBe(true);
+    expect(guardAllowed.reason).toBe('allowed');
     expect(guardDenied.allowed).toBe(false);
+    expect(guardDenied.reason).toBe('forbidden');
     expect(navEvent.type).toBe('nav:click');
     expect(navEvent.context).toBe('sidebar');
   });

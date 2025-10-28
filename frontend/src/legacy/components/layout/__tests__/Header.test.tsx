@@ -73,11 +73,19 @@ vi.mock("@shared/ui/dropdown-menu", () => {
   const DropdownMenuItem = ({
     children,
     onSelect,
+    onClick,
   }: {
     children: ReactNode;
     onSelect?: (event: MouseEvent<HTMLDivElement>) => void;
+    onClick?: (event: MouseEvent<HTMLDivElement>) => void;
   }) => (
-    <div role="menuitem" onClick={(event) => onSelect?.(event)}>
+    <div
+      role="menuitem"
+      onClick={(event) => {
+        onClick?.(event as MouseEvent<HTMLDivElement>);
+        onSelect?.(event);
+      }}
+    >
       {children}
     </div>
   );
@@ -140,7 +148,7 @@ describe("Header", () => {
   test("calls theme toggle when the theme button is clicked", () => {
     renderHeader();
 
-    const button = screen.getByLabelText("Toggle theme");
+    const [button] = screen.getAllByLabelText("Toggle theme");
     fireEvent.click(button);
 
     expect(toggleThemeMock).toHaveBeenCalledTimes(1);
@@ -149,7 +157,7 @@ describe("Header", () => {
   test("calls language toggle when the language button is clicked", () => {
     renderHeader();
 
-    const button = screen.getByLabelText("Toggle language");
+    const [button] = screen.getAllByLabelText("Toggle language");
     fireEvent.click(button);
 
     expect(toggleLanguageMock).toHaveBeenCalledTimes(1);
@@ -161,8 +169,8 @@ describe("Header", () => {
 
     renderHeader();
 
-    expect(screen.getByLabelText("تبديل اللغة")).toBeInTheDocument();
-    expect(screen.getByLabelText("تبديل الثيم")).toBeInTheDocument();
+    expect(screen.getAllByLabelText("تبديل اللغة")[0]).toBeInTheDocument();
+    expect(screen.getAllByLabelText("تبديل الثيم")[0]).toBeInTheDocument();
   });
 
   test("opens the user menu and logs out when selecting logout", async () => {
