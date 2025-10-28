@@ -35,54 +35,31 @@
     "all": "الكل",
     "no_data": "لا توجد بيانات",
     "language": "اللغة"
-  },  "navigation": {
-    "toggleSidebar": "تبديل الشريط الجانبي",
+  },
+  "nav": {
     "main": "القائمة الرئيسية",
-
-    "section_overview": "نظرة عامة",
-    "section_election_operations": "إدارة العملية الانتخابية",
-    "section_field_resources": "إدارة الفرق الميدانية",
-    "section_campaign_intelligence": "منصة الحملات والتحليلات",
-    "section_monitoring_and_analytics": "المراقبة والتحليل",
-    "section_ai_and_automation": "الذكاء والتحكم الآلي",
-    "section_system_admin": "الإدارة التقنية والأمنية",
-    "section_admin": "الإدارة والإعدادات",
-
+    "toggleSidebar": "تبديل الشريط الجانبي",
     "dashboard": "لوحة التحكم",
-    "reports": "تقارير الأداء",
     "elections": "الانتخابات",
-    "geo_areas": "المناطق الجغرافية",
+    "elections.detail": "تفاصيل الانتخاب",
+    "geoAreas": "المناطق الجغرافية",
+    "geoAreas.detail": "تفاصيل المنطقة",
     "committees": "اللجان",
+    "committees.detail": "تفاصيل اللجنة",
     "voters": "الناخبون",
+    "voters.detail": "ملف الناخب",
+    "fieldOps": "العمليات الميدانية",
+    "fieldOps.agents": "الوكلاء المعتمدون",
+    "fieldOps.volunteers": "المتطوعون",
+    "fieldOps.observations": "الملاحظات الميدانية",
+    "fieldOps.zones": "المناطق والخرائط",
     "candidates": "المرشحون",
-    "results_center": "مركز النتائج",
-
-    "agents": "الوكلاء",
-    "volunteers": "المتطوعون",
-    "observers": "المراقبون",
-    "field_reports": "التقارير الميدانية",
-
+    "candidates.detail": "ملف المرشح",
     "campaigns": "الحملات",
-    "automation": "الأتمتة",
-    "analytics": "التحليلات",
-
-    "live_map": "الخريطة الحية",
-    "statistics": "الإحصائيات",
-    "alerts": "التنبيهات",
-
-    "predictive_insights": "التحليلات التنبؤية",
-    "user_roles": "صلاحيات المستخدمين",
-    "system_logs": "سجلات النظام",
-    "security_center": "مركز الأمان",
-    "integrations": "التكاملات",
-    "system_settings": "إعدادات النظام",
-
+    "campaigns.automation": "الأتمتة",
+    "reports": "التقارير",
     "settings": "الإعدادات",
-    "election_detail": "تفاصيل الانتخاب",
-    "geo_area_detail": "تفاصيل المنطقة",
-    "committee_detail": "تفاصيل اللجنة",
-    "voter_detail": "ملف الناخب",
-    "candidate_detail": "ملف المرشح"
+    "notifications": "الإشعارات"
   },
   "dashboard": {
     "title": "لوحة التحكم",

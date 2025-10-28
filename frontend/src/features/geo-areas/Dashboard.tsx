@@ -54,7 +54,7 @@ export const GeoAreasDashboard = () => {
   ];
 
   return (
-    <div className="space-y-4" aria-label={t("navigation.geo_areas")}>
+    <div className="space-y-4" aria-label={t('nav.geoAreas')}> 
       <motion.h1
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}

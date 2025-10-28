@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
   Bell,
   Flame,
@@ -12,29 +12,29 @@ import {
   User,
   UserCircle,
   Vote,
-} from "lucide-react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { Button } from "@shared/ui/button";
+} from 'lucide-react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { Button } from '@shared/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@shared/ui/dropdown-menu";
-import { useAuth } from "@modules/auth";
-import { useLanguage } from "@shared/contexts/LanguageContext";
-import { useNotifications } from "@shared/contexts/NotificationContext";
-import { NotificationDrawer } from "@legacy/components/notifications/NotificationDrawer";
-import { useTheme } from "@shared/contexts/ThemeContext";
-import { useWindowSize } from "@shared/hooks/useWindowSize";
-import { cn } from "@shared/lib/utils";
-import { notifyNavClick, findRouteMatch } from "@/nav/nav.map";
-import { useNavTree, useNavigationContext } from "@/nav/useNavigationContext";
-import type { NavNode } from "@/nav/nav.schema";
+} from '@shared/ui/dropdown-menu';
+import { useAuth } from '@modules/auth';
+import { useLanguage } from '@shared/contexts/LanguageContext';
+import { useNotifications } from '@shared/contexts/NotificationContext';
+import { NotificationDrawer } from '@legacy/components/notifications/NotificationDrawer';
+import { useTheme } from '@shared/contexts/ThemeContext';
+import { useWindowSize } from '@shared/hooks/useWindowSize';
+import { cn } from '@shared/lib/utils';
+import { notifyNavClick } from '@/nav/nav.map';
+import { useActiveNavIds, useNavTree, useNavigationContext } from '@/nav/useNavigationContext';
+import type { NavNode } from '@/nav/nav.schema';
 
 const SPRING_TRANSITION = {
-  type: "spring",
+  type: 'spring',
   stiffness: 160,
   damping: 22,
 } as const;
@@ -55,56 +55,33 @@ const flattenNavNodes = (nodes: NavNode[]): NavNode[] => {
   return acc;
 };
 
-const collectAncestorIds = (node: NavNode | undefined | null): string[] => {
-  const ids: string[] = [];
-  let current = node?.parent;
-  while (current) {
-    ids.push(current.id);
-    current = current.parent ?? undefined;
-  }
-  return ids;
-};
-
 interface HeaderProps {
   onToggleSidebar?: () => void;
-  variant?: "dashboard" | "public";
+  variant?: 'dashboard' | 'public';
 }
 
-export const Header = ({
-  onToggleSidebar,
-  variant = "dashboard",
-}: HeaderProps) => {
+export const Header = ({ onToggleSidebar, variant = 'dashboard' }: HeaderProps) => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const { language, toggleLanguage, direction } = useLanguage();
   const { width } = useWindowSize();
   const navigate = useNavigate();
-  const { user, logout, isAuthenticated } = useAuth();
+  const { user, logout } = useAuth();
   const navContext = useNavigationContext();
-  const topNavTree = useNavTree("top");
-  const location = useLocation();
-
+  const topNavTree = useNavTree('top');
+  const activeIds = useActiveNavIds();
   const isMobile = width < 768;
   const [now, setNow] = useState(new Date());
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const topNavItems = useMemo(() => flattenNavNodes(topNavTree), [topNavTree]);
-  const activeMatch = useMemo(
-    () => findRouteMatch(location.pathname, navContext),
-    [location.pathname, navContext],
-  );
-  const activeTopIds = useMemo(() => {
-    if (!activeMatch) return new Set<string>();
-    const chain = [activeMatch.id, ...collectAncestorIds(activeMatch.node)];
-    return new Set(chain.filter(Boolean) as string[]);
-  }, [activeMatch]);
 
-  // ✅ ضبط اتجاه الصفحة ديناميكياً (RTL / LTR)
+  const activeTopIds = useMemo(() => activeIds, [activeIds]);
+
   useEffect(() => {
     document.documentElement.dir = direction;
   }, [direction]);
 
-  // ✅ تحديث الوقت كل ثانية
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(timer);
@@ -113,9 +90,9 @@ export const Header = ({
   const formattedTime = useMemo(
     () =>
       now.toLocaleTimeString(language, {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
       }),
     [language, now],
   );
@@ -123,14 +100,13 @@ export const Header = ({
   const formattedDate = useMemo(
     () =>
       now.toLocaleDateString(language, {
-        weekday: "long",
-        month: "short",
-        day: "numeric",
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
       }),
     [language, now],
   );
 
-  // ✅ الإشعارات
   let unreadCount = 0;
   let openNotificationsDrawer: (() => void) | undefined;
   try {
@@ -142,33 +118,29 @@ export const Header = ({
   }
 
   const surfaceButtonClass =
-    theme === "dark"
-      ? "bg-[hsla(var(--color-surface)/0.32)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.45)]"
-      : "bg-[hsla(var(--color-surface)/0.85)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.95)] shadow-sm";
+    theme === 'dark'
+      ? 'bg-[hsla(var(--color-surface)/0.32)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.45)]'
+      : 'bg-[hsla(var(--color-surface)/0.85)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.95)] shadow-sm';
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
     setIsLoggingOut(true);
     try {
       await logout();
-      navigate("/", { replace: true });
+      navigate('/', { replace: true });
     } finally {
       setIsLoggingOut(false);
     }
   };
 
-  // ✅ الأزرار (ثيم + لغة)
   const themeToggle = (
     <Button
       key="theme"
       variant="ghost"
       size="icon"
       onClick={toggleTheme}
-      aria-label={language === "ar" ? "تبديل الثيم" : "Toggle theme"}
-      className={cn(
-        "rounded-full p-0.5 transition-all hover:scale-105",
-        surfaceButtonClass,
-      )}
+      aria-label={language === 'ar' ? 'تبديل الثيم' : 'Toggle theme'}
+      className={cn('rounded-full p-0.5 transition-all hover:scale-105', surfaceButtonClass)}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
@@ -179,7 +151,7 @@ export const Header = ({
           transition={{ duration: 0.25 }}
           className="flex h-10 w-10 items-center justify-center"
         >
-          {theme === "light" ? (
+          {theme === 'light' ? (
             <Moon className="h-5 w-5 text-[hsl(var(--primary))]" />
           ) : (
             <Sun className="h-5 w-5 text-[hsl(var(--accent))]" />
@@ -195,260 +167,230 @@ export const Header = ({
       variant="ghost"
       size="icon"
       onClick={toggleLanguage}
-      aria-label={language === "ar" ? "تبديل اللغة" : "Toggle language"}
-      className={cn(
-        "rounded-full p-0.5 transition-all hover:scale-105",
-        surfaceButtonClass,
-      )}
+      aria-label={language === 'ar' ? 'تبديل اللغة' : 'Toggle language'}
+      className={cn('rounded-full p-0.5 transition-all hover:scale-105', surfaceButtonClass)}
     >
-      <Globe
-        className={cn(
-          "h-5 w-5",
-          language === "ar"
-            ? "text-[hsl(var(--accent))]"
-            : "text-[hsl(var(--primary))]",
-        )}
-      />
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.span
+          key={language}
+          initial={{ rotate: -90, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          exit={{ rotate: 90, opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="flex h-10 w-10 items-center justify-center font-semibold"
+        >
+          {language === 'ar' ? 'AR' : 'EN'}
+        </motion.span>
+      </AnimatePresence>
     </Button>
   );
 
-  const notificationsToggle =
-    variant === "dashboard" && isAuthenticated ? (
-      <Button
-        key="notifications"
-        variant="ghost"
-        size="icon"
-        aria-label="Notifications"
-        onClick={() => openNotificationsDrawer?.()}
-        className={cn(
-          "rounded-full p-0.5 transition-all hover:scale-105",
-          surfaceButtonClass,
-        )}
-      >
-        <Bell className="h-5 w-5" />
-        {unreadCount > 0 && (
-          <motion.span
-            initial={{ scale: 0, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-1 right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-destructive px-1 text-[10px] font-semibold text-white shadow-md"
+  const quickActions = [
+    {
+      icon: Flame,
+      label: language === 'ar' ? 'الفرص الساخنة' : 'Hot Leads',
+      to: '/campaigns',
+      description: language === 'ar' ? 'تابع أنشطة الحملات' : 'Track campaign momentum',
+    },
+    {
+      icon: Vote,
+      label: language === 'ar' ? 'نقاط التصويت' : 'Polling Stations',
+      to: '/committees',
+      description: language === 'ar' ? 'إدارة اللجان الانتخابية' : 'Manage election committees',
+    },
+    {
+      icon: Globe,
+      label: language === 'ar' ? 'الخريطة الحية' : 'Live Map',
+      to: '/geo-areas',
+      description: language === 'ar' ? 'مراقبة التغطية الميدانية' : 'Monitor field coverage',
+    },
+  ];
+
+  const navItems = [themeToggle, languageToggle];
+
+  const mobileMenuItems = topNavItems.map((item) => ({
+    id: item.id,
+    label: t(item.i18nKey),
+    to: item.path ?? '#',
+    active: activeTopIds.has(item.id),
+  }));
+
+  const desktopNav = (
+    <nav className="hidden items-center gap-1 lg:flex" aria-label={t('nav.main')}>
+      {topNavItems.map((item) => {
+        const Icon = item.icon;
+        const label = t(item.i18nKey);
+        const isActive = activeTopIds.has(item.id);
+        if (!item.path) return null;
+        return (
+          <NavLink
+            key={item.id}
+            to={item.path}
+            aria-label={label}
+            className={({ isActive: routeActive }) =>
+              cn(
+                'flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition-all',
+                routeActive || isActive
+                  ? 'bg-[hsla(var(--primary)/0.12)] text-[hsl(var(--primary))] shadow-sm'
+                  : 'text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground',
+              )
+            }
+            onClick={() => notifyNavClick(item.id, item.path, navContext, 'top')}
           >
-            {unreadCount}
-          </motion.span>
-        )}
-      </Button>
-    ) : null;
+            {Icon && <Icon className="h-4 w-4" />}
+            <span>{label}</span>
+          </NavLink>
+        );
+      })}
+    </nav>
+  );
 
-  const userMenu =
-    variant === "dashboard" && isAuthenticated ? (
-      <DropdownMenu key="user">
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label="User menu"
-            className={cn(
-              "rounded-full p-0.5 transition-all hover:scale-105",
-              surfaceButtonClass,
-            )}
-          >
-            <User className="h-5 w-5" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align={direction === "rtl" ? "start" : "end"}
-          side="bottom"
-          sideOffset={12}
-          className={cn(
-            "min-w-[200px] rounded-3xl border p-2 shadow-xl backdrop-blur-lg",
-            theme === "dark"
-              ? "border-[hsla(var(--border)/0.2)] bg-[hsla(var(--color-surface)/0.9)]"
-              : "border-[hsla(var(--border)/0.12)] bg-[hsla(var(--color-surface)/0.92)]",
-          )}
-        >
-          <DropdownMenuItem className="flex items-center gap-2 rounded-2xl px-3 py-2">
-            <UserCircle className="h-4 w-4" />
-            {user?.name ?? (language === "ar" ? "الملف الشخصي" : "Profile")}
-          </DropdownMenuItem>
-          <DropdownMenuItem className="flex items-center gap-2 rounded-2xl px-3 py-2">
-            <Settings className="h-4 w-4" />
-            {language === "ar" ? "الإعدادات" : "Settings"}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="flex items-center gap-2 rounded-2xl px-3 py-2 text-destructive"
-            disabled={isLoggingOut}
-            onSelect={(e) => {
-              e.preventDefault();
-              void handleLogout();
-            }}
-          >
-            <LogOut className="h-4 w-4" />
-            {isLoggingOut
-              ? language === "ar"
-                ? "جاري تسجيل الخروج..."
-                : "Logging out..."
-              : language === "ar"
-                ? "تسجيل الخروج"
-                : "Logout"}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ) : null;
+  const renderQuickActionCard = ({ icon: Icon, label, description, to }: (typeof quickActions)[number]) => (
+    <NavLink
+      key={label}
+      to={to}
+      className="glass-card flex items-start gap-3 rounded-2xl border border-border/40 p-4 transition hover:border-border"
+      onClick={() => notifyNavClick(label, to, navContext, 'quick-actions')}
+    >
+      <div className="flex size-10 items-center justify-center rounded-xl bg-[hsla(var(--primary)/0.12)] text-[hsl(var(--primary))]">
+        <Icon className="h-5 w-5" />
+      </div>
+      <div>
+        <p className="font-semibold text-foreground">{label}</p>
+        <p className="text-xs text-muted-foreground">{description}</p>
+      </div>
+    </NavLink>
+  );
 
-  const loginControl =
-    variant !== "dashboard" && !isAuthenticated ? (
-      <Button
-        key="login"
-        asChild
-        className={cn("rounded-full px-5 font-semibold", surfaceButtonClass)}
-      >
-        <Link to="/auth/login">
-          {language === "ar" ? "تسجيل الدخول" : "Sign in"}
-        </Link>
-      </Button>
-    ) : null;
-
-  // ✅ عكس ترتيب الأزرار حسب الاتجاه
-  const controlsBase = [
-    userMenu,
-    notificationsToggle,
-    themeToggle,
-    languageToggle,
-    loginControl,
-  ].filter(Boolean) as JSX.Element[];
-
-  const controls = direction === "rtl" ? controlsBase.reverse() : controlsBase;
-  const brandLabel = t("navigation.dashboard", { defaultValue: language === "ar" ? "لوحة التحكم" : "Dashboard" });
   return (
-    <>
-      <motion.header
-        layout
-        initial={{ opacity: 0, y: -40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-        dir={direction}
-        className="relative mx-auto mt-8 flex w-[94%] max-w-6xl items-center justify-between rounded-full border border-white/20 bg-white/40 px-6 py-4 shadow-[0_20px_60px_rgba(59,130,246,0.25)] backdrop-blur-2xl dark:bg-slate-900/50 dark:shadow-[0_20px_60px_rgba(76,29,149,0.35)]"
-      >
-        <div className="flex items-center gap-3">
-          <div className="flex size-11 items-center justify-center rounded-2xl bg-cyan-500/20 text-cyan-800 dark:bg-indigo-500/30 dark:text-indigo-100">
-            <Flame className="size-5" />
+    <header className="relative z-40 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:justify-between lg:py-3">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            {variant === 'dashboard' && (
+              <button
+                type="button"
+                onClick={onToggleSidebar}
+                className="inline-flex size-10 items-center justify-center rounded-2xl border border-border/40 bg-[hsla(var(--card)/0.8)] text-foreground transition hover:text-[hsl(var(--primary))] lg:hidden"
+                aria-label={t('nav.toggleSidebar', { defaultValue: 'Toggle sidebar' })}
+              >
+                <Menu className="h-5 w-5" />
+              </button>
+            )}
+
+            <Link to="/" className="flex items-center gap-2" aria-label={t('nav.dashboard')}>
+              <div className="flex size-10 items-center justify-center rounded-2xl bg-[hsla(var(--primary)/0.12)] text-[hsl(var(--primary))]">
+                <Vote className="h-5 w-5" />
+              </div>
+              <div className="leading-tight">
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-muted-foreground">
+                  Aurora Election
+                </p>
+                <p className="text-base font-semibold text-foreground">
+                  {t('nav.dashboard', { defaultValue: 'Dashboard' })}
+                </p>
+              </div>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-2 lg:hidden">
+            {navItems}
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className={cn('rounded-full p-0.5', surfaceButtonClass)}>
+                  <Settings className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align={direction === 'rtl' ? 'start' : 'end'}>
+                {mobileMenuItems.map((item) => (
+                  <DropdownMenuItem key={item.id} asChild>
+                    <NavLink to={item.to} className={cn('flex items-center justify-between gap-3', item.active && 'text-[hsl(var(--primary))]')}>
+                      <span>{item.label}</span>
+                      {item.active && <span className="inline-flex size-2 rounded-full bg-[hsl(var(--primary))]" />}
+                    </NavLink>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
 
-        <div
-          className={cn(
-            "flex flex-1 items-center gap-3",
-            variant === "dashboard" ? "justify-center" : "justify-end",
-          )}
-        >
-          {isMobile && onToggleSidebar && variant === "dashboard" && (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label={
-                language === "ar" ? "القائمة الجانبية" : "Open sidebar"
-              }
-              className={cn("rounded-2xl p-0.5 shadow-sm", surfaceButtonClass)}
-              onClick={onToggleSidebar}
-            >
-              <Menu className="h-5 w-5" />
-            </Button>
-          )}
-
-          <motion.div
-            layout
-            transition={SPRING_TRANSITION}
-            className={cn(
-              "flex items-center gap-3 rounded-2xl px-3 py-2",
-              theme === "dark"
-                ? "bg-[hsla(var(--surface-secondary)/0.3)]"
-                : "bg-[hsla(var(--surface)/0.45)]",
-            )}
-          >
-            <motion.span
-              className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[hsl(var(--primary)/0.85)] to-[hsl(var(--accent)/0.75)] text-[hsl(var(--primary-foreground))] shadow-lg"
-              transition={{ type: "spring", stiffness: 200, damping: 18 }}
-            >
-              <Vote className="h-5 w-5" />
-            </motion.span>
-            <div className="hidden min-w-[9rem] flex-col text-xs font-medium text-muted-foreground sm:flex">
-              <span className="text-sm font-semibold tracking-wide text-foreground">
-                {brandLabel}
-              </span>
+        <div className="flex flex-1 flex-col items-stretch gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-4">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <span>{formattedDate}</span>
+              <span className="inline-flex size-1 rounded-full bg-[hsl(var(--primary))]" />
+              <span>{formattedTime}</span>
             </div>
-          </motion.div>
+            {!isMobile && (
+              <div className="flex items-center gap-2" aria-hidden>
+                {navItems}
+              </div>
+            )}
+          </div>
 
-          {variant === "dashboard" && topNavItems.length > 0 && (
-            <nav
-              aria-label={t("navigation.main")}
-              className={cn(
-                "hidden max-w-md flex-1 items-center gap-1 overflow-x-auto rounded-full border px-2 py-1 text-sm shadow-inner backdrop-blur",
-                theme === "dark"
-                  ? "border-white/10 bg-slate-900/40"
-                  : "border-white/30 bg-white/40",
-                "md:flex",
-              )}
-            >
-              {topNavItems.map((item) => (
-                <NavLink
-                  key={item.id}
-                  to={item.path ?? "#"}
-                  end={item.exact}
-                  onClick={() => notifyNavClick(item.id, item.path, navContext, "top")}
-                  className={({ isActive }) =>
-                    cn(
-                      "flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[hsl(var(--primary))]",
-                      isActive || activeTopIds.has(item.id)
-                        ? "bg-[hsla(var(--primary)/0.18)] text-[hsl(var(--primary))]"
-                        : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
-                    )
-                  }
-                >
-                  {t(item.i18nKey)}
-                </NavLink>
-              ))}
-            </nav>
-          )}
+          {desktopNav}
         </div>
+      </div>
 
-        {/* 🟢 عناصر التحكم */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {!isMobile && variant === "dashboard" && (
-            <motion.div
-              key="clock"
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="hidden text-right sm:flex sm:flex-col"
-            >
-              <span className="font-mono text-base font-semibold tracking-tight text-foreground">
-                {formattedTime}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {language === "ar" ? "التوقيت المحلي" : "Local time"}
-              </span>
-            </motion.div>
-          )}
-
-          <AnimatePresence initial={false} mode="popLayout">
-            {controls.map((control, index) => (
-              <motion.div
-                key={control.key ?? index}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.2 }}
+      {variant === 'dashboard' && (
+        <div className="border-t border-border/30 bg-background/70">
+          <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-4 lg:flex-row lg:items-center lg:justify-between">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="relative gap-2 rounded-full border border-border/40 bg-[hsla(var(--card)/0.8)] px-3 py-2 text-sm font-medium"
+                onClick={openNotificationsDrawer}
+                aria-label={t('nav.notifications', { defaultValue: 'Notifications' })}
               >
-                {control}
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </div>
+                <Bell className="h-4 w-4" />
+                <span>{t('nav.notifications', { defaultValue: 'Notifications' })}</span>
+                {unreadCount > 0 && (
+                  <span className="absolute -right-1 -top-1 inline-flex size-5 items-center justify-center rounded-full bg-[hsl(var(--primary))] text-[10px] font-semibold text-white">
+                    {unreadCount}
+                  </span>
+                )}
+              </Button>
 
-        <NotificationDrawer />
-      </motion.header>
-    </>
+              {quickActions.map((action) => renderQuickActionCard(action))}
+            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-3 rounded-2xl border border-border/40 bg-[hsla(var(--card)/0.8)] px-4 py-2 text-left"
+                >
+                  <div className="flex size-10 items-center justify-center rounded-full bg-[hsla(var(--primary)/0.12)] text-[hsl(var(--primary))]">
+                    <UserCircle className="h-5 w-5" />
+                  </div>
+                  <div className="leading-tight">
+                    <p className="text-sm font-semibold text-foreground">{user?.fullName ?? 'Campaign Manager'}</p>
+                    <p className="text-xs text-muted-foreground">{user?.email ?? 'manager@campaign.eg'}</p>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align={direction === 'rtl' ? 'start' : 'end'} className="w-56">
+                <DropdownMenuItem asChild>
+                  <NavLink to="/settings" className="flex items-center gap-2" onClick={() => notifyNavClick('settings', '/settings', navContext, 'top')}
+                  >
+                    <Settings className="h-4 w-4" />
+                    <span>{t('nav.settings')}</span>
+                  </NavLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} disabled={isLoggingOut} className="gap-2">
+                  <LogOut className="h-4 w-4" />
+                  <span>{language === 'ar' ? 'تسجيل الخروج' : 'Logout'}</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      )}
+
+      <NotificationDrawer />
+    </header>
   );
 };

@@ -46,7 +46,7 @@ export const DashboardShell = ({ children, toolbar }: DashboardShellProps) => {
           <>
             <motion.button
               type="button"
-              aria-label={t("navigation.toggleSidebar", { defaultValue: "Toggle sidebar" })}
+              aria-label={t('nav.toggleSidebar', { defaultValue: 'Toggle sidebar' })}
               className="fixed inset-0 z-20 bg-black/25 backdrop-blur-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -101,7 +101,7 @@ export const DashboardShell = ({ children, toolbar }: DashboardShellProps) => {
           <div className="flex flex-wrap items-center justify-between gap-2">
             <span>© {new Date().getFullYear()} Aurora Elections</span>
             <span>
-              {t("navigation.main")}
+              {t('nav.main')}
               {": v"}
               {navConfig.version}
             </span>

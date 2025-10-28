@@ -72,7 +72,7 @@ exports[`DashboardShell > renders layout chrome with toolbar and children 1`] = 
            Aurora Elections
         </span>
         <span>
-          navigation.main
+          nav.main
           : v
           1
         </span>

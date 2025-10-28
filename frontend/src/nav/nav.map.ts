@@ -1,116 +1,99 @@
-import { navConfig } from "./nav.config";
+import { navConfig } from './nav.config';
 import type {
-  BreadcrumbMatch,
+  NavBreadcrumb,
   NavItem,
-  NavMapperOptions,
   NavMatch,
   NavNode,
-  NavSurface,
   NavTelemetryEvent,
   NavTelemetryHandler,
   NavigationContext,
-} from "./nav.schema";
+} from './nav.schema';
 
-const DEFAULT_ORDER = 9999;
-const DEFAULT_SURFACES: NavSurface[] = ["sidebar", "breadcrumb"];
+export type NavSurface = 'sidebar' | 'top' | 'breadcrumb';
+
+const DEFAULT_ORDER = 999;
+const DEFAULT_SURFACES: NavSurface[] = ['sidebar', 'breadcrumb'];
 
 const telemetryHandlers = new Set<NavTelemetryHandler>();
 
-const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
 const normalisePath = (path?: string) => {
   if (!path) return undefined;
-  if (path === "/") return "/";
-  const trimmed = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-  return trimmed || "/";
+  if (path === '/') return '/';
+  const trimmed = path.endsWith('/') && path !== '/' ? path.slice(0, -1) : path;
+  return trimmed || '/';
 };
 
-const deriveSurfaces = (item: NavItem): NavSurface[] => {
-  if (item.surfaces && item.surfaces.length > 0) {
-    return Array.from(new Set(item.surfaces));
+const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+const getSurfaces = (item: NavItem): NavSurface[] => {
+  const candidate = item.meta?.surfaces;
+  if (Array.isArray(candidate) && candidate.length > 0) {
+    const deduped = candidate.filter((surface): surface is NavSurface =>
+      surface === 'sidebar' || surface === 'top' || surface === 'breadcrumb',
+    );
+    if (deduped.length > 0) {
+      return Array.from(new Set(deduped));
+    }
   }
 
   if (item.path) {
-    return DEFAULT_SURFACES;
+    return DEFAULT_SURFACES.slice();
   }
 
-  if (item.children && item.children.length > 0) {
-    return ["sidebar"];
-  }
+  return ['sidebar'];
+};
 
-  return ["sidebar"];
+export const visible = (item: NavItem, ctx: NavigationContext): boolean => {
+  const v = item.visibility;
+  if (!v) return true;
+  if (v.roles && v.roles.length > 0) {
+    if (!ctx.role || !v.roles.includes(ctx.role)) return false;
+  }
+  if (v.flagsAny && v.flagsAny.length > 0) {
+    if (!v.flagsAny.some((flag) => ctx.flags.has(flag))) return false;
+  }
+  if (v.flagsAll && v.flagsAll.length > 0) {
+    if (!v.flagsAll.every((flag) => ctx.flags.has(flag))) return false;
+  }
+  if (v.hideWhen && v.hideWhen.length > 0) {
+    if (v.hideWhen.includes('unauthenticated') && ctx.auth === 'unauthenticated') {
+      return false;
+    }
+    if (v.hideWhen.includes('readonly') && ctx.readonly) {
+      return false;
+    }
+    if (v.hideWhen.includes(ctx.device)) {
+      return false;
+    }
+  }
+  return true;
 };
 
 const compareOrder = (a: NavItem, b: NavItem) => (a.order ?? DEFAULT_ORDER) - (b.order ?? DEFAULT_ORDER);
 
-const matchesVisibility = (item: NavItem, ctx: NavigationContext): boolean => {
-  const rules = item.visibility;
-  if (!rules) return true;
-
-  if (rules.roles && rules.roles.length > 0) {
-    if (!ctx.role || !rules.roles.includes(ctx.role)) {
-      return false;
-    }
-  }
-
-  if (rules.flagsAny && rules.flagsAny.length > 0) {
-    const hasAny = rules.flagsAny.some((flag) => ctx.flags.has(flag));
-    if (!hasAny) return false;
-  }
-
-  if (rules.flagsAll && rules.flagsAll.length > 0) {
-    const hasAll = rules.flagsAll.every((flag) => ctx.flags.has(flag));
-    if (!hasAll) return false;
-  }
-
-  if (rules.hideWhen && rules.hideWhen.length > 0) {
-    if (rules.hideWhen.includes("unauthenticated") && ctx.auth === "unauthenticated") {
-      return false;
-    }
-    if (rules.hideWhen.includes("readonly") && ctx.readonly) {
-      return false;
-    }
-    if (rules.hideWhen.includes(ctx.device)) {
-      return false;
-    }
-  }
-
-  return true;
-};
-
-const shouldIncludeSurface = (node: NavNode, surface?: NavSurface, children?: NavNode[]): boolean => {
-  if (!surface) return true;
-  if (node.surfaces.includes(surface)) {
-    return true;
-  }
-  return Boolean(children?.some((child) => shouldIncludeSurface(child, surface, child.children)));
-};
-
-const buildNavTree = (
+const buildTree = (
   items: NavItem[],
   ctx: NavigationContext,
-  options: NavMapperOptions,
   parent: NavNode | null,
   depth: number,
+  surface?: NavSurface,
 ): NavNode[] => {
   return items
     .slice()
     .sort(compareOrder)
     .map<NavNode | null>((item) => {
-      if (!matchesVisibility(item, ctx)) {
+      if (!visible(item, ctx)) {
         return null;
       }
 
-      const surfaces = deriveSurfaces(item);
       const node: NavNode = {
         ...item,
         parent: parent ?? undefined,
         depth,
-        surfaces,
       };
 
       if (item.children && item.children.length > 0) {
-        const children = buildNavTree(item.children, ctx, options, node, depth + 1);
+        const children = buildTree(item.children, ctx, node, depth + 1, surface);
         if (children.length > 0) {
           node.children = children;
         } else {
@@ -118,8 +101,13 @@ const buildNavTree = (
         }
       }
 
-      if (!shouldIncludeSurface(node, options.surface, node.children)) {
-        return null;
+      if (surface) {
+        const surfaces = getSurfaces(item);
+        const includeSelf = surfaces.includes(surface);
+        const includeViaChildren = Boolean(node.children && node.children.length > 0);
+        if (!includeSelf && !includeViaChildren) {
+          return null;
+        }
       }
 
       return node;
@@ -133,7 +121,7 @@ const flattenNodes = (nodes: NavNode[]): NavNode[] => {
     list.forEach((node) => {
       acc.push(node);
       if (node.children) {
-        walk(node.children);
+        walk(node.children as NavNode[]);
       }
     });
   };
@@ -142,16 +130,16 @@ const flattenNodes = (nodes: NavNode[]): NavNode[] => {
 };
 
 const pathToRegex = (path: string, exact?: boolean) => {
-  const normalised = normalisePath(path) ?? "/";
-  if (normalised === "/") {
+  const normalised = normalisePath(path) ?? '/';
+  if (normalised === '/') {
     return exact ? /^\/$/ : /^\/(?:.*)?$/;
   }
 
   const segments = normalised
-    .split("/")
+    .split('/')
     .filter(Boolean)
-    .map((segment) => (segment.startsWith(":") ? "[^/]+" : escapeRegex(segment)))
-    .join("/");
+    .map((segment) => (segment.startsWith(':') ? '[^/]+' : escapeRegex(segment)))
+    .join('/');
 
   if (exact) {
     return new RegExp(`^/${segments}(?:/)?$`);
@@ -160,25 +148,16 @@ const pathToRegex = (path: string, exact?: boolean) => {
   return new RegExp(`^/${segments}(?:/.*)?$`);
 };
 
-const pathScore = (path: string) => path.split("/").filter(Boolean).length;
+const pathScore = (path: string) => path.split('/').filter(Boolean).length;
 
-const findBestMatch = (pathname: string, nodes: NavNode[]): NavNode | undefined => {
-  const normalisedPath = normalisePath(pathname) ?? "/";
-  let best: { node: NavNode; score: number } | undefined;
-
-  nodes
-    .filter((node) => Boolean(node.path))
-    .forEach((node) => {
-      const regex = pathToRegex(node.path!, node.exact);
-      if (regex.test(normalisedPath)) {
-        const score = pathScore(node.path!);
-        if (!best || score > best.score) {
-          best = { node, score };
-        }
-      }
-    });
-
-  return best?.node;
+const collectAncestors = (node: NavNode | null | undefined): string[] => {
+  const ids: string[] = [];
+  let current = node?.parent;
+  while (current) {
+    ids.push(current.id);
+    current = current.parent ?? undefined;
+  }
+  return ids;
 };
 
 export const createNavigationContext = (
@@ -186,29 +165,20 @@ export const createNavigationContext = (
 ): NavigationContext => ({
   role: ctx.role ?? null,
   flags: ctx.flags ?? new Set(),
-  device: ctx.device ?? "desktop",
-  auth: ctx.auth ?? "unauthenticated",
+  device: ctx.device ?? 'desktop',
+  auth: ctx.auth ?? 'unauthenticated',
   readonly: ctx.readonly ?? false,
 });
 
-export const getNavTree = (
-  ctx: NavigationContext,
-  options: NavMapperOptions = {},
-): NavNode[] => buildNavTree(navConfig.items, ctx, options, null, 0);
+export const getNavTree = (ctx: NavigationContext, surface?: NavSurface): NavNode[] =>
+  buildTree(navConfig.items, ctx, null, 0, surface);
 
-export const getSurfaceNav = (
-  ctx: NavigationContext,
-  surface: NavSurface,
-): NavNode[] => getNavTree(ctx, { surface });
-
-export const flattenRoutes = (
-  items: NavItem[] = navConfig.items,
-): Array<{ id: string; path: string; exact?: boolean }> => {
-  const routes: Array<{ id: string; path: string; exact?: boolean }> = [];
+export const flattenRoutes = (items: NavItem[] = navConfig.items) => {
+  const out: Array<{ id: string; path: string; exact?: boolean }> = [];
   const walk = (list: NavItem[]) => {
     list.forEach((item) => {
       if (item.path) {
-        routes.push({ id: item.id, path: normalisePath(item.path) ?? "/", exact: item.exact });
+        out.push({ id: item.id, path: normalisePath(item.path) ?? '/', exact: item.exact });
       }
       if (item.children) {
         walk(item.children);
@@ -216,63 +186,83 @@ export const flattenRoutes = (
     });
   };
   walk(items);
-  return routes;
+  return out;
 };
 
-export const getBreadcrumbTrail = (
-  pathname: string,
-  ctx: NavigationContext,
-): BreadcrumbMatch[] => {
-  const tree = getNavTree(ctx, {});
-  const nodes = flattenNodes(tree);
-  const match = findBestMatch(pathname, nodes);
+const flattenVisibleRoutes = (ctx: NavigationContext) => {
+  const tree = getNavTree(ctx);
+  return flattenNodes(tree)
+    .filter((node) => Boolean(node.path))
+    .map((node) => ({ id: node.id, path: node.path!, exact: node.exact }));
+};
 
-  if (!match) {
-    return [];
-  }
+const findBestMatch = (pathname: string, nodes: Array<{ id: string; path: string; exact?: boolean }>) => {
+  const normalisedPath = normalisePath(pathname) ?? '/';
+  let best: { id: string; score: number; exact?: boolean } | null = null;
+  nodes.forEach((node) => {
+    const regex = pathToRegex(node.path, node.exact);
+    if (regex.test(normalisedPath)) {
+      const score = pathScore(node.path);
+      if (!best || score > best.score) {
+        best = { id: node.id, score, exact: node.exact };
+      }
+    }
+  });
+  return best?.id ?? null;
+};
 
-  const trail: BreadcrumbMatch[] = [];
-  let current: NavNode | undefined = match;
+export const matchBreadcrumbs = (pathname: string): string[] => {
+  const routes = flattenRoutes();
+  const normalisedPath = normalisePath(pathname) ?? '/';
+  return routes
+    .filter((route) => pathToRegex(route.path, route.exact).test(normalisedPath))
+    .sort((a, b) => pathScore(a.path) - pathScore(b.path))
+    .map((route) => route.id);
+};
+
+export const findRouteMatch = (pathname: string, ctx: NavigationContext): NavMatch | null => {
+  const tree = getNavTree(ctx);
+  const nodes = flattenNodes(tree).filter((node) => Boolean(node.path));
+  const normalisedPath = normalisePath(pathname) ?? '/';
+  let best: NavNode | null = null;
+  nodes.forEach((node) => {
+    const regex = pathToRegex(node.path!, node.exact);
+    if (regex.test(normalisedPath)) {
+      if (!best || pathScore(node.path!) > pathScore(best.path!)) {
+        best = node;
+      }
+    }
+  });
+  if (!best || !best.path) return null;
+  return { id: best.id, path: best.path, exact: best.exact, node: best };
+};
+
+export const getBreadcrumbTrail = (pathname: string, ctx: NavigationContext): NavBreadcrumb[] => {
+  const match = findRouteMatch(pathname, ctx);
+  if (!match) return [];
+  const crumbs: NavBreadcrumb[] = [];
+  let current: NavNode | undefined | null = match.node;
   while (current) {
     if (!current.breadcrumb?.hide) {
-      trail.unshift({
+      crumbs.unshift({
         id: current.id,
-        i18nKey: current.i18nKey,
-        breadcrumbKey: current.breadcrumb?.i18nKey ?? current.i18nKey,
+        i18nKey: current.breadcrumb?.i18nKey ?? current.i18nKey,
         path: current.path ? normalisePath(current.path) : undefined,
+        breadcrumbKey: current.breadcrumb?.i18nKey,
       });
     }
     current = current.parent ?? undefined;
   }
-
-  return trail;
-};
-
-export const findRouteMatch = (
-  pathname: string,
-  ctx: NavigationContext,
-): NavMatch | null => {
-  const tree = getNavTree(ctx, {});
-  const nodes = flattenNodes(tree).filter((node) => Boolean(node.path));
-  const match = findBestMatch(pathname, nodes);
-  if (!match || !match.path) {
-    return null;
-  }
-
-  return {
-    id: match.id,
-    path: match.path,
-    exact: match.exact,
-    node: match,
-  };
+  return crumbs;
 };
 
 export const canAccessPath = (pathname: string, ctx: NavigationContext): boolean => {
-  const match = findRouteMatch(pathname, ctx);
-  const allowed = Boolean(match);
+  const routes = flattenVisibleRoutes(ctx);
+  const normalisedPath = normalisePath(pathname) ?? '/';
+  const allowed = routes.some((route) => pathToRegex(route.path, route.exact).test(normalisedPath));
   emitTelemetry({
-    type: "nav:guard",
-    id: match?.id ?? "unknown",
+    type: 'nav:guard',
+    id: findBestMatch(normalisedPath, routes) ?? 'unknown',
     path: pathname,
     allowed,
     role: ctx.role ?? null,
@@ -281,24 +271,19 @@ export const canAccessPath = (pathname: string, ctx: NavigationContext): boolean
   return allowed;
 };
 
-export const emitTelemetry = (event: NavTelemetryEvent) => {
-  telemetryHandlers.forEach((handler) => handler(event));
-};
-
-export const notifyNavClick = (
-  id: string,
-  path: string | undefined,
-  ctx: NavigationContext,
-  source: string,
-) => {
+export const notifyNavClick = (id: string, path: string | undefined, ctx: NavigationContext, source: string) => {
   emitTelemetry({
-    type: "nav:click",
+    type: 'nav:click',
     id,
     path,
     role: ctx.role ?? null,
     flags: Array.from(ctx.flags),
     context: source,
   });
+};
+
+export const emitTelemetry = (event: NavTelemetryEvent) => {
+  telemetryHandlers.forEach((handler) => handler(event));
 };
 
 export const subscribeToNavTelemetry = (handler: NavTelemetryHandler) => {
@@ -308,6 +293,12 @@ export const subscribeToNavTelemetry = (handler: NavTelemetryHandler) => {
 
 export const clearNavTelemetryHandlers = () => {
   telemetryHandlers.clear();
+};
+
+export const getActiveItemIds = (pathname: string, ctx: NavigationContext): Set<string> => {
+  const match = findRouteMatch(pathname, ctx);
+  if (!match) return new Set();
+  return new Set([match.id, ...collectAncestors(match.node)]);
 };
 
 export type { NavNode };

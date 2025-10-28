@@ -1,4 +1,4 @@
-import { describe, expect, it, beforeEach, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import {
   canAccessPath,
@@ -6,110 +6,121 @@ import {
   createNavigationContext,
   getBreadcrumbTrail,
   getNavTree,
-  getSurfaceNav,
+  matchBreadcrumbs,
+  notifyNavClick,
   subscribeToNavTelemetry,
-} from "../nav.map";
+  visible,
+} from '../nav.map';
 
 const adminContext = createNavigationContext({
-  role: "admin",
-  auth: "authenticated",
+  role: 'admin',
+  auth: 'authenticated',
   flags: new Set(),
 });
 
 const staffContext = createNavigationContext({
-  role: "staff",
-  auth: "authenticated",
+  role: 'staff',
+  auth: 'authenticated',
   flags: new Set(),
 });
 
 const guestContext = createNavigationContext({
   role: null,
-  auth: "unauthenticated",
+  auth: 'unauthenticated',
   flags: new Set(),
 });
 
-describe("navigation mapping", () => {
+describe('navigation mapping', () => {
   beforeEach(() => {
     clearNavTelemetryHandlers();
   });
 
-  it("returns ordered sidebar items for admin", () => {
-    const sidebar = getSurfaceNav(adminContext, "sidebar");
+  it('computes visibility rules correctly', () => {
+    const hiddenForGuest = visible(
+      { id: 'settings', i18nKey: 'nav.settings', path: '/settings', visibility: { roles: ['admin'] } },
+      guestContext,
+    );
+    const visibleForAdmin = visible(
+      { id: 'settings', i18nKey: 'nav.settings', path: '/settings', visibility: { roles: ['admin'] } },
+      adminContext,
+    );
+    expect(hiddenForGuest).toBe(false);
+    expect(visibleForAdmin).toBe(true);
+  });
+
+  it('returns ordered sidebar tree for admin', () => {
+    const sidebar = getNavTree(adminContext, 'sidebar');
     expect(sidebar.map((node) => node.id)).toEqual([
-      "reports",
-      "operations",
-      "field",
-      "campaign",
-      "admin",
+      'dashboard',
+      'elections',
+      'geoAreas',
+      'committees',
+      'voters',
+      'candidates',
+      'fieldOps',
+      'campaigns',
+      'settings',
     ]);
   });
 
-  it("hides role-gated entries for guests", () => {
-    const sidebar = getSurfaceNav(guestContext, "sidebar");
-    expect(sidebar.map((node) => node.id)).not.toContain("reports");
-    expect(sidebar.map((node) => node.id)).toContain("operations");
+  it('hides protected entries for unauthenticated users', () => {
+    const sidebar = getNavTree(guestContext, 'sidebar');
+    expect(sidebar.map((node) => node.id)).toEqual([]);
   });
 
-  it("only shows flag-gated analytics when flag is enabled", () => {
-    const topWithoutFlag = getSurfaceNav(adminContext, "top");
-    const analyticsParentWithoutFlag = topWithoutFlag.find(
-      (node) => node.id === "campaign",
-    );
-    expect(
-      analyticsParentWithoutFlag?.children?.some(
-        (child) => child.id === "campaign.analytics",
-      ),
-    ).toBeFalsy();
+  it('only shows flag-gated analytics when flag is enabled', () => {
+    const topWithoutFlag = getNavTree(adminContext, 'top');
+    expect(topWithoutFlag.some((node) => node.id === 'reports')).toBe(false);
 
     const flaggedContext = createNavigationContext({
-      role: "admin",
-      auth: "authenticated",
-      flags: new Set(["betaReports"]),
+      role: 'admin',
+      auth: 'authenticated',
+      flags: new Set(['betaReports']),
     });
 
-    const topWithFlag = getSurfaceNav(flaggedContext, "top");
-    const analyticsParent = topWithFlag.find((node) => node.id === "campaign");
-    expect(
-      analyticsParent?.children?.some(
-        (child) => child.id === "campaign.analytics",
-      ),
-    ).toBe(true);
+    const topWithFlag = getNavTree(flaggedContext, 'top');
+    expect(topWithFlag.some((node) => node.id === 'reports')).toBe(true);
   });
 
-  it("emits telemetry for guard checks", () => {
+  it('emits telemetry for guard checks and navigation', () => {
     const handler = vi.fn();
     subscribeToNavTelemetry(handler);
 
-    const allowed = canAccessPath("/reports", adminContext);
-    const denied = canAccessPath("/reports", guestContext);
+    const allowed = canAccessPath('/reports', adminContext);
+    const denied = canAccessPath('/reports', guestContext);
+
+    notifyNavClick('dashboard', '/reports', adminContext, 'sidebar');
 
     expect(allowed).toBe(true);
     expect(denied).toBe(false);
-    expect(handler).toHaveBeenCalledTimes(2);
+    expect(handler).toHaveBeenCalledTimes(3);
 
-    const [firstEvent, secondEvent] = handler.mock.calls.map((call) => call[0]);
-    expect(firstEvent.type).toBe("nav:guard");
-    expect(firstEvent.allowed).toBe(true);
-    expect(secondEvent.allowed).toBe(false);
+    const [guardAllowed, guardDenied, navEvent] = handler.mock.calls.map((call) => call[0]);
+    expect(guardAllowed.type).toBe('nav:guard');
+    expect(guardAllowed.allowed).toBe(true);
+    expect(guardDenied.allowed).toBe(false);
+    expect(navEvent.type).toBe('nav:click');
+    expect(navEvent.context).toBe('sidebar');
   });
 
-  it("produces breadcrumbs for deep routes", () => {
-    const breadcrumbs = getBreadcrumbTrail("/elections/123", staffContext);
-    expect(breadcrumbs.map((crumb) => crumb.id)).toEqual([
-      "operations.elections",
-      "operations.elections.detail",
-    ]);
+  it('produces breadcrumbs for deep routes', () => {
+    const breadcrumbs = getBreadcrumbTrail('/elections/123', staffContext);
+    expect(breadcrumbs.map((crumb) => crumb.id)).toEqual(['elections', 'elections.detail']);
   });
 
-  it("matches snapshot for sidebar contexts", () => {
-    expect(getNavTree(adminContext, { surface: "sidebar" })).toMatchSnapshot();
-    expect(getNavTree(staffContext, { surface: "sidebar" })).toMatchSnapshot();
+  it('matches breadcrumb ids from pathname', () => {
+    expect(matchBreadcrumbs('/voters/12')).toEqual(['voters', 'voters.detail']);
+  });
+
+  it('matches snapshot for sidebar contexts', () => {
+    expect(getNavTree(adminContext, 'sidebar')).toMatchSnapshot();
+    expect(getNavTree(staffContext, 'sidebar')).toMatchSnapshot();
     const mobileContext = createNavigationContext({
-      role: "staff",
-      device: "mobile",
-      auth: "authenticated",
+      role: 'staff',
+      device: 'mobile',
+      auth: 'authenticated',
       flags: new Set(),
     });
-    expect(getNavTree(mobileContext, { surface: "sidebar" })).toMatchSnapshot();
+    expect(getNavTree(mobileContext, 'sidebar')).toMatchSnapshot();
   });
 });

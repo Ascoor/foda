@@ -3,25 +3,22 @@
 exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
 [
   {
-    "badge": {
-      "source": "reports",
-      "type": "dot",
-    },
     "depth": 0,
-    "i18nKey": "navigation.reports",
+    "i18nKey": "nav.dashboard",
     "icon": {
       "$$typeof": Symbol(react.forward_ref),
       "render": [Function],
     },
-    "id": "reports",
+    "id": "dashboard",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
     "order": 10,
     "parent": undefined,
     "path": "/reports",
-    "surfaces": [
-      "sidebar",
-      "top",
-      "breadcrumb",
-    ],
     "visibility": {
       "roles": [
         "admin",
@@ -31,142 +28,133 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
     },
   },
   {
-    "breadcrumb": {
-      "hide": true,
-    },
-    "children": [
-      {
-        "depth": 1,
-        "i18nKey": "navigation.elections",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.elections",
-        "order": 10,
-        "parent": [Circular],
-        "path": "/elections",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.geo_areas",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.geoAreas",
-        "order": 20,
-        "parent": [Circular],
-        "path": "/geo-areas",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "breadcrumb": {
-          "i18nKey": "navigation.zones_mansoura",
-        },
-        "depth": 1,
-        "i18nKey": "navigation.zones_mansoura",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.zones",
-        "order": 30,
-        "parent": [Circular],
-        "path": "/zones/mansoura",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.committees",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.committees",
-        "order": 40,
-        "parent": [Circular],
-        "path": "/committees",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.voters",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.voters",
-        "order": 50,
-        "parent": [Circular],
-        "path": "/voters",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.candidates",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.candidates",
-        "order": 60,
-        "parent": [Circular],
-        "path": "/candidates",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-    ],
     "depth": 0,
-    "i18nKey": "navigation.section_election_operations",
-    "id": "operations",
+    "i18nKey": "nav.elections",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "elections",
     "meta": {
-      "variant": "section",
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
     },
     "order": 20,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "path": "/elections",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
   },
   {
-    "breadcrumb": {
-      "hide": true,
+    "depth": 0,
+    "i18nKey": "nav.geoAreas",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
     },
+    "id": "geoAreas",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 30,
+    "parent": undefined,
+    "path": "/geo-areas",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.committees",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "committees",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 40,
+    "parent": undefined,
+    "path": "/committees",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.voters",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "voters",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 50,
+    "parent": undefined,
+    "path": "/voters",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.candidates",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "candidates",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 55,
+    "parent": undefined,
+    "path": "/candidates",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
     "children": [
       {
         "depth": 1,
-        "i18nKey": "navigation.agents",
+        "i18nKey": "nav.fieldOps.agents",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.agents",
+        "id": "fieldOps.agents",
         "order": 10,
         "parent": [Circular],
         "path": "/agents",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
       {
         "badge": {
@@ -174,19 +162,15 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
           "type": "count",
         },
         "depth": 1,
-        "i18nKey": "navigation.volunteers",
+        "i18nKey": "nav.fieldOps.volunteers",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.volunteers",
+        "id": "fieldOps.volunteers",
         "order": 20,
         "parent": [Circular],
         "path": "/volunteers",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
       {
         "badge": {
@@ -194,121 +178,108 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
           "type": "count",
         },
         "depth": 1,
-        "i18nKey": "navigation.observations",
+        "i18nKey": "nav.fieldOps.observations",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.observations",
+        "id": "fieldOps.observations",
         "order": 30,
         "parent": [Circular],
         "path": "/observations",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
+      },
+      {
+        "depth": 1,
+        "i18nKey": "nav.fieldOps.zones",
+        "icon": {
+          "$$typeof": Symbol(react.forward_ref),
+          "render": [Function],
+        },
+        "id": "fieldOps.zones",
+        "order": 40,
+        "parent": [Circular],
+        "path": "/zones/mansoura",
       },
     ],
     "depth": 0,
-    "i18nKey": "navigation.section_field_resources",
-    "id": "field",
-    "meta": {
-      "variant": "section",
+    "i18nKey": "nav.fieldOps",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
     },
-    "order": 30,
+    "id": "fieldOps",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+      ],
+    },
+    "order": 60,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
   },
   {
-    "breadcrumb": {
-      "hide": true,
-    },
     "children": [
       {
         "depth": 1,
-        "i18nKey": "navigation.campaigns",
+        "i18nKey": "nav.campaigns.automation",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "campaign.campaigns",
-        "order": 10,
-        "parent": [Circular],
-        "path": "/campaigns",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.automation",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "campaign.automation",
+        "id": "campaigns.automation",
         "order": 20,
         "parent": [Circular],
         "path": "/automation",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
     ],
     "depth": 0,
-    "i18nKey": "navigation.section_campaign_intelligence",
-    "id": "campaign",
-    "meta": {
-      "variant": "section",
+    "i18nKey": "nav.campaigns",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
     },
-    "order": 40,
+    "id": "campaigns",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 70,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "path": "/campaigns",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
   },
   {
-    "breadcrumb": {
-      "hide": true,
-    },
-    "children": [
-      {
-        "depth": 1,
-        "i18nKey": "navigation.settings",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "admin.settings",
-        "order": 10,
-        "parent": [Circular],
-        "path": "/settings",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-        "visibility": {
-          "roles": [
-            "admin",
-          ],
-        },
-      },
-    ],
     "depth": 0,
-    "i18nKey": "navigation.section_admin",
-    "id": "admin",
+    "i18nKey": "nav.settings",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "settings",
     "meta": {
-      "variant": "section",
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
     },
     "order": 100,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "path": "/settings",
+    "visibility": {
+      "roles": [
+        "admin",
+      ],
+    },
   },
 ]
 `;
@@ -316,25 +287,22 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
 exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
 [
   {
-    "badge": {
-      "source": "reports",
-      "type": "dot",
-    },
     "depth": 0,
-    "i18nKey": "navigation.reports",
+    "i18nKey": "nav.dashboard",
     "icon": {
       "$$typeof": Symbol(react.forward_ref),
       "render": [Function],
     },
-    "id": "reports",
+    "id": "dashboard",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
     "order": 10,
     "parent": undefined,
     "path": "/reports",
-    "surfaces": [
-      "sidebar",
-      "top",
-      "breadcrumb",
-    ],
     "visibility": {
       "roles": [
         "admin",
@@ -344,142 +312,133 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
     },
   },
   {
-    "breadcrumb": {
-      "hide": true,
-    },
-    "children": [
-      {
-        "depth": 1,
-        "i18nKey": "navigation.elections",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.elections",
-        "order": 10,
-        "parent": [Circular],
-        "path": "/elections",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.geo_areas",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.geoAreas",
-        "order": 20,
-        "parent": [Circular],
-        "path": "/geo-areas",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "breadcrumb": {
-          "i18nKey": "navigation.zones_mansoura",
-        },
-        "depth": 1,
-        "i18nKey": "navigation.zones_mansoura",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.zones",
-        "order": 30,
-        "parent": [Circular],
-        "path": "/zones/mansoura",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.committees",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.committees",
-        "order": 40,
-        "parent": [Circular],
-        "path": "/committees",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.voters",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.voters",
-        "order": 50,
-        "parent": [Circular],
-        "path": "/voters",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.candidates",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.candidates",
-        "order": 60,
-        "parent": [Circular],
-        "path": "/candidates",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-    ],
     "depth": 0,
-    "i18nKey": "navigation.section_election_operations",
-    "id": "operations",
+    "i18nKey": "nav.elections",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "elections",
     "meta": {
-      "variant": "section",
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
     },
     "order": 20,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "path": "/elections",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
   },
   {
-    "breadcrumb": {
-      "hide": true,
+    "depth": 0,
+    "i18nKey": "nav.geoAreas",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
     },
+    "id": "geoAreas",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 30,
+    "parent": undefined,
+    "path": "/geo-areas",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.committees",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "committees",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 40,
+    "parent": undefined,
+    "path": "/committees",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.voters",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "voters",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 50,
+    "parent": undefined,
+    "path": "/voters",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.candidates",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "candidates",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 55,
+    "parent": undefined,
+    "path": "/candidates",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
     "children": [
       {
         "depth": 1,
-        "i18nKey": "navigation.agents",
+        "i18nKey": "nav.fieldOps.agents",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.agents",
+        "id": "fieldOps.agents",
         "order": 10,
         "parent": [Circular],
         "path": "/agents",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
       {
         "badge": {
@@ -487,19 +446,15 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
           "type": "count",
         },
         "depth": 1,
-        "i18nKey": "navigation.volunteers",
+        "i18nKey": "nav.fieldOps.volunteers",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.volunteers",
+        "id": "fieldOps.volunteers",
         "order": 20,
         "parent": [Circular],
         "path": "/volunteers",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
       {
         "badge": {
@@ -507,98 +462,85 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
           "type": "count",
         },
         "depth": 1,
-        "i18nKey": "navigation.observations",
+        "i18nKey": "nav.fieldOps.observations",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.observations",
+        "id": "fieldOps.observations",
         "order": 30,
         "parent": [Circular],
         "path": "/observations",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
+      },
+      {
+        "depth": 1,
+        "i18nKey": "nav.fieldOps.zones",
+        "icon": {
+          "$$typeof": Symbol(react.forward_ref),
+          "render": [Function],
+        },
+        "id": "fieldOps.zones",
+        "order": 40,
+        "parent": [Circular],
+        "path": "/zones/mansoura",
       },
     ],
     "depth": 0,
-    "i18nKey": "navigation.section_field_resources",
-    "id": "field",
-    "meta": {
-      "variant": "section",
+    "i18nKey": "nav.fieldOps",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
     },
-    "order": 30,
+    "id": "fieldOps",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+      ],
+    },
+    "order": 60,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
   },
   {
-    "breadcrumb": {
-      "hide": true,
-    },
     "children": [
       {
         "depth": 1,
-        "i18nKey": "navigation.campaigns",
+        "i18nKey": "nav.campaigns.automation",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "campaign.campaigns",
-        "order": 10,
-        "parent": [Circular],
-        "path": "/campaigns",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.automation",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "campaign.automation",
+        "id": "campaigns.automation",
         "order": 20,
         "parent": [Circular],
         "path": "/automation",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
     ],
     "depth": 0,
-    "i18nKey": "navigation.section_campaign_intelligence",
-    "id": "campaign",
+    "i18nKey": "nav.campaigns",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "campaigns",
     "meta": {
-      "variant": "section",
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
     },
-    "order": 40,
+    "order": 70,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
-  },
-  {
-    "breadcrumb": {
-      "hide": true,
+    "path": "/campaigns",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
     },
-    "depth": 0,
-    "i18nKey": "navigation.section_admin",
-    "id": "admin",
-    "meta": {
-      "variant": "section",
-    },
-    "order": 100,
-    "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
   },
 ]
 `;
@@ -606,25 +548,22 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
 exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
 [
   {
-    "badge": {
-      "source": "reports",
-      "type": "dot",
-    },
     "depth": 0,
-    "i18nKey": "navigation.reports",
+    "i18nKey": "nav.dashboard",
     "icon": {
       "$$typeof": Symbol(react.forward_ref),
       "render": [Function],
     },
-    "id": "reports",
+    "id": "dashboard",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
     "order": 10,
     "parent": undefined,
     "path": "/reports",
-    "surfaces": [
-      "sidebar",
-      "top",
-      "breadcrumb",
-    ],
     "visibility": {
       "roles": [
         "admin",
@@ -634,142 +573,133 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
     },
   },
   {
-    "breadcrumb": {
-      "hide": true,
-    },
-    "children": [
-      {
-        "depth": 1,
-        "i18nKey": "navigation.elections",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.elections",
-        "order": 10,
-        "parent": [Circular],
-        "path": "/elections",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.geo_areas",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.geoAreas",
-        "order": 20,
-        "parent": [Circular],
-        "path": "/geo-areas",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "breadcrumb": {
-          "i18nKey": "navigation.zones_mansoura",
-        },
-        "depth": 1,
-        "i18nKey": "navigation.zones_mansoura",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.zones",
-        "order": 30,
-        "parent": [Circular],
-        "path": "/zones/mansoura",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.committees",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.committees",
-        "order": 40,
-        "parent": [Circular],
-        "path": "/committees",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.voters",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.voters",
-        "order": 50,
-        "parent": [Circular],
-        "path": "/voters",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.candidates",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "operations.candidates",
-        "order": 60,
-        "parent": [Circular],
-        "path": "/candidates",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-    ],
     "depth": 0,
-    "i18nKey": "navigation.section_election_operations",
-    "id": "operations",
+    "i18nKey": "nav.elections",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "elections",
     "meta": {
-      "variant": "section",
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
     },
     "order": 20,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "path": "/elections",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
   },
   {
-    "breadcrumb": {
-      "hide": true,
+    "depth": 0,
+    "i18nKey": "nav.geoAreas",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
     },
+    "id": "geoAreas",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 30,
+    "parent": undefined,
+    "path": "/geo-areas",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.committees",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "committees",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 40,
+    "parent": undefined,
+    "path": "/committees",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.voters",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "voters",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 50,
+    "parent": undefined,
+    "path": "/voters",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
+    "depth": 0,
+    "i18nKey": "nav.candidates",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "candidates",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
+    },
+    "order": 55,
+    "parent": undefined,
+    "path": "/candidates",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
+  },
+  {
     "children": [
       {
         "depth": 1,
-        "i18nKey": "navigation.agents",
+        "i18nKey": "nav.fieldOps.agents",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.agents",
+        "id": "fieldOps.agents",
         "order": 10,
         "parent": [Circular],
         "path": "/agents",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
       {
         "badge": {
@@ -777,19 +707,15 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
           "type": "count",
         },
         "depth": 1,
-        "i18nKey": "navigation.volunteers",
+        "i18nKey": "nav.fieldOps.volunteers",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.volunteers",
+        "id": "fieldOps.volunteers",
         "order": 20,
         "parent": [Circular],
         "path": "/volunteers",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
       {
         "badge": {
@@ -797,98 +723,85 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
           "type": "count",
         },
         "depth": 1,
-        "i18nKey": "navigation.observations",
+        "i18nKey": "nav.fieldOps.observations",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "field.observations",
+        "id": "fieldOps.observations",
         "order": 30,
         "parent": [Circular],
         "path": "/observations",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
+      },
+      {
+        "depth": 1,
+        "i18nKey": "nav.fieldOps.zones",
+        "icon": {
+          "$$typeof": Symbol(react.forward_ref),
+          "render": [Function],
+        },
+        "id": "fieldOps.zones",
+        "order": 40,
+        "parent": [Circular],
+        "path": "/zones/mansoura",
       },
     ],
     "depth": 0,
-    "i18nKey": "navigation.section_field_resources",
-    "id": "field",
-    "meta": {
-      "variant": "section",
+    "i18nKey": "nav.fieldOps",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
     },
-    "order": 30,
+    "id": "fieldOps",
+    "meta": {
+      "surfaces": [
+        "sidebar",
+      ],
+    },
+    "order": 60,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
+    },
   },
   {
-    "breadcrumb": {
-      "hide": true,
-    },
     "children": [
       {
         "depth": 1,
-        "i18nKey": "navigation.campaigns",
+        "i18nKey": "nav.campaigns.automation",
         "icon": {
           "$$typeof": Symbol(react.forward_ref),
           "render": [Function],
         },
-        "id": "campaign.campaigns",
-        "order": 10,
-        "parent": [Circular],
-        "path": "/campaigns",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
-      },
-      {
-        "depth": 1,
-        "i18nKey": "navigation.automation",
-        "icon": {
-          "$$typeof": Symbol(react.forward_ref),
-          "render": [Function],
-        },
-        "id": "campaign.automation",
+        "id": "campaigns.automation",
         "order": 20,
         "parent": [Circular],
         "path": "/automation",
-        "surfaces": [
-          "sidebar",
-          "breadcrumb",
-        ],
       },
     ],
     "depth": 0,
-    "i18nKey": "navigation.section_campaign_intelligence",
-    "id": "campaign",
+    "i18nKey": "nav.campaigns",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "campaigns",
     "meta": {
-      "variant": "section",
+      "surfaces": [
+        "sidebar",
+        "top",
+      ],
     },
-    "order": 40,
+    "order": 70,
     "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
-  },
-  {
-    "breadcrumb": {
-      "hide": true,
+    "path": "/campaigns",
+    "visibility": {
+      "hideWhen": [
+        "unauthenticated",
+      ],
     },
-    "depth": 0,
-    "i18nKey": "navigation.section_admin",
-    "id": "admin",
-    "meta": {
-      "variant": "section",
-    },
-    "order": 100,
-    "parent": undefined,
-    "surfaces": [
-      "sidebar",
-    ],
   },
 ]
 `;
