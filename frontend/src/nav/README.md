@@ -14,15 +14,15 @@ This folder contains the config-first navigation layer used across the dashboard
 1. **Declare the item** in `nav.config.ts`.
    ```ts
    {
-     id: "reports.trends",
-     i18nKey: "navigation.reports_trends",
-     path: "/reports/trends",
+     id: 'reports.trends',
+     i18nKey: 'nav.reports.trends',
+     path: '/reports/trends',
      order: 30,
-     surfaces: ["sidebar", "breadcrumb"],
-     visibility: { roles: ["manager", "admin"], flagsAny: ["betaReports"] },
+     meta: { surfaces: ['sidebar', 'breadcrumb'] },
+     visibility: { roles: ['manager', 'admin'], flagsAny: ['betaReports'] },
    }
    ```
-   Use the `surfaces` array to decide where the item should appear (`sidebar`, `top`, `breadcrumb`). Leave it empty to fall back to sensible defaults.
+    Use the `meta.surfaces` array to decide where the item should appear (`sidebar`, `top`, `breadcrumb`). Leave it undefined to fall back to sensible defaults.
 
 2. **Add translations** for the new `i18nKey` in `src/i18n/locales/en.json` (and other locales).
 
@@ -39,5 +39,5 @@ Navigation state, telemetry and badges are all derived from the config – no ex
   consistently.
 - Icons must come from the existing `lucide-react` import set used in `nav.config.ts`; pick the closest match to the marketing demo if
   an exact glyph is unavailable.
-- Keep `surfaces` accurate. Omitting `"sidebar"` or `"top"` will remove the link from the styled chrome and produce gaps in the
-  Aurora layout.
+- Keep `meta.surfaces` accurate. Omitting `"sidebar"` or `"top"` will remove the link from the styled chrome and produce gaps in the
+   Aurora layout.

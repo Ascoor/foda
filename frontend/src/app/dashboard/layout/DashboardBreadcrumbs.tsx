@@ -46,7 +46,7 @@ export const DashboardBreadcrumbs = ({
   return (
     <nav
       className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground"
-      aria-label={t("navigation.main")}
+      aria-label={t('nav.main')}
     >
       {resolvedItems.map((item, index) => {
         const isLast = index === resolvedItems.length - 1;

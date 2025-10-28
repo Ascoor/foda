@@ -34,54 +34,30 @@
     "language": "Language"
   },
   
-  "navigation": {
-    "toggleSidebar": "Toggle sidebar",
+  "nav": {
     "main": "Main navigation",
-
-    "section_overview": "Overview",
-    "section_election_operations": "Election Operations",
-    "section_field_resources": "Field Resources",
-    "section_campaign_intelligence": "Campaign Intelligence",
-    "section_monitoring_and_analytics": "Monitoring & Analytics",
-    "section_ai_and_automation": "AI & Automation",
-    "section_system_admin": "System Administration",
-    "section_admin": "Administration",
-
+    "toggleSidebar": "Toggle sidebar",
     "dashboard": "Dashboard",
-    "reports": "Operational Reports",
     "elections": "Elections",
-    "geo_areas": "Geographic Areas",
+    "elections.detail": "Election details",
+    "geoAreas": "Geographic Areas",
+    "geoAreas.detail": "Area details",
     "committees": "Committees",
+    "committees.detail": "Committee details",
     "voters": "Voters",
+    "voters.detail": "Voter profile",
+    "fieldOps": "Field Operations",
+    "fieldOps.agents": "Accredited Agents",
+    "fieldOps.volunteers": "Volunteers",
+    "fieldOps.observations": "Field Observations",
+    "fieldOps.zones": "Zones & Maps",
     "candidates": "Candidates",
-    "results_center": "Results Center",
-
-    "agents": "Agents",
-    "volunteers": "Volunteers",
-    "observers": "Observers",
-    "field_reports": "Field Reports",
-
+    "candidates.detail": "Candidate profile",
     "campaigns": "Campaigns",
-    "automation": "Automation",
-    "analytics": "Analytics",
-
-    "live_map": "Live Map",
-    "statistics": "Statistics",
-    "alerts": "Alerts",
-
-    "predictive_insights": "Predictive Insights",
-    "user_roles": "User Roles",
-    "system_logs": "System Logs",
-    "security_center": "Security Center",
-    "integrations": "Integrations",
-    "system_settings": "System Settings",
-
+    "campaigns.automation": "Automation",
+    "reports": "Insights & Reports",
     "settings": "Settings",
-    "election_detail": "Election details",
-    "geo_area_detail": "Area details",
-    "committee_detail": "Committee details",
-    "voter_detail": "Voter profile",
-    "candidate_detail": "Candidate profile"
+    "notifications": "Notifications"
   },
   "dashboard": {
     "title": "Dashboard",
