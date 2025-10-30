@@ -1,0 +1,381 @@
+openapi: 3.0.3
+info:
+  title: Elections Campaign API
+  version: '1.0.0'
+servers:
+  - url: https://example.com/api/v1
+paths:
+  /auth/login:
+    post:
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                remember:
+                  type: boolean
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /auth/me:
+    get:
+      summary: Current user profile
+      security:
+        - sanctum: []
+      responses:
+        '200':
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticatedUser'
+  /auth/refresh:
+    post:
+      summary: Refresh token
+      security:
+        - sanctum: []
+      responses:
+        '200':
+          description: Refreshed token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+  /auth/logout:
+    post:
+      summary: Logout
+      security:
+        - sanctum: []
+      responses:
+        '200':
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /campaigns:
+    get:
+      summary: List campaigns
+      security:
+        - sanctum: []
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [draft, active, archived]
+        - in: query
+          name: areaId
+          schema:
+            type: integer
+        - in: query
+          name: q
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Paginated campaigns
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Campaign'
+                  meta:
+                    type: object
+                    properties:
+                      has_more:
+                        type: boolean
+    post:
+      summary: Create campaign
+      security:
+        - sanctum: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignInput'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+  /campaigns/{campaignId}:
+    get:
+      summary: Show campaign
+      security:
+        - sanctum: []
+      parameters:
+        - in: path
+          name: campaignId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Campaign detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+    patch:
+      summary: Update campaign
+      security:
+        - sanctum: []
+      parameters:
+        - in: path
+          name: campaignId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignInput'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+  /campaigns/{campaignId}/archive:
+    post:
+      summary: Archive campaign
+      security:
+        - sanctum: []
+      parameters:
+        - in: path
+          name: campaignId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Archived campaign
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+  /campaigns/{campaignId}/elections:
+    get:
+      summary: List elections for campaign
+      security:
+        - sanctum: []
+      parameters:
+        - in: path
+          name: campaignId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Campaign elections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Election'
+    post:
+      summary: Create election
+      security:
+        - sanctum: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElectionInput'
+      responses:
+        '201':
+          description: Created election
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Election'
+  /campaigns/{campaignId}/elections/{electionId}:
+    get:
+      summary: Show election
+      security:
+        - sanctum: []
+      responses:
+        '200':
+          description: Election
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Election'
+    patch:
+      summary: Update election
+      security:
+        - sanctum: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ElectionInput'
+      responses:
+        '200':
+          description: Updated election
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Election'
+components:
+  securitySchemes:
+    sanctum:
+      type: http
+      scheme: bearer
+  schemas:
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: '#/components/schemas/AuthenticatedUser'
+    AuthenticatedUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        memberships:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              scopeType:
+                type: string
+                enum: [area, campaign]
+              scopeId:
+                type: integer
+              role:
+                type: string
+                enum: [admin, manager, viewer]
+        scopes:
+          type: object
+          properties:
+            areas:
+              type: array
+              items:
+                type: integer
+            campaigns:
+              type: array
+              items:
+                type: integer
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        coverUrl:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [draft, active, archived]
+        createdAt:
+          type: string
+          format: date-time
+          nullable: true
+        area:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+    CampaignInput:
+      type: object
+      properties:
+        name:
+          type: string
+        area_id:
+          type: integer
+        cover_url:
+          type: string
+        status:
+          type: string
+          enum: [draft, active, archived]
+    Election:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        coverUrl:
+          type: string
+          nullable: true
+        phase:
+          type: string
+          enum: [upcoming, running, closed]
+        startAt:
+          type: string
+          format: date-time
+          nullable: true
+        endAt:
+          type: string
+          format: date-time
+          nullable: true
+        campaign:
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+    ElectionInput:
+      type: object
+      properties:
+        name:
+          type: string
+        cover_url:
+          type: string
+        phase:
+          type: string
+          enum: [upcoming, running, closed]
+        start_at:
+          type: string
+          format: date-time
+        end_at:
+          type: string
+          format: date-time

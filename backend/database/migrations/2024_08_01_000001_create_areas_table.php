@@ -10,12 +10,15 @@ return new class extends Migration
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
-            $table->string('description', 1000);
-$table->decimal('x', 12, 8);
-$table->decimal('y', 12, 8);
-
+            $table->string('name', 150);
+            $table->string('code', 20)->unique();
+            $table->foreignId('parent_id')->nullable()->constrained('areas')->nullOnDelete();
+            $table->string('description', 1000)->nullable();
+            $table->decimal('x', 12, 8)->nullable();
+            $table->decimal('y', 12, 8)->nullable();
             $table->timestamps();
+
+            $table->index(['parent_id', 'code']);
         });
     }
     public function down(): void

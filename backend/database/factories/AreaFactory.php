@@ -3,29 +3,32 @@
 namespace Database\Factories;
 
 use App\Models\Area;
-use Faker\Factory as FakerFactory;
-use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/** @extends Factory<\App\Models\Area> */
+/**
+ * @extends Factory<Area>
+ */
 class AreaFactory extends Factory
 {
     protected $model = Area::class;
 
-    protected function withFaker(): Generator
-    {
-        return FakerFactory::create('ar_SA');
-    }
-
     public function definition(): array
     {
-        $regions = ['منطقة الرياض', 'منطقة مكة المكرمة', 'منطقة القصيم', 'منطقة تبوك', 'المنطقة الشرقية'];
-
         return [
-            'name' => $this->faker->unique()->randomElement($regions) . ' - ' . $this->faker->randomElement(['الوسطى', 'الشمالية', 'الجنوبية']),
-            'description' => $this->faker->sentence(8),
-            'x' => $this->faker->latitude(16.0, 32.0),
-            'y' => $this->faker->longitude(34.0, 55.0),
+            'name' => $this->faker->unique()->city(),
+            'code' => strtoupper($this->faker->unique()->lexify('AR???')),
+            'parent_id' => null,
+            'description' => $this->faker->sentence(10),
+            'x' => $this->faker->randomFloat(6, 24.5, 31.5),
+            'y' => $this->faker->randomFloat(6, 22.0, 32.0),
         ];
+    }
+
+    public function childOf(Area $parent): self
+    {
+        return $this->state(fn () => [
+            'parent_id' => $parent->id,
+            'code' => strtoupper($this->faker->unique()->lexify($parent->code . '?')),
+        ]);
     }
 }
