@@ -24,12 +24,8 @@ const SPRING_TRANSITION = {
 } as const;
 
 const useBadgeValue = () => {
-  try {
-    const { unreadCount } = useNotifications();
-    return { alerts: unreadCount };
-  } catch {
-    return { alerts: 0 };
-  }
+  const { unreadCount } = useNotifications();
+  return { alerts: unreadCount };
 };
 
 const collectAncestorIds = (node: NavNode | null | undefined): string[] => {

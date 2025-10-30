@@ -21,8 +21,8 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <LanguageProvider>
-          <NotificationProvider>
-            <AuthProvider>
+          <AuthProvider>
+            <NotificationProvider>
               <FeatureFlagProvider>
                 <TooltipProvider>
                   <RouterProvider router={router} />
@@ -31,8 +31,8 @@ export default function App() {
                   {import.meta.env.DEV && <DevTools />}
                 </TooltipProvider>
               </FeatureFlagProvider>
-            </AuthProvider>
-          </NotificationProvider>
+            </NotificationProvider>
+          </AuthProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
