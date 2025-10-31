@@ -37,8 +37,11 @@ export const CampaignDashboard = () => {
       if (error) throw error;
       
       setCampaign(data);
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       const userMember = data.campaign_members.find(
-        (m: any) => m.user_id === (await supabase.auth.getUser()).data.user?.id
+        (m: any) => m.user_id === user?.id
       );
       setMemberRole(userMember?.role || "");
     } catch (error: any) {
