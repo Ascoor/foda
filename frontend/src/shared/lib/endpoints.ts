@@ -37,6 +37,13 @@ export const API_ENDPOINTS = {
     committeeGeo: "/api/v1/committees/geo",
     recentActivityGeo: "/api/v1/activities/recent",
   },
+  geo: {
+    governorates: "/api/v1/geo/governorates",
+    governorateDistricts: (governorateId: string | number) =>
+      `/api/v1/geo/governorates/${governorateId}/districts`,
+    districtElectoralCircles: (districtId: string | number) =>
+      `/api/v1/geo/districts/${districtId}/electoral-circles`,
+  },
 } as const;
 
 export type ApiEndpointGroups = typeof API_ENDPOINTS;

@@ -12,7 +12,14 @@ return new class extends Migration {
             $table->foreignId('election_id')->nullable()->constrained('elections');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('governorate_id');
+            $table->unsignedBigInteger('district_id');
+            $table->unsignedBigInteger('electoral_circle_id');
             $table->timestamps();
+
+            $table->index('governorate_id');
+            $table->index('district_id');
+            $table->index('electoral_circle_id');
         });
     }
 

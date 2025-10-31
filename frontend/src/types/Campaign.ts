@@ -23,4 +23,7 @@ export interface Campaign extends BaseEntity {
   activities?: Activity[];
   budget?: number | null;
   tags?: string[];
+  governorate_id?: number | null;
+  district_id?: number | null;
+  electoral_circle_id?: number | null;
 }

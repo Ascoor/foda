@@ -1,11 +1,16 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
+import {
+  fetchDistrictElectoralCircles,
+  fetchGovernorateDistricts,
+  fetchGovernorates,
+} from "@shared/api/geo.service";
 import { useLanguage } from "@shared/contexts/LanguageContext";
-import { cn, safeArray } from "@shared/lib/utils";
+import { cn } from "@shared/lib/utils";
 import {
   Dialog,
   DialogContent,
@@ -32,7 +37,7 @@ import {
   SelectValue,
 } from "@shared/ui/select";
 import { Skeleton } from "@shared/ui/skeleton";
-import { createCampaign, fetchEgyptGeoAreas } from "../api";
+import { createCampaign } from "../api";
 import type { Campaign } from "@/types";
 
 const formSchema = z.object({
@@ -45,9 +50,15 @@ const formSchema = z.object({
     .max(500, "الوصف يجب ألا يتجاوز 500 حرف")
     .optional()
     .or(z.literal("")),
-  governorate: z.string({ required_error: "اختر المحافظة" }),
-  center: z.string({ required_error: "اختر المركز أو المدينة" }),
-  constituency: z.string({ required_error: "اختر الدائرة الانتخابية" }),
+  governorateId: z
+    .string({ required_error: "اختر المحافظة" })
+    .min(1, "اختر المحافظة"),
+  districtId: z
+    .string({ required_error: "اختر المركز أو المدينة" })
+    .min(1, "اختر المركز أو المدينة"),
+  electoralCircleId: z
+    .string({ required_error: "اختر الدائرة الانتخابية" })
+    .min(1, "اختر الدائرة الانتخابية"),
 });
 
 export type CreateCampaignFormValues = z.infer<typeof formSchema>;
@@ -57,6 +68,11 @@ interface CreateCampaignDialogProps {
   onOpenChange: (open: boolean) => void;
   onSuccess?: (campaign: Campaign) => void;
 }
+
+const toNullableNumber = (value: string) => {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+};
 
 export const CreateCampaignDialog = ({
   open,
@@ -71,9 +87,9 @@ export const CreateCampaignDialog = ({
     defaultValues: {
       name: "",
       description: "",
-      governorate: "",
-      center: "",
-      constituency: "",
+      governorateId: "",
+      districtId: "",
+      electoralCircleId: "",
     },
   });
 
@@ -82,44 +98,76 @@ export const CreateCampaignDialog = ({
       form.reset({
         name: "",
         description: "",
-        governorate: "",
-        center: "",
-        constituency: "",
+        governorateId: "",
+        districtId: "",
+        electoralCircleId: "",
       });
     }
   }, [form, open]);
 
-  const { data: geoAreas, isLoading: isLoadingGeo } = useQuery({
-    queryKey: ["egypt-geo-areas"],
-    queryFn: fetchEgyptGeoAreas,
+  const governoratesQuery = useQuery({
+    queryKey: ["geo", "governorates"],
+    queryFn: fetchGovernorates,
+    staleTime: 1000 * 60 * 30,
+  });
+
+  const governorates = governoratesQuery.data ?? [];
+  const governorateId = form.watch("governorateId");
+
+  const districtsQuery = useQuery({
+    queryKey: ["geo", "governorates", governorateId ?? null, "districts"],
+    queryFn: () => fetchGovernorateDistricts(governorateId ?? ""),
+    enabled: Boolean(governorateId),
     staleTime: 1000 * 60 * 15,
   });
 
-  const governorates = useMemo(
-    () => safeArray(geoAreas).filter((area) => area.type === "governorate"),
-    [geoAreas],
-  );
+  const districts = districtsQuery.data ?? [];
+  const districtId = form.watch("districtId");
 
-  const governorateValue = form.watch("governorate");
-  const centerValue = form.watch("center");
+  const electoralCirclesQuery = useQuery({
+    queryKey: [
+      "geo",
+      "districts",
+      districtId ?? null,
+      "electoral-circles",
+    ],
+    queryFn: () => fetchDistrictElectoralCircles(districtId ?? ""),
+    enabled: Boolean(districtId),
+    staleTime: 1000 * 60 * 15,
+  });
 
-  const centers = useMemo(
-    () =>
-      safeArray(geoAreas).filter(
-        (area) =>
-          (area.type === "district" || area.type === "city") &&
-          area.parentId === governorateValue,
-      ),
-    [geoAreas, governorateValue],
-  );
+  const electoralCircles = electoralCirclesQuery.data ?? [];
 
-  const constituencies = useMemo(
-    () =>
-      safeArray(geoAreas).filter(
-        (area) => area.type === "village" && area.parentId === centerValue,
-      ),
-    [geoAreas, centerValue],
-  );
+  const isLoadingGovernorates = governoratesQuery.isLoading;
+  const isLoadingDistricts =
+    districtsQuery.isLoading || districtsQuery.isFetching;
+  const isLoadingElectoralCircles =
+    electoralCirclesQuery.isLoading || electoralCirclesQuery.isFetching;
+
+  const governorateErrorText =
+    language === "ar"
+      ? "تعذّر تحميل بيانات المحافظات. حاول مرة أخرى."
+      : "Failed to load governorates. Please try again.";
+  const governorateEmptyText =
+    language === "ar"
+      ? "لا توجد محافظات متاحة حالياً."
+      : "No governorates available right now.";
+  const districtErrorText =
+    language === "ar"
+      ? "تعذّر تحميل بيانات المراكز."
+      : "Failed to load districts.";
+  const districtEmptyText =
+    language === "ar"
+      ? "لا توجد مراكز مرتبطة بالمحافظة المختارة."
+      : "No districts available for the selected governorate.";
+  const circleErrorText =
+    language === "ar"
+      ? "تعذّر تحميل بيانات الدوائر الانتخابية."
+      : "Failed to load electoral circles.";
+  const circleEmptyText =
+    language === "ar"
+      ? "لا توجد دوائر متاحة للمركز المختار."
+      : "No electoral circles available for the selected district.";
 
   const createMutation = useMutation({
     mutationFn: createCampaign,
@@ -132,15 +180,14 @@ export const CreateCampaignDialog = ({
   });
 
   const handleSubmit = (values: CreateCampaignFormValues) => {
+    const description = values.description?.trim();
     const payload = {
       name: values.name,
-      description: values.description,
-      geo_scope: {
-        governorate_id: values.governorate,
-        center_id: values.center,
-        constituency_id: values.constituency,
-      },
-    } as unknown as Parameters<typeof createCampaign>[0];
+      description: description ? description : null,
+      governorate_id: toNullableNumber(values.governorateId),
+      district_id: toNullableNumber(values.districtId),
+      electoral_circle_id: toNullableNumber(values.electoralCircleId),
+    } as Parameters<typeof createCampaign>[0];
 
     createMutation.mutate(payload);
   };
@@ -216,40 +263,59 @@ export const CreateCampaignDialog = ({
             <div className="grid gap-4 sm:grid-cols-3">
               <FormField
                 control={form.control}
-                name="governorate"
+                name="governorateId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{language === "ar" ? "المحافظة" : "Governorate"}</FormLabel>
-                    {isLoadingGeo ? (
+                    {isLoadingGovernorates ? (
                       <Skeleton className="h-10 w-full" />
                     ) : (
-                      <Select
-                        value={field.value}
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          form.setValue("center", "");
-                          form.setValue("constituency", "");
-                        }}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="glass">
-                            <SelectValue
-                              placeholder={
-                                language === "ar"
-                                  ? "اختر المحافظة"
-                                  : "Select governorate"
-                              }
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {governorates.map((governorate) => (
-                            <SelectItem key={governorate.id} value={governorate.id}>
-                              {governorate.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <>
+                        <Select
+                          value={field.value}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            form.setValue("districtId", "");
+                            form.setValue("electoralCircleId", "");
+                          }}
+                          disabled={
+                            governoratesQuery.isError || !governorates.length
+                          }
+                        >
+                          <FormControl>
+                            <SelectTrigger className="glass">
+                              <SelectValue
+                                placeholder={
+                                  language === "ar"
+                                    ? "اختر المحافظة"
+                                    : "Select governorate"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {governorates.map((governorate) => (
+                              <SelectItem
+                                key={governorate.id}
+                                value={String(governorate.id)}
+                              >
+                                {governorate.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {governoratesQuery.isError ? (
+                          <p className="mt-2 text-sm text-destructive">
+                            {governorateErrorText}
+                          </p>
+                        ) : null}
+                        {!governoratesQuery.isError &&
+                        !governorates.length ? (
+                          <p className="mt-2 text-sm text-muted-foreground">
+                            {governorateEmptyText}
+                          </p>
+                        ) : null}
+                      </>
                     )}
                     <FormMessage />
                   </FormItem>
@@ -258,42 +324,59 @@ export const CreateCampaignDialog = ({
 
               <FormField
                 control={form.control}
-                name="center"
+                name="districtId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
                       {language === "ar" ? "المركز / المدينة" : "Center / City"}
                     </FormLabel>
-                    {isLoadingGeo ? (
+                    {isLoadingDistricts ? (
                       <Skeleton className="h-10 w-full" />
                     ) : (
-                      <Select
-                        value={field.value}
-                        onValueChange={(value) => {
-                          field.onChange(value);
-                          form.setValue("constituency", "");
-                        }}
-                        disabled={!governorates.length}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="glass">
-                            <SelectValue
-                              placeholder={
-                                language === "ar"
-                                  ? "اختر المركز أو المدينة"
-                                  : "Select center or city"
-                              }
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {centers.map((center) => (
-                            <SelectItem key={center.id} value={center.id}>
-                              {center.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <>
+                        <Select
+                          value={field.value}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            form.setValue("electoralCircleId", "");
+                          }}
+                          disabled={!governorateId || districtsQuery.isError}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="glass">
+                              <SelectValue
+                                placeholder={
+                                  language === "ar"
+                                    ? "اختر المركز أو المدينة"
+                                    : "Select center or city"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {districts.map((district) => (
+                              <SelectItem
+                                key={district.id}
+                                value={String(district.id)}
+                              >
+                                {district.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {districtsQuery.isError ? (
+                          <p className="mt-2 text-sm text-destructive">
+                            {districtErrorText}
+                          </p>
+                        ) : null}
+                        {governorateId &&
+                        !districtsQuery.isError &&
+                        !districts.length ? (
+                          <p className="mt-2 text-sm text-muted-foreground">
+                            {districtEmptyText}
+                          </p>
+                        ) : null}
+                      </>
                     )}
                     <FormMessage />
                   </FormItem>
@@ -302,39 +385,56 @@ export const CreateCampaignDialog = ({
 
               <FormField
                 control={form.control}
-                name="constituency"
+                name="electoralCircleId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
                       {language === "ar" ? "الدائرة" : "Constituency"}
                     </FormLabel>
-                    {isLoadingGeo ? (
+                    {isLoadingElectoralCircles ? (
                       <Skeleton className="h-10 w-full" />
                     ) : (
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                        disabled={!centers.length}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="glass">
-                            <SelectValue
-                              placeholder={
-                                language === "ar"
-                                  ? "اختر الدائرة"
-                                  : "Select constituency"
-                              }
-                            />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {constituencies.map((constituency) => (
-                            <SelectItem key={constituency.id} value={constituency.id}>
-                              {constituency.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <>
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          disabled={!districtId || electoralCirclesQuery.isError}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="glass">
+                              <SelectValue
+                                placeholder={
+                                  language === "ar"
+                                    ? "اختر الدائرة"
+                                    : "Select constituency"
+                                }
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {electoralCircles.map((circle) => (
+                              <SelectItem
+                                key={circle.id}
+                                value={String(circle.id)}
+                              >
+                                {circle.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {electoralCirclesQuery.isError ? (
+                          <p className="mt-2 text-sm text-destructive">
+                            {circleErrorText}
+                          </p>
+                        ) : null}
+                        {districtId &&
+                        !electoralCirclesQuery.isError &&
+                        !electoralCircles.length ? (
+                          <p className="mt-2 text-sm text-muted-foreground">
+                            {circleEmptyText}
+                          </p>
+                        ) : null}
+                      </>
                     )}
                     <FormMessage />
                   </FormItem>

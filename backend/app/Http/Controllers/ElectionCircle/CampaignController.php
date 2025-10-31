@@ -4,14 +4,16 @@ namespace App\Http\Controllers\ElectionCircle;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Concerns\HandlesIndexRequests;
+use App\Http\Requests\CampaignRequest;
 use App\Models\ElectionCircle\Campaign;
+use App\Services\CampaignService;
 use Illuminate\Http\Request;
 
 class CampaignController extends Controller
 {
     use HandlesIndexRequests;
 
-    public function __construct()
+    public function __construct(private CampaignService $campaignService)
     {
         $this->middleware('can:manage-electioncircle');
     }
@@ -27,18 +29,18 @@ class CampaignController extends Controller
         return $campaign;
     }
 
-    public function store(Request $request)
+    public function store(CampaignRequest $request)
     {
-        $campaign = Campaign::create($request->all());
+        $campaign = $this->campaignService->create($request->validated());
         return response()->json([
             'message' => __('messages.created', ['entity' => 'Campaign']),
             'data' => $campaign,
         ]);
     }
 
-    public function update(Request $request, Campaign $campaign)
+    public function update(CampaignRequest $request, Campaign $campaign)
     {
-        $campaign->update($request->all());
+        $campaign = $this->campaignService->update($campaign, $request->validated());
         return response()->json([
             'message' => __('messages.updated', ['entity' => 'Campaign']),
             'data' => $campaign,
