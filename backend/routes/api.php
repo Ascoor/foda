@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\SmsController;
 use App\Http\Controllers\Api\V1\LiveDataController;
 use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\GeoController;
 use App\Http\Controllers\Api\V1\SwotController;
 use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\MemberController;
@@ -101,6 +102,12 @@ $apiRoutes = function () {
         Route::post('voters/import', [VoterController::class, 'import']);
         Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
+
+        Route::prefix('geo')->group(function () {
+            Route::get('governorates', [GeoController::class, 'governorates']);
+            Route::get('governorates/{governorate}/districts', [GeoController::class, 'districts']);
+            Route::get('districts/{district}/electoral-circles', [GeoController::class, 'electoralCircles']);
+        });
 
         Route::prefix('integrations')->group(function () {
             Route::get('geo-areas', [ExternalDataController::class, 'geoAreas']);

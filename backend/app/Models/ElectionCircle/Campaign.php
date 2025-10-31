@@ -10,7 +10,14 @@ class Campaign extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'election_id'];
+    protected $fillable = [
+        'name',
+        'description',
+        'election_id',
+        'governorate_id',
+        'district_id',
+        'electoral_circle_id',
+    ];
 
     public function election(): BelongsTo
     {

@@ -20,6 +20,9 @@ class CampaignSeeder extends Seeder
             'name' => 'حملة التوعية',
             'description' => 'وصف مختصر للحملة',
             'election_id' => $election->id,
+            'governorate_id' => 1,
+            'district_id' => 101,
+            'electoral_circle_id' => 1001,
         ]);
     }
 }
