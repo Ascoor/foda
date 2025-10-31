@@ -13,7 +13,7 @@ export interface DistrictOption {
   name: string;
 }
 
-export interface ElectoralCircleOption {
+export interface CircleOption {
   id: number;
   district_id: number;
   name: string;
@@ -34,17 +34,14 @@ export const fetchGovernorates = async (): Promise<GovernorateOption[]> => {
   }
 };
 
-export const fetchGovernorateDistricts = async (
-  governorateId: string,
+export const fetchDistricts = async (
+  governorateId?: number | null,
 ): Promise<DistrictOption[]> => {
-  if (!governorateId) {
-    return [];
-  }
-
   try {
     const response = await request<{ data?: DistrictOption[] }>({
-      url: API_ENDPOINTS.geo.governorateDistricts(governorateId),
+      url: API_ENDPOINTS.geo.districts,
       method: "get",
+      params: governorateId ? { governorate_id: governorateId } : undefined,
       useCache: true,
     });
 
@@ -55,23 +52,20 @@ export const fetchGovernorateDistricts = async (
   }
 };
 
-export const fetchDistrictElectoralCircles = async (
-  districtId: string,
-): Promise<ElectoralCircleOption[]> => {
-  if (!districtId) {
-    return [];
-  }
-
+export const fetchCircles = async (
+  districtId?: number | null,
+): Promise<CircleOption[]> => {
   try {
-    const response = await request<{ data?: ElectoralCircleOption[] }>({
-      url: API_ENDPOINTS.geo.districtElectoralCircles(districtId),
+    const response = await request<{ data?: CircleOption[] }>({
+      url: API_ENDPOINTS.geo.circles,
       method: "get",
+      params: districtId ? { district_id: districtId } : undefined,
       useCache: true,
     });
 
     return safeArray(response.data);
   } catch (error) {
-    console.warn("Failed to load electoral circles", error);
+    console.warn("Failed to load circles", error);
     return [];
   }
 };

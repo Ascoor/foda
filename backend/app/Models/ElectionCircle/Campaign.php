@@ -16,7 +16,7 @@ class Campaign extends Model
         'election_id',
         'governorate_id',
         'district_id',
-        'electoral_circle_id',
+        'circle_id',
     ];
 
     public function election(): BelongsTo

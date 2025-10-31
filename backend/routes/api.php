@@ -105,8 +105,8 @@ $apiRoutes = function () {
 
         Route::prefix('geo')->group(function () {
             Route::get('governorates', [GeoController::class, 'governorates']);
-            Route::get('governorates/{governorate}/districts', [GeoController::class, 'districts']);
-            Route::get('districts/{district}/electoral-circles', [GeoController::class, 'electoralCircles']);
+            Route::get('districts', [GeoController::class, 'districts']);
+            Route::get('circles', [GeoController::class, 'circles']);
         });
 
         Route::prefix('integrations')->group(function () {

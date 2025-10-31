@@ -14,12 +14,12 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->unsignedBigInteger('governorate_id');
             $table->unsignedBigInteger('district_id');
-            $table->unsignedBigInteger('electoral_circle_id');
+            $table->unsignedBigInteger('circle_id');
             $table->timestamps();
 
             $table->index('governorate_id');
             $table->index('district_id');
-            $table->index('electoral_circle_id');
+            $table->index('circle_id');
         });
     }
 

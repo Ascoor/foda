@@ -22,12 +22,12 @@ class CampaignFactory extends Factory
     {
         $themes = ['دعم التعليم', 'خدمة المجتمع', 'تنمية الشباب', 'تمكين المرأة', 'تحسين الخدمات'];
         $geoScopes = [
-            ['governorate_id' => 1, 'district_id' => 101, 'electoral_circle_id' => 1001],
-            ['governorate_id' => 1, 'district_id' => 102, 'electoral_circle_id' => 1003],
-            ['governorate_id' => 2, 'district_id' => 201, 'electoral_circle_id' => 2001],
-            ['governorate_id' => 2, 'district_id' => 202, 'electoral_circle_id' => 2002],
-            ['governorate_id' => 3, 'district_id' => 301, 'electoral_circle_id' => 3001],
-            ['governorate_id' => 3, 'district_id' => 302, 'electoral_circle_id' => 3002],
+            ['governorate_id' => 1, 'district_id' => 101, 'circle_id' => 1001],
+            ['governorate_id' => 1, 'district_id' => 102, 'circle_id' => 1003],
+            ['governorate_id' => 2, 'district_id' => 201, 'circle_id' => 2001],
+            ['governorate_id' => 2, 'district_id' => 202, 'circle_id' => 2002],
+            ['governorate_id' => 3, 'district_id' => 301, 'circle_id' => 3001],
+            ['governorate_id' => 3, 'district_id' => 302, 'circle_id' => 3002],
         ];
 
         $scope = $this->faker->randomElement($geoScopes);
