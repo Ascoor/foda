@@ -7,10 +7,12 @@ import { ProgressChart } from "@features/dashboard/components/ProgressChart";
 import { ActivityFeed } from "@features/dashboard/components/ActivityFeed";
 import { LiveOperationsMap } from "@features/dashboard/components/LiveOperationsMap";
 import { ActivitiesTimeline } from "@features/activities/ActivitiesTimeline";
-import { useApi } from "@shared/lib/api";
 import { safeArray, safeNumber } from "@shared/lib/safeData";
-import { API_ENDPOINTS } from "@shared/lib/endpoints";
-import { toast } from "@shared/hooks/use-toast";
+import {
+  useDashboardStats,
+  useLiveMapData,
+  useRecentActivities,
+} from "./api/dashboard.service";
 
 interface DashboardData {
   stats: Record<
@@ -124,54 +126,112 @@ const KPICard = ({
   );
 };
 
-export const EnhancedDashboard: React.FC = () => {
+interface EnhancedDashboardProps {
+  campaignId: string | null | undefined;
+  electionId: string | null | undefined;
+}
+
+export const EnhancedDashboard: React.FC<EnhancedDashboardProps> = ({
+  campaignId,
+  electionId,
+}) => {
   const { t } = useTranslation();
 
-  // Dashboard data query
   const {
-    data: dashboardData,
-    loading: dashboardLoading,
-    error: dashboardError,
-    execute: refetchDashboard,
-  } = useApi<DashboardData>({
-    url: API_ENDPOINTS.dashboard.overview,
-    method: "GET",
-  });
+    data: statsData,
+    isPending: statsPending,
+    error: statsError,
+    refetch: refetchStats,
+  } = useDashboardStats(campaignId, electionId);
 
-  useEffect(() => {
-    refetchDashboard()
-      .then(() => toast({ description: t("dashboard.load_success") }))
-      .catch(() =>
-        toast({
-          variant: "destructive",
-          description: t("dashboard.load_error"),
-        }),
-      );
-  }, [refetchDashboard, t]);
+  const {
+    data: activitiesData,
+    isPending: activitiesPending,
+    error: activitiesError,
+    refetch: refetchActivities,
+  } = useRecentActivities(campaignId, electionId);
+
+  const {
+    data: liveMapData,
+    isPending: liveMapPending,
+    isFetching: liveMapFetching,
+    error: liveMapError,
+    refetch: refetchLiveMap,
+  } = useLiveMapData(campaignId, electionId);
+
+  const statsErrorValue = useMemo(() => {
+    if (!statsError) return null;
+    if (statsError instanceof Error) return statsError;
+    return new Error(
+      t("dashboard.load_error", {
+        defaultValue: "Unable to load dashboard data.",
+      }),
+    );
+  }, [statsError, t]);
+
+  const activitiesErrorValue = useMemo(() => {
+    if (!activitiesError) return null;
+    if (activitiesError instanceof Error) return activitiesError;
+    return new Error(
+      t("dashboard.load_error", {
+        defaultValue: "Unable to load dashboard data.",
+      }),
+    );
+  }, [activitiesError, t]);
+
+  const liveMapErrorValue = useMemo(() => {
+    if (!liveMapError) return null;
+    if (liveMapError instanceof Error) return liveMapError;
+    return new Error(
+      t("dashboard.map_load_error", {
+        defaultValue: "Unable to load live operations map.",
+      }),
+    );
+  }, [liveMapError, t]);
+
+  const statsLoading = statsPending && !statsData;
+  const activitiesLoading = activitiesPending && !activitiesData?.length;
+  const liveMapLoading = (liveMapPending || liveMapFetching) && !liveMapData;
+  const hasContext = Boolean(campaignId && electionId);
+  const contextPlaceholder = (
+    <div className="glass-card p-10 text-center space-y-4">
+      <h2 className="text-2xl font-semibold">
+        {t("dashboard.select_election_title", {
+          defaultValue: "Select an election to view the dashboard",
+        })}
+      </h2>
+      <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+        {t("dashboard.select_election_description", {
+          defaultValue:
+            "Choose a campaign and election from the ribbon to explore real-time insights.",
+        })}
+      </p>
+    </div>
+  );
 
   const safeStats = useMemo(() => {
-    const stats = dashboardData?.stats;
+    const stats = statsData?.stats;
     if (!stats || typeof stats !== "object") {
       return {} as Record<string, Partial<DashboardData["stats"][string]>>;
     }
 
     return stats;
-  }, [dashboardData?.stats]);
+  }, [statsData?.stats]);
 
   const safeProgress = useMemo(
     () => ({
-      registration: safeNumber(dashboardData?.progress?.registration),
-      verification: safeNumber(dashboardData?.progress?.verification),
-      campaign: safeNumber(dashboardData?.progress?.campaign),
-      voting: safeNumber(dashboardData?.progress?.voting),
-      overall: safeNumber(dashboardData?.progress?.overall),
-      remaining: safeNumber(dashboardData?.progress?.remaining),
+      registration: safeNumber(statsData?.progress?.registration),
+      verification: safeNumber(statsData?.progress?.verification),
+      campaign: safeNumber(statsData?.progress?.campaign),
+      voting: safeNumber(statsData?.progress?.voting),
+      overall: safeNumber(statsData?.progress?.overall),
+      remaining: safeNumber(statsData?.progress?.remaining),
     }),
-    [dashboardData?.progress],
+    [statsData?.progress],
   );
 
   const safeActivities = useMemo(() => {
-    return safeArray(dashboardData?.activities).map((activity, index) => {
+    return safeArray(activitiesData).map((activity, index) => {
       const normalized = activity as
         | Partial<DashboardData["activities"][number]>
         | undefined;
@@ -190,7 +250,7 @@ export const EnhancedDashboard: React.FC = () => {
         icon: Vote,
       };
     });
-  }, [dashboardData?.activities, t]);
+  }, [activitiesData, t]);
 
   const statsConfig = [
     {
@@ -219,28 +279,32 @@ export const EnhancedDashboard: React.FC = () => {
     },
   ];
 
-  const progressData = [
-    {
-      label: t("dashboard.registration"),
-      value: safeProgress.registration,
-      color: "primary" as const,
-    },
-    {
-      label: t("dashboard.verification"),
-      value: safeProgress.verification,
-      color: "secondary" as const,
-    },
-    {
-      label: t("dashboard.campaign"),
-      value: safeProgress.campaign,
-      color: "accent" as const,
-    },
-    {
-      label: t("dashboard.voting"),
-      value: safeProgress.voting,
-      color: "success" as const,
-    },
-  ];
+  const progressData = useMemo(() => {
+    if (!statsData) return [] as Array<{ label: string; value: number; color: "primary" | "secondary" | "accent" | "success" }>;
+
+    return [
+      {
+        label: t("dashboard.registration"),
+        value: safeProgress.registration,
+        color: "primary" as const,
+      },
+      {
+        label: t("dashboard.verification"),
+        value: safeProgress.verification,
+        color: "secondary" as const,
+      },
+      {
+        label: t("dashboard.campaign"),
+        value: safeProgress.campaign,
+        color: "accent" as const,
+      },
+      {
+        label: t("dashboard.voting"),
+        value: safeProgress.voting,
+        color: "success" as const,
+      },
+    ];
+  }, [safeProgress, statsData, t]);
 
   const getStatDetails = (key: string) => {
     const stat = safeStats[key];
@@ -292,92 +356,157 @@ export const EnhancedDashboard: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsConfig.map((stat, index) => {
-          const details = getStatDetails(stat.key);
-
-          return (
-            <motion.div
-              key={stat.key}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <KPICard
-                title={stat.title}
-                value={details.value}
-                change={details.change}
-                trend={details.trend}
-                icon={stat.icon}
-                color={stat.color}
-              />
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Progress Chart */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-          className="lg:col-span-2"
-        >
+      {!hasContext ? (
+        contextPlaceholder
+      ) : (
+        <>
+          {/* KPI Stats Grid */}
           <SafeDataRenderer
-            data={progressData}
-            loading={dashboardLoading}
-            error={dashboardError}
-            onRetry={refetchDashboard}
-            loadingMessage={t("dashboard.loading_progress")}
+            data={statsData ? [statsData] : []}
+            loading={statsLoading}
+            error={statsErrorValue}
+            onRetry={() => refetchStats()}
+            loadingMessage={t("dashboard.loading_overview", {
+              defaultValue: "Loading key metrics…",
+            })}
+            emptyTitle={t("dashboard.no_stats_title", {
+              defaultValue: "No metrics available",
+            })}
+            emptyDescription={t("dashboard.no_stats_description", {
+              defaultValue: "Once data starts flowing for this election, insights will appear here.",
+            })}
           >
-            {(data) => (
-              <ProgressChart
-                data={data}
-                overall={safeProgress.overall}
-                remaining={safeProgress.remaining}
-              />
+            {() => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {statsConfig.map((stat, index) => {
+                  const details = getStatDetails(stat.key);
+
+                  return (
+                    <motion.div
+                      key={stat.key}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <KPICard
+                        title={stat.title}
+                        value={details.value}
+                        change={details.change}
+                        trend={details.trend}
+                        icon={stat.icon}
+                        color={stat.color}
+                      />
+                    </motion.div>
+                  );
+                })}
+              </div>
             )}
           </SafeDataRenderer>
-        </motion.div>
 
-        {/* Activity Feed */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <SafeDataRenderer
-            data={safeActivities}
-            loading={dashboardLoading}
-            error={dashboardError}
-            onRetry={refetchDashboard}
-            loadingMessage={t("dashboard.loading_activities")}
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Progress Chart */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="lg:col-span-2"
+            >
+              <SafeDataRenderer
+                data={progressData}
+                loading={statsLoading}
+                error={statsErrorValue}
+                onRetry={() => refetchStats()}
+                loadingMessage={t("dashboard.loading_progress", {
+                  defaultValue: "Loading campaign progress…",
+                })}
+                emptyTitle={t("dashboard.no_progress_title", {
+                  defaultValue: "No progress data yet",
+                })}
+                emptyDescription={t("dashboard.no_progress_description", {
+                  defaultValue: "Trackers will appear once activities report measurable progress.",
+                })}
+              >
+                {(data) => (
+                  <ProgressChart
+                    data={data}
+                    overall={safeProgress.overall}
+                    remaining={safeProgress.remaining}
+                  />
+                )}
+              </SafeDataRenderer>
+            </motion.div>
+
+            {/* Activity Feed */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5 }}
+            >
+              <SafeDataRenderer
+                data={safeActivities}
+                loading={activitiesLoading}
+                error={activitiesErrorValue}
+                onRetry={() => refetchActivities()}
+                loadingMessage={t("dashboard.loading_activities", {
+                  defaultValue: "Loading recent activities…",
+                })}
+                emptyTitle={t("dashboard.no_activity_title", {
+                  defaultValue: "No activity yet",
+                })}
+                emptyDescription={t("dashboard.no_activity_description", {
+                  defaultValue: "Recent field updates will appear here as soon as teams report them.",
+                })}
+              >
+                {(data) => <ActivityFeed activities={data} />}
+              </SafeDataRenderer>
+            </motion.div>
+          </div>
+
+          {/* Live Map */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
           >
-            {(data) => <ActivityFeed activities={data} />}
-          </SafeDataRenderer>
-        </motion.div>
-      </div>
+            <SafeDataRenderer
+              data={liveMapData ? [liveMapData] : []}
+              loading={liveMapLoading}
+              error={liveMapErrorValue}
+              onRetry={() => refetchLiveMap()}
+              loadingMessage={t("dashboard.loading_map", {
+                defaultValue: "Loading live operations map…",
+              })}
+              emptyTitle={t("dashboard.no_map_data_title", {
+                defaultValue: "No map data yet",
+              })}
+              emptyDescription={t("dashboard.no_map_data_description", {
+                defaultValue: "Geospatial activity data will appear once field reports include locations.",
+              })}
+            >
+              {(data) => (
+                <LiveOperationsMap
+                  committees={data[0]?.committees}
+                  activities={data[0]?.activities}
+                  loading={liveMapLoading}
+                />
+              )}
+            </SafeDataRenderer>
+          </motion.div>
 
-      {/* Live Map */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-      >
-        <LiveOperationsMap />
-      </motion.div>
-
-      {/* Activity Timeline */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-      >
-        <ActivitiesTimeline />
-      </motion.div>
+          {/* Activity Timeline */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7 }}
+          >
+            <ActivitiesTimeline
+              campaignId={campaignId ?? null}
+              electionId={electionId ?? null}
+            />
+          </motion.div>
+        </>
+      )}
     </div>
   );
 };

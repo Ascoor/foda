@@ -12,7 +12,6 @@ import {
 import { Badge } from "@shared/ui/badge";
 import { Skeleton } from "@shared/ui/skeleton";
 import { toast } from "sonner";
-import { fetchCommitteeGeo, fetchRecentActivityGeo } from "../api";
 import { getEcho } from "@shared/lib/echo";
 import { Button } from "@shared/ui/button";
 
@@ -81,49 +80,38 @@ const defaultFilters: Filters = {
   type: "all",
 };
 
-export const LiveOperationsMap = () => {
+const sanitizeCollection = (
+  value?: FeatureCollection<Point, Record<string, any>> | null,
+) => (isFeatureCollection(value) ? value : EMPTY_COLLECTION);
+
+interface LiveOperationsMapProps {
+  committees?: FeatureCollection<Point, Record<string, any>> | null;
+  activities?: FeatureCollection<Point, Record<string, any>> | null;
+  loading?: boolean;
+}
+
+export const LiveOperationsMap = ({
+  committees: committeesProp,
+  activities: activitiesProp,
+  loading = false,
+}: LiveOperationsMapProps) => {
   const [committees, setCommittees] =
-    useState<FeatureCollection<Point, Record<string, any>>>(EMPTY_COLLECTION);
+    useState<FeatureCollection<Point, Record<string, any>>>(
+      sanitizeCollection(committeesProp),
+    );
   const [activities, setActivities] =
-    useState<FeatureCollection<Point, Record<string, any>>>(EMPTY_COLLECTION);
+    useState<FeatureCollection<Point, Record<string, any>>>(
+      sanitizeCollection(activitiesProp),
+    );
   const [filters, setFilters] = useState<Filters>(defaultFilters);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let isMounted = true;
+    setCommittees(sanitizeCollection(committeesProp));
+  }, [committeesProp]);
 
-    const load = async () => {
-      setLoading(true);
-      try {
-        const [committeesGeo, activityGeo] = await Promise.all([
-          fetchCommitteeGeo(),
-          fetchRecentActivityGeo({ limit: 150 }),
-        ]);
-
-        if (!isMounted) return;
-
-        setCommittees(
-          isFeatureCollection(committeesGeo) ? committeesGeo : EMPTY_COLLECTION,
-        );
-        setActivities(
-          isFeatureCollection(activityGeo) ? activityGeo : EMPTY_COLLECTION,
-        );
-      } catch (error) {
-        console.error("Failed to load live operations map", error);
-        toast.error("Unable to load map overlays.");
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    load();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  useEffect(() => {
+    setActivities(sanitizeCollection(activitiesProp));
+  }, [activitiesProp]);
 
   useEffect(() => {
     const echo = getEcho();

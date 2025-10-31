@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { Calendar, Clock, Layers, ListTree } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
@@ -24,6 +24,11 @@ const VIEW_MODES = [
 
 type ViewMode = (typeof VIEW_MODES)[number]["value"];
 
+interface ActivitiesTimelineProps {
+  campaignId?: string | null;
+  electionId?: string | null;
+}
+
 const groupByDate = (items: ActivityTimelineItem[]) => {
   const map = new Map<string, ActivityTimelineItem[]>();
   items.forEach((item) => {
@@ -47,7 +52,10 @@ const groupByDate = (items: ActivityTimelineItem[]) => {
   }));
 };
 
-export const ActivitiesTimeline = () => {
+export const ActivitiesTimeline = ({
+  campaignId = null,
+  electionId = null,
+}: ActivitiesTimelineProps) => {
   const [response, setResponse] = useState<ActivitiesResponse | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("timeline");
   const [page, setPage] = useState(1);
@@ -55,39 +63,55 @@ export const ActivitiesTimeline = () => {
   const [error, setError] = useState<string | null>(null);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const loadActivities = async (pageNumber = 1, append = false) => {
-    if (append) {
-      setIsLoadingMore(true);
-    } else {
-      setLoading(true);
-    }
-    setError(null);
+  const loadActivities = useCallback(
+    async (pageNumber = 1, append = false) => {
+      if (!campaignId || !electionId) {
+        setResponse(null);
+        setPage(1);
+        setLoading(false);
+        setIsLoadingMore(false);
+        setError(null);
+        return;
+      }
 
-    try {
-      const payload = await fetchActivities({ page: pageNumber });
-      setResponse((prev) => {
-        if (append && prev) {
-          return {
-            ...payload,
-            data: [...prev.data, ...payload.data],
-          };
-        }
-        return payload;
-      });
-      setPage(pageNumber);
-    } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Unable to load activities",
-      );
-    } finally {
-      setLoading(false);
-      setIsLoadingMore(false);
-    }
-  };
+      if (append) {
+        setIsLoadingMore(true);
+      } else {
+        setLoading(true);
+      }
+      setError(null);
+
+      try {
+        const payload = await fetchActivities({
+          page: pageNumber,
+          campaign_uuid: campaignId ?? undefined,
+          election_uuid: electionId ?? undefined,
+        });
+        setResponse((prev) => {
+          if (append && prev) {
+            return {
+              ...payload,
+              data: [...prev.data, ...payload.data],
+            };
+          }
+          return payload;
+        });
+        setPage(pageNumber);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err.message : "Unable to load activities",
+        );
+      } finally {
+        setLoading(false);
+        setIsLoadingMore(false);
+      }
+    },
+    [campaignId, electionId],
+  );
 
   useEffect(() => {
-    loadActivities();
-  }, []);
+    loadActivities(1, false);
+  }, [campaignId, electionId, loadActivities]);
 
   const grouped = useMemo(() => groupByDate(response?.data ?? []), [response]);
 

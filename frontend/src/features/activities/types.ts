@@ -18,6 +18,7 @@ export interface ActivitiesResponse {
 
 export interface ActivityFilters {
   campaign_uuid?: string;
+  election_uuid?: string;
   status?: ActivityStatus;
   type?: ActivityType;
   geo_area_uuid?: string;
