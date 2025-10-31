@@ -32,6 +32,7 @@ import FloatingLandingPage from "@features/marketing/pages/LandingPage";
 import FloatingDashboard from "@features/marketing/pages/Dashboard";
 import PostAuthRedirect from "@/routes/post-auth";
 import { NavGuard } from "@/nav/NavGuard";
+import { ElectionDashboard } from "@/pages/ElectionDashboard";
 
 const RouterShell = () => (
   <BarbaTransitionProvider>
@@ -90,7 +91,7 @@ export const router = createBrowserRouter([
         path: "/c/:campaignId/e/:electionId/dashboard",
         element: (
           <ProtectedRoute>
-            <CampaignDashboard />
+            <ElectionDashboard />
           </ProtectedRoute>
         ),
       },
