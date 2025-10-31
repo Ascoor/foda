@@ -6,8 +6,8 @@ import { BarbaTransitionProvider } from "@legacy/components/transition/BarbaTran
 
 import { Login as LegacyLogin } from "@legacy/pages/Login";
 import { Login } from "@/pages/Login";
-import { CampaignGateway } from "@/pages/CampaignGateway";
 import { CampaignDashboard } from "@/pages/CampaignDashboard";
+import { CampaignsIndex } from "@/pages/CampaignsIndex";
 import NotFound from "@legacy/pages/NotFound";
 
 import { ReportsDashboard } from "@features/reports/ReportsDashboard";
@@ -71,15 +71,23 @@ export const router = createBrowserRouter([
       { path: "/legacy-login", element: <LegacyLogin /> },
       { path: "/login", element: <Login /> },
       {
-        path: "/campaigns/gateway",
+        path: "/campaigns",
         element: (
           <ProtectedRoute>
-            <CampaignGateway />
+            <CampaignsIndex />
           </ProtectedRoute>
         ),
       },
       {
-        path: "/campaigns/:id/dashboard",
+        path: "/c/:campaignId/dashboard",
+        element: (
+          <ProtectedRoute>
+            <CampaignDashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/c/:campaignId/e/:electionId/dashboard",
         element: (
           <ProtectedRoute>
             <CampaignDashboard />

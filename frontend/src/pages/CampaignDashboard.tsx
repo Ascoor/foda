@@ -1,223 +1,277 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useMemo } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import {
+  ArrowLeft,
+  BarChart3,
+  CalendarDays,
+  MapPin,
+  Users,
+} from "lucide-react";
+
 import { useNewAuth as useAuth } from "@/shared/contexts/AuthContext";
-import { request } from "@/shared/lib/api";
-import { Button } from "@/shared/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Skeleton } from "@/shared/ui/skeleton";
-import { ArrowLeft, Users, MapPin, CheckSquare, BarChart3, Hash } from "lucide-react";
-import { toast } from "sonner";
+import { useLanguage } from "@shared/contexts/LanguageContext";
+import { safeArray } from "@shared/lib/utils";
+import { Button } from "@shared/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
+import { Skeleton } from "@shared/ui/skeleton";
+import { fetchCampaign, fetchCampaignElections } from "@features/campaigns/api";
+import { ElectionRibbon } from "@features/campaigns/components/ElectionRibbon";
+import { useCampaignsStore } from "@features/campaigns/store";
+import type { Campaign, Election } from "@/types";
 
-interface Campaign {
-  id: number | string;
-  name: string;
-  description?: string | null;
-  election_id?: number | null;
-  created_at?: string | null;
-  updated_at?: string | null;
-}
-
-const extractCampaign = (data: unknown): Campaign | null => {
-  if (!data) return null;
-
-  if (typeof data === "object" && "data" in data) {
-    const inner = (data as { data?: unknown }).data;
-    if (inner && typeof inner === "object") {
-      return inner as Campaign;
-    }
-  }
-
-  return data as Campaign;
-};
-
-const formatDateTime = (value?: string | null) => {
+const formatDate = (value?: string | null, locale: "ar" | "en" = "ar") => {
   if (!value) return "";
-
   try {
-    return new Date(value).toLocaleString("ar-SA", {
+    return new Date(value).toLocaleDateString(locale === "ar" ? "ar-EG" : "en-GB", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
-  } catch {
+  } catch (error) {
+    console.warn("Unable to format date", error);
     return value ?? "";
   }
 };
 
+const summarizeElection = (election: Election | undefined, language: "ar" | "en") => {
+  if (!election) {
+    return language === "ar"
+      ? "لا توجد انتخابات مرتبطة حتى الآن"
+      : "No linked elections yet.";
+  }
+
+  const phases = safeArray(election.phases);
+  if (!phases.length) {
+    return language === "ar"
+      ? "لم يتم جدولة مراحل لهذه الانتخابات بعد"
+      : "No phases have been scheduled for this election yet.";
+  }
+
+  const start = phases[0]?.starts_at;
+  const end = phases[phases.length - 1]?.ends_at;
+  const locale = language === "ar" ? "ar-EG" : "en-GB";
+
+  if (!start || !end) {
+    return language === "ar"
+      ? "تأكد من إضافة نطاق زمني للانتخابات"
+      : "Make sure to add a time range for this election.";
+  }
+
+  return language === "ar"
+    ? `من ${new Date(start).toLocaleDateString(locale)} إلى ${new Date(end).toLocaleDateString(locale)}`
+    : `From ${new Date(start).toLocaleDateString(locale)} to ${new Date(end).toLocaleDateString(locale)}`;
+};
+
 export const CampaignDashboard = () => {
-  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const params = useParams<Record<string, string | undefined>>();
+  const campaignId = params.campaignId ?? params.id ?? "";
+  const electionId = params.electionId ?? params.eid ?? "";
+  const { language } = useLanguage();
   const { signOut } = useAuth();
-  const [campaign, setCampaign] = useState<Campaign | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { activeElectionId, setActiveCampaign, setActiveElection } = useCampaignsStore();
 
   useEffect(() => {
-    fetchCampaign();
-  }, [id]);
-
-  const fetchCampaign = async () => {
-    if (!id) return;
-
-    setLoading(true);
-    try {
-      const data = await request<Campaign | { data: Campaign }>({
-        url: `/ec/campaigns/${id}`,
-        method: "get",
-      });
-
-      const normalized = extractCampaign(data);
-
-      if (!normalized) {
-        throw new Error("تعذر تحميل بيانات الحملة");
-      }
-
-      setCampaign(normalized);
-    } catch (error) {
-      toast.error("فشل تحميل بيانات الحملة");
-      console.error(error);
-      navigate("/campaigns/gateway");
-    } finally {
-      setLoading(false);
+    if (!campaignId) {
+      navigate("/campaigns", { replace: true });
     }
-  };
+  }, [campaignId, navigate]);
 
-  if (loading) {
+  useEffect(() => {
+    if (campaignId) {
+      setActiveCampaign(campaignId);
+    }
+  }, [campaignId, setActiveCampaign]);
+
+  useEffect(() => {
+    if (electionId) {
+      setActiveElection(electionId);
+    }
+  }, [electionId, setActiveElection]);
+
+  const {
+    data: campaign,
+    isLoading: isCampaignLoading,
+    isError,
+  } = useQuery<Campaign>({
+    queryKey: ["campaign", campaignId],
+    queryFn: () => fetchCampaign(campaignId),
+    enabled: !!campaignId,
+  });
+
+  const { data: elections } = useQuery<Election[]>({
+    queryKey: ["campaign", campaignId, "elections"],
+    queryFn: () => fetchCampaignElections(campaignId),
+    enabled: !!campaignId,
+  });
+
+  const normalizedElections = safeArray(elections);
+  const effectiveElectionId = electionId ?? activeElectionId ?? normalizedElections[0]?.id?.toString();
+  const activeElection = useMemo(
+    () =>
+      normalizedElections.find(
+        (election) => election.id?.toString() === effectiveElectionId?.toString(),
+      ),
+    [normalizedElections, effectiveElectionId],
+  );
+
+  useEffect(() => {
+    if (!campaignId || !normalizedElections.length) {
+      return;
+    }
+
+    if (!electionId && normalizedElections[0]?.id) {
+      const firstId = normalizedElections[0].id.toString();
+      setActiveElection(firstId);
+      navigate(`/c/${campaignId}/e/${firstId}/dashboard`, { replace: true });
+    }
+  }, [campaignId, electionId, navigate, normalizedElections, setActiveElection]);
+
+  if (isError) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-6">
-        <div className="max-w-7xl mx-auto space-y-6">
-          <Skeleton className="h-16 w-full" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[1, 2, 3, 4].map((i) => (
-              <Skeleton key={i} className="h-32" />
-            ))}
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 px-4 py-8">
+        <div className="mx-auto flex max-w-5xl flex-col items-center justify-center gap-4 rounded-3xl border border-destructive/20 bg-destructive/10 p-10 text-center shadow-lg">
+          <h2 className="text-2xl font-semibold text-destructive">
+            {language === "ar" ? "تعذر تحميل الحملة" : "Unable to load campaign"}
+          </h2>
+          <Button onClick={() => navigate("/campaigns")}>{language === "ar" ? "العودة" : "Go back"}</Button>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <div>
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 via-background to-secondary/10 px-4 py-8">
+      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-3">
             <Button
               variant="ghost"
-              onClick={() => navigate("/campaigns/gateway")}
-              className="mb-4"
+              className="glass-button inline-flex items-center gap-2"
+              onClick={() => navigate("/campaigns")}
             >
-              <ArrowLeft className="ml-2 h-4 w-4" />
-              العودة للحملات
+              <ArrowLeft className="h-4 w-4" />
+              {language === "ar" ? "العودة للحملات" : "Back to campaigns"}
             </Button>
-            <h1 className="text-4xl font-bold text-gradient-primary mb-2">
-              {campaign?.name}
-            </h1>
-            <p className="text-muted-foreground">
-              {campaign?.description || "لوحة التحكم الرئيسية للحملة"}
-            </p>
-            <div className="flex gap-2 mt-2 flex-wrap">
-              <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary flex items-center gap-1">
-                <Hash className="h-3 w-3" />
-                {`معرّف الحملة: ${campaign?.id ?? "غير متاح"}`}
-              </span>
-              <span className="text-xs px-3 py-1 rounded-full bg-success/20 text-success">
-                {campaign?.election_id
-                  ? `مرتبطة بالانتخابات رقم ${campaign.election_id}`
-                  : "بدون انتخابات مرتبطة"}
-              </span>
-              {campaign?.updated_at && (
-                <span className="text-xs px-3 py-1 rounded-full bg-muted/40 text-muted-foreground">
-                  {`آخر تحديث: ${formatDateTime(campaign.updated_at)}`}
-                </span>
-              )}
-            </div>
+            {isCampaignLoading ? (
+              <Skeleton className="h-10 w-64" />
+            ) : (
+              <div>
+                <h1 className="text-3xl font-bold text-gradient-primary">
+                  {campaign?.name}
+                </h1>
+                <p className="max-w-2xl text-sm text-muted-foreground">
+                  {campaign?.description ??
+                    (language === "ar"
+                      ? "تتبع أداء الحملة واتخذ قرارات قائمة على البيانات"
+                      : "Track campaign performance and make data-informed decisions.")}
+                </p>
+              </div>
+            )}
           </div>
-          <Button onClick={signOut} variant="outline" className="glass-button">
-            تسجيل الخروج
-          </Button>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="outline" onClick={signOut} className="glass-button">
+              {language === "ar" ? "تسجيل الخروج" : "Sign out"}
+            </Button>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="glass-card border-white/20">
+        <ElectionRibbon campaignId={campaignId} activeElectionId={effectiveElectionId} />
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="glass-card border-white/10">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">المناطق</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {language === "ar" ? "المناطق" : "Geo areas"}
+              </CardTitle>
               <MapPin className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12</div>
-              <p className="text-xs text-muted-foreground">منطقة انتخابية</p>
+              <div className="text-2xl font-bold">
+                {campaign?.default_geo_scope ?? (language === "ar" ? "غير محدد" : "Not set")}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {language === "ar" ? "النطاق الجغرافي الحالي" : "Current geographic scope"}
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="glass-card border-white/20">
+          <Card className="glass-card border-white/10">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">المتطوعون</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {language === "ar" ? "المتطوعون" : "Volunteers"}
+              </CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">324</div>
-              <p className="text-xs text-muted-foreground">متطوع نشط</p>
+              <div className="text-2xl font-bold">
+                {(campaign?.goals?.[0]?.current_value ?? 0).toLocaleString(
+                  language === "ar" ? "ar-EG" : "en-GB",
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {language === "ar" ? "حجم الفريق الميداني" : "Field force size"}
+              </p>
             </CardContent>
           </Card>
 
-          <Card className="glass-card border-white/20">
+          <Card className="glass-card border-white/10">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">المهام</CardTitle>
-              <CheckSquare className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">87</div>
-              <p className="text-xs text-muted-foreground">مهمة قيد التنفيذ</p>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card border-white/20">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">معدل الإنجاز</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                {language === "ar" ? "الأهداف" : "Goals"}
+              </CardTitle>
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">73%</div>
-              <p className="text-xs text-muted-foreground">من الأهداف</p>
+              <div className="text-2xl font-bold">
+                {(campaign?.goals?.[0]?.target_value ?? 0).toLocaleString(
+                  language === "ar" ? "ar-EG" : "en-GB",
+                )}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {language === "ar" ? "الهدف العام" : "Primary target"}
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card className="glass-card border-white/10">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                {language === "ar" ? "تاريخ الإنشاء" : "Created"}
+              </CardTitle>
+              <CalendarDays className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {formatDate(campaign?.created_at, language)}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                {language === "ar" ? "آخر تحديث" : "Last update"}
+              </p>
             </CardContent>
           </Card>
         </div>
 
-        <Card className="glass-card border-white/20">
+        <Card className="glass-card border-white/10">
           <CardHeader>
-            <CardTitle>مرحباً بك في لوحة التحكم</CardTitle>
+            <CardTitle className="text-lg font-semibold">
+              {language === "ar" ? "ملخص الانتخابات" : "Election summary"}
+            </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              هذه هي لوحة التحكم الرئيسية لحملتك الانتخابية. من هنا يمكنك:
+          <CardContent className="space-y-4 text-sm text-muted-foreground">
+            <p>{summarizeElection(activeElection, language)}</p>
+            <p>
+              {language === "ar"
+                ? "قم بالتبديل بين الانتخابات من الشريط العلوي لتحديث مؤشرات الأداء الرئيسية"
+                : "Switch between elections from the ribbon above to refresh your KPIs."}
             </p>
-            <ul className="space-y-2 text-muted-foreground">
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <span>متابعة تقدم الأنشطة الانتخابية في الوقت الفعلي</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <span>إدارة المتطوعين والمناطق الجغرافية</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <span>مراقبة المهام والأنشطة الميدانية</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="text-primary">•</span>
-                <span>تحليل البيانات واتخاذ القرارات المستنيرة</span>
-              </li>
-            </ul>
-            <div className="mt-6 p-4 rounded-lg bg-primary/10 border border-primary/20">
-              <p className="text-sm font-medium">💡 نصيحة</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                استخدم القائمة الجانبية للانتقال بين الأقسام المختلفة لإدارة حملتك بكفاءة
-              </p>
-            </div>
           </CardContent>
         </Card>
       </div>
     </div>
   );
 };
+
+export default CampaignDashboard;

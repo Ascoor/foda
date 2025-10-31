@@ -167,7 +167,7 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       toast.success("تم تسجيل الدخول بنجاح");
-      void router.navigate("/campaigns/gateway");
+      void router.navigate("/campaigns");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "فشل تسجيل الدخول");
       throw error;
