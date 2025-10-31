@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Services\GeoHierarchyService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class GeoController extends Controller
 {
@@ -20,9 +21,18 @@ class GeoController extends Controller
         ]);
     }
 
-    public function districts(int $governorate): JsonResponse
+    public function districts(Request $request): JsonResponse
     {
-        if (! $this->geoService->hasGovernorate($governorate)) {
+        $governorateId = $this->parseNullableId($request->query('governorate_id'));
+
+        if ($request->has('governorate_id') && $governorateId === null) {
+            return response()->json([
+                'message' => 'Governorate id must be a valid integer.',
+                'data' => [],
+            ], 422);
+        }
+
+        if ($governorateId !== null && ! $this->geoService->hasGovernorate($governorateId)) {
             return response()->json([
                 'message' => 'Governorate not found.',
                 'data' => [],
@@ -30,13 +40,22 @@ class GeoController extends Controller
         }
 
         return response()->json([
-            'data' => $this->geoService->districts($governorate),
+            'data' => $this->geoService->districts($governorateId),
         ]);
     }
 
-    public function electoralCircles(int $district): JsonResponse
+    public function circles(Request $request): JsonResponse
     {
-        if (! $this->geoService->hasDistrict($district)) {
+        $districtId = $this->parseNullableId($request->query('district_id'));
+
+        if ($request->has('district_id') && $districtId === null) {
+            return response()->json([
+                'message' => 'District id must be a valid integer.',
+                'data' => [],
+            ], 422);
+        }
+
+        if ($districtId !== null && ! $this->geoService->hasDistrict($districtId)) {
             return response()->json([
                 'message' => 'District not found.',
                 'data' => [],
@@ -44,7 +63,18 @@ class GeoController extends Controller
         }
 
         return response()->json([
-            'data' => $this->geoService->electoralCircles($district),
+            'data' => $this->geoService->circles($districtId),
         ]);
+    }
+
+    private function parseNullableId(?string $value): ?int
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        $filtered = filter_var($value, FILTER_VALIDATE_INT);
+
+        return $filtered === false ? null : (int) $filtered;
     }
 }

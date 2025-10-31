@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
 import {
-  fetchDistrictElectoralCircles,
-  fetchGovernorateDistricts,
-  fetchGovernorates,
-} from "@shared/api/geo.service";
+  useCircles,
+  useDistricts,
+  useGovernorates,
+} from "@shared/api/geo.hooks";
 import { useLanguage } from "@shared/contexts/LanguageContext";
 import { cn } from "@shared/lib/utils";
 import {
@@ -56,7 +56,7 @@ const formSchema = z.object({
   districtId: z
     .string({ required_error: "اختر المركز أو المدينة" })
     .min(1, "اختر المركز أو المدينة"),
-  electoralCircleId: z
+  circleId: z
     .string({ required_error: "اختر الدائرة الانتخابية" })
     .min(1, "اختر الدائرة الانتخابية"),
 });
@@ -89,7 +89,7 @@ export const CreateCampaignDialog = ({
       description: "",
       governorateId: "",
       districtId: "",
-      electoralCircleId: "",
+      circleId: "",
     },
   });
 
@@ -100,49 +100,30 @@ export const CreateCampaignDialog = ({
         description: "",
         governorateId: "",
         districtId: "",
-        electoralCircleId: "",
+        circleId: "",
       });
     }
   }, [form, open]);
 
-  const governoratesQuery = useQuery({
-    queryKey: ["geo", "governorates"],
-    queryFn: fetchGovernorates,
-    staleTime: 1000 * 60 * 30,
-  });
-
+  const governoratesQuery = useGovernorates();
   const governorates = governoratesQuery.data ?? [];
-  const governorateId = form.watch("governorateId");
+  const selectedGovernorateId = form.watch("governorateId");
+  const governorateId = selectedGovernorateId
+    ? Number(selectedGovernorateId)
+    : undefined;
 
-  const districtsQuery = useQuery({
-    queryKey: ["geo", "governorates", governorateId ?? null, "districts"],
-    queryFn: () => fetchGovernorateDistricts(governorateId ?? ""),
-    enabled: Boolean(governorateId),
-    staleTime: 1000 * 60 * 15,
-  });
-
+  const districtsQuery = useDistricts(governorateId);
   const districts = districtsQuery.data ?? [];
-  const districtId = form.watch("districtId");
+  const selectedDistrictId = form.watch("districtId");
+  const districtId = selectedDistrictId ? Number(selectedDistrictId) : undefined;
 
-  const electoralCirclesQuery = useQuery({
-    queryKey: [
-      "geo",
-      "districts",
-      districtId ?? null,
-      "electoral-circles",
-    ],
-    queryFn: () => fetchDistrictElectoralCircles(districtId ?? ""),
-    enabled: Boolean(districtId),
-    staleTime: 1000 * 60 * 15,
-  });
-
-  const electoralCircles = electoralCirclesQuery.data ?? [];
+  const circlesQuery = useCircles(districtId);
+  const circles = circlesQuery.data ?? [];
 
   const isLoadingGovernorates = governoratesQuery.isLoading;
   const isLoadingDistricts =
     districtsQuery.isLoading || districtsQuery.isFetching;
-  const isLoadingElectoralCircles =
-    electoralCirclesQuery.isLoading || electoralCirclesQuery.isFetching;
+  const isLoadingCircles = circlesQuery.isLoading || circlesQuery.isFetching;
 
   const governorateErrorText =
     language === "ar"
@@ -163,11 +144,11 @@ export const CreateCampaignDialog = ({
   const circleErrorText =
     language === "ar"
       ? "تعذّر تحميل بيانات الدوائر الانتخابية."
-      : "Failed to load electoral circles.";
+      : "Failed to load circles.";
   const circleEmptyText =
     language === "ar"
       ? "لا توجد دوائر متاحة للمركز المختار."
-      : "No electoral circles available for the selected district.";
+      : "No circles available for the selected district.";
 
   const createMutation = useMutation({
     mutationFn: createCampaign,
@@ -186,7 +167,7 @@ export const CreateCampaignDialog = ({
       description: description ? description : null,
       governorate_id: toNullableNumber(values.governorateId),
       district_id: toNullableNumber(values.districtId),
-      electoral_circle_id: toNullableNumber(values.electoralCircleId),
+      circle_id: toNullableNumber(values.circleId),
     } as Parameters<typeof createCampaign>[0];
 
     createMutation.mutate(payload);
@@ -276,7 +257,7 @@ export const CreateCampaignDialog = ({
                           onValueChange={(value) => {
                             field.onChange(value);
                             form.setValue("districtId", "");
-                            form.setValue("electoralCircleId", "");
+                            form.setValue("circleId", "");
                           }}
                           disabled={
                             governoratesQuery.isError || !governorates.length
@@ -338,9 +319,11 @@ export const CreateCampaignDialog = ({
                           value={field.value}
                           onValueChange={(value) => {
                             field.onChange(value);
-                            form.setValue("electoralCircleId", "");
+                            form.setValue("circleId", "");
                           }}
-                          disabled={!governorateId || districtsQuery.isError}
+                          disabled={
+                            !selectedGovernorateId || districtsQuery.isError
+                          }
                         >
                           <FormControl>
                             <SelectTrigger className="glass">
@@ -369,7 +352,7 @@ export const CreateCampaignDialog = ({
                             {districtErrorText}
                           </p>
                         ) : null}
-                        {governorateId &&
+                        {selectedGovernorateId &&
                         !districtsQuery.isError &&
                         !districts.length ? (
                           <p className="mt-2 text-sm text-muted-foreground">
@@ -385,20 +368,22 @@ export const CreateCampaignDialog = ({
 
               <FormField
                 control={form.control}
-                name="electoralCircleId"
+                name="circleId"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>
                       {language === "ar" ? "الدائرة" : "Constituency"}
                     </FormLabel>
-                    {isLoadingElectoralCircles ? (
+                    {isLoadingCircles ? (
                       <Skeleton className="h-10 w-full" />
                     ) : (
                       <>
                         <Select
                           value={field.value}
                           onValueChange={field.onChange}
-                          disabled={!districtId || electoralCirclesQuery.isError}
+                          disabled={
+                            !selectedDistrictId || circlesQuery.isError
+                          }
                         >
                           <FormControl>
                             <SelectTrigger className="glass">
@@ -412,7 +397,7 @@ export const CreateCampaignDialog = ({
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {electoralCircles.map((circle) => (
+                            {circles.map((circle) => (
                               <SelectItem
                                 key={circle.id}
                                 value={String(circle.id)}
@@ -422,14 +407,14 @@ export const CreateCampaignDialog = ({
                             ))}
                           </SelectContent>
                         </Select>
-                        {electoralCirclesQuery.isError ? (
+                        {circlesQuery.isError ? (
                           <p className="mt-2 text-sm text-destructive">
                             {circleErrorText}
                           </p>
                         ) : null}
-                        {districtId &&
-                        !electoralCirclesQuery.isError &&
-                        !electoralCircles.length ? (
+                        {selectedDistrictId &&
+                        !circlesQuery.isError &&
+                        !circles.length ? (
                           <p className="mt-2 text-sm text-muted-foreground">
                             {circleEmptyText}
                           </p>

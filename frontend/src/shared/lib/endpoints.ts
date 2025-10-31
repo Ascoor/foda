@@ -39,10 +39,8 @@ export const API_ENDPOINTS = {
   },
   geo: {
     governorates: "/api/v1/geo/governorates",
-    governorateDistricts: (governorateId: string | number) =>
-      `/api/v1/geo/governorates/${governorateId}/districts`,
-    districtElectoralCircles: (districtId: string | number) =>
-      `/api/v1/geo/districts/${districtId}/electoral-circles`,
+    districts: "/api/v1/geo/districts",
+    circles: "/api/v1/geo/circles",
   },
 } as const;
 

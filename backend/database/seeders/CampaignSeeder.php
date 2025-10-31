@@ -22,7 +22,7 @@ class CampaignSeeder extends Seeder
             'election_id' => $election->id,
             'governorate_id' => 1,
             'district_id' => 101,
-            'electoral_circle_id' => 1001,
+            'circle_id' => 1001,
         ]);
     }
 }
