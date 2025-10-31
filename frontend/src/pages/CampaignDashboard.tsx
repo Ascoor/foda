@@ -1,20 +1,55 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useNewAuth as useAuth } from "@/shared/contexts/AuthContext";
-import { supabase } from "@/integrations/supabase/client";
+import { request } from "@/shared/lib/api";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
 import { Skeleton } from "@/shared/ui/skeleton";
-import { ArrowLeft, Users, MapPin, CheckSquare, BarChart3 } from "lucide-react";
+import { ArrowLeft, Users, MapPin, CheckSquare, BarChart3, Hash } from "lucide-react";
 import { toast } from "sonner";
+
+interface Campaign {
+  id: number | string;
+  name: string;
+  description?: string | null;
+  election_id?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+}
+
+const extractCampaign = (data: unknown): Campaign | null => {
+  if (!data) return null;
+
+  if (typeof data === "object" && "data" in data) {
+    const inner = (data as { data?: unknown }).data;
+    if (inner && typeof inner === "object") {
+      return inner as Campaign;
+    }
+  }
+
+  return data as Campaign;
+};
+
+const formatDateTime = (value?: string | null) => {
+  if (!value) return "";
+
+  try {
+    return new Date(value).toLocaleString("ar-SA", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  } catch {
+    return value ?? "";
+  }
+};
 
 export const CampaignDashboard = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { signOut } = useAuth();
-  const [campaign, setCampaign] = useState<any>(null);
+  const [campaign, setCampaign] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(true);
-  const [memberRole, setMemberRole] = useState<string>("");
 
   useEffect(() => {
     fetchCampaign();
@@ -22,29 +57,22 @@ export const CampaignDashboard = () => {
 
   const fetchCampaign = async () => {
     if (!id) return;
-    
+
     setLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("campaigns")
-        .select(`
-          *,
-          campaign_members!inner(role, user_id)
-        `)
-        .eq("id", id)
-        .single();
+      const data = await request<Campaign | { data: Campaign }>({
+        url: `/ec/campaigns/${id}`,
+        method: "get",
+      });
 
-      if (error) throw error;
-      
-      setCampaign(data);
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      const userMember = data.campaign_members.find(
-        (m: any) => m.user_id === user?.id
-      );
-      setMemberRole(userMember?.role || "");
-    } catch (error: any) {
+      const normalized = extractCampaign(data);
+
+      if (!normalized) {
+        throw new Error("تعذر تحميل بيانات الحملة");
+      }
+
+      setCampaign(normalized);
+    } catch (error) {
       toast.error("فشل تحميل بيانات الحملة");
       console.error(error);
       navigate("/campaigns/gateway");
@@ -87,13 +115,21 @@ export const CampaignDashboard = () => {
             <p className="text-muted-foreground">
               {campaign?.description || "لوحة التحكم الرئيسية للحملة"}
             </p>
-            <div className="flex gap-2 mt-2">
-              <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary">
-                {memberRole === "owner" ? "مالك" : memberRole === "admin" ? "مسؤول" : "عضو"}
+            <div className="flex gap-2 mt-2 flex-wrap">
+              <span className="text-xs px-3 py-1 rounded-full bg-primary/20 text-primary flex items-center gap-1">
+                <Hash className="h-3 w-3" />
+                {`معرّف الحملة: ${campaign?.id ?? "غير متاح"}`}
               </span>
               <span className="text-xs px-3 py-1 rounded-full bg-success/20 text-success">
-                {campaign?.status === "active" ? "نشطة" : "مؤرشفة"}
+                {campaign?.election_id
+                  ? `مرتبطة بالانتخابات رقم ${campaign.election_id}`
+                  : "بدون انتخابات مرتبطة"}
               </span>
+              {campaign?.updated_at && (
+                <span className="text-xs px-3 py-1 rounded-full bg-muted/40 text-muted-foreground">
+                  {`آخر تحديث: ${formatDateTime(campaign.updated_at)}`}
+                </span>
+              )}
             </div>
           </div>
           <Button onClick={signOut} variant="outline" className="glass-button">
