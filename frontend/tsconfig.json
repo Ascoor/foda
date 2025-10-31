@@ -1,23 +1,9 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2020",
-    "module": "ESNext",
-    "jsx": "react-jsx",
-    "strict": true,
-    "noImplicitAny": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@app/*": ["src/app/*"],
-      "@features/*": ["src/features/*"],
-      "@shared/*": ["src/shared/*"],
-      "@theme/*": ["src/theme/*"],
-      "@legacy/*": ["src/legacy/*"]
-    }
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx"
   },
   "include": ["src"]
 }
