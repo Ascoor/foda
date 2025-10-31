@@ -26,7 +26,7 @@ export const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    
+
     try {
       loginSchema.parse(loginData);
       await signIn(loginData.email, loginData.password);
@@ -44,7 +44,7 @@ export const Login = () => {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-    
+
     try {
       signupSchema.parse(signupData);
       await signUp(signupData.email, signupData.password, signupData.fullName);

@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { User, Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
+import { request, setAuthToken } from "@/shared/lib/api";
 
 interface LegacyLoginParams {
   email: string;
@@ -10,13 +10,26 @@ interface LegacyLoginParams {
   remember?: boolean;
 }
 
+export interface AuthUser {
+  id: number | string;
+  name: string;
+  email: string;
+  roles?: string[] | null;
+  last_login_at?: string | null;
+  status?: string | null;
+}
+
+interface AuthSession {
+  token: string;
+}
+
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
-  profile: any | null;
+  user: AuthUser | null;
+  session: AuthSession | null;
+  profile: AuthUser | null;
   loading: boolean;
   isAuthenticated: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string, remember?: boolean) => Promise<void>;
   login: (params: LegacyLoginParams) => Promise<void>;
   signUp: (email: string, password: string, fullName: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -24,79 +37,140 @@ interface AuthContextType {
   refreshProfile: () => Promise<void>;
 }
 
+interface LoginResponse {
+  token: string;
+  user: AuthUser;
+}
+
+const STORAGE_TOKEN_KEY = "auth:token";
+const STORAGE_USER_KEY = "auth:user";
+const STORAGE_REMEMBER_KEY = "auth:remember";
+
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
-  const [profile, setProfile] = useState<any | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [session, setSession] = useState<AuthSession | null>(null);
+  const [profile, setProfile] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const fetchProfile = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", userId)
-        .single();
+  const persistAuthState = (token: string, userData: AuthUser) => {
+    setAuthToken(token);
+    setSession({ token });
+    setUser(userData);
+    setProfile(userData);
 
-      if (error) throw error;
-      setProfile(data);
-    } catch (error) {
-      console.error("Error fetching profile:", error);
+    try {
+      localStorage.setItem(STORAGE_TOKEN_KEY, token);
+      localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(userData));
+    } catch {
+      // Ignore storage errors to keep behaviour consistent across environments.
     }
   };
 
-  const refreshProfile = async () => {
-    if (user) {
-      await fetchProfile(user.id);
+  const clearAuthState = () => {
+    setAuthToken(null);
+    setSession(null);
+    setUser(null);
+    setProfile(null);
+
+    try {
+      localStorage.removeItem(STORAGE_TOKEN_KEY);
+      localStorage.removeItem(STORAGE_USER_KEY);
+    } catch {
+      // Ignore storage errors to align with legacy resilience.
+    }
+  };
+
+  const fetchProfile = async () => {
+    const data = await request<AuthUser>({
+      url: "/me",
+      method: "get",
+    });
+
+    setUser(data);
+    setProfile(data);
+
+    try {
+      localStorage.setItem(STORAGE_USER_KEY, JSON.stringify(data));
+    } catch {
+      // Ignore storage errors.
     }
   };
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        
-        if (session?.user) {
-          setTimeout(() => {
-            fetchProfile(session.user.id);
-          }, 0);
-        } else {
-          setProfile(null);
-        }
-      }
-    );
+    const initializeAuth = async () => {
+      try {
+        const storedToken = localStorage.getItem(STORAGE_TOKEN_KEY);
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      
-      if (session?.user) {
-        fetchProfile(session.user.id);
+        if (!storedToken) {
+          setLoading(false);
+          return;
+        }
+
+        setAuthToken(storedToken);
+        setSession({ token: storedToken });
+
+        const cachedUser = localStorage.getItem(STORAGE_USER_KEY);
+        if (cachedUser) {
+          try {
+            const parsed = JSON.parse(cachedUser) as AuthUser;
+            setUser(parsed);
+            setProfile(parsed);
+          } catch {
+            localStorage.removeItem(STORAGE_USER_KEY);
+          }
+        }
+
+        await fetchProfile();
+      } catch (error) {
+        console.error("Failed to restore authentication state", error);
+        clearAuthState();
+      } finally {
+        setLoading(false);
       }
+    };
+
+    initializeAuth().catch((error) => {
+      console.error("Unexpected error during auth initialization", error);
       setLoading(false);
     });
-
-    return () => subscription.unsubscribe();
   }, []);
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (
+    email: string,
+    password: string,
+    remember = false,
+  ) => {
     setLoading(true);
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const response = await request<LoginResponse>({
+        url: "/login",
+        method: "post",
+        data: { email, password, remember },
       });
 
-      if (error) throw error;
-      
+      persistAuthState(response.token, response.user);
+
+      if (remember) {
+        try {
+          localStorage.setItem(STORAGE_REMEMBER_KEY, "true");
+        } catch {
+          // Ignore storage errors; remember is best-effort only.
+        }
+      } else {
+        try {
+          localStorage.removeItem(STORAGE_REMEMBER_KEY);
+        } catch {
+          // Ignore storage errors to keep behaviour consistent.
+        }
+      }
+
       toast.success("تم تسجيل الدخول بنجاح");
       navigate("/campaigns/gateway");
     } catch (error: any) {
-      toast.error(error.message || "فشل تسجيل الدخول");
+      toast.error(error?.response?.data?.message || "فشل تسجيل الدخول");
       throw error;
     } finally {
       setLoading(false);
@@ -104,65 +178,55 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const login = async ({ email, password, remember }: LegacyLoginParams) => {
-    await signIn(email, password);
+    await signIn(email, password, remember);
 
-    try {
-      if (remember) {
-        localStorage.setItem("auth:remember", "true");
-      } else {
-        localStorage.removeItem("auth:remember");
+    if (!remember) {
+      try {
+        localStorage.removeItem(STORAGE_REMEMBER_KEY);
+      } catch {
+        // Ignore storage errors to mimic legacy tolerance.
       }
-    } catch {
-      // Access to localStorage can fail in non-browser environments; ignore errors for legacy API compatibility.
     }
   };
 
-  const signUp = async (email: string, password: string, fullName: string) => {
-    setLoading(true);
-    try {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/campaigns/gateway`,
-          data: {
-            full_name: fullName,
-          },
-        },
-      });
-
-      if (error) throw error;
-      
-      toast.success("تم إنشاء الحساب بنجاح! تحقق من بريدك الإلكتروني");
-    } catch (error: any) {
-      toast.error(error.message || "فشل إنشاء الحساب");
-      throw error;
-    } finally {
-      setLoading(false);
-    }
+  const signUp = async (_email: string, _password: string, _fullName: string) => {
+    toast.error("التسجيل الذاتي غير متاح. يرجى التواصل مع المسؤول.");
+    throw new Error("Self-service registration is disabled");
   };
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-
-      setUser(null);
-      setSession(null);
-      setProfile(null);
+      await request({
+        url: "/logout",
+        method: "post",
+      });
+    } catch (error: any) {
+      console.error("Failed to log out from backend", error);
+    } finally {
+      clearAuthState();
       toast.success("تم تسجيل الخروج");
       navigate("/login");
-    } catch (error: any) {
-      toast.error(error.message || "فشل تسجيل الخروج");
     }
   };
 
   const logout = async () => {
     await signOut();
     try {
-      localStorage.removeItem("auth:remember");
+      localStorage.removeItem(STORAGE_REMEMBER_KEY);
     } catch {
-      // Ignore localStorage errors to keep legacy API behaviour resilient.
+      // Ignore storage errors for resilience.
+    }
+  };
+
+  const refreshProfile = async () => {
+    if (!session?.token) {
+      return;
+    }
+
+    try {
+      await fetchProfile();
+    } catch (error) {
+      console.error("Failed to refresh profile", error);
     }
   };
 
@@ -173,7 +237,7 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
         session,
         profile,
         loading,
-        isAuthenticated: Boolean(user),
+        isAuthenticated: Boolean(user && session?.token),
         signIn,
         login,
         signUp,
