@@ -4,14 +4,23 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+interface LegacyLoginParams {
+  email: string;
+  password: string;
+  remember?: boolean;
+}
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   profile: any | null;
   loading: boolean;
+  isAuthenticated: boolean;
   signIn: (email: string, password: string) => Promise<void>;
+  login: (params: LegacyLoginParams) => Promise<void>;
   signUp: (email: string, password: string, fullName: string) => Promise<void>;
   signOut: () => Promise<void>;
+  logout: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
 
@@ -94,6 +103,20 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const login = async ({ email, password, remember }: LegacyLoginParams) => {
+    await signIn(email, password);
+
+    try {
+      if (remember) {
+        localStorage.setItem("auth:remember", "true");
+      } else {
+        localStorage.removeItem("auth:remember");
+      }
+    } catch {
+      // Access to localStorage can fail in non-browser environments; ignore errors for legacy API compatibility.
+    }
+  };
+
   const signUp = async (email: string, password: string, fullName: string) => {
     setLoading(true);
     try {
@@ -123,7 +146,7 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      
+
       setUser(null);
       setSession(null);
       setProfile(null);
@@ -134,6 +157,15 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const logout = async () => {
+    await signOut();
+    try {
+      localStorage.removeItem("auth:remember");
+    } catch {
+      // Ignore localStorage errors to keep legacy API behaviour resilient.
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -141,9 +173,12 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
         session,
         profile,
         loading,
+        isAuthenticated: Boolean(user),
         signIn,
+        login,
         signUp,
         signOut,
+        logout,
         refreshProfile,
       }}
     >
@@ -159,3 +194,5 @@ export const useNewAuth = () => {
   }
   return context;
 };
+
+export { NewAuthProvider as AuthProvider, useNewAuth as useAuth };
