@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+import { router } from "@app/routes";
 import { request, setAuthToken } from "@/shared/lib/api";
 
 interface LegacyLoginParams {
@@ -53,7 +53,6 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<AuthSession | null>(null);
   const [profile, setProfile] = useState<AuthUser | null>(null);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   const persistAuthState = (token: string, userData: AuthUser) => {
     setAuthToken(token);
@@ -168,7 +167,7 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       toast.success("تم تسجيل الدخول بنجاح");
-      navigate("/campaigns/gateway");
+      void router.navigate("/campaigns/gateway");
     } catch (error: any) {
       toast.error(error?.response?.data?.message || "فشل تسجيل الدخول");
       throw error;
@@ -205,7 +204,7 @@ export const NewAuthProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       clearAuthState();
       toast.success("تم تسجيل الخروج");
-      navigate("/login");
+      void router.navigate("/login");
     }
   };
 
