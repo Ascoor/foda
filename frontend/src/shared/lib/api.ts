@@ -75,14 +75,34 @@ const normalizeUrl = (url?: string) => {
   return joinWithPrefix(url);
 };
 
+const STORAGE_TOKEN_KEYS = ["auth:token", "token"] as const;
+
+const readPersistedToken = () => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  for (const key of STORAGE_TOKEN_KEYS) {
+    try {
+      const value = window.localStorage.getItem(key);
+      if (value) {
+        return value;
+      }
+    } catch (error) {
+      console.warn("Unable to read auth token from storage", error);
+      return null;
+    }
+  }
+
+  return null;
+};
+
 const withAuthorizationHeader = <
   T extends AxiosRequestConfig | InternalAxiosRequestConfig,
 >(
   config: T,
 ): T => {
-  const token =
-    authToken ||
-    (typeof window !== "undefined" ? localStorage.getItem("token") : null);
+  const token = authToken || readPersistedToken();
 
   if (token) {
     config.headers = config.headers || {};
