@@ -4,7 +4,10 @@ import { ProtectedRoute } from "@legacy/components/ProtectedRoute";
 import { MainLayout } from "@legacy/components/layout/MainLayout";
 import { BarbaTransitionProvider } from "@legacy/components/transition/BarbaTransitionProvider";
 
-import { Login } from "@legacy/pages/Login";
+import { Login as LegacyLogin } from "@legacy/pages/Login";
+import { Login } from "@/pages/Login";
+import { CampaignGateway } from "@/pages/CampaignGateway";
+import { CampaignDashboard } from "@/pages/CampaignDashboard";
 import NotFound from "@legacy/pages/NotFound";
 
 import { ReportsDashboard } from "@features/reports/ReportsDashboard";
@@ -65,7 +68,24 @@ export const router = createBrowserRouter([
       { path: "/", element: <FloatingLandingPage /> },
       { path: "/experience", element: <FloatingDashboard /> },
       { path: "/app", element: <PostAuthRedirect /> },
+      { path: "/legacy-login", element: <LegacyLogin /> },
       { path: "/login", element: <Login /> },
+      {
+        path: "/campaigns/gateway",
+        element: (
+          <ProtectedRoute>
+            <CampaignGateway />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/campaigns/:id/dashboard",
+        element: (
+          <ProtectedRoute>
+            <CampaignDashboard />
+          </ProtectedRoute>
+        ),
+      },
       {
         element: <ProtectedRoute />,
         children: [

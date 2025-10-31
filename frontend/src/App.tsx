@@ -11,6 +11,7 @@ import { Toaster } from "@shared/ui/toaster";
 import { Toaster as Sonner } from "@shared/ui/sonner";
 import { TooltipProvider } from "@shared/ui/tooltip";
 import { AuthProvider } from "@legacy/hooks/useAuth";
+import { NewAuthProvider } from "@shared/contexts/AuthContext";
 
 import "@/i18n";
 
@@ -22,16 +23,18 @@ export default function App() {
       <ThemeProvider>
         <LanguageProvider>
           <AuthProvider>
-            <NotificationProvider>
-              <FeatureFlagProvider>
-                <TooltipProvider>
-                  <RouterProvider router={router} />
-                  <Toaster />
-                  <Sonner />
-                  {import.meta.env.DEV && <DevTools />}
-                </TooltipProvider>
-              </FeatureFlagProvider>
-            </NotificationProvider>
+            <NewAuthProvider>
+              <NotificationProvider>
+                <FeatureFlagProvider>
+                  <TooltipProvider>
+                    <RouterProvider router={router} />
+                    <Toaster />
+                    <Sonner />
+                    {import.meta.env.DEV && <DevTools />}
+                  </TooltipProvider>
+                </FeatureFlagProvider>
+              </NotificationProvider>
+            </NewAuthProvider>
           </AuthProvider>
         </LanguageProvider>
       </ThemeProvider>
