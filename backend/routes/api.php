@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CampaignCommitteeController;
+use App\Http\Controllers\Api\CampaignDashboardController;
+use App\Http\Controllers\Api\GeoController;
 use App\Http\Controllers\Api\V1\ActivityController;
 use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\AreaController;
@@ -72,6 +75,11 @@ $apiRoutes = function () {
         Route::put('automation/config', [AutomationController::class, 'update']);
         Route::post('automation/config/{task}/trigger', [AutomationController::class, 'trigger']);
         Route::get('committees/geo', CommitteeGeoController::class);
+        Route::prefix('geo')->group(function () {
+            Route::get('governorates', [GeoController::class, 'governorates']);
+            Route::get('circles', [GeoController::class, 'circles']);
+            Route::get('committees', [GeoController::class, 'committees']);
+        });
         Route::get('events/upcoming', [EventController::class, 'upcoming']);
         Route::apiResource('events', EventController::class);
         Route::get('finances/report', [FinanceController::class, 'report']);
@@ -101,6 +109,15 @@ $apiRoutes = function () {
         Route::post('voters/import', [VoterController::class, 'import']);
         Route::get('voters/export', [VoterController::class, 'export']);
         Route::apiResource('voters', VoterController::class);
+
+        Route::prefix('campaigns/{campaign}')
+            ->middleware('resolve.campaign')
+            ->group(function () {
+                Route::get('dashboard', [CampaignDashboardController::class, 'show']);
+                Route::get('committees', [CampaignCommitteeController::class, 'index']);
+                Route::post('committees/attach', [CampaignCommitteeController::class, 'attach']);
+                Route::delete('committees/{committee}', [CampaignCommitteeController::class, 'detach']);
+            });
 
         Route::prefix('integrations')->group(function () {
             Route::get('geo-areas', [ExternalDataController::class, 'geoAreas']);

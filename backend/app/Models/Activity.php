@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\CampaignScopedModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Support\Carbon;
 class Activity extends Model
 {
     use HasFactory;
+    use CampaignScopedModel;
 
     protected $fillable = [
         'area_id',
@@ -43,12 +45,12 @@ class Activity extends Model
 
     public function committee(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ElectionCircle\Committee::class, 'committee_id');
+        return $this->belongsTo(Committee::class, 'committee_id');
     }
 
     public function campaign(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ElectionCircle\Campaign::class);
+        return $this->belongsTo(Campaign::class);
     }
 
     public function voter(): BelongsTo

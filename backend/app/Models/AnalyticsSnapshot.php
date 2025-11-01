@@ -27,7 +27,7 @@ class AnalyticsSnapshot extends Model
 
     public function campaign(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ElectionCircle\Campaign::class);
+        return $this->belongsTo(Campaign::class);
     }
 
     public function election(): BelongsTo

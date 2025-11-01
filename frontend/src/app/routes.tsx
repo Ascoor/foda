@@ -24,9 +24,11 @@ import { CommitteeDetails } from "@features/committees/Details";
 import { Settings } from "@features/settings/Settings";
 import { ObservationsList } from "@features/observations/ObservationsList";
 import { CampaignsList } from "@features/campaigns/CampaignsList";
+import CampaignDashboard from "@features/campaign/CampaignDashboard";
 import { AutomationDashboard } from "@features/automation/AutomationDashboard";
 import FloatingLandingPage from "@features/marketing/pages/LandingPage";
 import FloatingDashboard from "@features/marketing/pages/Dashboard";
+import GeoWizard from "@features/geo/GeoWizard";
 import PostAuthRedirect from "@/routes/post-auth";
 import { NavGuard } from "@/nav/NavGuard";
 
@@ -193,6 +195,22 @@ export const router = createBrowserRouter([
                 element: (
                   <NavGuard>
                     <CampaignsList />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/campaign-center",
+                element: (
+                  <NavGuard>
+                    <CampaignDashboard />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/campaign-center/geo",
+                element: (
+                  <NavGuard>
+                    <GeoWizard />
                   </NavGuard>
                 ),
               },

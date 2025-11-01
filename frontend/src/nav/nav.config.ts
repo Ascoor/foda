@@ -183,6 +183,22 @@ export const navConfig: NavConfig = {
       breadcrumb: { hide: true },
       children: [
         {
+          id: "campaign.center",
+          i18nKey: "navigation.campaign_dashboard",
+          path: "/campaign-center",
+          icon: BarChart3,
+          order: 5,
+          surfaces: ["sidebar", "breadcrumb"],
+        },
+        {
+          id: "campaign.geo",
+          i18nKey: "navigation.campaign_geo",
+          path: "/campaign-center/geo",
+          icon: Globe2,
+          order: 9,
+          surfaces: ["sidebar", "breadcrumb"],
+        },
+        {
           id: "campaign.campaigns",
           i18nKey: "navigation.campaigns",
           path: "/campaigns",

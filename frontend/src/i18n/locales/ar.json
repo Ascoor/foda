@@ -62,8 +62,10 @@
     "observers": "المراقبون",
     "field_reports": "التقارير الميدانية",
 
-    "campaigns": "الحملات",
-    "automation": "الأتمتة",
+  "campaigns": "الحملات",
+  "campaign_dashboard": "لوحة الحملة",
+  "campaign_geo": "مُعالج الدوائر",
+  "automation": "الأتمتة",
     "analytics": "التحليلات",
 
     "live_map": "الخريطة الحية",

@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@shared/ui/button";
 import {
   DropdownMenu,
@@ -32,6 +33,8 @@ import { cn } from "@shared/lib/utils";
 import { notifyNavClick, findRouteMatch } from "@/nav/nav.map";
 import { useNavTree, useNavigationContext } from "@/nav/useNavigationContext";
 import type { NavNode } from "@/nav/nav.schema";
+import CampaignSwitcher from "@/features/campaign/CampaignSwitcher";
+import { fetchCampaigns } from "@features/campaigns/api";
 
 const SPRING_TRANSITION = {
   type: "spring",
@@ -98,6 +101,24 @@ export const Header = ({
     const chain = [activeMatch.id, ...collectAncestorIds(activeMatch.node)];
     return new Set(chain.filter(Boolean) as string[]);
   }, [activeMatch]);
+
+  const {
+    data: campaignsList = [],
+    isFetching: loadingCampaigns,
+  } = useQuery({
+    queryKey: ["campaigns", "switcher"],
+    queryFn: () => fetchCampaigns({ per_page: 100 }),
+    staleTime: 120_000,
+  });
+
+  const campaignOptions = useMemo(
+    () =>
+      (campaignsList ?? []).map((campaign) => ({
+        id: String(campaign.id),
+        name: campaign.name,
+      })),
+    [campaignsList],
+  );
 
   // ✅ ضبط اتجاه الصفحة ديناميكياً (RTL / LTR)
   useEffect(() => {
@@ -430,6 +451,17 @@ export const Header = ({
                 {language === "ar" ? "التوقيت المحلي" : "Local time"}
               </span>
             </motion.div>
+          )}
+
+          {variant === "dashboard" && (
+            <CampaignSwitcher
+              campaigns={campaignOptions}
+              placeholder={
+                loadingCampaigns
+                  ? language === "ar" ? "جار التحميل…" : "Loading…"
+                  : language === "ar" ? "اختر حملة" : "Select campaign"
+              }
+            />
           )}
 
           <AnimatePresence initial={false} mode="popLayout">

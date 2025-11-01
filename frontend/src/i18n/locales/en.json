@@ -61,8 +61,10 @@
     "observers": "Observers",
     "field_reports": "Field Reports",
 
-    "campaigns": "Campaigns",
-    "automation": "Automation",
+  "campaigns": "Campaigns",
+  "campaign_dashboard": "Campaign Dashboard",
+  "campaign_geo": "Campaign Geo Wizard",
+  "automation": "Automation",
     "analytics": "Analytics",
 
     "live_map": "Live Map",
