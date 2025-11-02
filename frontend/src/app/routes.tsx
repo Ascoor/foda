@@ -12,6 +12,8 @@ import { ElectionsList } from "@features/elections/List";
 import { ElectionDetails } from "@features/elections/Details";
 import { GeoAreasDashboard } from "@features/geo-areas/Dashboard";
 import { GeoAreaDetails } from "@features/geo-areas/Details";
+import { EnhancedDashboard } from "@features/dashboard/EnhancedDashboard";
+import { ArchitecturalControlCenter } from "@features/dashboard/ArchitecturalControlCenter";
 import { VotersList } from "@features/voters/List";
 import { VoterDetails } from "@features/voters/Details";
 import { CandidatesList } from "@features/candidates/List";
@@ -82,7 +84,19 @@ export const router = createBrowserRouter([
               },
               {
                 path: "/dashboard",
-                element: <Navigate to="/reports" replace />,
+                element: (
+                  <NavGuard>
+                    <EnhancedDashboard />
+                  </NavGuard>
+                ),
+              },
+              {
+                path: "/control-center",
+                element: (
+                  <NavGuard>
+                    <ArchitecturalControlCenter />
+                  </NavGuard>
+                ),
               },
               {
                 path: "/elections",

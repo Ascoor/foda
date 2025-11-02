@@ -10,6 +10,7 @@ import {
 import { request } from "@shared/lib/api";
 import { getEcho } from "@shared/lib/echo";
 import { toast } from "sonner";
+import { useAuth } from "./AuthContext";
 
 export type NotificationType = "performance" | "field" | "risk" | "other";
 
@@ -52,6 +53,7 @@ interface PaginatedNotificationResponse {
 }
 
 export const NotificationProvider = ({ children }: { children: ReactNode }) => {
+  const { isAuthenticated } = useAuth();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<NotificationFilter>("all");
@@ -59,6 +61,9 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchNotifications = useCallback(
     async ({ showLoader = true, suppressToasts = false } = {}) => {
+      if (!isAuthenticated) {
+        return;
+      }
       if (showLoader) {
         setLoading(true);
       }
@@ -100,7 +105,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     },
-    [],
+    [isAuthenticated],
   );
 
   const prependNotification = useCallback((incoming: NotificationItem) => {
@@ -115,18 +120,32 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      setNotifications([]);
+      setLoading(false);
+      return;
+    }
+
     fetchNotifications({ showLoader: true, suppressToasts: true });
-  }, [fetchNotifications]);
+  }, [fetchNotifications, isAuthenticated]);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return undefined;
+    }
+
     const interval = window.setInterval(() => {
       fetchNotifications({ showLoader: false, suppressToasts: false });
     }, 60000);
 
     return () => window.clearInterval(interval);
-  }, [fetchNotifications]);
+  }, [fetchNotifications, isAuthenticated]);
 
   useEffect(() => {
+    if (!isAuthenticated) {
+      return undefined;
+    }
+
     const echo = getEcho();
     if (!echo) return;
 
@@ -147,7 +166,7 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
     return () => {
       channel.stopListening(".App\\Events\\NotificationCreated", handler);
     };
-  }, [prependNotification]);
+  }, [isAuthenticated, prependNotification]);
 
   const markAsRead = useCallback(async (id: number) => {
     await request<{ data: NotificationItem }>({

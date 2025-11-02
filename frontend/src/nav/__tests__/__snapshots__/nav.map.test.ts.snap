@@ -3,6 +3,30 @@
 exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
 [
   {
+    "depth": 0,
+    "i18nKey": "navigation.dashboard",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "dashboard",
+    "order": 5,
+    "parent": undefined,
+    "path": "/dashboard",
+    "surfaces": [
+      "sidebar",
+      "top",
+      "breadcrumb",
+    ],
+    "visibility": {
+      "roles": [
+        "admin",
+        "manager",
+        "staff",
+      ],
+    },
+  },
+  {
     "badge": {
       "source": "reports",
       "type": "dot",
@@ -35,6 +59,29 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
       "hide": true,
     },
     "children": [
+      {
+        "depth": 1,
+        "i18nKey": "navigation.control_center",
+        "icon": {
+          "$$typeof": Symbol(react.forward_ref),
+          "render": [Function],
+        },
+        "id": "operations.controlCenter",
+        "order": 5,
+        "parent": [Circular],
+        "path": "/control-center",
+        "surfaces": [
+          "sidebar",
+          "breadcrumb",
+        ],
+        "visibility": {
+          "roles": [
+            "admin",
+            "manager",
+            "staff",
+          ],
+        },
+      },
       {
         "depth": 1,
         "i18nKey": "navigation.elections",
@@ -316,6 +363,30 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 1`] = `
 exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
 [
   {
+    "depth": 0,
+    "i18nKey": "navigation.dashboard",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "dashboard",
+    "order": 5,
+    "parent": undefined,
+    "path": "/dashboard",
+    "surfaces": [
+      "sidebar",
+      "top",
+      "breadcrumb",
+    ],
+    "visibility": {
+      "roles": [
+        "admin",
+        "manager",
+        "staff",
+      ],
+    },
+  },
+  {
     "badge": {
       "source": "reports",
       "type": "dot",
@@ -348,6 +419,29 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
       "hide": true,
     },
     "children": [
+      {
+        "depth": 1,
+        "i18nKey": "navigation.control_center",
+        "icon": {
+          "$$typeof": Symbol(react.forward_ref),
+          "render": [Function],
+        },
+        "id": "operations.controlCenter",
+        "order": 5,
+        "parent": [Circular],
+        "path": "/control-center",
+        "surfaces": [
+          "sidebar",
+          "breadcrumb",
+        ],
+        "visibility": {
+          "roles": [
+            "admin",
+            "manager",
+            "staff",
+          ],
+        },
+      },
       {
         "depth": 1,
         "i18nKey": "navigation.elections",
@@ -606,6 +700,30 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 2`] = `
 exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
 [
   {
+    "depth": 0,
+    "i18nKey": "navigation.dashboard",
+    "icon": {
+      "$$typeof": Symbol(react.forward_ref),
+      "render": [Function],
+    },
+    "id": "dashboard",
+    "order": 5,
+    "parent": undefined,
+    "path": "/dashboard",
+    "surfaces": [
+      "sidebar",
+      "top",
+      "breadcrumb",
+    ],
+    "visibility": {
+      "roles": [
+        "admin",
+        "manager",
+        "staff",
+      ],
+    },
+  },
+  {
     "badge": {
       "source": "reports",
       "type": "dot",
@@ -638,6 +756,29 @@ exports[`navigation mapping > matches snapshot for sidebar contexts 3`] = `
       "hide": true,
     },
     "children": [
+      {
+        "depth": 1,
+        "i18nKey": "navigation.control_center",
+        "icon": {
+          "$$typeof": Symbol(react.forward_ref),
+          "render": [Function],
+        },
+        "id": "operations.controlCenter",
+        "order": 5,
+        "parent": [Circular],
+        "path": "/control-center",
+        "surfaces": [
+          "sidebar",
+          "breadcrumb",
+        ],
+        "visibility": {
+          "roles": [
+            "admin",
+            "manager",
+            "staff",
+          ],
+        },
+      },
       {
         "depth": 1,
         "i18nKey": "navigation.elections",
