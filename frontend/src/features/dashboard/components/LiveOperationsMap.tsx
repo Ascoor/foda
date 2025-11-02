@@ -13,6 +13,7 @@ import { Badge } from "@/shared/ui/badge";
 import { Skeleton } from "@/shared/ui/skeleton";
 import { toast } from "sonner";
 import { fetchCommitteeGeo, fetchRecentActivityGeo } from "../api";
+import { useCampaignContext } from "@/shared/contexts/CampaignContext";
 import { getEcho } from "@/shared/lib/echo";
 import { Button } from "@/shared/ui/button";
 
@@ -82,6 +83,7 @@ const defaultFilters: Filters = {
 };
 
 export const LiveOperationsMap = () => {
+  const { campaignId } = useCampaignContext();
   const [committees, setCommittees] =
     useState<FeatureCollection<Point, Record<string, any>>>(EMPTY_COLLECTION);
   const [activities, setActivities] =
@@ -96,8 +98,8 @@ export const LiveOperationsMap = () => {
       setLoading(true);
       try {
         const [committeesGeo, activityGeo] = await Promise.all([
-          fetchCommitteeGeo(),
-          fetchRecentActivityGeo({ limit: 150 }),
+          fetchCommitteeGeo(campaignId),
+          fetchRecentActivityGeo({ limit: 150 }, campaignId),
         ]);
 
         if (!isMounted) return;
@@ -123,7 +125,7 @@ export const LiveOperationsMap = () => {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [campaignId]);
 
   useEffect(() => {
     const echo = getEcho();

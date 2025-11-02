@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { vi, beforeEach } from "vitest";
 import { Dashboard } from "../Dashboard";
 import { LanguageProvider } from "@/shared/contexts/LanguageContext";
+import { CampaignProvider } from "@/shared/contexts/CampaignContext";
 
 const mockUseApi = vi.fn();
 
@@ -21,7 +22,9 @@ beforeEach(() => {
 const renderDashboard = () =>
   render(
     <LanguageProvider>
-      <Dashboard />
+      <CampaignProvider>
+        <Dashboard />
+      </CampaignProvider>
     </LanguageProvider>,
   );
 

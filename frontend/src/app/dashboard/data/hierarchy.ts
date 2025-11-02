@@ -20,9 +20,10 @@ import {
   Workflow,
 } from "lucide-react";
 
-import { request } from "../../../shared/lib/api";
-import { API_ENDPOINTS } from "../../../shared/lib/endpoints";
-import type { AnalyticsResponse } from "../../../features/analytics/types";
+import { request } from "@/shared/lib/api";
+import { API_ENDPOINTS } from "@/shared/lib/endpoints";
+import { useCampaignContext } from "@/shared/contexts/CampaignContext";
+import type { AnalyticsResponse } from "@/features/analytics/types";
 
 export type GovernanceRole = "domain-owner" | "data-steward" | "operator";
 
@@ -857,10 +858,12 @@ export const buildDashboardHierarchy = ({
   return modules;
 };
 
-const fetchDashboardHierarchy = async (): Promise<DashboardModule[]> => {
+const fetchDashboardHierarchy = async (
+  campaignId: string,
+): Promise<DashboardModule[]> => {
   const [overviewResult, analyticsResult, electionResult] = await Promise.allSettled([
     request<{ data: DashboardOverviewData }>({
-      url: API_ENDPOINTS.dashboard.overview,
+      url: API_ENDPOINTS.dashboard.overview(campaignId),
       method: "get",
     }, { useCache: true }),
     request<{ data: AnalyticsResponse }>({
@@ -884,9 +887,12 @@ const fetchDashboardHierarchy = async (): Promise<DashboardModule[]> => {
   return buildDashboardHierarchy({ overview, analytics, election });
 };
 
-export const useDashboardHierarchy = () =>
-  useQuery({
-    queryKey: ["dashboard", "hierarchy"],
-    queryFn: fetchDashboardHierarchy,
+export const useDashboardHierarchy = () => {
+  const { campaignId } = useCampaignContext();
+
+  return useQuery({
+    queryKey: ["dashboard", "hierarchy", campaignId],
+    queryFn: () => fetchDashboardHierarchy(campaignId),
     staleTime: 60_000,
   });
+};

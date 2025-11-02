@@ -1,9 +1,18 @@
+import {
+  type CampaignIdentifier,
+  buildCampaignUrl,
+} from "@/shared/lib/campaign";
+
+const campaignScoped = (path: string) =>
+  (campaignId?: CampaignIdentifier | null) =>
+    buildCampaignUrl(path, campaignId);
+
 export const API_ENDPOINTS = {
   core: {
-    roles: "/api/v1/roles",
+    roles: campaignScoped("/roles"),
   },
   configuration: {
-    settings: "/api/v1/settings",
+    settings: campaignScoped("/settings"),
     notifications: "/api/v1/notifications",
   },
   elections: {
@@ -13,13 +22,13 @@ export const API_ENDPOINTS = {
     candidates: "/api/v1/ec/candidates",
   },
   crm: {
-    voters: "/api/v1/voters",
-    volunteers: "/api/v1/volunteers",
+    voters: campaignScoped("/voters"),
+    volunteers: campaignScoped("/volunteers"),
     agents: "/api/v1/ec/agents",
   },
   campaigns: {
     campaigns: "/api/v1/ec/campaigns",
-    activities: "/api/v1/activities",
+    activities: campaignScoped("/activities"),
   },
   field: {
     observations: "/api/v1/ec/observations",
@@ -32,10 +41,10 @@ export const API_ENDPOINTS = {
     notifications: "/api/v1/notifications",
   },
   dashboard: {
-    overview: "/api/v1/dashboard",
-    heatmap: "/api/v1/home/heatmap",
-    committeeGeo: "/api/v1/committees/geo",
-    recentActivityGeo: "/api/v1/activities/recent",
+    overview: campaignScoped("/dashboard"),
+    heatmap: campaignScoped("/home/heatmap"),
+    committeeGeo: campaignScoped("/committees/geo"),
+    recentActivityGeo: campaignScoped("/activities/recent"),
   },
   integrations: {
     electionSummary: "/api/v1/integrations/elections/summary",

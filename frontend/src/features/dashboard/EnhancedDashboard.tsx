@@ -10,6 +10,7 @@ import { ActivitiesTimeline } from "@/features/activities/ActivitiesTimeline";
 import { useApi } from "@/shared/lib/api";
 import { safeArray, safeNumber } from "@/shared/lib/safeData";
 import { API_ENDPOINTS } from "@/shared/lib/endpoints";
+import { useCampaignContext } from "@/shared/contexts/CampaignContext";
 import { toast } from "@/shared/hooks/use-toast";
 
 interface DashboardData {
@@ -126,6 +127,8 @@ const KPICard = ({
 
 export const EnhancedDashboard: React.FC = () => {
   const { t } = useTranslation();
+  const { campaignId } = useCampaignContext();
+  const dashboardEndpoint = API_ENDPOINTS.dashboard.overview(campaignId);
 
   // Dashboard data query
   const {
@@ -134,12 +137,12 @@ export const EnhancedDashboard: React.FC = () => {
     error: dashboardError,
     execute: refetchDashboard,
   } = useApi<DashboardData>({
-    url: API_ENDPOINTS.dashboard.overview,
+    url: dashboardEndpoint,
     method: "GET",
   });
 
   useEffect(() => {
-    refetchDashboard()
+    refetchDashboard({ url: dashboardEndpoint })
       .then(() => toast({ description: t("dashboard.load_success") }))
       .catch(() =>
         toast({
@@ -147,7 +150,7 @@ export const EnhancedDashboard: React.FC = () => {
           description: t("dashboard.load_error"),
         }),
       );
-  }, [refetchDashboard, t]);
+  }, [dashboardEndpoint, refetchDashboard, t]);
 
   const safeStats = useMemo(() => {
     const stats = dashboardData?.stats;
