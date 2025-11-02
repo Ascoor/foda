@@ -8,6 +8,7 @@ use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class CampaignFactory extends Factory
 {
@@ -22,8 +23,11 @@ class CampaignFactory extends Factory
     {
         $themes = ['دعم التعليم', 'خدمة المجتمع', 'تنمية الشباب', 'تمكين المرأة', 'تحسين الخدمات'];
 
+        $name = 'حملة ' . $this->faker->unique()->randomElement($themes) . ' ' . $this->faker->randomDigitNotNull();
+
         return [
-            'name' => 'حملة ' . $this->faker->unique()->randomElement($themes) . ' ' . $this->faker->randomDigitNotNull(),
+            'name' => $name,
+            'slug' => Str::slug($name) . '-' . $this->faker->unique()->randomNumber(5),
             'description' => $this->faker->paragraph(),
             'election_id' => $this->resolveElectionId(),
         ];

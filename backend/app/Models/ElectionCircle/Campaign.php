@@ -3,6 +3,7 @@
 namespace App\Models\ElectionCircle;
 
 use App\Models\Activity;
+use App\Models\Area;
 use App\Models\AutomationTask;
 use App\Models\Event;
 use App\Models\Finance;
@@ -23,7 +24,7 @@ class Campaign extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description', 'election_id'];
+    protected $fillable = ['name', 'slug', 'description', 'election_id'];
 
     public function election(): BelongsTo
     {
@@ -106,8 +107,13 @@ class Campaign extends Model
 
     public function geoAreas(): BelongsToMany
     {
-        return $this->belongsToMany(GeoArea::class, 'campaign_area')
+        return $this->belongsToMany(Area::class, 'campaign_area', 'campaign_id', 'area_id')
             ->withPivot(['alias', 'code'])
             ->withTimestamps();
+    }
+
+    public function areas(): BelongsToMany
+    {
+        return $this->geoAreas();
     }
 }

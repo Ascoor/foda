@@ -16,9 +16,10 @@ class CampaignSeeder extends Seeder
             $election = Election::first();
         }
 
-        Campaign::query()->firstOrCreate(
-            ['name' => 'حملة التوعية'],
+        Campaign::query()->updateOrCreate(
+            ['slug' => 'awareness-campaign'],
             [
+                'name' => 'حملة التوعية',
                 'description' => 'وصف مختصر للحملة',
                 'election_id' => $election->id,
             ]
