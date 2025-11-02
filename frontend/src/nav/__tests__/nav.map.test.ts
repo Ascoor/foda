@@ -36,6 +36,7 @@ describe("navigation mapping", () => {
   it("returns ordered sidebar items for admin", () => {
     const sidebar = getSurfaceNav(adminContext, "sidebar");
     expect(sidebar.map((node) => node.id)).toEqual([
+      "dashboard",
       "reports",
       "operations",
       "field",

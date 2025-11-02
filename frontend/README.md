@@ -25,3 +25,8 @@ This document summarizes the current workflow for building the FODA election man
 
 - Tailwind configuration resides in `tailwind.config.ts`. Custom plugins should be added there to keep utility classes colocated with the design system.
 - Keep the documentation up to date when you introduce new build steps or shared conventions so the bilingual engineering team can follow the same workflow.
+
+## Global state providers
+
+- The app bootstraps its shell with `QueryClientProvider → FeatureFlagProvider → AuthProvider → ThemeProvider → LanguageProvider → NotificationProvider → TooltipProvider → RouterProvider`. Keep this order so that feature flags and authentication state are available to downstream consumers before UI providers mount.
+- `NotificationProvider` now consumes the auth context to avoid hitting the notifications API before a session is established. If you introduce a new provider that depends on authentication, place it within the `AuthProvider` subtree and update this section accordingly.

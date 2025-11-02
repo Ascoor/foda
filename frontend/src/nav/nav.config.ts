@@ -12,6 +12,7 @@ import {
   UserCheck,
   Users,
   Crown,
+  Workflow,
 } from "lucide-react";
 
 import type { NavConfig } from "./nav.schema";
@@ -19,6 +20,15 @@ import type { NavConfig } from "./nav.schema";
 export const navConfig: NavConfig = {
   version: 1,
   items: [
+    {
+      id: "dashboard",
+      i18nKey: "navigation.dashboard",
+      path: "/dashboard",
+      icon: Gauge,
+      order: 5,
+      surfaces: ["sidebar", "top", "breadcrumb"],
+      visibility: { roles: ["admin", "manager", "staff"] },
+    },
     {
       id: "reports",
       i18nKey: "navigation.reports",
@@ -37,6 +47,15 @@ export const navConfig: NavConfig = {
       meta: { variant: "section" },
       breadcrumb: { hide: true },
       children: [
+        {
+          id: "operations.controlCenter",
+          i18nKey: "navigation.control_center",
+          path: "/control-center",
+          icon: Workflow,
+          order: 5,
+          surfaces: ["sidebar", "breadcrumb"],
+          visibility: { roles: ["admin", "manager", "staff"] },
+        },
         {
           id: "operations.elections",
           i18nKey: "navigation.elections",
