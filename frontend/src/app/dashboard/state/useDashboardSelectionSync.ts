@@ -17,13 +17,9 @@ import {
 
 export const useDashboardSelectionSync = (modules: DashboardModule[]) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { selection, setSelection, lastOrigin } = useDashboardSelectionStore(
-    (state) => ({
-      selection: state.selection,
-      setSelection: state.setSelection,
-      lastOrigin: state.lastOrigin,
-    }),
-  );
+  const selection = useDashboardSelectionStore((state) => state.selection);
+  const setSelection = useDashboardSelectionStore((state) => state.setSelection);
+  const lastOrigin = useDashboardSelectionStore((state) => state.lastOrigin);
   const skipNextUrlSyncRef = useRef(false);
   const lastBreadcrumbSignatureRef = useRef<string>("");
 
