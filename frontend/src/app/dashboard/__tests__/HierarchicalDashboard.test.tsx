@@ -1,10 +1,15 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { vi, beforeEach } from "vitest";
 import { Compass, FileStack } from "lucide-react";
+import { MemoryRouter } from "react-router-dom";
 
 import { HierarchicalDashboard } from "../HierarchicalDashboard";
 import type { DashboardModule } from "../data/hierarchy";
+import {
+  DASHBOARD_SELECTION_STORAGE_KEY,
+  useDashboardSelectionStore,
+} from "../state/dashboardSelectionStore";
 
 vi.mock("@/nav/useNavigationContext", () => ({
   useNavBreadcrumbs: () => [],
@@ -83,7 +88,10 @@ vi.mock("../data/hierarchy", async () => {
 });
 
 beforeEach(() => {
-  window.localStorage.clear();
+  window.localStorage.removeItem(DASHBOARD_SELECTION_STORAGE_KEY);
+  act(() => {
+    useDashboardSelectionStore.getState().clearSelection();
+  });
   mockUseDashboardHierarchy.mockReset();
   mockUseDashboardHierarchy.mockReturnValue(createQueryResult(sampleHierarchy));
 });
@@ -98,9 +106,11 @@ const renderDashboard = () => {
   });
 
   render(
-    <QueryClientProvider client={queryClient}>
-      <HierarchicalDashboard />
-    </QueryClientProvider>,
+    <MemoryRouter initialEntries={["/control-center"]}>
+      <QueryClientProvider client={queryClient}>
+        <HierarchicalDashboard />
+      </QueryClientProvider>
+    </MemoryRouter>,
   );
 
   return queryClient;

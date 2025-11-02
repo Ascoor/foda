@@ -1,16 +1,15 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { useNavBreadcrumbs } from "@/nav/useNavigationContext";
 import type { BreadcrumbMatch } from "@/nav/nav.schema";
 
-interface DashboardBreadcrumb {
-  id: string;
-  label: string;
-  level?: "module" | "submodule" | "panel";
-  path?: string;
-}
+import {
+  DASHBOARD_BREADCRUMBS_EVENT,
+  type DashboardBreadcrumbsEventDetail,
+} from "../state/events";
+import type { DashboardBreadcrumb } from "./types";
 
 interface DashboardBreadcrumbsProps {
   items?: DashboardBreadcrumb[];
@@ -34,9 +33,40 @@ export const DashboardBreadcrumbs = ({
 }: DashboardBreadcrumbsProps) => {
   const { t } = useTranslation();
   const navTrail = useNavBreadcrumbs();
+  const [eventItems, setEventItems] = useState<DashboardBreadcrumb[]>([]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handleEvent = (event: Event) => {
+      const customEvent = event as CustomEvent<DashboardBreadcrumbsEventDetail>;
+      if (customEvent.detail?.items) {
+        setEventItems(customEvent.detail.items);
+      }
+    };
+
+    window.addEventListener(DASHBOARD_BREADCRUMBS_EVENT, handleEvent);
+
+    return () => {
+      window.removeEventListener(DASHBOARD_BREADCRUMBS_EVENT, handleEvent);
+    };
+  }, []);
+
   const resolvedItems = useMemo(
-    () => items ?? transformTrail(navTrail, t),
-    [items, navTrail, t],
+    () => {
+      if (items !== undefined) {
+        return items;
+      }
+
+      if (eventItems.length > 0) {
+        return eventItems;
+      }
+
+      return transformTrail(navTrail, t);
+    },
+    [eventItems, items, navTrail, t],
   );
 
   if (!resolvedItems.length) {
