@@ -15,6 +15,7 @@ import {
   TableRow,
 } from "@/shared/ui/table";
 import { fetchActivities } from "./api";
+import { useCampaignContext } from "@/shared/contexts/CampaignContext";
 import type { ActivitiesResponse, ActivityTimelineItem } from "./types";
 
 const VIEW_MODES = [
@@ -48,6 +49,7 @@ const groupByDate = (items: ActivityTimelineItem[]) => {
 };
 
 export const ActivitiesTimeline = () => {
+  const { campaignId } = useCampaignContext();
   const [response, setResponse] = useState<ActivitiesResponse | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("timeline");
   const [page, setPage] = useState(1);
@@ -64,7 +66,7 @@ export const ActivitiesTimeline = () => {
     setError(null);
 
     try {
-      const payload = await fetchActivities({ page: pageNumber });
+      const payload = await fetchActivities({ page: pageNumber }, campaignId);
       setResponse((prev) => {
         if (append && prev) {
           return {
@@ -87,7 +89,7 @@ export const ActivitiesTimeline = () => {
 
   useEffect(() => {
     loadActivities();
-  }, []);
+  }, [campaignId]);
 
   const grouped = useMemo(() => groupByDate(response?.data ?? []), [response]);
 

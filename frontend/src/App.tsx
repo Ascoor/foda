@@ -7,6 +7,7 @@ import { NotificationProvider } from "@/shared/contexts/NotificationContext";
 import { LanguageProvider } from "@/shared/contexts/LanguageContext";
 import { ThemeProvider } from "@/shared/contexts/ThemeContext";
 import { FeatureFlagProvider } from "@/shared/contexts/FeatureFlagContext";
+import { CampaignProvider } from "@/shared/contexts/CampaignContext";
 import { Toaster } from "@/shared/ui/toaster";
 import { Toaster as Sonner } from "@/shared/ui/sonner";
 import { TooltipProvider } from "@/shared/ui/tooltip";
@@ -21,18 +22,20 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <FeatureFlagProvider>
         <AuthProvider>
-          <ThemeProvider>
-            <LanguageProvider>
-              <NotificationProvider>
-                <TooltipProvider>
-                  <RouterProvider router={router} />
-                  <Toaster />
-                  <Sonner />
-                  {import.meta.env.DEV && <DevTools />}
-                </TooltipProvider>
-              </NotificationProvider>
-            </LanguageProvider>
-          </ThemeProvider>
+          <CampaignProvider>
+            <ThemeProvider>
+              <LanguageProvider>
+                <NotificationProvider>
+                  <TooltipProvider>
+                    <RouterProvider router={router} />
+                    <Toaster />
+                    <Sonner />
+                    {import.meta.env.DEV && <DevTools />}
+                  </TooltipProvider>
+                </NotificationProvider>
+              </LanguageProvider>
+            </ThemeProvider>
+          </CampaignProvider>
         </AuthProvider>
       </FeatureFlagProvider>
     </QueryClientProvider>

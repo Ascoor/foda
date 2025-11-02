@@ -1,5 +1,6 @@
 import { request } from "@/shared/lib/api";
 import { API_ENDPOINTS } from "@/shared/lib/endpoints";
+import type { CampaignIdentifier } from "@/shared/lib/campaign";
 import type { SystemSettings } from "./types";
 
 interface SettingItem {
@@ -7,11 +8,11 @@ interface SettingItem {
   value: unknown;
 }
 
-const SETTINGS_ENDPOINT = API_ENDPOINTS.configuration.settings;
-
-export const fetchSettings = async (): Promise<SystemSettings> => {
+export const fetchSettings = async (
+  campaignId?: CampaignIdentifier | null,
+): Promise<SystemSettings> => {
   const res = await request<{ data: SettingItem[] }>(
-    { url: SETTINGS_ENDPOINT, method: "get" },
+    { url: API_ENDPOINTS.configuration.settings(campaignId), method: "get" },
     { useCache: true },
   );
   const map = Object.fromEntries(res.data.map((s) => [s.key, s.value]));
@@ -24,9 +25,10 @@ export const fetchSettings = async (): Promise<SystemSettings> => {
 
 export const updateSettings = async (
   settings: SystemSettings,
+  campaignId?: CampaignIdentifier | null,
 ): Promise<SystemSettings> => {
   await request({
-    url: SETTINGS_ENDPOINT,
+    url: API_ENDPOINTS.configuration.settings(campaignId),
     method: "put",
     data: {
       language: settings.language,

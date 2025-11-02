@@ -1,5 +1,6 @@
 import { request } from "@/shared/lib/api";
 import { API_ENDPOINTS } from "@/shared/lib/endpoints";
+import type { CampaignIdentifier } from "@/shared/lib/campaign";
 import type { Voter } from "@/types";
 import type { VoterFilters, VoterFormData } from "./types";
 
@@ -12,18 +13,18 @@ type PaginatedResponse<T> = {
   };
 };
 
-const VOTERS_ENDPOINT = API_ENDPOINTS.crm.voters;
-
 export const fetchVoters = async (
   params: VoterFilters & {
     page?: number;
     per_page?: number;
     search?: string;
   } = {},
+  campaignId?: CampaignIdentifier | null,
 ) => {
+  const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const response = await request<PaginatedResponse<Voter>>(
     {
-      url: VOTERS_ENDPOINT,
+      url: endpoint,
       method: "get",
       params,
     },
@@ -36,17 +37,25 @@ export const fetchVoters = async (
   };
 };
 
-export const fetchVoter = async (identifier: string | number) => {
+export const fetchVoter = async (
+  identifier: string | number,
+  campaignId?: CampaignIdentifier | null,
+) => {
+  const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const response = await request<{ data: Voter }>(
-    { url: `${VOTERS_ENDPOINT}/${identifier}`, method: "get" },
+    { url: `${endpoint}/${identifier}`, method: "get" },
     { useCache: true },
   );
   return response.data;
 };
 
-export const createVoter = async (payload: VoterFormData) => {
+export const createVoter = async (
+  payload: VoterFormData,
+  campaignId?: CampaignIdentifier | null,
+) => {
+  const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const res = await request<{ data: Voter }>({
-    url: VOTERS_ENDPOINT,
+    url: endpoint,
     method: "post",
     data: payload,
   });
@@ -56,15 +65,21 @@ export const createVoter = async (payload: VoterFormData) => {
 export const updateVoter = async (
   identifier: string | number,
   payload: VoterFormData,
+  campaignId?: CampaignIdentifier | null,
 ) => {
+  const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const res = await request<{ data: Voter }>({
-    url: `${VOTERS_ENDPOINT}/${identifier}`,
+    url: `${endpoint}/${identifier}`,
     method: "put",
     data: payload,
   });
   return res.data;
 };
 
-export const deleteVoter = async (identifier: string | number) => {
-  await request({ url: `${VOTERS_ENDPOINT}/${identifier}`, method: "delete" });
+export const deleteVoter = async (
+  identifier: string | number,
+  campaignId?: CampaignIdentifier | null,
+) => {
+  const endpoint = API_ENDPOINTS.crm.voters(campaignId);
+  await request({ url: `${endpoint}/${identifier}`, method: "delete" });
 };

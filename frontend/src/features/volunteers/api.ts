@@ -1,5 +1,6 @@
 import { request } from "@/shared/lib/api";
 import { API_ENDPOINTS } from "@/shared/lib/endpoints";
+import type { CampaignIdentifier } from "@/shared/lib/campaign";
 import type { Volunteer } from "@/types";
 import type { VolunteerFilters, VolunteerFormData } from "./types";
 
@@ -12,23 +13,25 @@ type PaginatedResponse<T> = {
   };
 };
 
-const VOLUNTEERS_ENDPOINT = API_ENDPOINTS.crm.volunteers;
-
 export const fetchVolunteers = async (
   filters: VolunteerFilters & { page?: number; per_page?: number } = {},
+  campaignId?: CampaignIdentifier | null,
 ) =>
   request<PaginatedResponse<Volunteer>>(
     {
-      url: VOLUNTEERS_ENDPOINT,
+      url: API_ENDPOINTS.crm.volunteers(campaignId),
       method: "get",
       params: filters,
     },
     { useCache: true },
   );
 
-export const createVolunteer = async (data: VolunteerFormData) => {
+export const createVolunteer = async (
+  data: VolunteerFormData,
+  campaignId?: CampaignIdentifier | null,
+) => {
   const response = await request<{ data: Volunteer }>({
-    url: VOLUNTEERS_ENDPOINT,
+    url: API_ENDPOINTS.crm.volunteers(campaignId),
     method: "post",
     data,
   });
@@ -38,25 +41,33 @@ export const createVolunteer = async (data: VolunteerFormData) => {
 export const updateVolunteer = async (
   uuid: string,
   data: Partial<VolunteerFormData>,
+  campaignId?: CampaignIdentifier | null,
 ) => {
   const response = await request<{ data: Volunteer }>({
-    url: `${VOLUNTEERS_ENDPOINT}/${uuid}`,
+    url: `${API_ENDPOINTS.crm.volunteers(campaignId)}/${uuid}`,
     method: "put",
     data,
   });
   return response.data;
 };
 
-export const deleteVolunteer = async (uuid: string) => {
-  await request({ url: `${VOLUNTEERS_ENDPOINT}/${uuid}`, method: "delete" });
+export const deleteVolunteer = async (
+  uuid: string,
+  campaignId?: CampaignIdentifier | null,
+) => {
+  await request({
+    url: `${API_ENDPOINTS.crm.volunteers(campaignId)}/${uuid}`,
+    method: "delete",
+  });
 };
 
 export const assignVolunteer = async (
   uuid: string,
   committee_uuid: string,
+  campaignId?: CampaignIdentifier | null,
 ): Promise<void> => {
   await request({
-    url: `${VOLUNTEERS_ENDPOINT}/${uuid}/assign`,
+    url: `${API_ENDPOINTS.crm.volunteers(campaignId)}/${uuid}/assign`,
     method: "post",
     data: { committee_uuid },
   });
