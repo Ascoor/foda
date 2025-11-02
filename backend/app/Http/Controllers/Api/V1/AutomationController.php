@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AutomationTaskResource;
 use App\Models\AutomationTask;
+use App\Models\ElectionCircle\Campaign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;
@@ -30,14 +31,16 @@ class AutomationController extends Controller
         ],
     ];
 
-    public function index()
+    public function index(Campaign $campaign)
     {
-        $tasks = AutomationTask::syncDefinitions($this->definitions)->map->fresh()->values();
+        $tasks = AutomationTask::syncDefinitions($this->definitions, $campaign->getKey())
+            ->map->fresh()
+            ->values();
 
         return AutomationTaskResource::collection($tasks);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Campaign $campaign)
     {
         $data = $request->validate([
             'tasks' => 'required|array',
@@ -48,12 +51,13 @@ class AutomationController extends Controller
         $collection = collect($data['tasks'])->keyBy('task');
 
         $tasks = AutomationTask::query()
+            ->where('campaign_id', $campaign->getKey())
             ->whereIn('task', $collection->keys())
             ->get()
-            ->map(function (AutomationTask $task) use ($collection) {
+            ->map(function (AutomationTask $task) use ($collection, $campaign) {
                 $payload = $collection->get($task->task);
                 $task->update(['is_enabled' => $payload['is_enabled']]);
-                AutomationTask::refreshCache($task->task);
+                AutomationTask::refreshCache($task->task, $campaign->getKey());
 
                 return $task->fresh();
             });
@@ -61,12 +65,15 @@ class AutomationController extends Controller
         return AutomationTaskResource::collection($tasks);
     }
 
-    public function trigger(string $task)
+    public function trigger(Campaign $campaign, string $task)
     {
         abort_unless(array_key_exists($task, $this->definitions), 404);
 
         $record = AutomationTask::firstOrCreate(
-            ['task' => $task],
+            [
+                'campaign_id' => $campaign->getKey(),
+                'task' => $task,
+            ],
             [
                 'display_name' => Arr::get($this->definitions[$task], 'display_name', $task),
                 'description' => Arr::get($this->definitions[$task], 'description'),
@@ -75,10 +82,11 @@ class AutomationController extends Controller
         );
 
         try {
-            Artisan::call($task, ['--source' => 'manual']);
+            Artisan::call($task, ['--source' => 'manual', '--campaign' => $campaign->getKey()]);
         } catch (\Throwable $throwable) {
             Log::error('Manual automation trigger failed', [
                 'task' => $task,
+                'campaign_id' => $campaign->getKey(),
                 'error' => $throwable->getMessage(),
             ]);
 

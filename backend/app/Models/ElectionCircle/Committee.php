@@ -2,6 +2,7 @@
 
 namespace App\Models\ElectionCircle;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,8 +11,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Committee extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
-    protected $fillable = ['name', 'location', 'geo_area_id'];
+    protected $fillable = ['campaign_id', 'name', 'location', 'geo_area_id', 'code'];
 
     public function geoArea(): BelongsTo
     {

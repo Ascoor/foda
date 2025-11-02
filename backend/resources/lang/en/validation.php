@@ -142,9 +142,7 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
+        'belongs_to_campaign' => 'The selected :attribute must belong to the current campaign.',
     ],
 
     /*

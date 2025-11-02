@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVoterRequest;
 use App\Http\Requests\UpdateVoterRequest;
 use App\Http\Resources\VoterResource;
+use App\Models\ElectionCircle\Campaign;
 use App\Models\Voter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -15,11 +16,13 @@ class VoterController extends Controller
 {
     use HandlesIndexRequests;
 
-    public function index(Request $request)
+    public function index(Request $request, Campaign $campaign)
     {
+        $query = Voter::with('area')->where('campaign_id', $campaign->getKey());
+
         $voters = $this->handleIndex(
             $request,
-            Voter::with('area'),
+            $query,
             ['name', 'email', 'phone', 'address'],
             ['area_id', 'sex', 'voter_id'],
             ['name', 'email', 'phone', 'address'],
@@ -29,36 +32,48 @@ class VoterController extends Controller
         return VoterResource::collection($voters);
     }
 
-    public function store(StoreVoterRequest $request)
+    public function store(StoreVoterRequest $request, Campaign $campaign)
     {
-        $voter = Voter::create($request->validated());
+        $payload = $request->validated();
+        $payload['campaign_id'] = $campaign->getKey();
+
+        $voter = Voter::create($payload);
 
         return (new VoterResource($voter->load('area')))->response()->setStatusCode(201);
     }
 
-    public function show(Voter $voter)
+    public function show(Campaign $campaign, Voter $voter)
     {
-        return new VoterResource($voter->load('area'));
-    }
-
-    public function update(UpdateVoterRequest $request, Voter $voter)
-    {
-        $voter->update($request->validated());
+        abort_unless($voter->campaign_id === $campaign->getKey(), 404);
 
         return new VoterResource($voter->load('area'));
     }
 
-    public function destroy(Voter $voter)
+    public function update(UpdateVoterRequest $request, Campaign $campaign, Voter $voter)
     {
+        abort_unless($voter->campaign_id === $campaign->getKey(), 404);
+
+        $payload = $request->validated();
+        $payload['campaign_id'] = $campaign->getKey();
+
+        $voter->update($payload);
+
+        return new VoterResource($voter->load('area'));
+    }
+
+    public function destroy(Campaign $campaign, Voter $voter)
+    {
+        abort_unless($voter->campaign_id === $campaign->getKey(), 404);
+
         $voter->delete();
 
         return response()->noContent();
     }
 
-    public function import(Request $request)
+    public function import(Request $request, Campaign $campaign)
     {
         $file = $request->file('file');
-        if (!$file) {
+        if (! $file) {
             return response()->json(['message' => 'No file provided'], 422);
         }
 
@@ -66,27 +81,35 @@ class VoterController extends Controller
         $header = fgetcsv($handle);
         while (($row = fgetcsv($handle)) !== false) {
             $data = array_combine($header, $row);
-            if (!$data) {
+            if (! $data) {
                 continue;
             }
-            Voter::create($data);
+
+            $data['campaign_id'] = $campaign->getKey();
+            Voter::updateOrCreate(
+                [
+                    'campaign_id' => $campaign->getKey(),
+                    'voter_id' => $data['voter_id'] ?? null,
+                ],
+                $data
+            );
         }
         fclose($handle);
 
         return response()->json(['message' => 'Imported'], 201);
     }
 
-    public function export()
+    public function export(Campaign $campaign)
     {
-        $voters = Voter::with('area')->get();
+        $voters = Voter::with('area')->where('campaign_id', $campaign->getKey())->get();
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => 'attachment; filename="voters.csv"',
         ];
 
-        $columns = ['id','name','email','phone','area_id','address','sex','birthdate','age','bloodgroup','img_url','ion_user_id','voter_id','add_date','created_at','updated_at'];
+        $columns = ['id','name','email','phone','area_id','address','sex','birthdate','age','bloodgroup','img_url','ion_user_id','voter_id','voter_uid','add_date','created_at','updated_at'];
 
-        $callback = function() use ($voters, $columns) {
+        $callback = function () use ($voters, $columns) {
             $file = fopen('php://output', 'w');
             fputcsv($file, $columns);
             foreach ($voters as $voter) {
