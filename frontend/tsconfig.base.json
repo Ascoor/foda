@@ -12,11 +12,21 @@
       "@features/*": ["src/features/*"],
       "@shared/*": ["src/shared/*"],
       "@legacy/*": ["src/legacy/*"],
-      "@theme/*": ["src/theme/*"]
+      "@theme/*": ["src/theme/*"],
+      "@nav/*": ["src/nav/*"],
+      "@components/*": ["src/components/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@routes/*": ["src/routes/*"],
+      "@styles/*": ["src/styles/*"],
+      "@types/*": ["src/types/*"],
+      "@assets/*": ["src/assets/*"],
+      "@config/*": ["src/config/*"]
     },
     "types": ["vite/client", "node"],
     "strict": true,
     "noEmit": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src", "vite.config.ts", "vitest.config.ts", "env.d.ts"],
+  "exclude": ["node_modules", "dist"]
 }
