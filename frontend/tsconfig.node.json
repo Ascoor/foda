@@ -1,11 +1,8 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2023"],
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "types": ["node"]
+    "module": "ESNext",
+    "moduleResolution": "Bundler"
   },
-  "include": ["vite.config.ts", "vite.config.performance.ts", "scripts/**/*.mjs"]
+  "include": ["vite.config.ts", "postcss.config.js", "tailwind.config.ts", "eslint.config.js"]
 }

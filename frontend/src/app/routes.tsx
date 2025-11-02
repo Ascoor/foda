@@ -29,6 +29,8 @@ import FloatingLandingPage from "@/features/marketing/pages/LandingPage";
 import FloatingDashboard from "@/features/marketing/pages/Dashboard";
 import PostAuthRedirect from "@/routes/post-auth";
 import { NavGuard } from "@/nav/NavGuard";
+import { EnhancedDashboard } from "@/features/dashboard/EnhancedDashboard";
+import { ArchitecturalControlCenter } from "@/features/dashboard/ArchitecturalControlCenter";
 
 const RouterShell = () => (
   <BarbaTransitionProvider>
