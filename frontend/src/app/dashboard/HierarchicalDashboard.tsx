@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import {
   DashboardModule,
@@ -11,95 +11,15 @@ import {
 import { MainTabs } from "./layout/MainTabs";
 import { SideSubTabs } from "./layout/SideSubTabs";
 import { ControlPanel } from "./layout/ControlPanel";
-import {
-  DashboardBreadcrumb,
-  DashboardBreadcrumbs,
-} from "./layout/DashboardBreadcrumbs";
+import { DashboardBreadcrumbs } from "./layout/DashboardBreadcrumbs";
+import type { DashboardBreadcrumb } from "./layout/types";
 import { cn } from "@/shared/lib/utils";
-
-const LOCAL_STORAGE_KEY = "architect-dashboard-context";
-
-interface SelectionState {
-  moduleId: string;
-  submoduleId: string;
-  panelId: string;
-  role: GovernanceRole;
-}
-
-const getDefaultSelection = (modules: DashboardModule[]): SelectionState => {
-  const firstModule = modules[0];
-  const firstSubmodule = firstModule?.submodules?.[0];
-  const firstPanel = firstSubmodule?.panels?.[0];
-
-  return {
-    moduleId: firstModule?.id ?? "",
-    submoduleId: firstSubmodule?.id ?? "",
-    panelId: firstPanel?.id ?? "",
-    role: "domain-owner",
-  };
-};
-
-const ensureSelection = (
-  selection: SelectionState,
-  modules: DashboardModule[],
-): SelectionState => {
-  if (modules.length === 0) {
-    return selection;
-  }
-
-  const module =
-    modules.find((item) => item.id === selection.moduleId) ?? modules[0];
-  const submodule =
-    module.submodules.find((item) => item.id === selection.submoduleId) ??
-    module.submodules[0];
-  const panel =
-    submodule?.panels.find((item) => item.id === selection.panelId) ??
-    submodule?.panels?.[0];
-
-  return {
-    moduleId: module?.id ?? "",
-    submoduleId: submodule?.id ?? "",
-    panelId: panel?.id ?? "",
-    role: selection.role ?? "domain-owner",
-  };
-};
-
-const restoreSelection = (): SelectionState | null => {
-  if (typeof window === "undefined") {
-    return null;
-  }
-
-  try {
-    const stored = window.localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!stored) {
-      return null;
-    }
-
-    const parsed = JSON.parse(stored) as SelectionState;
-
-    if (
-      parsed &&
-      typeof parsed.moduleId === "string" &&
-      typeof parsed.submoduleId === "string" &&
-      typeof parsed.panelId === "string" &&
-      typeof parsed.role === "string"
-    ) {
-      return parsed;
-    }
-  } catch (error) {
-    console.warn("Failed to restore dashboard selection", error);
-  }
-
-  return null;
-};
-
-const persistSelection = (selection: SelectionState) => {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(selection));
-};
+import { useDashboardSelectionStore } from "./state/dashboardSelectionStore";
+import { useDashboardSelectionSync } from "./state/useDashboardSelectionSync";
+import {
+  DEFAULT_GOVERNANCE_ROLE,
+  buildBreadcrumbs,
+} from "./state/selection";
 
 export const HierarchicalDashboard = () => {
   const {
@@ -110,23 +30,13 @@ export const HierarchicalDashboard = () => {
     refetch,
   } = useDashboardHierarchy();
 
-  const [selection, setSelection] = useState<SelectionState | null>(null);
+  useDashboardSelectionSync(modules);
 
-  useEffect(() => {
-    if (modules.length === 0) {
-      return;
-    }
-
-    setSelection((previous) => {
-      const restored = previous ?? restoreSelection();
-      const ensured = restored
-        ? ensureSelection(restored, modules)
-        : getDefaultSelection(modules);
-
-      persistSelection(ensured);
-      return ensured;
-    });
-  }, [modules]);
+  const selection = useDashboardSelectionStore((state) => state.selection);
+  const setSelection = useDashboardSelectionStore((state) => state.setSelection);
+  const updateSelection = useDashboardSelectionStore(
+    (state) => state.updateSelection,
+  );
 
   const activeModule = useMemo<DashboardModule | undefined>(() => {
     if (!selection) {
@@ -167,17 +77,15 @@ export const HierarchicalDashboard = () => {
     const nextSubmodule = nextModule.submodules[0];
     const nextPanel = nextSubmodule?.panels?.[0];
 
-    setSelection((prev) => {
-      const role = prev?.role ?? "domain-owner";
-      const updated: SelectionState = {
+    setSelection(
+      (previous) => ({
         moduleId: nextModule.id,
         submoduleId: nextSubmodule?.id ?? "",
         panelId: nextPanel?.id ?? "",
-        role,
-      };
-      persistSelection(updated);
-      return updated;
-    });
+        role: previous?.role ?? DEFAULT_GOVERNANCE_ROLE,
+      }),
+      { origin: "user" },
+    );
   };
 
   const handleSubmoduleChange = (submoduleId: string) => {
@@ -195,74 +103,48 @@ export const HierarchicalDashboard = () => {
 
     const nextPanel = nextSubmodule.panels[0];
 
-    setSelection((prev) => {
-      if (!prev) {
-        return prev;
-      }
+    setSelection(
+      (previous) => {
+        if (!previous) {
+          return previous;
+        }
 
-      const updated: SelectionState = {
-        ...prev,
-        moduleId: activeModule.id,
-        submoduleId: nextSubmodule.id,
-        panelId: nextPanel?.id ?? prev.panelId,
-      };
-      persistSelection(updated);
-      return updated;
-    });
+        return {
+          ...previous,
+          moduleId: activeModule.id,
+          submoduleId: nextSubmodule.id,
+          panelId: nextPanel?.id ?? previous.panelId,
+        };
+      },
+      { origin: "user" },
+    );
   };
 
   const handlePanelChange = (panel: DashboardPanel, submoduleId: string) => {
-    setSelection((prev) => {
-      if (!prev) {
-        return prev;
-      }
+    setSelection(
+      (previous) => {
+        if (!previous) {
+          return previous;
+        }
 
-      const updated: SelectionState = {
-        ...prev,
-        panelId: panel.id,
-        submoduleId,
-      };
-      persistSelection(updated);
-      return updated;
-    });
+        return {
+          ...previous,
+          panelId: panel.id,
+          submoduleId,
+        };
+      },
+      { origin: "user" },
+    );
   };
 
   const handleRoleChange = (role: GovernanceRole) => {
-    setSelection((prev) => {
-      if (!prev) {
-        return prev;
-      }
-
-      const updated: SelectionState = { ...prev, role };
-      persistSelection(updated);
-      return updated;
-    });
+    updateSelection({ role }, { origin: "user" });
   };
 
-  const breadcrumbs = useMemo<DashboardBreadcrumb[]>(() => {
-    if (!selection) {
-      return [];
-    }
-
-    const items: DashboardBreadcrumb[] = [];
-    if (activeModule) {
-      items.push({ id: activeModule.id, label: activeModule.label, level: "module" });
-    }
-
-    if (activeSubmodule) {
-      items.push({
-        id: activeSubmodule.id,
-        label: activeSubmodule.label,
-        level: "submodule",
-      });
-    }
-
-    if (activePanel) {
-      items.push({ id: activePanel.id, label: activePanel.label, level: "panel" });
-    }
-
-    return items;
-  }, [selection, activeModule, activeSubmodule, activePanel]);
+  const breadcrumbs = useMemo<DashboardBreadcrumb[]>(
+    () => buildBreadcrumbs(modules, selection),
+    [modules, selection],
+  );
 
   const handleBreadcrumbNavigate = (item: DashboardBreadcrumb) => {
     if (item.level === "module") {
@@ -286,7 +168,9 @@ export const HierarchicalDashboard = () => {
         <div>
           <h2 className="text-lg font-semibold">تعذر تحميل بيانات لوحة التحكم</h2>
           <p className="mt-2 text-sm text-destructive/80">
-            {error instanceof Error ? error.message : "حدث خطأ غير متوقع عند جلب البيانات."}
+            {error instanceof Error
+              ? error.message
+              : "حدث خطأ غير متوقع عند جلب البيانات."}
           </p>
         </div>
         <button
@@ -332,7 +216,10 @@ export const HierarchicalDashboard = () => {
         </div>
 
         {breadcrumbs.length > 0 && (
-          <DashboardBreadcrumbs items={breadcrumbs} onNavigate={handleBreadcrumbNavigate} />
+          <DashboardBreadcrumbs
+            items={breadcrumbs}
+            onNavigate={handleBreadcrumbNavigate}
+          />
         )}
         <MainTabs
           modules={modules}
