@@ -5,7 +5,7 @@ namespace Database\Factories;
 use App\Models\AnalyticsSnapshot;
 use App\Models\ElectionCircle\Campaign;
 use App\Models\ElectionCircle\Election;
-use Database\Factories\ElectionCircle\CampaignFactory;
+use Database\Factories\Concerns\ResolvesCampaign;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,6 +13,8 @@ use Illuminate\Support\Carbon;
 
 class AnalyticsSnapshotFactory extends Factory
 {
+    use ResolvesCampaign;
+
     protected $model = AnalyticsSnapshot::class;
 
     protected function withFaker(): Generator
@@ -42,17 +44,6 @@ class AnalyticsSnapshotFactory extends Factory
             ],
             'forecast_value' => $this->faker->randomFloat(2, 45, 98),
         ];
-    }
-
-    protected function resolveCampaignId(): int
-    {
-        $existing = Campaign::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return CampaignFactory::new()->create()->id;
     }
 
     protected function resolveElectionId(int $campaignId): int

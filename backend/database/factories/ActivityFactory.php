@@ -4,10 +4,10 @@ namespace Database\Factories;
 
 use App\Models\Activity;
 use App\Models\Area;
-use App\Models\ElectionCircle\Campaign;
 use App\Models\ElectionCircle\Committee;
 use App\Models\User;
 use App\Models\Voter;
+use Database\Factories\Concerns\ResolvesCampaign;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,6 +15,8 @@ use Illuminate\Support\Carbon;
 
 class ActivityFactory extends Factory
 {
+    use ResolvesCampaign;
+
     protected $model = Activity::class;
 
     protected function withFaker(): Generator
@@ -79,17 +81,6 @@ class ActivityFactory extends Factory
         }
 
         return Committee::factory()->create()->id;
-    }
-
-    protected function resolveCampaignId(): ?int
-    {
-        $existing = Campaign::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return Campaign::factory()->create()->id;
     }
 
     protected function resolveVoterId(): ?int

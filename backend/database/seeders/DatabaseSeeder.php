@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RolesAndPermissionsSeeder::class,
             AreaSeeder::class,
+            ElectionSeeder::class,
+            CampaignSeeder::class,
             TeamSeeder::class,
             EventSeeder::class,
             ExpenseCategorySeeder::class,
@@ -27,12 +29,10 @@ class DatabaseSeeder extends Seeder
             SwotSeeder::class,
             VolunteerSeeder::class,
             VoterSeeder::class,
-            ElectionSeeder::class,
             GeoAreaSeeder::class,
             CommitteeSeeder::class,
             CandidateSeeder::class,
             AgentSeeder::class,
-            CampaignSeeder::class,
             ECSettingSeeder::class,
             ObservationSeeder::class,
         ]);

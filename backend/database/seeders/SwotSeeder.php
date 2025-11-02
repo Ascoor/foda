@@ -2,8 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Area;
 use App\Models\Swot;
+use App\Models\Team;
 use App\Models\User;
+use App\Models\Volunteer;
+use App\Models\ElectionCircle\Campaign;
 use Illuminate\Database\Seeder;
 
 class SwotSeeder extends Seeder
@@ -11,10 +15,20 @@ class SwotSeeder extends Seeder
     public function run(): void
     {
         $user = User::first() ?? User::factory()->create();
+        $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
+        $area = Area::first() ?? Area::factory()->create();
+        $team = Team::first() ?? Team::factory()->create([
+            'campaign_id' => $campaign->id,
+            'area_id' => $area->id,
+        ]);
+        $volunteer = Volunteer::first() ?? Volunteer::factory()->create([
+            'team_id' => $team->id,
+        ]);
 
         Swot::factory()->create([
+            'campaign_id' => $campaign->id,
             'entity_type' => 'area',
-            'entity_id' => 1,
+            'entity_id' => $area->id,
             'strengths' => 'Strong community engagement',
             'weaknesses' => 'Limited funding',
             'opportunities' => 'Government grants',
@@ -23,8 +37,9 @@ class SwotSeeder extends Seeder
         ]);
 
         Swot::factory()->create([
+            'campaign_id' => $campaign->id,
             'entity_type' => 'team',
-            'entity_id' => 1,
+            'entity_id' => $team->id,
             'strengths' => 'فريق ذو خبرة',
             'weaknesses' => 'نقص الموارد',
             'opportunities' => 'فرص تدريب خارجية',
@@ -33,8 +48,9 @@ class SwotSeeder extends Seeder
         ]);
 
         Swot::factory()->create([
+            'campaign_id' => $campaign->id,
             'entity_type' => 'volunteer',
-            'entity_id' => 1,
+            'entity_id' => $volunteer->id,
             'strengths' => 'Motivated and dedicated',
             'weaknesses' => 'Limited experience',
             'opportunities' => 'Workshops and mentoring',
