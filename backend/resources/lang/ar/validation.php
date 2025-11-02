@@ -9,4 +9,7 @@ return [
         'string' => 'يجب ألا يقل :attribute عن :min أحرف.',
     ],
     'exists' => 'القيمة المحددة لـ :attribute غير موجودة.',
+    'custom' => [
+        'belongs_to_campaign' => 'يجب أن ينتمي :attribute إلى نفس الحملة.',
+    ],
 ];

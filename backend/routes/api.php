@@ -36,17 +36,6 @@ use App\Http\Controllers\ElectionCircle\ObservationController as ECObservationCo
 use App\Http\Controllers\ElectionCircle\CampaignController as ECCampaignController;
 use App\Http\Controllers\ElectionCircle\SettingController as ECSettingController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 $apiRoutes = function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register'])->middleware(['auth:sanctum', 'role:admin']);
@@ -68,39 +57,55 @@ $apiRoutes = function () {
         Route::patch('notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
         Route::post('notifications/read-all', [NotificationController::class, 'markAll']);
 
-        Route::get('automation/config', [AutomationController::class, 'index']);
-        Route::put('automation/config', [AutomationController::class, 'update']);
-        Route::post('automation/config/{task}/trigger', [AutomationController::class, 'trigger']);
-        Route::get('committees/geo', CommitteeGeoController::class);
-        Route::get('events/upcoming', [EventController::class, 'upcoming']);
-        Route::apiResource('events', EventController::class);
-        Route::get('finances/report', [FinanceController::class, 'report']);
-        Route::apiResource('finances', FinanceController::class);
-        Route::apiResource('expense-categories', ExpenseCategoryController::class);
-        Route::get('home', [HomeController::class, 'index']);
-        // Alias for frontend expecting /dashboard
-        Route::get('dashboard', [HomeController::class, 'index']);
-        Route::get('home/heatmap', [HomeController::class, 'heatmap']);
-        Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
-        Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);
-        Route::apiResource('settings', SettingController::class);
-        Route::get('roles', [RoleController::class, 'index']);
-        Route::match(['put', 'patch'], 'roles/{role}', [RoleController::class, 'update']);
-        Route::get('sms/settings', [SmsController::class, 'settings']);
-        Route::put('sms/settings', [SmsController::class, 'updateSettings']);
-        Route::apiResource('sms', SmsController::class);
-        Route::get('swots/report', [SwotController::class, 'report']);
-        Route::apiResource('swots', SwotController::class);
-        Route::apiResource('teams', TeamController::class);
-        Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
-        Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
-        Route::apiResource('members', MemberController::class)->only(['index', 'store']);
-        Route::apiResource('volunteers', VolunteerController::class);
-        Route::get('activities/recent', [ActivityController::class, 'recent']);
-        Route::apiResource('activities', ActivityController::class);
-        Route::post('voters/import', [VoterController::class, 'import']);
-        Route::get('voters/export', [VoterController::class, 'export']);
-        Route::apiResource('voters', VoterController::class);
+        Route::prefix('campaigns/{campaign}')
+            ->middleware('resolve.campaign')
+            ->group(function () {
+                Route::get('automation/config', [AutomationController::class, 'index']);
+                Route::put('automation/config', [AutomationController::class, 'update']);
+                Route::post('automation/config/{task}/trigger', [AutomationController::class, 'trigger']);
+
+                Route::get('committees/geo', CommitteeGeoController::class);
+
+                Route::get('events/upcoming', [EventController::class, 'upcoming']);
+                Route::apiResource('events', EventController::class);
+
+                Route::get('finances/report', [FinanceController::class, 'report']);
+                Route::apiResource('finances', FinanceController::class);
+
+                Route::apiResource('expense-categories', ExpenseCategoryController::class);
+
+                Route::get('home', [HomeController::class, 'index']);
+                Route::get('dashboard', [HomeController::class, 'index']);
+                Route::get('home/heatmap', [HomeController::class, 'heatmap']);
+
+                Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
+                Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);
+                Route::apiResource('settings', SettingController::class);
+
+                Route::get('roles', [RoleController::class, 'index']);
+                Route::match(['put', 'patch'], 'roles/{role}', [RoleController::class, 'update']);
+
+                Route::get('sms/settings', [SmsController::class, 'settings']);
+                Route::put('sms/settings', [SmsController::class, 'updateSettings']);
+                Route::apiResource('sms', SmsController::class);
+
+                Route::get('swots/report', [SwotController::class, 'report']);
+                Route::apiResource('swots', SwotController::class);
+
+                Route::apiResource('teams', TeamController::class);
+                Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
+                Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
+
+                Route::apiResource('members', MemberController::class)->only(['index', 'store']);
+                Route::apiResource('volunteers', VolunteerController::class);
+
+                Route::get('activities/recent', [ActivityController::class, 'recent']);
+                Route::apiResource('activities', ActivityController::class);
+
+                Route::post('voters/import', [VoterController::class, 'import']);
+                Route::get('voters/export', [VoterController::class, 'export']);
+                Route::apiResource('voters', VoterController::class);
+            });
 
         Route::prefix('integrations')->group(function () {
             Route::get('geo-areas', [ExternalDataController::class, 'geoAreas']);
@@ -109,6 +114,7 @@ $apiRoutes = function () {
             Route::get('maps/configuration', [ExternalDataController::class, 'mapConfiguration']);
         });
     });
+
     Route::middleware('auth:sanctum')->prefix('ec')->group(function () {
         Route::apiResource('elections', ECElectionController::class);
         Route::apiResource('geo-areas', ECGeoAreaController::class);

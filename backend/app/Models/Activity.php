@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,7 @@ use Illuminate\Support\Carbon;
 class Activity extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
     protected $fillable = [
         'area_id',
@@ -46,11 +48,6 @@ class Activity extends Model
         return $this->belongsTo(\App\Models\ElectionCircle\Committee::class, 'committee_id');
     }
 
-    public function campaign(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\ElectionCircle\Campaign::class);
-    }
-
     public function voter(): BelongsTo
     {
         return $this->belongsTo(Voter::class);
@@ -63,17 +60,17 @@ class Activity extends Model
 
     public function scopeForRegion($query, ?int $areaId)
     {
-        return $query->when($areaId, fn($q) => $q->where('area_id', $areaId));
+        return $query->when($areaId, fn ($q) => $q->where('area_id', $areaId));
     }
 
     public function scopeForType($query, ?string $type)
     {
-        return $query->when($type, fn($q) => $q->where('type', $type));
+        return $query->when($type, fn ($q) => $q->where('type', $type));
     }
 
     public function scopeForStatus($query, ?string $status)
     {
-        return $query->when($status, fn($q) => $q->where('status', $status));
+        return $query->when($status, fn ($q) => $q->where('status', $status));
     }
 
     public function scopeBetweenDates($query, ?Carbon $start, ?Carbon $end)

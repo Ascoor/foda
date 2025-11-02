@@ -2,17 +2,29 @@
 
 namespace App\Http\Requests;
 
+use App\Models\ElectionCircle\Campaign;
+use App\Rules\BelongsToCampaign;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreVoterRequest extends FormRequest
 {
+    protected ?Campaign $campaign = null;
+
     public function authorize(): bool
     {
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->campaign = $this->route('campaign');
+    }
+
     public function rules(): array
     {
+        $campaignId = $this->campaign?->getKey();
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['nullable', 'email'],
@@ -25,8 +37,27 @@ class StoreVoterRequest extends FormRequest
             'bloodgroup' => ['nullable', 'string', 'max:3'],
             'img_url' => ['nullable', 'url'],
             'ion_user_id' => ['nullable', 'integer'],
-            'voter_id' => ['required', 'string', 'max:100', 'unique:voters,voter_id'],
+            'committee_id' => ['required', 'exists:committees,id', new BelongsToCampaign('committees')],
+            'voter_id' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('voters', 'voter_id')->where(fn ($query) => $query->where('campaign_id', $campaignId)),
+            ],
+            'voter_uid' => [
+                'nullable',
+                'string',
+                'max:100',
+                Rule::unique('voters', 'voter_uid')->where(fn ($query) => $query->where('campaign_id', $campaignId)),
+            ],
             'add_date' => ['nullable', 'date'],
         ];
+    }
+
+    public function validationData(): array
+    {
+        return array_merge(parent::validationData(), [
+            'campaign' => $this->campaign,
+        ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,8 +12,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Team extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
-    protected $fillable = ['name', 'area_id', 'supervisor_id'];
+    protected $fillable = ['campaign_id', 'name', 'area_id', 'supervisor_id'];
 
     public function area(): BelongsTo
     {
