@@ -1,34 +1,61 @@
-import { use } from "react";
 import { safeArray } from "@/shared/lib/safeData";
 import { fetchAgents } from "./api";
 import type { Agent, AgentFilters } from "./types";
 
-const agentsCache = new Map<string, Promise<Agent[]>>();
+type AgentsCacheEntry = {
+  status: "pending" | "success" | "error";
+  promise: Promise<Agent[]>;
+  data?: Agent[];
+  error?: unknown;
+};
+
+const agentsCache = new Map<string, AgentsCacheEntry>();
 
 const serializeFilters = (filters: AgentFilters | undefined) =>
   JSON.stringify(filters ?? {});
 
-const createAgentsPromise = (
+const createAgentsEntry = (
   filters: AgentFilters | undefined,
   cacheKey: string,
-) =>
-  fetchAgents(filters ?? {})
-    .then((data) => safeArray<Agent>(data))
-    .catch((error) => {
-      agentsCache.delete(cacheKey);
-      throw error;
-    });
+): AgentsCacheEntry => {
+  const entry: AgentsCacheEntry = {
+    status: "pending",
+    promise: fetchAgents(filters ?? {})
+      .then((data) => {
+        const safeData = safeArray<Agent>(data);
+        entry.status = "success";
+        entry.data = safeData;
+        return safeData;
+      })
+      .catch((error) => {
+        entry.status = "error";
+        entry.error = error;
+        agentsCache.delete(cacheKey);
+        throw error;
+      }),
+  };
+
+  return entry;
+};
 
 export const useAgentsData = (filters: AgentFilters | undefined) => {
   const key = serializeFilters(filters);
-  let promise = agentsCache.get(key);
+  let entry = agentsCache.get(key);
 
-  if (!promise) {
-    promise = createAgentsPromise(filters, key);
-    agentsCache.set(key, promise);
+  if (!entry) {
+    entry = createAgentsEntry(filters, key);
+    agentsCache.set(key, entry);
   }
 
-  return use(promise);
+  if (entry.status === "pending") {
+    throw entry.promise;
+  }
+
+  if (entry.status === "error") {
+    throw entry.error ?? new Error("Failed to load agents");
+  }
+
+  return entry.data ?? [];
 };
 
 export const invalidateAgentsCache = (filters?: AgentFilters) => {
@@ -46,5 +73,10 @@ export const primeAgentsCache = (
   data: Agent[],
 ) => {
   const key = serializeFilters(filters);
-  agentsCache.set(key, Promise.resolve(safeArray<Agent>(data)));
+  const safeData = safeArray<Agent>(data);
+  agentsCache.set(key, {
+    status: "success",
+    promise: Promise.resolve(safeData),
+    data: safeData,
+  });
 };
