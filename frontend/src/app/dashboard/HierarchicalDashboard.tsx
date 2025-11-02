@@ -5,8 +5,8 @@ import {
   DashboardPanel,
   DashboardSubmodule,
   GovernanceRole,
-  dashboardHierarchy,
   governanceRoles,
+  useDashboardHierarchy,
 } from "./data/hierarchy";
 import { MainTabs } from "./layout/MainTabs";
 import { SideSubTabs } from "./layout/SideSubTabs";
@@ -15,7 +15,7 @@ import {
   DashboardBreadcrumb,
   DashboardBreadcrumbs,
 } from "./layout/DashboardBreadcrumbs";
-import { cn } from "@shared/lib/utils";
+import { cn } from "../../shared/lib/utils";
 
 const LOCAL_STORAGE_KEY = "architect-dashboard-context";
 
@@ -26,8 +26,8 @@ interface SelectionState {
   role: GovernanceRole;
 }
 
-const getDefaultSelection = (): SelectionState => {
-  const firstModule = dashboardHierarchy[0];
+const getDefaultSelection = (modules: DashboardModule[]): SelectionState => {
+  const firstModule = modules[0];
   const firstSubmodule = firstModule?.submodules?.[0];
   const firstPanel = firstSubmodule?.panels?.[0];
 
@@ -39,24 +39,58 @@ const getDefaultSelection = (): SelectionState => {
   };
 };
 
-const restoreSelection = (): SelectionState => {
+const ensureSelection = (
+  selection: SelectionState,
+  modules: DashboardModule[],
+): SelectionState => {
+  if (modules.length === 0) {
+    return selection;
+  }
+
+  const module =
+    modules.find((item) => item.id === selection.moduleId) ?? modules[0];
+  const submodule =
+    module.submodules.find((item) => item.id === selection.submoduleId) ??
+    module.submodules[0];
+  const panel =
+    submodule?.panels.find((item) => item.id === selection.panelId) ??
+    submodule?.panels?.[0];
+
+  return {
+    moduleId: module?.id ?? "",
+    submoduleId: submodule?.id ?? "",
+    panelId: panel?.id ?? "",
+    role: selection.role ?? "domain-owner",
+  };
+};
+
+const restoreSelection = (): SelectionState | null => {
   if (typeof window === "undefined") {
-    return getDefaultSelection();
+    return null;
   }
 
   try {
     const stored = window.localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored) as SelectionState;
-      if (parsed.moduleId && parsed.submoduleId && parsed.panelId && parsed.role) {
-        return parsed;
-      }
+    if (!stored) {
+      return null;
+    }
+
+    const parsed = JSON.parse(stored) as SelectionState;
+
+    if (
+      parsed &&
+      typeof parsed.moduleId === "string" &&
+      typeof parsed.submoduleId === "string" &&
+      typeof parsed.panelId === "string" &&
+      typeof parsed.role === "string"
+    ) {
+      return parsed;
     }
   } catch (error) {
     console.warn("Failed to restore dashboard selection", error);
   }
 
-  return getDefaultSelection();
+  return null;
 };
 
 const persistSelection = (selection: SelectionState) => {
@@ -68,83 +102,159 @@ const persistSelection = (selection: SelectionState) => {
 };
 
 export const HierarchicalDashboard = () => {
-  const [selection, setSelection] = useState<SelectionState>(() => restoreSelection());
+  const {
+    data: modules = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useDashboardHierarchy();
 
-  const activeModule = useMemo<DashboardModule | undefined>(
-    () => dashboardHierarchy.find((module) => module.id === selection.moduleId),
-    [selection.moduleId],
-  );
-
-  const activeSubmodule = useMemo<DashboardSubmodule | undefined>(
-    () => activeModule?.submodules.find((sub) => sub.id === selection.submoduleId),
-    [activeModule, selection.submoduleId],
-  );
-
-  const activePanel = useMemo<DashboardPanel | undefined>(
-    () => activeSubmodule?.panels.find((panel) => panel.id === selection.panelId),
-    [activeSubmodule, selection.panelId],
-  );
+  const [selection, setSelection] = useState<SelectionState | null>(null);
 
   useEffect(() => {
-    if (!activeModule || !activeSubmodule || !activePanel) {
-      const defaultSelection = getDefaultSelection();
-      setSelection(defaultSelection);
+    if (modules.length === 0) {
       return;
     }
 
-    persistSelection(selection);
-  }, [selection, activeModule, activeSubmodule, activePanel]);
+    setSelection((previous) => {
+      const restored = previous ?? restoreSelection();
+      const ensured = restored
+        ? ensureSelection(restored, modules)
+        : getDefaultSelection(modules);
+
+      persistSelection(ensured);
+      return ensured;
+    });
+  }, [modules]);
+
+  const activeModule = useMemo<DashboardModule | undefined>(() => {
+    if (!selection) {
+      return undefined;
+    }
+
+    return modules.find((module) => module.id === selection.moduleId);
+  }, [modules, selection?.moduleId]);
+
+  const activeSubmodule = useMemo<DashboardSubmodule | undefined>(() => {
+    if (!selection || !activeModule) {
+      return undefined;
+    }
+
+    return activeModule.submodules.find(
+      (submodule) => submodule.id === selection.submoduleId,
+    );
+  }, [activeModule, selection?.submoduleId]);
+
+  const activePanel = useMemo<DashboardPanel | undefined>(() => {
+    if (!selection || !activeSubmodule) {
+      return undefined;
+    }
+
+    return activeSubmodule.panels.find((panel) => panel.id === selection.panelId);
+  }, [activeSubmodule, selection?.panelId]);
 
   const handleModuleChange = (moduleId: string) => {
-    const nextModule = dashboardHierarchy.find((module) => module.id === moduleId);
-    const nextSubmodule = nextModule?.submodules[0];
-    const nextPanel = nextSubmodule?.panels[0];
+    if (modules.length === 0) {
+      return;
+    }
 
-    setSelection((prev) => ({
-      ...prev,
-      moduleId,
-      submoduleId: nextSubmodule?.id ?? prev.submoduleId,
-      panelId: nextPanel?.id ?? prev.panelId,
-    }));
+    const nextModule = modules.find((module) => module.id === moduleId);
+    if (!nextModule) {
+      return;
+    }
+
+    const nextSubmodule = nextModule.submodules[0];
+    const nextPanel = nextSubmodule?.panels?.[0];
+
+    setSelection((prev) => {
+      const role = prev?.role ?? "domain-owner";
+      const updated: SelectionState = {
+        moduleId: nextModule.id,
+        submoduleId: nextSubmodule?.id ?? "",
+        panelId: nextPanel?.id ?? "",
+        role,
+      };
+      persistSelection(updated);
+      return updated;
+    });
   };
 
   const handleSubmoduleChange = (submoduleId: string) => {
-    if (!activeModule) return;
+    if (!selection || !activeModule) {
+      return;
+    }
 
-    const nextSubmodule = activeModule.submodules.find((sub) => sub.id === submoduleId);
-    const nextPanel = nextSubmodule?.panels[0];
+    const nextSubmodule = activeModule.submodules.find(
+      (submodule) => submodule.id === submoduleId,
+    );
 
-    setSelection((prev) => ({
-      ...prev,
-      moduleId: activeModule.id,
-      submoduleId,
-      panelId: nextPanel?.id ?? prev.panelId,
-    }));
+    if (!nextSubmodule) {
+      return;
+    }
+
+    const nextPanel = nextSubmodule.panels[0];
+
+    setSelection((prev) => {
+      if (!prev) {
+        return prev;
+      }
+
+      const updated: SelectionState = {
+        ...prev,
+        moduleId: activeModule.id,
+        submoduleId: nextSubmodule.id,
+        panelId: nextPanel?.id ?? prev.panelId,
+      };
+      persistSelection(updated);
+      return updated;
+    });
   };
 
   const handlePanelChange = (panel: DashboardPanel, submoduleId: string) => {
-    setSelection((prev) => ({
-      ...prev,
-      panelId: panel.id,
-      submoduleId,
-    }));
+    setSelection((prev) => {
+      if (!prev) {
+        return prev;
+      }
+
+      const updated: SelectionState = {
+        ...prev,
+        panelId: panel.id,
+        submoduleId,
+      };
+      persistSelection(updated);
+      return updated;
+    });
   };
 
   const handleRoleChange = (role: GovernanceRole) => {
-    setSelection((prev) => ({
-      ...prev,
-      role,
-    }));
+    setSelection((prev) => {
+      if (!prev) {
+        return prev;
+      }
+
+      const updated: SelectionState = { ...prev, role };
+      persistSelection(updated);
+      return updated;
+    });
   };
 
   const breadcrumbs = useMemo<DashboardBreadcrumb[]>(() => {
+    if (!selection) {
+      return [];
+    }
+
     const items: DashboardBreadcrumb[] = [];
     if (activeModule) {
       items.push({ id: activeModule.id, label: activeModule.label, level: "module" });
     }
 
     if (activeSubmodule) {
-      items.push({ id: activeSubmodule.id, label: activeSubmodule.label, level: "submodule" });
+      items.push({
+        id: activeSubmodule.id,
+        label: activeSubmodule.label,
+        level: "submodule",
+      });
     }
 
     if (activePanel) {
@@ -152,7 +262,7 @@ export const HierarchicalDashboard = () => {
     }
 
     return items;
-  }, [activeModule, activeSubmodule, activePanel]);
+  }, [selection, activeModule, activeSubmodule, activePanel]);
 
   const handleBreadcrumbNavigate = (item: DashboardBreadcrumb) => {
     if (item.level === "module") {
@@ -170,6 +280,44 @@ export const HierarchicalDashboard = () => {
     [],
   );
 
+  if (isError) {
+    return (
+      <div className="space-y-4 rounded-3xl border border-destructive/40 bg-destructive/10 p-8 text-destructive">
+        <div>
+          <h2 className="text-lg font-semibold">تعذر تحميل بيانات لوحة التحكم</h2>
+          <p className="mt-2 text-sm text-destructive/80">
+            {error instanceof Error ? error.message : "حدث خطأ غير متوقع عند جلب البيانات."}
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            void refetch();
+          }}
+          className="inline-flex items-center justify-center rounded-full border border-destructive/40 bg-background px-4 py-2 text-sm font-semibold text-destructive transition hover:bg-destructive/10"
+        >
+          إعادة المحاولة
+        </button>
+      </div>
+    );
+  }
+
+  if (isLoading || !selection) {
+    return (
+      <div className="glass-card rounded-3xl border border-white/10 bg-background/70 p-10 text-center text-sm text-muted-foreground">
+        جارٍ تحميل بيانات لوحة التحكم الهرمية...
+      </div>
+    );
+  }
+
+  if (modules.length === 0) {
+    return (
+      <div className="glass-card rounded-3xl border border-dashed border-white/20 bg-background/70 p-10 text-center text-sm text-muted-foreground">
+        لا توجد بيانات متاحة لعرض لوحة التحكم في الوقت الحالي.
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <div className="space-y-4">
@@ -183,9 +331,11 @@ export const HierarchicalDashboard = () => {
           </p>
         </div>
 
-        <DashboardBreadcrumbs items={breadcrumbs} onNavigate={handleBreadcrumbNavigate} />
+        {breadcrumbs.length > 0 && (
+          <DashboardBreadcrumbs items={breadcrumbs} onNavigate={handleBreadcrumbNavigate} />
+        )}
         <MainTabs
-          modules={dashboardHierarchy}
+          modules={modules}
           activeModuleId={selection.moduleId}
           onSelect={handleModuleChange}
         />
@@ -271,7 +421,7 @@ export const HierarchicalDashboard = () => {
                           "flex items-center justify-between rounded-xl px-3 py-2",
                           panel.id === activePanel?.id
                             ? "bg-primary/10 text-primary"
-                            : "bg-foreground/5"
+                            : "bg-foreground/5",
                         )}
                       >
                         <span>{panel.label}</span>

@@ -1,5 +1,5 @@
 import { DashboardPanel, DashboardSubmodule } from "../data/hierarchy";
-import { cn } from "@shared/lib/utils";
+import { cn } from "../../../shared/lib/utils";
 
 interface SideSubTabsProps {
   submodules: DashboardSubmodule[];
