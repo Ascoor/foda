@@ -5,12 +5,15 @@ namespace Database\Factories;
 use App\Models\Area;
 use App\Models\Voter;
 use App\Models\ElectionCircle\Committee;
+use Database\Factories\Concerns\ResolvesCampaign;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class VoterFactory extends Factory
 {
+    use ResolvesCampaign;
+
     protected $model = Voter::class;
 
     protected function withFaker(): Generator
@@ -23,6 +26,7 @@ class VoterFactory extends Factory
         $districts = ['حي النسيم', 'حي الحمراء', 'حي الروضة', 'حي الشاطئ', 'حي النهضة'];
 
         return [
+            'campaign_id' => $this->resolveCampaignId(),
             'name' => $this->faker->name(),
             'email' => $this->faker->optional(0.4)->safeEmail(),
             'phone' => '05' . $this->faker->numerify('########'),

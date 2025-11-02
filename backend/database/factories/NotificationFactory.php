@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Notification;
 use App\Models\User;
+use Database\Factories\Concerns\ResolvesCampaign;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -11,6 +12,8 @@ use Illuminate\Support\Carbon;
 
 class NotificationFactory extends Factory
 {
+    use ResolvesCampaign;
+
     protected $model = Notification::class;
 
     protected function withFaker(): Generator
@@ -32,6 +35,7 @@ class NotificationFactory extends Factory
         $userId = $this->resolveUserId();
 
         return [
+            'campaign_id' => $this->resolveCampaignId(),
             'user_id' => $userId,
             'type' => $this->faker->randomElement($types),
             'title' => $this->faker->randomElement([

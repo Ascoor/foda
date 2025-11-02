@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Swot;
 use App\Models\User;
+use Database\Factories\Concerns\ResolvesCampaign;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,6 +12,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class SwotFactory extends Factory
 {
+    use ResolvesCampaign;
+
     protected $model = Swot::class;
 
     public function definition(): array
@@ -36,6 +39,7 @@ class SwotFactory extends Factory
         ]);
 
         return [
+            'campaign_id' => $this->resolveCampaignId(),
             'entity_type' => $this->faker->randomElement(['area', 'team', 'volunteer']),
             'entity_id' => 1,
             'strengths' => $strengths,

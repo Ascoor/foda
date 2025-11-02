@@ -16,10 +16,12 @@ class CampaignSeeder extends Seeder
             $election = Election::first();
         }
 
-        Campaign::create([
-            'name' => 'حملة التوعية',
-            'description' => 'وصف مختصر للحملة',
-            'election_id' => $election->id,
-        ]);
+        Campaign::query()->firstOrCreate(
+            ['name' => 'حملة التوعية'],
+            [
+                'description' => 'وصف مختصر للحملة',
+                'election_id' => $election->id,
+            ]
+        );
     }
 }
