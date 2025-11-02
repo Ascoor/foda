@@ -37,6 +37,9 @@ export const API_ENDPOINTS = {
     committeeGeo: "/api/v1/committees/geo",
     recentActivityGeo: "/api/v1/activities/recent",
   },
+  integrations: {
+    electionSummary: "/api/v1/integrations/elections/summary",
+  },
 } as const;
 
 export type ApiEndpointGroups = typeof API_ENDPOINTS;
