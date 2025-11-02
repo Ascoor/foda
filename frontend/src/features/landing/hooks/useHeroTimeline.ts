@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 import { useEffect } from "react";
-import { gsap, registerGsap } from "@shared/lib/gsap";
+import { gsap, registerGsap } from "@/shared/lib/gsap";
 
 export const useHeroTimeline = (sectionRef: RefObject<HTMLElement>) => {
   useEffect(() => {

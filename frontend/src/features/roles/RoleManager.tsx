@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@shared/ui/card";
+} from "@/shared/ui/card";
 import {
   Table,
   TableBody,
@@ -13,11 +13,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@shared/ui/table";
-import { Switch } from "@shared/ui/switch";
-import { Badge } from "@shared/ui/badge";
-import { Skeleton } from "@shared/ui/skeleton";
-import { useToast } from "@shared/hooks/use-toast";
+} from "@/shared/ui/table";
+import { Switch } from "@/shared/ui/switch";
+import { Badge } from "@/shared/ui/badge";
+import { Skeleton } from "@/shared/ui/skeleton";
+import { useToast } from "@/shared/hooks/use-toast";
 import { fetchRoles, updateRole } from "./api";
 import type { RoleRecord } from "./types";
 

@@ -1,7 +1,7 @@
 import { TrendingDown, TrendingUp } from "lucide-react";
 import type { ComponentType } from "react";
 
-import { cn } from "@shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import { DashboardCard } from "./DashboardCard";
 
 export type StatTone = "primary" | "secondary" | "success" | "warning";

@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@shared/ui/card";
+} from "@/shared/ui/card";
 
 interface SummaryPanelProps {
   headline: string;

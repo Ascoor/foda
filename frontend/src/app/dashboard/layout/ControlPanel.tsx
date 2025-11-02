@@ -4,7 +4,7 @@ import {
   GovernanceRole,
   governanceRoles,
 } from "../data/hierarchy";
-import { cn } from "../../../shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 const actionTypeLabels: Record<DashboardAction["type"], string> = {
   view: "عرض",

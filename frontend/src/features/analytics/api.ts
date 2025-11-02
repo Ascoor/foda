@@ -1,5 +1,5 @@
-import { request } from "@shared/lib/api";
-import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import { request } from "@/shared/lib/api";
+import { API_ENDPOINTS } from "@/shared/lib/endpoints";
 import type { AnalyticsFilters, AnalyticsResponse } from "./types";
 
 type AnalyticsEnvelope = {

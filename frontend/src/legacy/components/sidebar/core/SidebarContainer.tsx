@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { cn } from "@shared/lib/utils";
-import { Sheet, SheetContent } from "@shared/ui/sheet";
+import { cn } from "@/shared/lib/utils";
+import { Sheet, SheetContent } from "@/shared/ui/sheet";
 
 import { useSidebar } from "./SidebarProvider";
 

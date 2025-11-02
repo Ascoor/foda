@@ -6,9 +6,9 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@shared/ui/dialog";
-import { Button } from "@shared/ui/button";
-import { LoginForm } from "@legacy/components/auth/LoginForm";
+} from "@/shared/ui/dialog";
+import { Button } from "@/shared/ui/button";
+import { LoginForm } from "@/legacy/components/auth/LoginForm";
 import { useLoginCtaAnimation } from "../hooks/useLoginCtaAnimation";
 
 export const LoginCtaSection = () => {

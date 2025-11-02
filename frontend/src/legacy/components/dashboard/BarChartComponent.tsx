@@ -8,7 +8,7 @@ import {
   XAxis,
 } from "recharts";
 
-import { cn } from "@shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 export interface BarDataPoint {
   name: string;

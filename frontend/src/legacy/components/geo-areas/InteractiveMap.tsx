@@ -10,12 +10,12 @@ import {
 } from "react-leaflet";
 import { LatLngBounds, LatLng } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useLanguage } from "@shared/contexts/LanguageContext";
-import { GeoAreaData } from "@shared/data/mockGeoData";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
+import { GeoAreaData } from "@/shared/data/mockGeoData";
 import { MapPin, Users, UserCheck, Target, Layers } from "lucide-react";
-import { Card, CardContent } from "@shared/ui/card";
-import { Badge } from "@shared/ui/badge";
-import { Button } from "@shared/ui/button";
+import { Card, CardContent } from "@/shared/ui/card";
+import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
 
 // Fix Leaflet default markers
 import L from "leaflet";

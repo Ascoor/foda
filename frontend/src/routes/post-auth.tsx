@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-import { useAuth } from "@legacy/hooks/useAuth";
-import FloatingLandingPage from "@features/marketing/pages/LandingPage";
+import { useAuth } from "@/legacy/hooks/useAuth";
+import FloatingLandingPage from "@/features/marketing/pages/LandingPage";
 import { getNavTree } from "@/nav/nav.map";
 import { useNavigationContext } from "@/nav/useNavigationContext";
 

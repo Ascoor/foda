@@ -21,7 +21,7 @@ import {
   useThemePalette,
   type ColorToken,
   type ThemePalette,
-} from "@shared/hooks/useThemePalette";
+} from "@/shared/hooks/useThemePalette";
 
 interface ProgressItem {
   label: string;

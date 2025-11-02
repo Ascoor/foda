@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 
-import { useAuth } from "@legacy/hooks/useAuth";
-import { useFeatureFlags } from "@shared/contexts/FeatureFlagContext";
-import { useWindowSize } from "@shared/hooks/useWindowSize";
+import { useAuth } from "@/legacy/hooks/useAuth";
+import { useFeatureFlags } from "@/shared/contexts/FeatureFlagContext";
+import { useWindowSize } from "@/shared/hooks/useWindowSize";
 
 import { createNavigationContext, getBreadcrumbTrail, getNavTree } from "./nav.map";
 import type { FeatureFlag, NavigationContext, NavSurface, Role } from "./nav.schema";

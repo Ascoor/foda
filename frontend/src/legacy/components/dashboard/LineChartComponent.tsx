@@ -9,7 +9,7 @@ import {
   YAxis,
 } from "recharts";
 
-import { cn } from "@shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 interface LineChartPoint {
   label: string;

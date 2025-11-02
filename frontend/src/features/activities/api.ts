@@ -1,5 +1,5 @@
-import { request } from "@shared/lib/api";
-import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import { request } from "@/shared/lib/api";
+import { API_ENDPOINTS } from "@/shared/lib/endpoints";
 import type { ActivitiesResponse, ActivityFilters } from "./types";
 
 export const fetchActivities = async (filters: ActivityFilters = {}) =>

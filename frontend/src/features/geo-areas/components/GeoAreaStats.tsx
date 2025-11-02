@@ -1,6 +1,6 @@
 import { GeoDistrict } from "../data/mockGeoAreas";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent } from "@shared/ui/card";
+import { Card, CardContent } from "@/shared/ui/card";
 import { Users, UserCheck, Building } from "lucide-react";
 import { motion } from "framer-motion";
 

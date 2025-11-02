@@ -2,18 +2,18 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@shared/ui/button";
-import { Input } from "@shared/ui/input";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@shared/ui/select";
-import { Alert, AlertDescription, AlertTitle } from "@shared/ui/alert";
-import { DataTableSkeleton, EmptyState } from "@shared/ui/data-table-skeleton";
-import { safeArray } from "@shared/lib/utils";
+} from "@/shared/ui/select";
+import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/alert";
+import { DataTableSkeleton, EmptyState } from "@/shared/ui/data-table-skeleton";
+import { safeArray } from "@/shared/lib/utils";
 import { Voter, VoterFormData } from "./types";
 import { fetchVoters, deleteVoter, createVoter, updateVoter } from "./api";
 import { VoterForm } from "./Form";

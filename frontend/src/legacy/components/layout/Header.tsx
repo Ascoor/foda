@@ -15,20 +15,20 @@ import {
 } from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Button } from "@shared/ui/button";
+import { Button } from "@/shared/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@shared/ui/dropdown-menu";
-import { useAuth } from "@shared/contexts/AuthContext";
-import { useLanguage } from "@shared/contexts/LanguageContext";
-import { useNotifications } from "@shared/contexts/NotificationContext";
-import { NotificationDrawer } from "@legacy/components/notifications/NotificationDrawer";
-import { useTheme } from "@shared/contexts/ThemeContext";
-import { useWindowSize } from "@shared/hooks/useWindowSize";
-import { cn } from "@shared/lib/utils";
+} from "@/shared/ui/dropdown-menu";
+import { useAuth } from "@/shared/contexts/AuthContext";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
+import { useNotifications } from "@/shared/contexts/NotificationContext";
+import { NotificationDrawer } from "@/legacy/components/notifications/NotificationDrawer";
+import { useTheme } from "@/shared/contexts/ThemeContext";
+import { useWindowSize } from "@/shared/hooks/useWindowSize";
+import { cn } from "@/shared/lib/utils";
 import { notifyNavClick, findRouteMatch } from "@/nav/nav.map";
 import { useNavTree, useNavigationContext } from "@/nav/useNavigationContext";
 import type { NavNode } from "@/nav/nav.schema";

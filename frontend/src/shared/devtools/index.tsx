@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import { useNotifications } from "@shared/contexts/NotificationContext";
-import { useAuth } from "@legacy/hooks/useAuth";
+import { useNotifications } from "@/shared/contexts/NotificationContext";
+import { useAuth } from "@/legacy/hooks/useAuth";
 
 interface DevtoolsWindow extends Window {
   __FODA_DEVTOOLS__?: Record<string, unknown>;

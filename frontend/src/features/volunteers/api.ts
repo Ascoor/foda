@@ -1,5 +1,5 @@
-import { request } from "@shared/lib/api";
-import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import { request } from "@/shared/lib/api";
+import { API_ENDPOINTS } from "@/shared/lib/endpoints";
 import type { Volunteer } from "@/types";
 import type { VolunteerFilters, VolunteerFormData } from "./types";
 

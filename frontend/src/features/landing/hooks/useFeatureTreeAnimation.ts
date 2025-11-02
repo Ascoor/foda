@@ -1,6 +1,6 @@
 import type { RefObject } from "react";
 import { useEffect } from "react";
-import { gsap, registerGsap, ScrollTrigger } from "@shared/lib/gsap";
+import { gsap, registerGsap, ScrollTrigger } from "@/shared/lib/gsap";
 
 export const useFeatureTreeAnimation = (sectionRef: RefObject<HTMLElement>) => {
   useEffect(() => {

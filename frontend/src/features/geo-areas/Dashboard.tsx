@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Map, List } from "lucide-react";
-import { Input } from "@shared/ui/input";
-import { Button } from "@shared/ui/button";
+import { Input } from "@/shared/ui/input";
+import { Button } from "@/shared/ui/button";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@shared/ui/select";
-import { Skeleton } from "@shared/ui/skeleton";
+} from "@/shared/ui/select";
+import { Skeleton } from "@/shared/ui/skeleton";
 import { GeoAreaMap } from "./components/GeoAreaMap";
 import { GeoAreaStats } from "./components/GeoAreaStats";
 import { GeoAreaList } from "./components/GeoAreaList";
 import { GeoDistrict, GeoStatus, mockGeoDistricts } from "./data/mockGeoAreas";
-import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
 export const GeoAreasDashboard = () => {
   const { t } = useTranslation();

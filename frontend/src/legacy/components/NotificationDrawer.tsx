@@ -1,10 +1,10 @@
 import { BellRing, CheckCheck, Loader2 } from "lucide-react";
-import { useNotifications } from "@shared/contexts/NotificationContext";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@shared/ui/sheet";
-import { Button } from "@shared/ui/button";
-import { Badge } from "@shared/ui/badge";
-import { ScrollArea } from "@shared/ui/scroll-area";
-import { cn } from "@shared/lib/utils";
+import { useNotifications } from "@/shared/contexts/NotificationContext";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/shared/ui/sheet";
+import { Button } from "@/shared/ui/button";
+import { Badge } from "@/shared/ui/badge";
+import { ScrollArea } from "@/shared/ui/scroll-area";
+import { cn } from "@/shared/lib/utils";
 
 const filterOptions = [
   { label: "All", value: "all" },

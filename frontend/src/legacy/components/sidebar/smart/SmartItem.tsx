@@ -2,12 +2,12 @@ import * as React from "react";
 import { NavLink } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 
-import { cn } from "@shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@shared/ui/tooltip";
+} from "@/shared/ui/tooltip";
 
 import type { NavigationItem } from "./navigation.config";
 

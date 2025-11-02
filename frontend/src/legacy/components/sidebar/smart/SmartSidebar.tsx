@@ -8,9 +8,9 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-import { useLanguage } from "@shared/contexts/LanguageContext";
-import { cn } from "@shared/lib/utils";
-import { Button } from "@shared/ui/button";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
+import { cn } from "@/shared/lib/utils";
+import { Button } from "@/shared/ui/button";
 
 import { SidebarContainer, SidebarProvider, SidebarRail, useSidebar } from "../core";
 import { SidebarContent, SidebarFooter, SidebarHeader } from "../ui";

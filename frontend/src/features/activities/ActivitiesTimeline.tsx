@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { Calendar, Clock, Layers, ListTree } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@shared/ui/card";
-import { Badge } from "@shared/ui/badge";
-import { Button } from "@shared/ui/button";
-import { SafeDataRenderer } from "@shared/ui/safe-data-renderer";
-import { Skeleton } from "@shared/ui/skeleton";
+import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
+import { SafeDataRenderer } from "@/shared/ui/safe-data-renderer";
+import { Skeleton } from "@/shared/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -13,7 +13,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@shared/ui/table";
+} from "@/shared/ui/table";
 import { fetchActivities } from "./api";
 import type { ActivitiesResponse, ActivityTimelineItem } from "./types";
 

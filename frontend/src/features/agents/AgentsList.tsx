@@ -16,23 +16,23 @@ import {
   UserCheck,
   Download,
 } from "lucide-react";
-import { Button } from "@shared/ui/button";
-import { Input } from "@shared/ui/input";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@shared/ui/select";
-import { AssignDialog } from "@shared/ui/assign-dialog";
+} from "@/shared/ui/select";
+import { AssignDialog } from "@/shared/ui/assign-dialog";
 import {
   ErrorDisplay,
   LoadingSpinner,
   SafeDataRenderer,
-} from "@shared/ui/safe-data-renderer";
-import { useToast } from "@shared/hooks/use-toast";
-import { logError } from "@shared/lib/logging";
+} from "@/shared/ui/safe-data-renderer";
+import { useToast } from "@/shared/hooks/use-toast";
+import { logError } from "@/shared/lib/logging";
 import { Agent, AgentFilters } from "./types";
 import { deleteAgent, assignAgent, mockCommittees, exportAgents } from "./api";
 import { AgentForm } from "./AgentForm";

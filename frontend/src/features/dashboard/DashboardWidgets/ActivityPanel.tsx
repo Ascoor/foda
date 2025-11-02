@@ -23,13 +23,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@shared/ui/card";
-import { Skeleton } from "@shared/ui/skeleton";
+} from "@/shared/ui/card";
+import { Skeleton } from "@/shared/ui/skeleton";
 import {
   useThemePalette,
   type ColorToken,
   type ThemePalette,
-} from "@shared/hooks/useThemePalette";
+} from "@/shared/hooks/useThemePalette";
 import { ActivityFeed } from "../components/ActivityFeed";
 
 interface ActivityItem {

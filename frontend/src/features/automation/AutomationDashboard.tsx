@@ -1,18 +1,18 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { Button } from "@shared/ui/button";
+import { Button } from "@/shared/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@shared/ui/card";
-import { Switch } from "@shared/ui/switch";
-import { Badge } from "@shared/ui/badge";
-import { request } from "@shared/lib/api";
-import { cn } from "@shared/lib/utils";
+} from "@/shared/ui/card";
+import { Switch } from "@/shared/ui/switch";
+import { Badge } from "@/shared/ui/badge";
+import { request } from "@/shared/lib/api";
+import { cn } from "@/shared/lib/utils";
 import { CalendarClock, RefreshCw } from "lucide-react";
 
 interface AutomationTask {

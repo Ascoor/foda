@@ -15,7 +15,7 @@ import {
   DashboardBreadcrumb,
   DashboardBreadcrumbs,
 } from "./layout/DashboardBreadcrumbs";
-import { cn } from "../../shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 const LOCAL_STORAGE_KEY = "architect-dashboard-context";
 

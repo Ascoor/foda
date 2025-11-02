@@ -1,5 +1,5 @@
-import { Badge as ShadBadge } from "@shared/ui/badge";
-import { cn } from "@shared/lib/utils";
+import { Badge as ShadBadge } from "@/shared/ui/badge";
+import { cn } from "@/shared/lib/utils";
 
 interface StatusBadgeProps {
   status: string;

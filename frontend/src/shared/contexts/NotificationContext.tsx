@@ -7,8 +7,8 @@ import {
   useMemo,
   useState,
 } from "react";
-import { request } from "@shared/lib/api";
-import { getEcho } from "@shared/lib/echo";
+import { request } from "@/shared/lib/api";
+import { getEcho } from "@/shared/lib/echo";
 import { toast } from "sonner";
 import { useAuth } from "./AuthContext";
 

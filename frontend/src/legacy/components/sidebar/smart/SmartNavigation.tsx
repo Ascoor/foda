@@ -3,8 +3,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
-import { useLanguage } from "@shared/contexts/LanguageContext";
-import { cn } from "@shared/lib/utils";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
+import { cn } from "@/shared/lib/utils";
 
 import { useSidebar } from "../core";
 

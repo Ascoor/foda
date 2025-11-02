@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Header } from "@legacy/components/layout/Header";
-import { Button } from "@shared/ui/button";
+import { Header } from "@/legacy/components/layout/Header";
+import { Button } from "@/shared/ui/button";
 import landingImage from "@/assets/img/landing.webp";
 
 const features = [

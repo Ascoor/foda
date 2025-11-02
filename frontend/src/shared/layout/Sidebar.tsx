@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import { notifyNavClick, findRouteMatch } from "@/nav/nav.map";
 import { useNavTree, useNavigationContext } from "@/nav/useNavigationContext";
 import type { NavNode } from "@/nav/nav.schema";
-import { useLanguage } from "@shared/contexts/LanguageContext";
-import { useNotifications } from "@shared/contexts/NotificationContext";
-import { cn } from "@shared/lib/utils";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
+import { useNotifications } from "@/shared/contexts/NotificationContext";
+import { cn } from "@/shared/lib/utils";
 
 interface SidebarProps {
   isOpen: boolean;

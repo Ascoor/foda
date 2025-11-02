@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import gsap from "gsap";
-import { useLanguage } from "@shared/contexts/LanguageContext";
+import { useLanguage } from "@/shared/contexts/LanguageContext";
 
 export const BarbaTransitionProvider = ({ children }: PropsWithChildren) => {
   const location = useLocation();

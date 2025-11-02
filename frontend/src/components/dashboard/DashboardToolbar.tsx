@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { cn } from "@shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 interface DashboardToolbarProps {
   title?: ReactNode;

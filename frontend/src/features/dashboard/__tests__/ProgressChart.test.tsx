@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { ProgressChart } from "../components/ProgressChart";
-import { LanguageProvider } from "@shared/contexts/LanguageContext";
+import { LanguageProvider } from "@/shared/contexts/LanguageContext";
 
 test("renders progress chart", () => {
   const data = [

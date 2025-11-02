@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button } from "@shared/ui/button";
+import { Button } from "@/shared/ui/button";
 import { fetchCandidate, deleteCandidate, updateCandidate } from "./api";
 import { CandidateForm } from "./Form";
 import { CandidateFormData } from "./types";

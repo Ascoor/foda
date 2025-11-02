@@ -1,4 +1,4 @@
-import { AuthProvider, useAuth } from "@shared/contexts/AuthContext";
+import { AuthProvider, useAuth } from "@/shared/contexts/AuthContext";
 
 export const useAuthenticatedUser = () => {
   const { user, isAuthenticated } = useAuth();

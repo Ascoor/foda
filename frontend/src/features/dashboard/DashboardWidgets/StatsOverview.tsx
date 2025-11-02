@@ -1,7 +1,7 @@
 import { memo } from "react";
 import type { LucideIcon } from "lucide-react";
 import { StatsCard } from "../components/StatsCard";
-import { Skeleton } from "@shared/ui/skeleton";
+import { Skeleton } from "@/shared/ui/skeleton";
 
 export interface StatMetric {
   key: string;

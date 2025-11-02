@@ -1,22 +1,22 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Plus, Search, Eye, Edit, Trash2, UserCheck } from "lucide-react";
-import { Button } from "@shared/ui/button";
-import { Input } from "@shared/ui/input";
+import { Button } from "@/shared/ui/button";
+import { Input } from "@/shared/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@shared/ui/select";
-import { AssignDialog } from "@shared/ui/assign-dialog";
+} from "@/shared/ui/select";
+import { AssignDialog } from "@/shared/ui/assign-dialog";
 import { Volunteer, VolunteerFilters } from "./types";
 import { fetchVolunteers, deleteVolunteer, assignVolunteer } from "./api";
 import { VolunteerForm } from "./VolunteerForm";
 import { VolunteerDetails } from "./VolunteerDetails";
-import { request } from "@shared/lib/api";
-import { API_ENDPOINTS } from "@shared/lib/endpoints";
+import { request } from "@/shared/lib/api";
+import { API_ENDPOINTS } from "@/shared/lib/endpoints";
 import type { Committee } from "@/types";
 
 const DEFAULT_META = { total: 0, per_page: 0, current_page: 0 };

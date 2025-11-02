@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import { cn } from "@shared/lib/utils";
-import { Input } from "@shared/ui/input";
+import { cn } from "@/shared/lib/utils";
+import { Input } from "@/shared/ui/input";
 
 export const SidebarInput = React.forwardRef<
   React.ElementRef<typeof Input>,

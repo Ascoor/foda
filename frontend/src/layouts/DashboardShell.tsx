@@ -3,15 +3,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import { Sidebar } from "@shared/layout/Sidebar";
-import { Header } from "@legacy/components/layout/Header";
-import { DashboardBreadcrumbs } from "@app/dashboard/layout/DashboardBreadcrumbs";
+import { Sidebar } from "@/shared/layout/Sidebar";
+import { Header } from "@/legacy/components/layout/Header";
+import { DashboardBreadcrumbs } from "@/app/dashboard/layout/DashboardBreadcrumbs";
 import { useNavBreadcrumbs } from "@/nav/useNavigationContext";
-import { useWindowSize } from "@shared/hooks/useWindowSize";
-import { cn } from "@shared/lib/utils";
+import { useWindowSize } from "@/shared/hooks/useWindowSize";
+import { cn } from "@/shared/lib/utils";
 import { dashboardTokens } from "@/theme/tokens";
 import { navConfig } from "@/nav/nav.config";
-import { AuroraBackground } from "@features/marketing/components/ui/AuroraBackground";
+import { AuroraBackground } from "@/features/marketing/components/ui/AuroraBackground";
 
 const DESKTOP_BREAKPOINT = 1024;
 

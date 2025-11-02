@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter, Routes, Route } from "react-router-dom";
 import { vi } from "vitest";
 import { ElectionDetails } from "../Details";
-import { LanguageProvider } from "@shared/contexts/LanguageContext";
+import { LanguageProvider } from "@/shared/contexts/LanguageContext";
 
 vi.mock("../api", () => ({
   fetchElection: vi.fn().mockResolvedValue({

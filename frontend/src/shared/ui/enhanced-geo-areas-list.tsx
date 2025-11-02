@@ -26,10 +26,10 @@ import {
   SelectValue,
 } from "./select";
 import { SafeDataRenderer } from "./safe-data-renderer";
-import { fetchGeoAreas, deleteGeoArea } from "@features/geo-areas/api";
-import { GeoArea } from "@features/geo-areas/types";
-import { safeArray, safeNumber } from "@shared/lib/safeData";
-import { toast } from "@shared/hooks/use-toast";
+import { fetchGeoAreas, deleteGeoArea } from "@/features/geo-areas/api";
+import { GeoArea } from "@/features/geo-areas/types";
+import { safeArray, safeNumber } from "@/shared/lib/safeData";
+import { toast } from "@/shared/hooks/use-toast";
 
 const GeoAreaCard = ({
   area,

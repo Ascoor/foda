@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { vi, beforeEach } from "vitest";
 import { Dashboard } from "../Dashboard";
-import { LanguageProvider } from "@shared/contexts/LanguageContext";
+import { LanguageProvider } from "@/shared/contexts/LanguageContext";
 
 const mockUseApi = vi.fn();
 
-vi.mock("@shared/lib/api", () => ({
+vi.mock("@/shared/lib/api", () => ({
   useApi: (config: Record<string, unknown>) => mockUseApi(config),
 }));
 

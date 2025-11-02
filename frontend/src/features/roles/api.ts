@@ -1,4 +1,4 @@
-import { request } from "@shared/lib/api";
+import { request } from "@/shared/lib/api";
 import type { RoleRecord, RolesResponse } from "./types";
 
 export const fetchRoles = () =>

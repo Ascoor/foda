@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-import { cn } from "@shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 export interface PieDataPoint {
   name: string;

@@ -7,7 +7,7 @@ import {
   useState,
   ReactNode,
 } from "react";
-import api, { setAuthToken } from "@shared/lib/api";
+import api, { setAuthToken } from "@/shared/lib/api";
 
 export interface Role {
   id?: number | string;

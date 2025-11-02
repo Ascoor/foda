@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Badge } from "@shared/ui/badge";
-import { Button } from "@shared/ui/button";
-import { Avatar, AvatarFallback } from "@shared/ui/avatar";
+import { Badge } from "@/shared/ui/badge";
+import { Button } from "@/shared/ui/button";
+import { Avatar, AvatarFallback } from "@/shared/ui/avatar";
 
 const pageTransition = {
   initial: { opacity: 0, y: 12, filter: "blur(6px)" },

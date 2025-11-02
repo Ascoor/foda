@@ -1,5 +1,5 @@
 import { DashboardModule } from "../data/hierarchy";
-import { cn } from "../../../shared/lib/utils";
+import { cn } from "@/shared/lib/utils";
 
 interface MainTabsProps {
   modules: DashboardModule[];

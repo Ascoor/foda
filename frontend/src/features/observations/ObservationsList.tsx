@@ -1,15 +1,15 @@
 import { useState, useEffect, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Plus, Eye, Edit, Trash2 } from "lucide-react";
-import { Button } from "@shared/ui/button";
-import { DataTableSkeleton, EmptyState } from "@shared/ui/data-table-skeleton";
+import { Button } from "@/shared/ui/button";
+import { DataTableSkeleton, EmptyState } from "@/shared/ui/data-table-skeleton";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@shared/ui/select";
+} from "@/shared/ui/select";
 import { Observation, ObservationFilters } from "./types";
 import { fetchObservations, deleteObservation, mockCommittees } from "./api";
 import { ObservationForm } from "./ObservationForm";
