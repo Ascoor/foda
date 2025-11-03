@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use App\Rules\BelongsToCampaign;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,12 +13,11 @@ class StoreEventRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return true;
-    }
+        /** @var Campaign $campaign */
+        $campaign = $this->route('campaign');
+        $this->campaign = $campaign;
 
-    protected function prepareForValidation(): void
-    {
-        $this->campaign = $this->route('campaign');
+        return $this->user()?->can('update', $campaign) ?? false;
     }
 
     public function rules(): array
@@ -36,7 +35,7 @@ class StoreEventRequest extends FormRequest
             'description' => ['nullable', 'string'],
             'organiser' => ['required', 'string', 'max:255'],
             'location' => ['required', 'string', 'max:255'],
-            'date' => ['required', 'date', 'after_or_equal:today'],
+            'date' => ['required', 'date'],
             'area_id' => ['required', 'exists:areas,id'],
             'team_id' => ['required', 'exists:teams,id', new BelongsToCampaign('teams')],
         ];

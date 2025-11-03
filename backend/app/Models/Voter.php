@@ -2,31 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Voter extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
     protected $fillable = [
+        'campaign_id',
+        'committee_id',
         'name',
-        'email',
-        'phone',
-        'area_id',
+        'national_id',
+        'voter_uid',
         'address',
-        'sex',
+        'phone',
+        'gender',
         'birthdate',
-        'age',
-        'bloodgroup',
-        'img_url',
-        'ion_user_id',
-        'voter_id',
-        'add_date',
+        'meta',
     ];
 
-    public function area()
+    protected $casts = [
+        'birthdate' => 'date',
+        'meta' => 'array',
+    ];
+
+    public function committee(): BelongsTo
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(Committee::class);
+    }
+
+    public function scopeSearch($query, ?string $term)
+    {
+        return $query->when($term, function ($q) use ($term) {
+            $like = '%' . $term . '%';
+            $q->where(function ($inner) use ($like) {
+                $inner->where('name', 'like', $like)
+                    ->orWhere('national_id', 'like', $like)
+                    ->orWhere('voter_uid', 'like', $like);
+            });
+        });
     }
 }

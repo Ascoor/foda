@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,8 +13,20 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Volunteer extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
-    protected $fillable = ['name', 'email', 'phone', 'team_id'];
+    protected $fillable = [
+        'campaign_id',
+        'team_id',
+        'name',
+        'email',
+        'phone',
+        'tags',
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
+    ];
 
     public function team(): BelongsTo
     {
@@ -27,13 +40,13 @@ class Volunteer extends Model
 
     public function campaigns(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\ElectionCircle\Campaign::class, 'campaign_volunteer')
+        return $this->belongsToMany(Campaign::class, 'campaign_volunteer')
             ->withPivot(['assignment', 'shift', 'tags'])
             ->withTimestamps();
     }
 
     public function agent(): HasOne
     {
-        return $this->hasOne(\App\Models\ElectionCircle\Agent::class, 'person_id');
+        return $this->hasOne(Agent::class, 'person_id');
     }
 }

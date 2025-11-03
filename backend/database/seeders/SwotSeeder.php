@@ -3,25 +3,26 @@
 namespace Database\Seeders;
 
 use App\Models\Area;
+use App\Models\Campaign;
 use App\Models\Swot;
 use App\Models\Team;
 use App\Models\User;
 use App\Models\Volunteer;
-use App\Models\ElectionCircle\Campaign;
 use Illuminate\Database\Seeder;
 
 class SwotSeeder extends Seeder
 {
     public function run(): void
     {
-        $user = User::first() ?? User::factory()->create();
+        $user = User::query()->first() ?? User::factory()->create();
         $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
-        $area = Area::first() ?? Area::factory()->create();
-        $team = Team::first() ?? Team::factory()->create([
+        $area = Area::query()->first() ?? Area::factory()->create();
+        $team = Team::query()->first() ?? Team::factory()->create([
             'campaign_id' => $campaign->id,
             'area_id' => $area->id,
         ]);
-        $volunteer = Volunteer::first() ?? Volunteer::factory()->create([
+        $volunteer = Volunteer::query()->first() ?? Volunteer::factory()->create([
+            'campaign_id' => $campaign->id,
             'team_id' => $team->id,
         ]);
 

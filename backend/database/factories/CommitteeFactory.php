@@ -2,21 +2,32 @@
 
 namespace Database\Factories;
 
+use App\Models\Committee;
+use App\Models\GeoArea;
+use Database\Factories\Concerns\ResolvesCampaign;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CommitteeFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
+    use ResolvesCampaign;
+
+    protected $model = Committee::class;
+
     public function definition(): array
     {
         return [
-            'name' => $this->faker->city() . ' Committee',
-            'description' => $this->faker->sentence(),
+            'campaign_id' => $this->resolveCampaignId(),
+            'geo_area_id' => $this->resolveGeoAreaId(),
+            'name' => 'Committee ' . $this->faker->unique()->numberBetween(1, 999),
+            'location' => $this->faker->address(),
+            'code' => strtoupper($this->faker->lexify('COM-????')),
         ];
-        
+    }
+
+    protected function resolveGeoAreaId(): int
+    {
+        $existing = GeoArea::query()->inRandomOrder()->value('id');
+
+        return $existing ?: GeoArea::factory()->create()->id;
     }
 }

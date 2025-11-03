@@ -3,23 +3,20 @@
 namespace App\Services\Auth;
 
 use App\Models\Activity;
+use App\Models\Observation;
 use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
-use App\Models\ElectionCircle\Observation;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class RoleIntelligenceService
 {
-    /**
-     * Analyse user behaviour and align the assigned dynamic role accordingly.
-     */
     public function evaluate(User $user, array $context = []): ?Role
     {
         $roles = Role::query()->with('permissions')->get();
         $managedRoleNames = $roles
-            ->filter(fn (Role $role) => !($role->auto_assign_rules['manual_only'] ?? false))
+            ->filter(fn (Role $role) => ! ($role->auto_assign_rules['manual_only'] ?? false))
             ->pluck('name')
             ->all();
 
@@ -27,7 +24,7 @@ class RoleIntelligenceService
 
         $candidate = $this->selectRole($roles, $metrics, $context);
 
-        if (!$candidate) {
+        if (! $candidate) {
             return null;
         }
 
@@ -103,4 +100,3 @@ class RoleIntelligenceService
         ];
     }
 }
-

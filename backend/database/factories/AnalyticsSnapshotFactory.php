@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\AnalyticsSnapshot;
-use App\Models\ElectionCircle\Campaign;
-use App\Models\ElectionCircle\Election;
+use App\Models\Campaign;
+use App\Models\Election;
 use Database\Factories\Concerns\ResolvesCampaign;
 use Faker\Factory as FakerFactory;
 use Faker\Generator;
@@ -24,14 +24,13 @@ class AnalyticsSnapshotFactory extends Factory
 
     public function definition(): array
     {
-        $metricKeys = ['turnout_trend', 'support_index', 'engagement_score', 'volunteer_activity'];
         $campaignId = $this->resolveCampaignId();
         $electionId = $this->resolveElectionId($campaignId);
 
         return [
             'election_id' => $electionId,
             'campaign_id' => $campaignId,
-            'metric_key' => $this->faker->randomElement($metricKeys),
+            'metric_key' => $this->faker->randomElement(['turnout_trend', 'support_index', 'engagement_score', 'volunteer_activity']),
             'snapshot_date' => Carbon::now()->subDays($this->faker->numberBetween(0, 14)),
             'payload' => [
                 'label' => $this->faker->randomElement([
@@ -48,27 +47,20 @@ class AnalyticsSnapshotFactory extends Factory
 
     protected function resolveElectionId(int $campaignId): int
     {
-        $campaign = Campaign::find($campaignId);
-
+        $campaign = Campaign::query()->find($campaignId);
         if ($campaign && $campaign->election_id) {
             return $campaign->election_id;
         }
 
         $election = Election::query()->inRandomOrder()->first();
-
         if ($election) {
+            $campaign?->update(['election_id' => $election->id]);
+
             return $election->id;
         }
 
-        $election = Election::query()->create([
-            'name' => 'انتخابات طارئة ' . Carbon::now()->year,
-            'start_date' => Carbon::now()->subMonths(2),
-            'end_date' => Carbon::now()->addMonths(1),
-        ]);
-
-        if ($campaign) {
-            $campaign->update(['election_id' => $election->id]);
-        }
+        $election = Election::factory()->create();
+        $campaign?->update(['election_id' => $election->id]);
 
         return $election->id;
     }

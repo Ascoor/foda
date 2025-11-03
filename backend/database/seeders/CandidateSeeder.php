@@ -2,30 +2,24 @@
 
 namespace Database\Seeders;
 
-use App\Models\ElectionCircle\Candidate;
-use App\Models\ElectionCircle\Election;
+use App\Models\Campaign;
+use App\Models\Candidate;
 use Illuminate\Database\Seeder;
 
 class CandidateSeeder extends Seeder
 {
     public function run(): void
     {
-        $election = Election::first();
-        if (! $election) {
-            $this->call(ElectionSeeder::class);
-            $election = Election::first();
-        }
+        $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
 
-        Candidate::create([
-            'name' => 'المرشح الأول',
-            'party' => 'الحزب الأول',
-            'election_id' => $election->id,
-        ]);
+        Candidate::query()->updateOrCreate(
+            ['campaign_id' => $campaign->id, 'name' => 'المرشح الأول'],
+            ['party' => 'الحزب الأول']
+        );
 
-        Candidate::create([
-            'name' => 'المرشح الثاني',
-            'party' => 'الحزب الثاني',
-            'election_id' => $election->id,
-        ]);
+        Candidate::query()->updateOrCreate(
+            ['campaign_id' => $campaign->id, 'name' => 'المرشح الثاني'],
+            ['party' => 'الحزب الثاني']
+        );
     }
 }

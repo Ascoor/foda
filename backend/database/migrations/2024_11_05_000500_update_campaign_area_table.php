@@ -7,6 +7,16 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
+        if (Schema::getConnection()->getDriverName() === 'sqlite') {
+            if (! Schema::hasColumn('campaign_area', 'area_id')) {
+                Schema::table('campaign_area', function (Blueprint $table) {
+                    $table->integer('area_id')->nullable()->after('campaign_id');
+                });
+            }
+
+            return;
+        }
+
         Schema::table('campaign_area', function (Blueprint $table) {
             if (Schema::hasColumn('campaign_area', 'geo_area_id')) {
                 $table->dropUnique('campaign_area_campaign_id_geo_area_id_unique');
@@ -27,6 +37,10 @@ return new class extends Migration {
 
     public function down(): void
     {
+        if (Schema::getConnection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         Schema::table('campaign_area', function (Blueprint $table) {
             $table->dropUnique('campaign_area_campaign_id_area_id_unique');
 

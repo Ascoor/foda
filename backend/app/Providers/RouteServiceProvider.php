@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class RouteServiceProvider extends ServiceProvider
 {
     public const HOME = '/home';
 
-    public function boot()
+    public function boot(): void
     {
         Route::pattern('campaign', '[0-9]+');
         Route::bind('campaign', function ($value) {
@@ -25,16 +25,14 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::prefix('api')
                 ->middleware('api')
-                ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
-                ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
     }
 
-    protected function configureRateLimiting()
+    protected function configureRateLimiting(): void
     {
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
