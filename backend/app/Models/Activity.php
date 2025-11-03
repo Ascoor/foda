@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToCampaign;
+use App\Models\Concerns\WithinCampaignWindow;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,11 +13,14 @@ class Activity extends Model
 {
     use HasFactory;
     use BelongsToCampaign;
+    use WithinCampaignWindow;
+
+    protected string $dateColumn = 'reported_at';
 
     protected $fillable = [
+        'campaign_id',
         'area_id',
         'committee_id',
-        'campaign_id',
         'voter_id',
         'created_by',
         'type',
@@ -45,7 +49,7 @@ class Activity extends Model
 
     public function committee(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\ElectionCircle\Committee::class, 'committee_id');
+        return $this->belongsTo(Committee::class);
     }
 
     public function voter(): BelongsTo

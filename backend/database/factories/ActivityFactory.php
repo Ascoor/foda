@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Activity;
 use App\Models\Area;
-use App\Models\ElectionCircle\Committee;
+use App\Models\Committee;
 use App\Models\User;
 use App\Models\Voter;
 use Database\Factories\Concerns\ResolvesCampaign;
@@ -26,12 +26,8 @@ class ActivityFactory extends Factory
 
     public function definition(): array
     {
-        $latitude = $this->faker->latitude(16.0, 32.0);
-        $longitude = $this->faker->longitude(34.0, 55.0);
-        $types = ['اجتماع تنسيقي', 'زيارة ميدانية', 'حملة توعية', 'ندوة مجتمعية'];
-        $statuses = ['open', 'in_progress', 'closed'];
-        $status = $this->faker->randomElement($statuses);
-        $title = $this->faker->randomElement($types);
+        $status = $this->faker->randomElement(['open', 'in_progress', 'closed']);
+        $title = $this->faker->randomElement(['اجتماع تنسيقي', 'زيارة ميدانية', 'حملة توعية', 'ندوة مجتمعية']);
 
         return [
             'area_id' => $this->resolveAreaId(),
@@ -43,18 +39,13 @@ class ActivityFactory extends Factory
             'status' => $status,
             'title' => $title,
             'description' => $this->faker->sentence(8),
-            'latitude' => $latitude,
-            'longitude' => $longitude,
+            'latitude' => $this->faker->latitude(16.0, 32.0),
+            'longitude' => $this->faker->longitude(34.0, 55.0),
             'support_score' => $this->faker->numberBetween(20, 100),
             'reported_at' => Carbon::now()->subHours($this->faker->numberBetween(1, 120)),
             'meta' => [
                 'source' => $this->faker->randomElement(['agent', 'volunteer', 'voter']),
-                'status_label' => match ($status) {
-                    'open' => 'قيد التنفيذ',
-                    'in_progress' => 'جارٍ المتابعة',
-                    'closed' => 'مكتمل',
-                    default => 'غير محدد',
-                },
+                'status_label' => $status,
                 'activity_title' => $title,
                 'notes' => $this->faker->sentence(6),
             ],
@@ -63,45 +54,21 @@ class ActivityFactory extends Factory
 
     protected function resolveAreaId(): int
     {
-        $existing = Area::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return Area::factory()->create()->id;
+        return Area::query()->inRandomOrder()->value('id') ?: Area::factory()->create()->id;
     }
 
     protected function resolveCommitteeId(): ?int
     {
-        $existing = Committee::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return Committee::factory()->create()->id;
+        return Committee::query()->inRandomOrder()->value('id') ?: Committee::factory()->create()->id;
     }
 
     protected function resolveVoterId(): ?int
     {
-        $existing = Voter::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return Voter::factory()->create()->id;
+        return Voter::query()->inRandomOrder()->value('id') ?: Voter::factory()->create()->id;
     }
 
     protected function resolveUserId(): int
     {
-        $existing = User::query()->inRandomOrder()->value('id');
-
-        if ($existing) {
-            return $existing;
-        }
-
-        return User::factory()->create()->id;
+        return User::query()->inRandomOrder()->value('id') ?: User::factory()->create()->id;
     }
 }

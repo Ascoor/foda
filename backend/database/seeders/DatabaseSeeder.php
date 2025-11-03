@@ -6,18 +6,13 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         $this->call([
             RolesAndPermissionsSeeder::class,
             GovernoratesAreaSeeder::class,
             ElectionSeeder::class,
-            CampaignsSeeder::class,
+            CampaignSeeder::class,
             TeamSeeder::class,
             EventSeeder::class,
             ExpenseCategorySeeder::class,
@@ -33,7 +28,6 @@ class DatabaseSeeder extends Seeder
             CommitteeSeeder::class,
             CandidateSeeder::class,
             AgentSeeder::class,
-            ECSettingSeeder::class,
             ObservationSeeder::class,
         ]);
     }

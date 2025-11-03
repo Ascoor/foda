@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\ElectionCircle\Campaign;
-use App\Models\ElectionCircle\Committee;
-use App\Models\ElectionCircle\GeoArea;
+use App\Models\Campaign;
+use App\Models\Committee;
+use App\Models\GeoArea;
 use Illuminate\Database\Seeder;
 
 class CommitteeSeeder extends Seeder
@@ -17,13 +17,18 @@ class CommitteeSeeder extends Seeder
 
         $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
 
-        GeoArea::all()->each(function ($geoArea, $index) use ($campaign) {
-            Committee::create([
-                'campaign_id' => $campaign->id,
-                'name' => 'لجنة ' . ($index + 1),
-                'location' => 'موقع اللجنة ' . ($index + 1),
-                'geo_area_id' => $geoArea->id,
-            ]);
+        GeoArea::query()->each(function (GeoArea $geoArea, int $index) use ($campaign): void {
+            Committee::query()->updateOrCreate(
+                [
+                    'campaign_id' => $campaign->id,
+                    'code' => 'COM-' . str_pad((string) ($index + 1), 3, '0', STR_PAD_LEFT),
+                ],
+                [
+                    'name' => 'لجنة ' . ($index + 1),
+                    'location' => 'موقع اللجنة ' . ($index + 1),
+                    'geo_area_id' => $geoArea->id,
+                ]
+            );
         });
     }
 }

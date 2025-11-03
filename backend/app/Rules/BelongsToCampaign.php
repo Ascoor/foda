@@ -2,9 +2,10 @@
 
 namespace App\Rules;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class BelongsToCampaign implements Rule, DataAwareRule
 {
@@ -33,8 +34,7 @@ class BelongsToCampaign implements Rule, DataAwareRule
             return true;
         }
 
-        /** @var Model|null $record */
-        $record = app('db')->table($this->table)
+        $record = DB::table($this->table)
             ->where($this->column, $value)
             ->first();
 

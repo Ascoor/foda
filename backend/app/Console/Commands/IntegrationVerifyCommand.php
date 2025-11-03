@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Activity;
+use App\Models\Campaign;
 use App\Models\Notification;
-use App\Models\Voter;
 use App\Models\Volunteer;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Voter;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;
@@ -102,7 +102,7 @@ class IntegrationVerifyCommand extends Command
             Activity::class => ['campaign', 'voter', 'creator'],
             Volunteer::class => ['team'],
             Notification::class => ['user'],
-            Voter::class => ['area'],
+            Voter::class => ['committee'],
         ];
 
         $missing = [];
@@ -201,10 +201,8 @@ class IntegrationVerifyCommand extends Command
             ];
         }
 
-        $status = $count > 0 ? '✅ موجودة' : '⚠️ لا توجد بيانات';
-        $note = $count > 0
-            ? "تم العثور على {$count} سجل باللغة العربية."
-            : 'لم يتم العثور على بيانات عربية.';
+        $status = $count > 0 ? '✅ موجود' : '⚠️ فارغ';
+        $note = $count > 0 ? "عدد الناخبين الحالي: $count" : 'لا توجد بيانات عربية متاحة.';
 
         return compact('status', 'note');
     }
@@ -212,84 +210,59 @@ class IntegrationVerifyCommand extends Command
     private function inspectReportsFreshness(): array
     {
         $reports = [
-            'schema_audit.md',
-            'factory_audit.md',
-            'integration_report.md',
+            'analytics_snapshots' => 'metric_key',
+            'activities' => 'reported_at',
         ];
 
-        $directory = storage_path('logs');
         $stale = [];
 
-        foreach ($reports as $report) {
-            $path = $directory.DIRECTORY_SEPARATOR.$report;
-
-            if (! File::exists($path)) {
-                $stale[] = $report.' (غير متوفر)';
+        foreach ($reports as $table => $column) {
+            if (! Schema::hasTable($table)) {
+                $stale[] = "$table (غير موجود)";
                 continue;
             }
 
-            $lastModified = File::lastModified($path);
-            $diffHours = now()->diffInHours((now()->setTimestamp($lastModified)));
+            $latest = DB::table($table)->max($column);
 
-            if ($diffHours > 24) {
-                $stale[] = $report.' (أقدم من 24 ساعة)';
+            if (! $latest) {
+                $stale[] = "$table (لا توجد بيانات)";
+                continue;
+            }
+
+            if (now()->diffInDays($latest) > 7) {
+                $stale[] = "$table (قديم)";
             }
         }
 
-        $status = empty($stale) ? '✅ محدثة' : '⚠️ تحتاج تحديث';
+        $status = empty($stale) ? '✅ محدث' : '⚠️ يحتاج تحديث';
         $note = empty($stale)
-            ? 'جميع التقارير حديثة خلال آخر 24 ساعة.'
-            : 'تقارير بحاجة إلى تحديث: '.implode(', ', $stale);
+            ? 'تقارير البيانات محدثة.'
+            : 'تقارير بحاجة لمتابعة: '.implode(', ', $stale);
 
         return compact('status', 'note');
     }
 
     private function buildReport(array $sections): array
     {
-        $entries = [];
-
-        foreach ($sections as $section => $data) {
-            $entries[] = [
-                'section' => $section,
-                'status' => Arr::get($data, 'status', '⚠️ غير معروف'),
-                'note' => Arr::get($data, 'note', '—'),
-            ];
-        }
-
-        return $entries;
-    }
-
-    private function outputSummary(array $entries): void
-    {
-        foreach ($entries as $entry) {
-            $this->line(sprintf('%s: %s - %s', $entry['section'], $entry['status'], $entry['note']));
-        }
-    }
-
-    private function writeReport(array $entries): void
-    {
-        $headers = ['القسم', 'الحالة', 'الملاحظات'];
-
-        $lines = [
-            '| '.implode(' | ', $headers).' |',
-            '| '.implode(' | ', array_fill(0, count($headers), '---')).' |',
+        return [
+            'generated_at' => now()->toIso8601String(),
+            'sections' => $sections,
         ];
+    }
 
-        foreach ($entries as $entry) {
-            $lines[] = sprintf(
-                '| %s | %s | %s |',
-                $entry['section'],
-                $entry['status'],
-                $entry['note']
-            );
+    private function outputSummary(array $report): void
+    {
+        $this->info('🔍 تقرير التحقق من التكامل');
+        $this->line('تم التوليد في: '.$report['generated_at']);
+
+        foreach ($report['sections'] as $section => $details) {
+            $this->line(sprintf('%s: %s — %s', $section, $details['status'], $details['note']));
         }
+    }
 
-        $content = implode(PHP_EOL, $lines).PHP_EOL;
-
-        $path = storage_path('logs/integration_report.md');
-        File::ensureDirectoryExists(dirname($path));
-        File::put($path, $content);
-
-        $this->info('تم إنشاء تقرير التكامل في: '.$path);
+    private function writeReport(array $report): void
+    {
+        $path = storage_path('logs/integration_report.json');
+        File::put($path, json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
     }
 }

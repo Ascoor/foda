@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
+use App\Models\Voter;
 use App\Rules\BelongsToCampaign;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,51 +14,29 @@ class UpdateVoterRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return true;
-    }
+        /** @var Campaign $campaign */
+        $campaign = $this->route('campaign');
+        $this->campaign = $campaign;
 
-    protected function prepareForValidation(): void
-    {
-        $this->campaign = $this->route('campaign');
+        return $this->user()?->can('update', $campaign) ?? false;
     }
 
     public function rules(): array
     {
-        $campaignId = $this->campaign?->getKey();
+        /** @var Voter $voter */
         $voter = $this->route('voter');
+        $campaignId = $this->campaign?->getKey();
 
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'email' => ['sometimes', 'nullable', 'email'],
-            'phone' => ['sometimes', 'nullable', 'string', 'max:20'],
-            'area_id' => ['sometimes', 'required', 'exists:areas,id'],
-            'address' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'sex' => ['sometimes', 'nullable', 'in:male,female'],
-            'birthdate' => ['sometimes', 'nullable', 'date'],
-            'age' => ['sometimes', 'nullable', 'integer', 'min:0'],
-            'bloodgroup' => ['sometimes', 'nullable', 'string', 'max:3'],
-            'img_url' => ['sometimes', 'nullable', 'url'],
-            'ion_user_id' => ['sometimes', 'nullable', 'integer'],
-            'committee_id' => ['sometimes', 'required', 'exists:committees,id', new BelongsToCampaign('committees')],
-            'voter_id' => [
-                'sometimes',
-                'required',
-                'string',
-                'max:100',
-                Rule::unique('voters', 'voter_id')
-                    ->ignore($voter)
-                    ->where(fn ($query) => $query->where('campaign_id', $campaignId)),
-            ],
-            'voter_uid' => [
-                'sometimes',
-                'nullable',
-                'string',
-                'max:100',
-                Rule::unique('voters', 'voter_uid')
-                    ->ignore($voter)
-                    ->where(fn ($query) => $query->where('campaign_id', $campaignId)),
-            ],
-            'add_date' => ['sometimes', 'nullable', 'date'],
+            'national_id' => ['sometimes', 'required', 'string', 'max:32', Rule::unique('voters', 'national_id')->ignore($voter->getKey())->where(fn ($query) => $query->where('campaign_id', $campaignId))],
+            'voter_uid' => ['nullable', 'string', 'max:64', Rule::unique('voters', 'voter_uid')->ignore($voter->getKey())->where(fn ($query) => $query->where('campaign_id', $campaignId))],
+            'committee_id' => ['sometimes', 'required', 'integer', 'exists:committees,id', new BelongsToCampaign('committees')],
+            'address' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'gender' => ['nullable', 'in:male,female'],
+            'birthdate' => ['nullable', 'date'],
+            'meta' => ['nullable', 'array'],
         ];
     }
 

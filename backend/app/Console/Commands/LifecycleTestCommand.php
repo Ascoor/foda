@@ -3,10 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Activity;
+use App\Models\Campaign;
 use App\Models\Notification;
-use App\Models\Voter;
 use App\Models\Volunteer;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Voter;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -37,10 +37,14 @@ class LifecycleTestCommand extends Command
             ]);
             $summary['campaign'] = $campaign->only(['id', 'name']);
 
-            $volunteers = Volunteer::factory()->count(3)->create();
+            $volunteers = Volunteer::factory()->count(3)->create([
+                'campaign_id' => $campaign->id,
+            ]);
             $summary['volunteers'] = $volunteers->map->only(['id', 'name', 'email'])->all();
 
-            $voters = Voter::factory()->count(5)->create();
+            $voters = Voter::factory()->count(5)->create([
+                'campaign_id' => $campaign->id,
+            ]);
             $summary['voters'] = $voters->map->only(['id', 'name', 'phone'])->all();
 
             $activities = Activity::factory()->count(2)->create([

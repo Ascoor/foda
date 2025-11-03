@@ -2,7 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
+use App\Models\Event;
 use App\Rules\BelongsToCampaign;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,36 +14,33 @@ class UpdateEventRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return true;
-    }
+        /** @var Campaign $campaign */
+        $campaign = $this->route('campaign');
+        $this->campaign = $campaign;
 
-    protected function prepareForValidation(): void
-    {
-        $this->campaign = $this->route('campaign');
+        return $this->user()?->can('update', $campaign) ?? false;
     }
 
     public function rules(): array
     {
+        /** @var Event $event */
+        $event = $this->route('event');
         $campaignId = $this->campaign?->getKey();
-        $eventId = $this->route('event');
 
         return [
             'event_id' => [
-                'sometimes',
                 'nullable',
                 'string',
                 'max:255',
-                Rule::unique('events', 'event_id')
-                    ->ignore($eventId)
-                    ->where(fn ($query) => $query->where('campaign_id', $campaignId)),
+                Rule::unique('events', 'event_id')->ignore($event->getKey())->where(fn ($query) => $query->where('campaign_id', $campaignId)),
             ],
             'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'description' => ['sometimes', 'nullable', 'string'],
-            'organiser' => ['sometimes', 'required', 'string', 'max:255'],
-            'location' => ['sometimes', 'required', 'string', 'max:255'],
-            'date' => ['sometimes', 'required', 'date', 'after_or_equal:today'],
-            'area_id' => ['sometimes', 'required', 'exists:areas,id'],
-            'team_id' => ['sometimes', 'required', 'exists:teams,id', new BelongsToCampaign('teams')],
+            'description' => ['nullable', 'string'],
+            'organiser' => ['nullable', 'string', 'max:255'],
+            'location' => ['nullable', 'string', 'max:255'],
+            'date' => ['nullable', 'date'],
+            'area_id' => ['nullable', 'exists:areas,id'],
+            'team_id' => ['nullable', 'exists:teams,id', new BelongsToCampaign('teams')],
         ];
     }
 

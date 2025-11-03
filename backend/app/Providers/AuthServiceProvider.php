@@ -7,30 +7,18 @@ use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    /**
-     * The policy mappings for the application.
-     *
-     * @var array<class-string, class-string>
-     */
-    protected $policies = [ 
+    protected $policies = [
         \App\Models\Sms::class => \App\Policies\SmsPolicy::class,
- 
         \App\Models\User::class => \App\Policies\UserPolicy::class,
- 
+        \App\Models\Campaign::class => \App\Policies\CampaignPolicy::class,
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->registerPolicies();
+
         Gate::define('manage-electioncircle', function ($user) {
             return $user->hasAnyRole(['admin', 'manager', 'supervisor']);
         });
-
-        //
     }
 }
