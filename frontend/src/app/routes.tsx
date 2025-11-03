@@ -7,6 +7,7 @@ import { BarbaTransitionProvider } from "@/legacy/components/transition/BarbaTra
 import { Login } from "@/legacy/pages/Login";
 import NotFound from "@/legacy/pages/NotFound";
 
+import { appRoutes } from "@/app/routes/AppRoutes";
 import { ReportsDashboard } from "@/features/reports/ReportsDashboard";
 import { ElectionsList } from "@/features/elections/List";
 import { ElectionDetails } from "@/features/elections/Details";
@@ -27,7 +28,6 @@ import { CampaignsList } from "@/features/campaigns/CampaignsList";
 import { AutomationDashboard } from "@/features/automation/AutomationDashboard";
 import FloatingLandingPage from "@/features/marketing/pages/LandingPage";
 import FloatingDashboard from "@/features/marketing/pages/Dashboard";
-import PostAuthRedirect from "@/routes/post-auth";
 import { NavGuard } from "@/nav/NavGuard";
 import { EnhancedDashboard } from "@/features/dashboard/EnhancedDashboard";
 import { ArchitecturalControlCenter } from "@/features/dashboard/ArchitecturalControlCenter";
@@ -66,11 +66,11 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <FloatingLandingPage /> },
       { path: "/experience", element: <FloatingDashboard /> },
-      { path: "/app", element: <PostAuthRedirect /> },
       { path: "/login", element: <Login /> },
       {
         element: <ProtectedRoute />,
         children: [
+          ...appRoutes,
           {
             element: <MainLayoutWrapper />,
             children: [
