@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\V1\ActivityController;
 use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\AreaController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CampaignController;
+use App\Http\Controllers\Api\V1\CampaignPollingDayController;
 use App\Http\Controllers\Api\V1\CommitteeGeoController;
 use App\Http\Controllers\Api\V1\EventController;
 use App\Http\Controllers\Api\V1\FinanceController;
@@ -51,6 +53,7 @@ $apiRoutes = function () {
         Route::patch('profile/password', [ProfileController::class, 'updatePassword']);
 
         Route::apiResource('areas', AreaController::class);
+        Route::apiResource('campaigns', CampaignController::class);
         Route::get('analytics', AnalyticsController::class);
         Route::get('analytics/forecast', [AnalyticsController::class, 'forecast']);
         Route::get('notifications', [NotificationController::class, 'index']);
@@ -60,6 +63,11 @@ $apiRoutes = function () {
         Route::prefix('campaigns/{campaign}')
             ->middleware('resolve.campaign')
             ->group(function () {
+                Route::get('polling-days', [CampaignPollingDayController::class, 'index']);
+                Route::post('polling-days', [CampaignPollingDayController::class, 'store']);
+                Route::match(['put', 'patch'], 'polling-days/{polling_day}', [CampaignPollingDayController::class, 'update']);
+                Route::delete('polling-days/{polling_day}', [CampaignPollingDayController::class, 'destroy']);
+
                 Route::get('automation/config', [AutomationController::class, 'index']);
                 Route::put('automation/config', [AutomationController::class, 'update']);
                 Route::post('automation/config/{task}/trigger', [AutomationController::class, 'trigger']);

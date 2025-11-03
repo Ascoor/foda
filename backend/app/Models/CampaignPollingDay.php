@@ -2,36 +2,32 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class AnalyticsSnapshot extends Model
+class CampaignPollingDay extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
     protected $fillable = [
-        'election_id',
         'campaign_id',
-        'metric_key',
-        'snapshot_date',
-        'payload',
-        'forecast_value',
+        'date',
+        'opens_at',
+        'closes_at',
+        'notes',
     ];
 
     protected $casts = [
-        'payload' => 'array',
-        'snapshot_date' => 'date',
-        'forecast_value' => 'float',
+        'date' => 'date',
+        'opens_at' => 'string',
+        'closes_at' => 'string',
     ];
 
     public function campaign(): BelongsTo
     {
         return $this->belongsTo(Campaign::class);
-    }
-
-    public function election(): BelongsTo
-    {
-        return $this->belongsTo(\App\Models\ElectionCircle\Election::class);
     }
 }

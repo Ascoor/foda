@@ -27,7 +27,7 @@ class Volunteer extends Model
 
     public function campaigns(): BelongsToMany
     {
-        return $this->belongsToMany(\App\Models\ElectionCircle\Campaign::class, 'campaign_volunteer')
+        return $this->belongsToMany(Campaign::class, 'campaign_volunteer')
             ->withPivot(['assignment', 'shift', 'tags'])
             ->withTimestamps();
     }

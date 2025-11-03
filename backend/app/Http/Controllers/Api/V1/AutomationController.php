@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AutomationTaskResource;
 use App\Models\AutomationTask;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Artisan;

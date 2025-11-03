@@ -6,7 +6,7 @@ use App\Models\Activity;
 use App\Models\Notification;
 use App\Models\Voter;
 use App\Models\Volunteer;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Arr;

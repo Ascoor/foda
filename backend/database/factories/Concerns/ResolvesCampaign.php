@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Concerns;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 
 trait ResolvesCampaign
 {

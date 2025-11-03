@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Http\Resources\EventResource;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,6 +17,7 @@ class EventController extends Controller
     {
         $events = Event::with(['area', 'team'])
             ->where('campaign_id', $campaign->getKey())
+            ->withinCampaignWindow($campaign)
             ->when($request->filled('date'), fn ($q) => $q->whereDate('date', $request->date))
             ->when($request->filled('area_id'), fn ($q) => $q->where('area_id', $request->area_id))
             ->when($request->filled('team_id'), fn ($q) => $q->where('team_id', $request->team_id))
@@ -73,6 +74,7 @@ class EventController extends Controller
     {
         $events = Event::with(['area', 'team'])
             ->where('campaign_id', $campaign->getKey())
+            ->withinCampaignWindow($campaign)
             ->whereDate('date', '>=', now()->toDateString())
             ->orderBy('date');
 

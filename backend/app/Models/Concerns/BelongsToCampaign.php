@@ -2,7 +2,7 @@
 
 namespace App\Models\Concerns;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -13,8 +13,15 @@ trait BelongsToCampaign
         return $this->belongsTo(Campaign::class);
     }
 
-    public function scopeOfCampaign(Builder $query, int $campaignId): Builder
+    public function scopeForCampaign(Builder $query, Campaign|int $campaign): Builder
     {
-        return $query->where($this->getTable() . '.campaign_id', $campaignId);
+        $campaignId = $campaign instanceof Campaign ? $campaign->getKey() : $campaign;
+
+        return $query->where($this->qualifyColumn('campaign_id'), $campaignId);
+    }
+
+    public function scopeOfCampaign(Builder $query, Campaign|int $campaign): Builder
+    {
+        return $this->scopeForCampaign($query, $campaign);
     }
 }

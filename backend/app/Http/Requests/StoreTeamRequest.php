@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

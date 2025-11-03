@@ -3,7 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Area;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -53,16 +54,28 @@ class CampaignsSeeder extends Seeder
     {
         $existing = Campaign::query()->where('slug', $spec['slug'])->first();
 
+        $createdBy = Arr::get($spec, 'created_by');
+        if (! $createdBy) {
+            $createdBy = User::query()->value('id') ?? User::factory()->create()->getKey();
+        }
+
         $payload = [
             'name' => Arr::get($spec, 'name'),
             'slug' => Arr::get($spec, 'slug'),
             'description' => Arr::get($spec, 'description'),
-            'election_id' => Arr::get($spec, 'election_id'),
+            'timezone' => Arr::get($spec, 'timezone', 'Africa/Cairo'),
+            'starts_at' => Arr::get($spec, 'starts_at', now()->startOfMonth()),
+            'ends_at' => Arr::get($spec, 'ends_at', now()->endOfMonth()),
+            'spatial_level' => Arr::get($spec, 'spatial_level', 'governorate'),
+            'admin_areas' => Arr::get($spec, 'admin_areas', []),
+            'status' => Arr::get($spec, 'status', 'active'),
+            'bbox' => Arr::get($spec, 'bbox', [29.0, 30.0, 31.0, 32.0]),
+            'created_by' => $createdBy,
             'created_at' => $existing?->created_at ?? now(),
             'updated_at' => now(),
         ];
 
-        $updateColumns = ['name', 'description', 'election_id', 'updated_at'];
+        $updateColumns = ['name', 'description', 'timezone', 'starts_at', 'ends_at', 'spatial_level', 'admin_areas', 'status', 'bbox', 'created_by', 'updated_at'];
 
         Campaign::query()->upsert([$payload], ['slug'], $updateColumns);
 

@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\AnalyticsSnapshot;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use App\Models\ElectionCircle\Election;
 use Database\Factories\Concerns\ResolvesCampaign;
 use Faker\Factory as FakerFactory;

@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
+use App\Models\CampaignPollingDay;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('campaign', function ($value) {
             return Campaign::query()->whereKey($value)->firstOrFail();
         });
+        Route::model('polling_day', CampaignPollingDay::class);
 
         $this->configureRateLimiting();
 

@@ -17,12 +17,55 @@ A comprehensive election management system built with React + TypeScript fronten
 - **Animations**: Framer Motion
 - **Maps**: Leaflet + React Leaflet
 
-### Backend (Laravel 8)
-- **Framework**: Laravel 8.75
+### Backend (Laravel 10)
+- **Framework**: Laravel 10.x (PHP 8.2+)
 - **Authentication**: Laravel Sanctum
 - **Authorization**: Spatie Laravel Permission
-- **API**: RESTful API with v1 versioning
+- **API**: Campaign-centric REST API with v1 versioning
 - **Database**: MySQL/PostgreSQL (configurable)
+  
+#### Campaign-Centric domain
+- **Campaigns** are now the root of every operational resource. All voters, volunteers, events, teams, finances…etc. are scoped through `campaign_id`.
+- **Traits** like `BelongsToCampaign` and `WithinCampaignWindow` keep scopes reusable and enforce the window/geometry checks.
+- **Resource controllers** live under `App\Http\Controllers\Api\V1` and validate through dedicated FormRequests (`StoreCampaignRequest`, `UpdateCampaignRequest`, `StorePollingDayRequest`, `UpdatePollingDayRequest`).
+- **Policies/Gates** secure access so only campaign owners/admins (or global admins/managers) can mutate campaign data.
+- **Services/Actions** (e.g. `CreateCampaignAction`, `UpdateCampaignAction`) wrap business logic to keep controllers slim and testable.
+
+#### Key endpoints
+All routes are versioned at `/api/v1` and respect the REST shape `campaigns/{campaign}/…`.
+
+```http
+POST   /api/v1/campaigns
+GET    /api/v1/campaigns
+GET    /api/v1/campaigns/{campaign}
+PUT    /api/v1/campaigns/{campaign}
+DELETE /api/v1/campaigns/{campaign}
+
+GET    /api/v1/campaigns/{campaign}/polling-days
+POST   /api/v1/campaigns/{campaign}/polling-days
+PUT    /api/v1/campaigns/{campaign}/polling-days/{polling_day}
+DELETE /api/v1/campaigns/{campaign}/polling-days/{polling_day}
+```
+
+Example `curl` to create a campaign (Sanctum token abbreviated):
+
+```bash
+curl -X POST https://localhost/api/v1/campaigns \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "name": "حملة الوعي",
+        "description": "حملة افتراضية",
+        "timezone": "Africa/Cairo",
+        "starts_at": "2024-12-01T08:00:00Z",
+        "ends_at": "2025-01-15T20:00:00Z",
+        "spatial_level": "city",
+        "admin_areas": ["EG-01"],
+        "bbox": [29.9, 30.5, 31.2, 31.8],
+        "polling_settings": {"reminders": true},
+        "status": "draft"
+     }'
+```
 
 ## 📁 Project Structure
 

@@ -2,118 +2,27 @@
 
 namespace App\Models\ElectionCircle;
 
-use App\Models\Activity;
-use App\Models\Area;
-use App\Models\AutomationTask;
-use App\Models\Event;
-use App\Models\Finance;
-use App\Models\Notification;
-use App\Models\Sms;
-use App\Models\SmsSetting;
-use App\Models\Swot;
-use App\Models\Team;
-use App\Models\Volunteer;
-use App\Models\Voter as AppVoter;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-
-class Campaign extends Model
+class Campaign extends \App\Models\Campaign
 {
-    use HasFactory;
+    protected $fillable = [
+        'name',
+        'slug',
+        'description',
+        'election_id',
+        'timezone',
+        'starts_at',
+        'ends_at',
+        'spatial_level',
+        'admin_areas',
+        'spatial_extent',
+        'bbox',
+        'polling_settings',
+        'status',
+        'created_by',
+    ];
 
-    protected $fillable = ['name', 'slug', 'description', 'election_id'];
-
-    public function election(): BelongsTo
+    public function election()
     {
         return $this->belongsTo(Election::class);
-    }
-
-    public function committees(): HasMany
-    {
-        return $this->hasMany(Committee::class);
-    }
-
-    public function agents(): HasMany
-    {
-        return $this->hasMany(Agent::class);
-    }
-
-    public function voters(): HasMany
-    {
-        return $this->hasMany(AppVoter::class);
-    }
-
-    public function activities(): HasMany
-    {
-        return $this->hasMany(Activity::class);
-    }
-
-    public function finances(): HasMany
-    {
-        return $this->hasMany(Finance::class);
-    }
-
-    public function events(): HasMany
-    {
-        return $this->hasMany(Event::class);
-    }
-
-    public function swots(): HasMany
-    {
-        return $this->hasMany(Swot::class);
-    }
-
-    public function sms(): HasMany
-    {
-        return $this->hasMany(Sms::class);
-    }
-
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
-
-    public function teams(): HasMany
-    {
-        return $this->hasMany(Team::class);
-    }
-
-    public function automationTasks(): HasMany
-    {
-        return $this->hasMany(AutomationTask::class);
-    }
-
-    public function smsSettings(): HasMany
-    {
-        return $this->hasMany(SmsSetting::class);
-    }
-
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(\App\Models\User::class, 'campaign_user')
-            ->withPivot(['role', 'status', 'permissions'])
-            ->withTimestamps();
-    }
-
-    public function volunteers(): BelongsToMany
-    {
-        return $this->belongsToMany(Volunteer::class, 'campaign_volunteer')
-            ->withPivot(['assignment', 'shift', 'tags'])
-            ->withTimestamps();
-    }
-
-    public function geoAreas(): BelongsToMany
-    {
-        return $this->belongsToMany(Area::class, 'campaign_area', 'campaign_id', 'area_id')
-            ->withPivot(['alias', 'code'])
-            ->withTimestamps();
-    }
-
-    public function areas(): BelongsToMany
-    {
-        return $this->geoAreas();
     }
 }

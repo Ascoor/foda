@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use App\Rules\BelongsToCampaign;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,7 +13,11 @@ class StoreVoterRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return true;
+        $campaign = $this->route('campaign');
+
+        return $campaign instanceof Campaign
+            ? ($this->user()?->can('manageData', $campaign) ?? false)
+            : false;
     }
 
     protected function prepareForValidation(): void
@@ -49,6 +53,12 @@ class StoreVoterRequest extends FormRequest
                 'string',
                 'max:100',
                 Rule::unique('voters', 'voter_uid')->where(fn ($query) => $query->where('campaign_id', $campaignId)),
+            ],
+            'national_id' => [
+                'nullable',
+                'string',
+                'max:100',
+                Rule::unique('voters', 'national_id')->where(fn ($query) => $query->where('campaign_id', $campaignId)),
             ],
             'add_date' => ['nullable', 'date'],
         ];

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreVoterRequest;
 use App\Http\Requests\UpdateVoterRequest;
 use App\Http\Resources\VoterResource;
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use App\Models\Voter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -18,7 +18,7 @@ class VoterController extends Controller
 
     public function index(Request $request, Campaign $campaign)
     {
-        $query = Voter::with('area')->where('campaign_id', $campaign->getKey());
+        $query = Voter::with('area')->forCampaign($campaign);
 
         $voters = $this->handleIndex(
             $request,

@@ -2,7 +2,7 @@
 
 namespace App\Rules;
 
-use App\Models\ElectionCircle\Campaign;
+use App\Models\Campaign;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
 

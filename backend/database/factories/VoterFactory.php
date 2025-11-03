@@ -41,6 +41,8 @@ class VoterFactory extends Factory
             'img_url' => null,
             'ion_user_id' => $this->faker->optional()->randomNumber(),
             'voter_id' => '10' . $this->faker->numerify('#########'),
+            'voter_uid' => 'UID' . $this->faker->numerify('########'),
+            'national_id' => 'EG' . $this->faker->numerify('##########'),
             'add_date' => $this->faker->dateTimeBetween('-30 days', 'now'),
         ];
     }

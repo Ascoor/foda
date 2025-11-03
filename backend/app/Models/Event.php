@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToCampaign;
+use App\Models\Concerns\WithinCampaignWindow;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -10,6 +11,17 @@ class Event extends Model
 {
     use HasFactory;
     use BelongsToCampaign;
+    use WithinCampaignWindow;
+
+    protected function getStartColumn(): string
+    {
+        return 'date';
+    }
+
+    protected function getEndColumn(): string
+    {
+        return 'date';
+    }
 
     protected $fillable = [
         'campaign_id',
