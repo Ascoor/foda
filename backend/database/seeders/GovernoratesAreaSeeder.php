@@ -4,11 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Area;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr; 
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+
 
 class GovernoratesAreaSeeder extends Seeder
 {
@@ -91,68 +92,68 @@ class GovernoratesAreaSeeder extends Seeder
 
     private function insertOrUpdateArea(array $attributes, array $coords): array
     {
-        $nameAr = Arr::get($attributes, 'name_ar');
-        $nameEn = Arr::get($attributes, 'name_en');
-        $type = Arr::get($attributes, 'type');
-        $level = (int) Arr::get($attributes, 'level', 0);
+        $nameAr   = Arr::get($attributes, 'name_ar');
+        $nameEn   = Arr::get($attributes, 'name_en');
+        $type     = Arr::get($attributes, 'type');
+        $level    = (int) Arr::get($attributes, 'level', 0);
         $parentId = Arr::get($attributes, 'parent_id');
-        $code = Arr::get($attributes, 'code');
-
+        $code     = Arr::get($attributes, 'code');
+    
         $slugSource = $nameEn ?: $nameAr;
         $slug = Str::slug((string) $slugSource) ?: Str::slug((string) $nameAr) ?: md5((string) $nameAr);
-
+    
         $coordsPair = Arr::get($coords, $nameAr);
         $lat = is_array($coordsPair) ? Arr::get($coordsPair, 0) : null;
         $lng = is_array($coordsPair) ? Arr::get($coordsPair, 1) : null;
-
+    
         $existing = Area::query()->where('slug', $slug)->first();
-
-        $meta = Arr::get($attributes, 'meta', []);
-        if (! is_array($meta)) {
-            $meta = [];
+    
+        // meta كمصفوفة → JSON
+        $metaArray = Arr::get($attributes, 'meta', []);
+        if (!is_array($metaArray)) {
+            $metaArray = [];
         }
-
-        if (! $this->hasLatColumn || ! $this->hasLngColumn) {
-            $meta = array_merge($meta, [
-                'lat' => $lat,
-                'lng' => $lng,
-            ]);
+        if (!$this->hasLatColumn || !$this->hasLngColumn) {
+            $metaArray['lat'] = $lat;
+            $metaArray['lng'] = $lng;
         }
-
+        $metaJson = empty($metaArray) ? null : json_encode($metaArray, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    
+        // حمّل الـ payload
         $payload = [
-            'name' => $nameAr,
-            'name_ar' => $nameAr,
-            'name_en' => $nameEn,
-            'slug' => $slug,
-            'type' => $type,
-            'level' => $level,
-            'parent_id' => $parentId,
-            'code' => $code,
-            'meta' => $meta,
-            'description' => Arr::get($attributes, 'description'),
-            'x' => $lat,
-            'y' => $lng,
-            'created_at' => $existing?->created_at ?? now(),
-            'updated_at' => now(),
+            'name'        => $nameAr,              // لو عندك عمود name
+            'name_ar'     => $nameAr,
+            'name_en'     => $nameEn,
+            'slug'        => $slug,
+            'type'        => $type,
+            'level'       => $level,
+            'parent_id'   => $parentId,
+            'code'        => $code,
+            'meta'        => $metaJson,            // <<<<<<<<<< هنا بقى JSON
+            'description' => (string) Arr::get($attributes, 'description', ''), // ضمنًا نص
+            'x'           => $lat,
+            'y'           => $lng,
+            'created_at'  => $existing?->created_at ?? now(),
+            'updated_at'  => now(),
         ];
-
+    
         if ($this->hasLatColumn) {
             $payload['lat'] = $lat;
         }
-
         if ($this->hasLngColumn) {
             $payload['lng'] = $lng;
         }
-
+    
+        // الأعمدة التي سيتم تحديثها في upsert (بدون slug/created_at)
         $updateColumns = array_keys(Arr::except($payload, ['slug', 'created_at']));
-
+    
+        // نفّذ upsert (بيمر من الـ Query Builder بدون كاستنج Eloquent)
         Area::query()->upsert([$payload], ['slug'], $updateColumns);
-
+    
         $area = Area::query()->where('slug', $slug)->firstOrFail();
-
         return [$area->id, $existing === null];
     }
-
+    
     private function coordinatesMap(): array
     {
         return [
