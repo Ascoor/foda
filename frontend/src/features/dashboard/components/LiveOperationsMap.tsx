@@ -85,6 +85,11 @@ export const LiveOperationsMap = () => {
     useState<FeatureCollection<Point, Record<string, any>>>(EMPTY_COLLECTION);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [loading, setLoading] = useState(true);
+  const [mapInstanceKey, setMapInstanceKey] = useState(0);
+
+  const handleRetryMapLoad = useCallback(() => {
+    setMapInstanceKey((previous) => previous + 1);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
