@@ -1,4 +1,13 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import {
+  Component,
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { Filter, MapPin, RadioTower } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
@@ -16,6 +25,45 @@ import { fetchCommitteeGeo, fetchRecentActivityGeo } from "../api";
 import { useCampaignContext } from "@/shared/contexts/CampaignContext";
 import { getEcho } from "@/shared/lib/echo";
 import { Button } from "@/shared/ui/button";
+
+class MapErrorBoundary extends Component<
+  { children: ReactNode; onRetry: () => void },
+  { hasError: boolean }
+> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error("Failed to render live operations map", error);
+  }
+
+  handleRetry = () => {
+    this.setState({ hasError: false });
+    this.props.onRetry();
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="flex flex-col items-center justify-center gap-4 py-10 text-center">
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">We couldn't load the map</h3>
+            <p className="text-sm text-muted-foreground">
+              Something went wrong while loading the interactive map. Please try
+              again.
+            </p>
+          </div>
+          <Button onClick={this.handleRetry}>Retry</Button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 const LiveOperationsMapCanvas = lazy(() =>
   import("./LiveOperationsMapCanvas").then((module) => ({
@@ -90,6 +138,11 @@ export const LiveOperationsMap = () => {
     useState<FeatureCollection<Point, Record<string, any>>>(EMPTY_COLLECTION);
   const [filters, setFilters] = useState<Filters>(defaultFilters);
   const [loading, setLoading] = useState(true);
+  const [mapInstanceKey, setMapInstanceKey] = useState(0);
+
+  const handleRetryMapLoad = useCallback(() => {
+    setMapInstanceKey((previous) => previous + 1);
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -315,32 +368,35 @@ export const LiveOperationsMap = () => {
           </Button>
         </div>
 
-        <Suspense
-          fallback={
-            <div className="flex flex-col items-center justify-center h-[480px] rounded-xl border border-dashed border-muted">
-              <MapPin className="h-8 w-8 text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">
-                Loading map overlays…
-              </p>
-              <Skeleton className="h-[280px] w-3/4 mt-4" />
-            </div>
-          }
-        >
-          {loading ? (
-            <div className="flex flex-col items-center justify-center h-[480px] rounded-xl border border-dashed border-muted">
-              <MapPin className="h-8 w-8 text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">
-                Preparing map layers…
-              </p>
-              <Skeleton className="h-[280px] w-3/4 mt-4" />
-            </div>
-          ) : (
-            <LiveOperationsMapCanvas
-              committees={committees}
-              activities={filteredActivities}
-            />
-          )}
-        </Suspense>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-[480px] rounded-xl border border-dashed border-muted">
+            <MapPin className="h-8 w-8 text-muted-foreground mb-2" />
+            <p className="text-sm text-muted-foreground">
+              Preparing map layers…
+            </p>
+            <Skeleton className="h-[280px] w-3/4 mt-4" />
+          </div>
+        ) : (
+          <MapErrorBoundary onRetry={handleRetryMapLoad}>
+            <Suspense
+              fallback={
+                <div className="flex flex-col items-center justify-center h-[480px] rounded-xl border border-dashed border-muted">
+                  <MapPin className="h-8 w-8 text-muted-foreground mb-2" />
+                  <p className="text-sm text-muted-foreground">
+                    Loading map overlays…
+                  </p>
+                  <Skeleton className="h-[280px] w-3/4 mt-4" />
+                </div>
+              }
+            >
+              <LiveOperationsMapCanvas
+                key={mapInstanceKey}
+                committees={committees}
+                activities={filteredActivities}
+              />
+            </Suspense>
+          </MapErrorBoundary>
+        )}
 
         <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
