@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { Filter, MapPin, RadioTower } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
@@ -16,12 +16,7 @@ import { fetchCommitteeGeo, fetchRecentActivityGeo } from "../api";
 import { useCampaignContext } from "@/shared/contexts/CampaignContext";
 import { getEcho } from "@/shared/lib/echo";
 import { Button } from "@/shared/ui/button";
-
-const LiveOperationsMapCanvas = lazy(() =>
-  import("./LiveOperationsMapCanvas").then((module) => ({
-    default: module.LiveOperationsMapCanvas,
-  })),
-);
+import { LiveOperationsMapCanvas } from "./LiveOperationsMapCanvas";
 
 const EMPTY_COLLECTION: FeatureCollection<Point, Record<string, any>> = {
   type: "FeatureCollection",
@@ -315,32 +310,20 @@ export const LiveOperationsMap = () => {
           </Button>
         </div>
 
-        <Suspense
-          fallback={
-            <div className="flex flex-col items-center justify-center h-[480px] rounded-xl border border-dashed border-muted">
-              <MapPin className="h-8 w-8 text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">
-                Loading map overlays…
-              </p>
-              <Skeleton className="h-[280px] w-3/4 mt-4" />
-            </div>
-          }
-        >
-          {loading ? (
-            <div className="flex flex-col items-center justify-center h-[480px] rounded-xl border border-dashed border-muted">
-              <MapPin className="h-8 w-8 text-muted-foreground mb-2" />
-              <p className="text-sm text-muted-foreground">
-                Preparing map layers…
-              </p>
-              <Skeleton className="h-[280px] w-3/4 mt-4" />
-            </div>
-          ) : (
-            <LiveOperationsMapCanvas
-              committees={committees}
-              activities={filteredActivities}
-            />
-          )}
-        </Suspense>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center h-[480px] rounded-xl border border-dashed border-muted">
+            <MapPin className="h-8 w-8 text-muted-foreground mb-2" />
+            <p className="text-sm text-muted-foreground">
+              Preparing map layers…
+            </p>
+            <Skeleton className="h-[280px] w-3/4 mt-4" />
+          </div>
+        ) : (
+          <LiveOperationsMapCanvas
+            committees={committees}
+            activities={filteredActivities}
+          />
+        )}
 
         <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
