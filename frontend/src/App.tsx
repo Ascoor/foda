@@ -1,19 +1,19 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { RouterProvider } from "react-router-dom";
 
-import { router } from "@/app/routes";
-import { DevTools } from "@/shared/devtools";
-import { NotificationProvider } from "@/shared/contexts/NotificationContext";
-import { LanguageProvider } from "@/shared/contexts/LanguageContext";
-import { ThemeProvider } from "@/shared/contexts/ThemeContext";
-import { FeatureFlagProvider } from "@/shared/contexts/FeatureFlagContext";
-import { CampaignProvider } from "@/shared/contexts/CampaignContext";
-import { Toaster } from "@/shared/ui/toaster";
-import { Toaster as Sonner } from "@/shared/ui/sonner";
-import { TooltipProvider } from "@/shared/ui/tooltip";
-import { AuthProvider } from "@/legacy/hooks/useAuth";
+import { router } from "@/features/app/routes";
+import { DevTools } from "@/infrastructure/shared/devtools";
+import { NotificationProvider } from "@/infrastructure/shared/contexts/NotificationContext";
+import { LanguageProvider } from "@/infrastructure/shared/contexts/LanguageContext";
+import { ThemeProvider } from "@/infrastructure/shared/contexts/ThemeContext";
+import { FeatureFlagProvider } from "@/infrastructure/shared/contexts/FeatureFlagContext";
+import { CampaignProvider } from "@/infrastructure/shared/contexts/CampaignContext";
+import { Toaster } from "@/infrastructure/shared/ui/toaster";
+import { Toaster as Sonner } from "@/infrastructure/shared/ui/sonner";
+import { TooltipProvider } from "@/infrastructure/shared/ui/tooltip";
+import { AuthProvider } from "@/features/legacy/hooks/useAuth";
 
-import "@/i18n";
+import "@/infrastructure/i18n";
 
 const queryClient = new QueryClient();
 

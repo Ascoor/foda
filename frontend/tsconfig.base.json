@@ -18,6 +18,7 @@
       "@layouts/*": ["src/layouts/*"],
       "@routes/*": ["src/routes/*"],
       "@styles/*": ["src/styles/*"],
+      "@infrastructure/*": ["src/infrastructure/*"],
       "@types/*": ["src/types/*"],
       "@assets/*": ["src/assets/*"],
       "@config/*": ["src/config/*"]
