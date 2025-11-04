@@ -52,72 +52,72 @@ $apiRoutes = function () {
 
         Route::apiResource('campaigns', CampaignController::class);
         Route::apiResource('campaigns.polling-days', CampaignPollingDayController::class);
-        // Route::apiResource('areas', AreaController::class);
-        // Route::get('analytics', AnalyticsController::class);
-        // Route::get('analytics/forecast', [AnalyticsController::class, 'forecast']);
-        // Route::get('notifications', [NotificationController::class, 'index']);
-        // Route::patch('notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
-        // Route::post('notifications/read-all', [NotificationController::class, 'markAll']);
+  Route::apiResource('areas', AreaController::class);
+  Route::get('analytics', AnalyticsController::class);
+  Route::get('analytics/forecast', [AnalyticsController::class, 'forecast']);
+  Route::get('notifications', [NotificationController::class, 'index']);
+  Route::patch('notifications/{notification}/read', [NotificationController::class, 'markAsRead']);
+  Route::post('notifications/read-all', [NotificationController::class, 'markAll']);
+  
+   Route::prefix('campaigns/{campaign}')
+       ->middleware('resolve.campaign')
+       ->group(function () {
+            Route::get('automation/config', [AutomationController::class, 'index']);
+            Route::put('automation/config', [AutomationController::class, 'update']);
+            Route::post('automation/config/{task}/trigger', [AutomationController::class, 'trigger']);
 
-        // // Route::prefix('campaigns/{campaign}')
-        // //     ->middleware('resolve.campaign')
-        // //     ->group(function () {
-                Route::get('automation/config', [AutomationController::class, 'index']);
-                Route::put('automation/config', [AutomationController::class, 'update']);
-                Route::post('automation/config/{task}/trigger', [AutomationController::class, 'trigger']);
+               Route::get('committees/geo', CommitteeGeoController::class);
 
-        //         Route::get('committees/geo', CommitteeGeoController::class);
+       //         Route::get('events/upcoming', [EventController::class, 'upcoming']);
+       //         Route::apiResource('events', EventController::class);
 
-        // //         Route::get('events/upcoming', [EventController::class, 'upcoming']);
-        // //         Route::apiResource('events', EventController::class);
+       //         Route::get('finances/report', [FinanceController::class, 'report']);
+       //         Route::apiResource('finances', FinanceController::class);
 
-        // //         Route::get('finances/report', [FinanceController::class, 'report']);
-        // //         Route::apiResource('finances', FinanceController::class);
+       //         Route::apiResource('expense-categories', ExpenseCategoryController::class);
 
-        // //         Route::apiResource('expense-categories', ExpenseCategoryController::class);
+            Route::get('home', [HomeController::class, 'index']);
+            Route::get('dashboard', [HomeController::class, 'index']);
+            Route::get('home/heatmap', [HomeController::class, 'heatmap']);
 
-                Route::get('home', [HomeController::class, 'index']);
-                Route::get('dashboard', [HomeController::class, 'index']);
-                Route::get('home/heatmap', [HomeController::class, 'heatmap']);
+            Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
+            Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);
+            Route::apiResource('settings', SettingController::class);
 
-                Route::get('settings/key/{key}', [SettingController::class, 'getByKey']);
-                Route::match(['put', 'patch'], 'settings', [SettingController::class, 'bulkUpdate']);
-                Route::apiResource('settings', SettingController::class);
+               Route::get('roles', [RoleController::class, 'index']);
+                Route::match(['put', 'patch'], 'roles/{role}', [RoleController::class, 'update']);
 
-        // //         Route::get('roles', [RoleController::class, 'index']);
-        // //         Route::match(['put', 'patch'], 'roles/{role}', [RoleController::class, 'update']);
+                Route::get('sms/settings', [SmsController::class, 'settings']);
+                 Route::put('sms/settings', [SmsController::class, 'updateSettings']);
+       //         Route::apiResource('sms', SmsController::class);
 
-        // //         Route::get('sms/settings', [SmsController::class, 'settings']);
-        // //         Route::put('sms/settings', [SmsController::class, 'updateSettings']);
-        // //         Route::apiResource('sms', SmsController::class);
+       //         Route::get('swots/report', [SwotController::class, 'report']);
+       //         Route::apiResource('swots', SwotController::class);
 
-        // //         Route::get('swots/report', [SwotController::class, 'report']);
-        // //         Route::apiResource('swots', SwotController::class);
+       //         Route::apiResource('teams', TeamController::class);
+       //         Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
+       //         Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
 
-        // //         Route::apiResource('teams', TeamController::class);
-        // //         Route::post('teams/{team}/volunteers', [TeamController::class, 'assignVolunteers']);
-        // //         Route::delete('teams/{team}/volunteers/{volunteer}', [TeamController::class, 'removeVolunteer']);
+       //         Route::apiResource('members', MemberController::class)->only(['index', 'store']);
+       //         Route::apiResource('volunteers', VolunteerController::class);
 
-        // //         Route::apiResource('members', MemberController::class)->only(['index', 'store']);
-        // //         Route::apiResource('volunteers', VolunteerController::class);
+       //         Route::get('activities/recent', [ActivityController::class, 'recent']);
+       //         Route::apiResource('activities', ActivityController::class);
 
-        // //         Route::get('activities/recent', [ActivityController::class, 'recent']);
-        // //         Route::apiResource('activities', ActivityController::class);
+       //         Route::post('voters/import', [VoterController::class, 'import']);
+       //         Route::get('voters/export', [VoterController::class, 'export']);
+       //         Route::apiResource('voters', VoterController::class);
+           });
 
-        // //         Route::post('voters/import', [VoterController::class, 'import']);
-        // //         Route::get('voters/export', [VoterController::class, 'export']);
-        // //         Route::apiResource('voters', VoterController::class);
-        // //     });
-
-        // Route::prefix('integrations')->group(function () {
-        //     Route::get('geo-areas', [ExternalDataController::class, 'geoAreas']);
-        //     Route::get('elections/summary', [ExternalDataController::class, 'electionSummary']);
-        //     Route::get('elections/live-results', [ExternalDataController::class, 'liveResults']);
-        //     Route::get('maps/configuration', [ExternalDataController::class, 'mapConfiguration']);
-        // });
+          Route::prefix('integrations')->group(function () {
+              Route::get('geo-areas', [ExternalDataController::class, 'geoAreas']);
+              Route::get('elections/summary', [ExternalDataController::class, 'electionSummary']);
+              Route::get('elections/live-results', [ExternalDataController::class, 'liveResults']);
+              Route::get('maps/configuration', [ExternalDataController::class, 'mapConfiguration']);
+          });
     });
 
-    // Route::middleware('auth:sanctum')->prefix('ec')->group(function () {
+     Route::middleware('auth:sanctum')->prefix('ec')->group(function () {
     //     Route::apiResource('elections', ECElectionController::class);
     //     Route::apiResource('geo-areas', ECGeoAreaController::class);
     //     Route::apiResource('committees', ECCommitteeController::class);
@@ -127,8 +127,8 @@ $apiRoutes = function () {
     //     Route::apiResource('volunteers', ECVolunteerController::class);
     //     Route::apiResource('observations', ECObservationController::class);
         Route::apiResource('campaigns', ECCampaignController::class);
-    //     Route::apiResource('settings', ECSettingController::class);
-    // });
+    Route::apiResource('settings', ECSettingController::class);
+     });
 };
 
 Route::prefix('v1')->group(function () use ($apiRoutes) {
