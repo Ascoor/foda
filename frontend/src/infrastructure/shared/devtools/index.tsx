@@ -1,56 +1,49 @@
 import { useEffect } from "react";
 
-import { useNotifications } from "@/infrastructure/shared/contexts/NotificationContext";
+import { useNotifications, NotificationItem } from "@/infrastructure/shared/contexts/NotificationContext";
 import { useAuth } from "@/features/legacy/hooks/useAuth";
 
 interface DevtoolsWindow extends Window {
   __FODA_DEVTOOLS__?: Record<string, unknown>;
 }
 
-const registerDevtools = (payload: Record<string, unknown>) => {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  const target = window as DevtoolsWindow;
-  target.__FODA_DEVTOOLS__ = {
-    ...target.__FODA_DEVTOOLS__,
-    ...payload,
-  };
-
-  if (import.meta.env.DEV) {
-    console.info(
-      "[DevTools] context payload updated",
-      target.__FODA_DEVTOOLS__,
-    );
-  }
-};
-
 export const DevTools = () => {
-  const { notifications, unreadCount, isDrawerOpen } = useNotifications();
   const { user, isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
+  let notifications: NotificationItem[] = [];
+  let unreadCount: number = 0;
+  let isDrawerOpen: boolean = false;
 
-    registerDevtools({
+  try {
+    const notifCtx = useNotifications();
+    notifications = notifCtx.notifications;
+    unreadCount = notifCtx.unreadCount;
+    isDrawerOpen = notifCtx.isDrawerOpen;
+  } catch {
+    // useNotifications تم استدعاؤه خارج NotificationProvider
+  }
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const target = window as DevtoolsWindow;
+
+    target.__FODA_DEVTOOLS__ = {
       notifications,
       unreadCount,
       isDrawerOpen,
       user,
       isAuthenticated,
-    });
+    };
 
     return () => {
-      registerDevtools({
+      target.__FODA_DEVTOOLS__ = {
         notifications: [],
         unreadCount: 0,
         isDrawerOpen: false,
         user: null,
         isAuthenticated: false,
-      });
+      };
     };
   }, [isAuthenticated, isDrawerOpen, notifications, unreadCount, user]);
 
