@@ -1,10 +1,30 @@
 // vite.config.ts
-import { defineConfig, splitVendorChunkPlugin } from "vite";
+import { defineConfig, splitVendorChunkPlugin, type PluginOption } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
+import { visualizer } from "rollup-plugin-visualizer";
+
+const shouldAnalyze = process.env.ANALYZE === "true";
+
+const plugins: PluginOption[] = [
+  react(),
+  splitVendorChunkPlugin(),
+];
+
+if (shouldAnalyze) {
+  plugins.push(
+    visualizer({
+      filename: "analyze.html",
+      template: "treemap",
+      gzipSize: true,
+      brotliSize: true,
+      emitFile: true,
+    }),
+  );
+}
 
 export default defineConfig({
-  plugins: [react(), splitVendorChunkPlugin()],
+  plugins,
   server: { port: 8080 },
   resolve: {
     alias: {

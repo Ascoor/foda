@@ -1,0 +1,217 @@
+[
+  {
+    "id": "frontend/src/features/app/dashboard/data/hierarchy.ts:29394",
+    "filePath": "frontend/src/features/app/dashboard/data/hierarchy.ts",
+    "hook": "useQuery",
+    "queryKey": "[\"dashboard\", \"hierarchy\", campaignId]",
+    "options": {
+      "staleTime": "60_000"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/elections/List.tsx:1473",
+    "filePath": "frontend/src/features/features/elections/List.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"elections\", page, search, statusFilter]",
+    "options": {
+      "placeholderData": "(prevData) => prevData"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/elections/List.tsx:1994",
+    "filePath": "frontend/src/features/features/elections/List.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteElection",
+      "onSuccess": "() => queryClient.invalidateQueries({ queryKey: [\"elections\"] })"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/elections/Details.tsx:663",
+    "filePath": "frontend/src/features/features/elections/Details.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"election\", id]",
+    "options": {}
+  },
+  {
+    "id": "frontend/src/features/features/elections/Details.tsx:772",
+    "filePath": "frontend/src/features/features/elections/Details.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteElection",
+      "onSuccess": "() => navigate(\"/elections\")"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/geo-areas/Details.tsx:639",
+    "filePath": "frontend/src/features/features/geo-areas/Details.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"geo-area\", id]",
+    "options": {
+      "enabled": "!!id"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/geo-areas/Details.tsx:766",
+    "filePath": "frontend/src/features/features/geo-areas/Details.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteGeoArea",
+      "onSuccess": "() => navigate(\"/geo-areas\")"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/voters/List.tsx:1336",
+    "filePath": "frontend/src/features/features/voters/List.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"voters\", page, search, genderFilter]",
+    "options": {
+      "placeholderData": "(prevData) => prevData"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/voters/List.tsx:1801",
+    "filePath": "frontend/src/features/features/voters/List.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteVoter",
+      "onSuccess": "() => queryClient.invalidateQueries({ queryKey: [\"voters\"] })"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/voters/Details.tsx:686",
+    "filePath": "frontend/src/features/features/voters/Details.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"voter\", id]",
+    "options": {
+      "enabled": "!!id"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/voters/Details.tsx:808",
+    "filePath": "frontend/src/features/features/voters/Details.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteVoter",
+      "onSuccess": "() => navigate(\"/voters\")"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/candidates/List.tsx:1139",
+    "filePath": "frontend/src/features/features/candidates/List.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"candidates\", page, search, typeFilter, statusFilter]",
+    "options": {
+      "placeholderData": "(prevData) => prevData"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/candidates/List.tsx:1675",
+    "filePath": "frontend/src/features/features/candidates/List.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteCandidate",
+      "onSuccess": "() =>\n      queryClient.invalidateQueries({ queryKey: [\"candidates\"] })"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/candidates/Details.tsx:714",
+    "filePath": "frontend/src/features/features/candidates/Details.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"candidate\", id]",
+    "options": {
+      "enabled": "!!id"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/candidates/Details.tsx:844",
+    "filePath": "frontend/src/features/features/candidates/Details.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteCandidate",
+      "onSuccess": "() => navigate(\"/candidates\")"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/committees/Form.tsx:1177",
+    "filePath": "frontend/src/features/features/committees/Form.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"geo-areas\"]",
+    "options": {}
+  },
+  {
+    "id": "frontend/src/features/features/committees/List.tsx:1205",
+    "filePath": "frontend/src/features/features/committees/List.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"geo-areas\"]",
+    "options": {}
+  },
+  {
+    "id": "frontend/src/features/features/committees/List.tsx:1331",
+    "filePath": "frontend/src/features/features/committees/List.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"committees\", page, search, areaFilter]",
+    "options": {
+      "placeholderData": "(prevData) => prevData"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/committees/List.tsx:1762",
+    "filePath": "frontend/src/features/features/committees/List.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteCommittee",
+      "onSuccess": "() =>\n      queryClient.invalidateQueries({ queryKey: [\"committees\"] })"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/committees/Details.tsx:821",
+    "filePath": "frontend/src/features/features/committees/Details.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"committee\", id]",
+    "options": {}
+  },
+  {
+    "id": "frontend/src/features/features/committees/Details.tsx:932",
+    "filePath": "frontend/src/features/features/committees/Details.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteCommittee",
+      "onSuccess": "() => navigate(\"/committees\")"
+    }
+  },
+  {
+    "id": "frontend/src/features/features/settings/SettingsForm.tsx:903",
+    "filePath": "frontend/src/features/features/settings/SettingsForm.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"settings\"]",
+    "options": {}
+  },
+  {
+    "id": "frontend/src/features/features/settings/SettingsForm.tsx:1140",
+    "filePath": "frontend/src/features/features/settings/SettingsForm.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "updateSettings",
+      "onSuccess": "() => toast.success(t(\"settings.save_success\"))",
+      "onError": "() => toast.error(t(\"settings.save_error\"))"
+    }
+  },
+  {
+    "id": "frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx:5265",
+    "filePath": "frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+    "hook": "useQuery",
+    "queryKey": "[\"geo-areas\"]",
+    "options": {}
+  },
+  {
+    "id": "frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx:5365",
+    "filePath": "frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+    "hook": "useMutation",
+    "options": {
+      "mutationFn": "deleteGeoArea",
+      "onSuccess": "() => {\n      queryClient.invalidateQueries({ queryKey: [\"geo-areas\"] });\n      toast({ description: t(\"geo_areas.delete_success\") });\n    }",
+      "onError": "() => {\n      toast({\n        variant: \"destructive\",\n        description: t(\"geo_areas.delete_error\"),\n      });\n    }"
+    }
+  }
+]
