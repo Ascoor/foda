@@ -1,0 +1,3420 @@
+{
+  "generatedAt": "2025-11-04T08:42:08.385Z",
+  "madge": {
+    "App.tsx": [
+      "features/app/routes.tsx",
+      "features/legacy/hooks/useAuth.ts",
+      "infrastructure/i18n/index.ts",
+      "infrastructure/shared/contexts/CampaignContext.tsx",
+      "infrastructure/shared/contexts/FeatureFlagContext.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/contexts/NotificationContext.tsx",
+      "infrastructure/shared/contexts/ThemeContext.tsx",
+      "infrastructure/shared/devtools/index.tsx",
+      "infrastructure/shared/ui/sonner.tsx",
+      "infrastructure/shared/ui/toaster.tsx",
+      "infrastructure/shared/ui/tooltip.tsx"
+    ],
+    "features/app/dashboard/HierarchicalDashboard.tsx": [
+      "features/app/dashboard/data/hierarchy.ts",
+      "features/app/dashboard/layout/ControlPanel.tsx",
+      "features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+      "features/app/dashboard/layout/MainTabs.tsx",
+      "features/app/dashboard/layout/SideSubTabs.tsx",
+      "features/app/dashboard/layout/types.ts",
+      "features/app/dashboard/state/dashboardSelectionStore.ts",
+      "features/app/dashboard/state/selection.ts",
+      "features/app/dashboard/state/useDashboardSelectionSync.ts",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx": [
+      "features/app/dashboard/HierarchicalDashboard.tsx",
+      "features/app/dashboard/data/hierarchy.ts",
+      "features/app/dashboard/state/dashboardSelectionStore.ts"
+    ],
+    "features/app/dashboard/__tests__/index.ts": [
+      "features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+    ],
+    "features/app/dashboard/data/hierarchy.ts": [
+      "features/features/analytics/types.ts",
+      "infrastructure/shared/contexts/CampaignContext.tsx",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/app/dashboard/data/index.ts": [
+      "features/app/dashboard/data/hierarchy.ts"
+    ],
+    "features/app/dashboard/index.ts": [
+      "features/app/dashboard/HierarchicalDashboard.tsx"
+    ],
+    "features/app/dashboard/layout/ControlPanel.tsx": [
+      "features/app/dashboard/data/hierarchy.ts",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/app/dashboard/layout/DashboardBreadcrumbs.tsx": [
+      "features/app/dashboard/layout/types.ts",
+      "features/app/dashboard/state/events.ts",
+      "routing/nav/nav.schema.ts",
+      "routing/nav/useNavigationContext.ts"
+    ],
+    "features/app/dashboard/layout/MainTabs.tsx": [
+      "features/app/dashboard/data/hierarchy.ts",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/app/dashboard/layout/SideSubTabs.tsx": [
+      "features/app/dashboard/data/hierarchy.ts",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/app/dashboard/layout/index.ts": [
+      "features/app/dashboard/layout/ControlPanel.tsx",
+      "features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+      "features/app/dashboard/layout/MainTabs.tsx",
+      "features/app/dashboard/layout/SideSubTabs.tsx",
+      "features/app/dashboard/layout/types.ts"
+    ],
+    "features/app/dashboard/layout/types.ts": [
+      "features/app/dashboard/data/hierarchy.ts"
+    ],
+    "features/app/dashboard/state/dashboardSelectionStore.ts": [
+      "features/app/dashboard/state/events.ts",
+      "features/app/dashboard/state/selection.ts"
+    ],
+    "features/app/dashboard/state/events.ts": [
+      "features/app/dashboard/layout/types.ts",
+      "features/app/dashboard/state/selection.ts"
+    ],
+    "features/app/dashboard/state/index.ts": [
+      "features/app/dashboard/state/dashboardSelectionStore.ts",
+      "features/app/dashboard/state/events.ts",
+      "features/app/dashboard/state/selection.ts",
+      "features/app/dashboard/state/useDashboardSelectionSync.ts"
+    ],
+    "features/app/dashboard/state/selection.ts": [
+      "features/app/dashboard/data/hierarchy.ts",
+      "features/app/dashboard/layout/types.ts"
+    ],
+    "features/app/dashboard/state/useDashboardSelectionSync.ts": [
+      "features/app/dashboard/data/hierarchy.ts",
+      "features/app/dashboard/state/dashboardSelectionStore.ts",
+      "features/app/dashboard/state/events.ts",
+      "features/app/dashboard/state/selection.ts"
+    ],
+    "features/app/index.ts": [
+      "features/app/routes.tsx"
+    ],
+    "features/app/routes.tsx": [
+      "features/features/agents/AgentsList.tsx",
+      "features/features/automation/AutomationDashboard.tsx",
+      "features/features/campaigns/CampaignsList.tsx",
+      "features/features/candidates/Details.tsx",
+      "features/features/candidates/List.tsx",
+      "features/features/committees/Details.tsx",
+      "features/features/committees/List.tsx",
+      "features/features/dashboard/ArchitecturalControlCenter.tsx",
+      "features/features/dashboard/EnhancedDashboard.tsx",
+      "features/features/elections/Details.tsx",
+      "features/features/elections/List.tsx",
+      "features/features/geo-areas/Dashboard.tsx",
+      "features/features/geo-areas/Details.tsx",
+      "features/features/marketing/pages/Dashboard.tsx",
+      "features/features/marketing/pages/LandingPage.tsx",
+      "features/features/observations/ObservationsList.tsx",
+      "features/features/reports/ReportsDashboard.tsx",
+      "features/features/settings/Settings.tsx",
+      "features/features/volunteers/VolunteersList.tsx",
+      "features/features/voters/Details.tsx",
+      "features/features/voters/List.tsx",
+      "features/features/zones/ZoneDashboard.tsx",
+      "features/legacy/components/ProtectedRoute.tsx",
+      "features/legacy/components/layout/MainLayout.tsx",
+      "features/legacy/components/transition/BarbaTransitionProvider.tsx",
+      "features/legacy/pages/Login.tsx",
+      "features/legacy/pages/NotFound.tsx",
+      "routing/nav/NavGuard.tsx",
+      "routing/routes/post-auth.tsx"
+    ],
+    "features/features/activities/ActivitiesTimeline.tsx": [
+      "features/features/activities/api.ts",
+      "features/features/activities/types.ts",
+      "infrastructure/shared/contexts/CampaignContext.tsx",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/safe-data-renderer.tsx",
+      "infrastructure/shared/ui/skeleton.tsx",
+      "infrastructure/shared/ui/table.tsx"
+    ],
+    "features/features/activities/api.ts": [
+      "features/features/activities/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/campaign.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/activities/index.ts": [
+      "features/features/activities/ActivitiesTimeline.tsx",
+      "features/features/activities/api.ts",
+      "features/features/activities/types.ts"
+    ],
+    "features/features/activities/types.ts": [],
+    "features/features/agents/AgentDetails.tsx": [
+      "features/features/agents/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx"
+    ],
+    "features/features/agents/AgentForm.tsx": [
+      "features/features/agents/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx"
+    ],
+    "features/features/agents/AgentsList.tsx": [
+      "features/features/agents/AgentDetails.tsx",
+      "features/features/agents/AgentForm.tsx",
+      "features/features/agents/api.ts",
+      "features/features/agents/types.ts",
+      "features/features/agents/useAgentsData.ts",
+      "infrastructure/shared/hooks/use-toast.ts",
+      "infrastructure/shared/lib/logging.ts",
+      "infrastructure/shared/ui/assign-dialog.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/safe-data-renderer.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/agents/api.ts": [
+      "features/features/agents/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/agents/index.ts": [
+      "features/features/agents/AgentDetails.tsx",
+      "features/features/agents/AgentForm.tsx",
+      "features/features/agents/AgentsList.tsx",
+      "features/features/agents/api.ts",
+      "features/features/agents/types.ts",
+      "features/features/agents/useAgentsData.ts"
+    ],
+    "features/features/agents/types.ts": [],
+    "features/features/agents/useAgentsData.ts": [
+      "features/features/agents/api.ts",
+      "features/features/agents/types.ts",
+      "infrastructure/shared/lib/safeData.ts"
+    ],
+    "features/features/analytics/Analytics.tsx": [
+      "features/features/analytics/DashboardCharts.tsx",
+      "features/features/analytics/api.ts",
+      "features/features/analytics/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/safe-data-renderer.tsx",
+      "infrastructure/shared/ui/skeleton.tsx"
+    ],
+    "features/features/analytics/DashboardCharts.tsx": [
+      "features/features/analytics/types.ts",
+      "infrastructure/shared/ui/card.tsx"
+    ],
+    "features/features/analytics/__tests__/Analytics.test.tsx": [
+      "features/features/analytics/Analytics.tsx"
+    ],
+    "features/features/analytics/__tests__/index.ts": [
+      "features/features/analytics/__tests__/Analytics.test.tsx"
+    ],
+    "features/features/analytics/api.ts": [
+      "features/features/analytics/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/analytics/index.ts": [
+      "features/features/analytics/Analytics.tsx",
+      "features/features/analytics/DashboardCharts.tsx",
+      "features/features/analytics/api.ts",
+      "features/features/analytics/types.ts"
+    ],
+    "features/features/analytics/types.ts": [],
+    "features/features/automation/AutomationDashboard.tsx": [
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/switch.tsx"
+    ],
+    "features/features/automation/index.ts": [
+      "features/features/automation/AutomationDashboard.tsx"
+    ],
+    "features/features/campaigns/CampaignDetails.tsx": [
+      "features/features/campaigns/api.ts",
+      "features/features/campaigns/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx"
+    ],
+    "features/features/campaigns/CampaignForm.tsx": [
+      "features/features/campaigns/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx",
+      "infrastructure/shared/ui/textarea.tsx"
+    ],
+    "features/features/campaigns/CampaignsList.tsx": [
+      "features/features/campaigns/CampaignDetails.tsx",
+      "features/features/campaigns/CampaignForm.tsx",
+      "features/features/campaigns/api.ts",
+      "features/features/campaigns/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/data-table-skeleton.tsx"
+    ],
+    "features/features/campaigns/__tests__/List.test.tsx": [
+      "features/features/campaigns/CampaignsList.tsx"
+    ],
+    "features/features/campaigns/__tests__/index.ts": [
+      "features/features/campaigns/__tests__/List.test.tsx"
+    ],
+    "features/features/campaigns/api.ts": [
+      "features/features/campaigns/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/campaigns/index.ts": [
+      "features/features/campaigns/CampaignDetails.tsx",
+      "features/features/campaigns/CampaignForm.tsx",
+      "features/features/campaigns/CampaignsList.tsx",
+      "features/features/campaigns/api.ts",
+      "features/features/campaigns/types.ts"
+    ],
+    "features/features/campaigns/types.ts": [],
+    "features/features/candidates/Details.tsx": [
+      "features/features/candidates/Form.tsx",
+      "features/features/candidates/api.ts",
+      "features/features/candidates/types.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/features/candidates/Form.tsx": [
+      "features/features/candidates/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/candidates/List.tsx": [
+      "features/features/candidates/Form.tsx",
+      "features/features/candidates/api.ts",
+      "features/features/candidates/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/candidates/__tests__/Details.test.tsx": [
+      "features/features/candidates/Details.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/candidates/__tests__/Form.test.tsx": [
+      "features/features/candidates/Form.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/candidates/__tests__/List.test.tsx": [
+      "features/features/candidates/List.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/candidates/__tests__/index.ts": [
+      "features/features/candidates/__tests__/Details.test.tsx",
+      "features/features/candidates/__tests__/Form.test.tsx",
+      "features/features/candidates/__tests__/List.test.tsx"
+    ],
+    "features/features/candidates/api.ts": [
+      "features/features/candidates/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/candidates/index.ts": [
+      "features/features/candidates/Details.tsx",
+      "features/features/candidates/Form.tsx",
+      "features/features/candidates/List.tsx",
+      "features/features/candidates/api.ts",
+      "features/features/candidates/types.ts"
+    ],
+    "features/features/candidates/types.ts": [],
+    "features/features/committees/Details.tsx": [
+      "features/features/committees/Form.tsx",
+      "features/features/committees/api.ts",
+      "infrastructure/shared/ui/assign-dialog.tsx",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/features/committees/Form.tsx": [
+      "features/features/committees/api.ts",
+      "features/features/committees/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/committees/List.tsx": [
+      "features/features/committees/Form.tsx",
+      "features/features/committees/api.ts",
+      "features/features/committees/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/committees/__tests__/Details.test.tsx": [
+      "features/features/committees/Details.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/committees/__tests__/Form.test.tsx": [
+      "features/features/committees/Form.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/committees/__tests__/List.test.tsx": [
+      "features/features/committees/List.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/committees/__tests__/index.ts": [
+      "features/features/committees/__tests__/Details.test.tsx",
+      "features/features/committees/__tests__/Form.test.tsx",
+      "features/features/committees/__tests__/List.test.tsx"
+    ],
+    "features/features/committees/api.ts": [
+      "features/features/committees/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/committees/index.ts": [
+      "features/features/committees/Details.tsx",
+      "features/features/committees/Form.tsx",
+      "features/features/committees/List.tsx",
+      "features/features/committees/api.ts",
+      "features/features/committees/types.ts"
+    ],
+    "features/features/committees/types.ts": [],
+    "features/features/dashboard/ArchitecturalControlCenter.tsx": [
+      "features/app/dashboard/HierarchicalDashboard.tsx"
+    ],
+    "features/features/dashboard/Dashboard.tsx": [
+      "features/features/dashboard/EnhancedDashboard.tsx"
+    ],
+    "features/features/dashboard/DashboardWidgets/ActivityPanel.tsx": [
+      "features/features/dashboard/components/ActivityFeed.tsx",
+      "infrastructure/shared/hooks/useThemePalette.ts",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/skeleton.tsx"
+    ],
+    "features/features/dashboard/DashboardWidgets/LiveOperationsPanel.tsx": [
+      "features/features/dashboard/components/LiveOperationsMap.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/skeleton.tsx"
+    ],
+    "features/features/dashboard/DashboardWidgets/ProgressOverview.tsx": [
+      "features/features/dashboard/components/ProgressChart.tsx",
+      "infrastructure/shared/ui/alert.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/skeleton.tsx"
+    ],
+    "features/features/dashboard/DashboardWidgets/StatsOverview.tsx": [
+      "features/features/dashboard/components/StatsCard.tsx",
+      "infrastructure/shared/ui/skeleton.tsx"
+    ],
+    "features/features/dashboard/DashboardWidgets/SummaryPanel.tsx": [
+      "infrastructure/shared/ui/card.tsx"
+    ],
+    "features/features/dashboard/DashboardWidgets/index.ts": [
+      "features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+      "features/features/dashboard/DashboardWidgets/LiveOperationsPanel.tsx",
+      "features/features/dashboard/DashboardWidgets/ProgressOverview.tsx",
+      "features/features/dashboard/DashboardWidgets/StatsOverview.tsx",
+      "features/features/dashboard/DashboardWidgets/SummaryPanel.tsx"
+    ],
+    "features/features/dashboard/EnhancedDashboard.tsx": [
+      "features/features/activities/ActivitiesTimeline.tsx",
+      "features/features/dashboard/components/ActivityFeed.tsx",
+      "features/features/dashboard/components/LiveOperationsMap.tsx",
+      "features/features/dashboard/components/ProgressChart.tsx",
+      "infrastructure/shared/contexts/CampaignContext.tsx",
+      "infrastructure/shared/hooks/use-toast.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts",
+      "infrastructure/shared/lib/safeData.ts",
+      "infrastructure/shared/ui/safe-data-renderer.tsx"
+    ],
+    "features/features/dashboard/__tests__/ActivityFeed.test.tsx": [
+      "features/features/dashboard/components/ActivityFeed.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/dashboard/__tests__/Dashboard.test.tsx": [
+      "features/features/dashboard/Dashboard.tsx",
+      "infrastructure/shared/contexts/CampaignContext.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/dashboard/__tests__/ProgressChart.test.tsx": [
+      "features/features/dashboard/components/ProgressChart.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/dashboard/__tests__/StatsCard.test.tsx": [
+      "features/features/dashboard/components/StatsCard.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/dashboard/__tests__/index.ts": [
+      "features/features/dashboard/__tests__/ActivityFeed.test.tsx",
+      "features/features/dashboard/__tests__/Dashboard.test.tsx",
+      "features/features/dashboard/__tests__/ProgressChart.test.tsx",
+      "features/features/dashboard/__tests__/StatsCard.test.tsx"
+    ],
+    "features/features/dashboard/api.ts": [
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/campaign.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/dashboard/components/ActivityFeed.tsx": [],
+    "features/features/dashboard/components/LiveOperationsMap.tsx": [
+      "features/features/dashboard/api.ts",
+      "features/features/dashboard/components/LiveOperationsMapCanvas.tsx",
+      "infrastructure/shared/contexts/CampaignContext.tsx",
+      "infrastructure/shared/lib/echo.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/select.tsx",
+      "infrastructure/shared/ui/skeleton.tsx"
+    ],
+    "features/features/dashboard/components/LiveOperationsMapCanvas.tsx": [
+      "infrastructure/shared/vendor/leaflet-heat-stub.ts"
+    ],
+    "features/features/dashboard/components/ProgressChart.tsx": [
+      "infrastructure/shared/hooks/useThemePalette.ts"
+    ],
+    "features/features/dashboard/components/StatsCard.tsx": [],
+    "features/features/dashboard/components/index.ts": [
+      "features/features/dashboard/components/ActivityFeed.tsx",
+      "features/features/dashboard/components/LiveOperationsMap.tsx",
+      "features/features/dashboard/components/LiveOperationsMapCanvas.tsx",
+      "features/features/dashboard/components/ProgressChart.tsx",
+      "features/features/dashboard/components/StatsCard.tsx"
+    ],
+    "features/features/dashboard/index.ts": [
+      "features/features/dashboard/ArchitecturalControlCenter.tsx",
+      "features/features/dashboard/Dashboard.tsx",
+      "features/features/dashboard/EnhancedDashboard.tsx",
+      "features/features/dashboard/api.ts"
+    ],
+    "features/features/elections/Details.tsx": [
+      "features/features/elections/Form.tsx",
+      "features/features/elections/api.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/features/elections/Form.tsx": [
+      "features/features/elections/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/elections/List.tsx": [
+      "features/features/elections/Form.tsx",
+      "features/features/elections/api.ts",
+      "features/features/elections/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/alert.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/data-table-skeleton.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/elections/__tests__/Details.test.tsx": [
+      "features/features/elections/Details.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/elections/__tests__/Form.test.tsx": [
+      "features/features/elections/Form.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/elections/__tests__/List.test.tsx": [
+      "features/features/elections/List.tsx",
+      "features/features/elections/api.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/elections/__tests__/index.ts": [
+      "features/features/elections/__tests__/Details.test.tsx",
+      "features/features/elections/__tests__/Form.test.tsx",
+      "features/features/elections/__tests__/List.test.tsx"
+    ],
+    "features/features/elections/api.ts": [
+      "features/features/elections/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/elections/index.ts": [
+      "features/features/elections/Details.tsx",
+      "features/features/elections/Form.tsx",
+      "features/features/elections/List.tsx",
+      "features/features/elections/api.ts",
+      "features/features/elections/types.ts"
+    ],
+    "features/features/elections/types.ts": [],
+    "features/features/geo-areas/Dashboard.tsx": [
+      "features/features/geo-areas/components/GeoAreaList.tsx",
+      "features/features/geo-areas/components/GeoAreaMap.tsx",
+      "features/features/geo-areas/components/GeoAreaStats.tsx",
+      "features/features/geo-areas/data/mockGeoAreas.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx",
+      "infrastructure/shared/ui/skeleton.tsx"
+    ],
+    "features/features/geo-areas/Details.tsx": [
+      "features/features/geo-areas/Form.tsx",
+      "features/features/geo-areas/api.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/features/geo-areas/Form.tsx": [
+      "features/features/geo-areas/api.ts",
+      "features/features/geo-areas/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/geo-areas/List.tsx": [
+      "features/features/geo-areas/Form.tsx",
+      "features/features/geo-areas/api.ts",
+      "features/features/geo-areas/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/data-table-skeleton.tsx",
+      "infrastructure/shared/ui/dropdown-menu.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/status-badge.tsx"
+    ],
+    "features/features/geo-areas/__tests__/Details.test.tsx": [
+      "features/features/geo-areas/Details.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/geo-areas/__tests__/Form.test.tsx": [
+      "features/features/geo-areas/Form.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/geo-areas/__tests__/List.test.tsx": [
+      "features/features/geo-areas/List.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/geo-areas/__tests__/index.ts": [
+      "features/features/geo-areas/__tests__/Details.test.tsx",
+      "features/features/geo-areas/__tests__/Form.test.tsx",
+      "features/features/geo-areas/__tests__/List.test.tsx"
+    ],
+    "features/features/geo-areas/api.ts": [
+      "features/features/geo-areas/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/geo-areas/components/GeoAreaList.tsx": [
+      "features/features/geo-areas/data/mockGeoAreas.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/badge.tsx"
+    ],
+    "features/features/geo-areas/components/GeoAreaMap.tsx": [
+      "features/features/geo-areas/data/mockGeoAreas.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/geo-areas/components/GeoAreaStats.tsx": [
+      "features/features/geo-areas/data/mockGeoAreas.ts",
+      "infrastructure/shared/ui/card.tsx"
+    ],
+    "features/features/geo-areas/components/index.ts": [
+      "features/features/geo-areas/components/GeoAreaList.tsx",
+      "features/features/geo-areas/components/GeoAreaMap.tsx",
+      "features/features/geo-areas/components/GeoAreaStats.tsx"
+    ],
+    "features/features/geo-areas/data/index.ts": [
+      "features/features/geo-areas/data/mockGeoAreas.ts"
+    ],
+    "features/features/geo-areas/data/mockGeoAreas.ts": [],
+    "features/features/geo-areas/index.ts": [
+      "features/features/geo-areas/Dashboard.tsx",
+      "features/features/geo-areas/Details.tsx",
+      "features/features/geo-areas/Form.tsx",
+      "features/features/geo-areas/List.tsx",
+      "features/features/geo-areas/api.ts",
+      "features/features/geo-areas/types.ts"
+    ],
+    "features/features/geo-areas/types.ts": [],
+    "features/features/landing/components/FeatureTreeSection.tsx": [
+      "features/features/landing/hooks/useFeatureTreeAnimation.ts",
+      "infrastructure/shared/data/landing.ts",
+      "infrastructure/shared/vendor/treejs.ts"
+    ],
+    "features/features/landing/components/HeroSection.tsx": [
+      "features/features/landing/hooks/useHeroTimeline.ts",
+      "infrastructure/shared/data/landing.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/features/landing/components/LoginCtaSection.tsx": [
+      "features/features/landing/hooks/useLoginCtaAnimation.ts",
+      "features/legacy/components/auth/LoginForm.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx"
+    ],
+    "features/features/landing/components/PartnersSection.tsx": [
+      "features/features/landing/hooks/usePartnersAnimation.ts",
+      "infrastructure/shared/data/landing.ts"
+    ],
+    "features/features/landing/components/TestimonialsSection.tsx": [
+      "features/features/landing/hooks/useTestimonialsAnimation.ts",
+      "infrastructure/shared/data/landing.ts"
+    ],
+    "features/features/landing/components/index.ts": [
+      "features/features/landing/components/FeatureTreeSection.tsx",
+      "features/features/landing/components/HeroSection.tsx",
+      "features/features/landing/components/LoginCtaSection.tsx",
+      "features/features/landing/components/PartnersSection.tsx",
+      "features/features/landing/components/TestimonialsSection.tsx"
+    ],
+    "features/features/landing/hooks/index.ts": [
+      "features/features/landing/hooks/useFeatureTreeAnimation.ts",
+      "features/features/landing/hooks/useHeroTimeline.ts",
+      "features/features/landing/hooks/useLoginCtaAnimation.ts",
+      "features/features/landing/hooks/usePartnersAnimation.ts",
+      "features/features/landing/hooks/useTestimonialsAnimation.ts"
+    ],
+    "features/features/landing/hooks/useFeatureTreeAnimation.ts": [
+      "infrastructure/shared/lib/gsap.ts"
+    ],
+    "features/features/landing/hooks/useHeroTimeline.ts": [
+      "infrastructure/shared/lib/gsap.ts"
+    ],
+    "features/features/landing/hooks/useLoginCtaAnimation.ts": [
+      "infrastructure/shared/lib/gsap.ts"
+    ],
+    "features/features/landing/hooks/usePartnersAnimation.ts": [
+      "infrastructure/shared/lib/gsap.ts"
+    ],
+    "features/features/landing/hooks/useTestimonialsAnimation.ts": [
+      "infrastructure/shared/lib/gsap.ts"
+    ],
+    "features/features/marketing/components/landing/CallToAction.tsx": [
+      "features/features/marketing/components/ui/GlowButton.tsx"
+    ],
+    "features/features/marketing/components/landing/FeaturesSection.tsx": [
+      "features/features/marketing/components/ui/GlassPanel.tsx"
+    ],
+    "features/features/marketing/components/landing/FloatingNav.tsx": [],
+    "features/features/marketing/components/landing/Footer.tsx": [
+      "features/features/marketing/components/layout/index.ts"
+    ],
+    "features/features/marketing/components/landing/HeroSection.tsx": [
+      "features/features/marketing/components/layout/index.ts",
+      "features/features/marketing/components/ui/GlowButton.tsx"
+    ],
+    "features/features/marketing/components/landing/StatsSection.tsx": [
+      "features/features/marketing/components/layout/index.ts",
+      "features/features/marketing/components/ui/GlassPanel.tsx"
+    ],
+    "features/features/marketing/components/landing/index.ts": [
+      "features/features/marketing/components/landing/CallToAction.tsx",
+      "features/features/marketing/components/landing/FeaturesSection.tsx",
+      "features/features/marketing/components/landing/FloatingNav.tsx",
+      "features/features/marketing/components/landing/Footer.tsx",
+      "features/features/marketing/components/landing/HeroSection.tsx",
+      "features/features/marketing/components/landing/StatsSection.tsx"
+    ],
+    "features/features/marketing/components/layout/DashboardContent.tsx": [
+      "features/features/marketing/components/layout/GlassCard.tsx",
+      "features/features/marketing/components/layout/MapSection.tsx",
+      "features/features/marketing/components/layout/charts/AreaChart.tsx",
+      "features/features/marketing/components/layout/charts/BarChart.tsx",
+      "features/features/marketing/components/layout/charts/LineChart.tsx",
+      "features/features/marketing/components/layout/charts/PieChart.tsx"
+    ],
+    "features/features/marketing/components/layout/FloatingActions.tsx": [
+      "features/features/marketing/components/layout/store.ts"
+    ],
+    "features/features/marketing/components/layout/GlassCard.tsx": [],
+    "features/features/marketing/components/layout/Header.tsx": [
+      "features/features/marketing/components/layout/store.ts"
+    ],
+    "features/features/marketing/components/layout/MapSection.tsx": [
+      "features/features/marketing/components/layout/store.ts"
+    ],
+    "features/features/marketing/components/layout/Sidebar.tsx": [
+      "features/features/marketing/components/layout/store.ts"
+    ],
+    "features/features/marketing/components/layout/charts/AreaChart.tsx": [
+      "features/features/marketing/components/layout/GlassCard.tsx"
+    ],
+    "features/features/marketing/components/layout/charts/BarChart.tsx": [
+      "features/features/marketing/components/layout/GlassCard.tsx"
+    ],
+    "features/features/marketing/components/layout/charts/LineChart.tsx": [
+      "features/features/marketing/components/layout/GlassCard.tsx"
+    ],
+    "features/features/marketing/components/layout/charts/PieChart.tsx": [
+      "features/features/marketing/components/layout/GlassCard.tsx"
+    ],
+    "features/features/marketing/components/layout/charts/index.ts": [
+      "features/features/marketing/components/layout/charts/AreaChart.tsx",
+      "features/features/marketing/components/layout/charts/BarChart.tsx",
+      "features/features/marketing/components/layout/charts/LineChart.tsx",
+      "features/features/marketing/components/layout/charts/PieChart.tsx"
+    ],
+    "features/features/marketing/components/layout/i18n.ts": [
+      "infrastructure/i18n/index.ts"
+    ],
+    "features/features/marketing/components/layout/index.ts": [
+      "features/features/marketing/components/layout/DashboardContent.tsx",
+      "features/features/marketing/components/layout/FloatingActions.tsx",
+      "features/features/marketing/components/layout/GlassCard.tsx",
+      "features/features/marketing/components/layout/Header.tsx",
+      "features/features/marketing/components/layout/MapSection.tsx",
+      "features/features/marketing/components/layout/Sidebar.tsx",
+      "features/features/marketing/components/layout/i18n.ts",
+      "features/features/marketing/components/layout/store.ts"
+    ],
+    "features/features/marketing/components/layout/store.ts": [],
+    "features/features/marketing/components/ui/AuroraBackground.tsx": [],
+    "features/features/marketing/components/ui/GlassPanel.tsx": [],
+    "features/features/marketing/components/ui/GlowButton.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/features/marketing/components/ui/index.ts": [
+      "features/features/marketing/components/ui/AuroraBackground.tsx",
+      "features/features/marketing/components/ui/GlassPanel.tsx",
+      "features/features/marketing/components/ui/GlowButton.tsx"
+    ],
+    "features/features/marketing/pages/Dashboard.tsx": [
+      "features/features/marketing/components/layout/i18n.ts",
+      "features/features/marketing/components/layout/index.ts",
+      "features/features/marketing/components/ui/AuroraBackground.tsx"
+    ],
+    "features/features/marketing/pages/LandingPage.tsx": [
+      "features/features/marketing/components/landing/CallToAction.tsx",
+      "features/features/marketing/components/landing/FeaturesSection.tsx",
+      "features/features/marketing/components/landing/FloatingNav.tsx",
+      "features/features/marketing/components/landing/Footer.tsx",
+      "features/features/marketing/components/landing/HeroSection.tsx",
+      "features/features/marketing/components/landing/StatsSection.tsx",
+      "features/features/marketing/components/layout/i18n.ts",
+      "features/features/marketing/components/layout/index.ts",
+      "features/features/marketing/components/ui/AuroraBackground.tsx"
+    ],
+    "features/features/marketing/pages/index.ts": [
+      "features/features/marketing/pages/Dashboard.tsx",
+      "features/features/marketing/pages/LandingPage.tsx"
+    ],
+    "features/features/observations/ObservationDetails.tsx": [
+      "features/features/observations/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx"
+    ],
+    "features/features/observations/ObservationForm.tsx": [
+      "features/features/observations/api.ts",
+      "features/features/observations/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx",
+      "infrastructure/shared/ui/select.tsx",
+      "infrastructure/shared/ui/textarea.tsx"
+    ],
+    "features/features/observations/ObservationsList.tsx": [
+      "features/features/observations/ObservationDetails.tsx",
+      "features/features/observations/ObservationForm.tsx",
+      "features/features/observations/api.ts",
+      "features/features/observations/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/data-table-skeleton.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/observations/__tests__/List.test.tsx": [
+      "features/features/observations/ObservationsList.tsx"
+    ],
+    "features/features/observations/__tests__/index.ts": [
+      "features/features/observations/__tests__/List.test.tsx"
+    ],
+    "features/features/observations/api.ts": [
+      "features/features/observations/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/observations/index.ts": [
+      "features/features/observations/ObservationDetails.tsx",
+      "features/features/observations/ObservationForm.tsx",
+      "features/features/observations/ObservationsList.tsx",
+      "features/features/observations/api.ts",
+      "features/features/observations/types.ts"
+    ],
+    "features/features/observations/types.ts": [],
+    "features/features/reports/ReportsDashboard.tsx": [
+      "ui/components/dashboard/charts/index.ts",
+      "ui/components/dashboard/index.ts"
+    ],
+    "features/features/reports/index.ts": [
+      "features/features/reports/ReportsDashboard.tsx"
+    ],
+    "features/features/roles/RoleManager.tsx": [
+      "features/features/roles/api.ts",
+      "features/features/roles/types.ts",
+      "infrastructure/shared/hooks/use-toast.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/skeleton.tsx",
+      "infrastructure/shared/ui/switch.tsx",
+      "infrastructure/shared/ui/table.tsx"
+    ],
+    "features/features/roles/api.ts": [
+      "features/features/roles/types.ts",
+      "infrastructure/shared/lib/api.ts"
+    ],
+    "features/features/roles/index.ts": [
+      "features/features/roles/RoleManager.tsx",
+      "features/features/roles/api.ts",
+      "features/features/roles/types.ts"
+    ],
+    "features/features/roles/types.ts": [],
+    "features/features/settings/Settings.tsx": [
+      "features/features/settings/SettingsForm.tsx"
+    ],
+    "features/features/settings/SettingsForm.tsx": [
+      "features/features/settings/api.ts",
+      "features/features/settings/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx",
+      "infrastructure/shared/ui/select.tsx",
+      "infrastructure/shared/ui/sonner.tsx",
+      "infrastructure/shared/ui/switch.tsx"
+    ],
+    "features/features/settings/__tests__/Settings.test.tsx": [
+      "features/features/settings/Settings.tsx",
+      "features/features/settings/api.ts",
+      "infrastructure/shared/ui/sonner.tsx"
+    ],
+    "features/features/settings/__tests__/index.ts": [
+      "features/features/settings/__tests__/Settings.test.tsx"
+    ],
+    "features/features/settings/api.ts": [
+      "features/features/settings/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/campaign.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/settings/index.ts": [
+      "features/features/settings/Settings.tsx",
+      "features/features/settings/SettingsForm.tsx",
+      "features/features/settings/api.ts",
+      "features/features/settings/types.ts"
+    ],
+    "features/features/settings/types.ts": [],
+    "features/features/volunteers/VolunteerDetails.tsx": [
+      "features/features/volunteers/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx"
+    ],
+    "features/features/volunteers/VolunteerForm.tsx": [
+      "features/features/volunteers/api.ts",
+      "features/features/volunteers/types.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/volunteers/VolunteersList.tsx": [
+      "features/features/volunteers/VolunteerDetails.tsx",
+      "features/features/volunteers/VolunteerForm.tsx",
+      "features/features/volunteers/api.ts",
+      "features/features/volunteers/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/endpoints.ts",
+      "infrastructure/shared/ui/assign-dialog.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/volunteers/api.ts": [
+      "features/features/volunteers/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/campaign.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/volunteers/index.ts": [
+      "features/features/volunteers/VolunteerDetails.tsx",
+      "features/features/volunteers/VolunteerForm.tsx",
+      "features/features/volunteers/VolunteersList.tsx",
+      "features/features/volunteers/api.ts",
+      "features/features/volunteers/types.ts"
+    ],
+    "features/features/volunteers/types.ts": [],
+    "features/features/voters/Details.tsx": [
+      "features/features/voters/Form.tsx",
+      "features/features/voters/api.ts",
+      "features/features/voters/types.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/features/voters/Form.tsx": [
+      "features/features/voters/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/voters/List.tsx": [
+      "features/features/voters/Form.tsx",
+      "features/features/voters/api.ts",
+      "features/features/voters/types.ts",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/alert.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/data-table-skeleton.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "features/features/voters/__tests__/Details.test.tsx": [
+      "features/features/voters/Details.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/voters/__tests__/Form.test.tsx": [
+      "features/features/voters/Form.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/voters/__tests__/List.test.tsx": [
+      "features/features/voters/List.tsx",
+      "features/features/voters/api.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/features/voters/__tests__/index.ts": [
+      "features/features/voters/__tests__/Details.test.tsx",
+      "features/features/voters/__tests__/Form.test.tsx",
+      "features/features/voters/__tests__/List.test.tsx"
+    ],
+    "features/features/voters/api.ts": [
+      "features/features/voters/types.ts",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/campaign.ts",
+      "infrastructure/shared/lib/endpoints.ts"
+    ],
+    "features/features/voters/index.ts": [
+      "features/features/voters/Details.tsx",
+      "features/features/voters/Form.tsx",
+      "features/features/voters/List.tsx",
+      "features/features/voters/api.ts",
+      "features/features/voters/types.ts"
+    ],
+    "features/features/voters/types.ts": [],
+    "features/features/zones/ZoneDashboard.tsx": [
+      "features/features/zones/hooks/useZoneFilter.ts",
+      "features/features/zones/types.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx",
+      "infrastructure/shared/ui/table.tsx",
+      "infrastructure/shared/ui/tabs.tsx"
+    ],
+    "features/features/zones/data/index.ts": [
+      "features/features/zones/data/mansouraZones.ts"
+    ],
+    "features/features/zones/data/mansouraZones.ts": [
+      "features/features/zones/types.ts"
+    ],
+    "features/features/zones/hooks/index.ts": [
+      "features/features/zones/hooks/useZoneFilter.ts"
+    ],
+    "features/features/zones/hooks/useZoneFilter.ts": [
+      "features/features/zones/data/mansouraZones.ts",
+      "features/features/zones/types.ts"
+    ],
+    "features/features/zones/index.ts": [
+      "features/features/zones/ZoneDashboard.tsx",
+      "features/features/zones/types.ts"
+    ],
+    "features/features/zones/types.ts": [],
+    "features/legacy/components/ErrorBoundary.tsx": [
+      "infrastructure/shared/lib/logging.ts",
+      "infrastructure/shared/ui/alert.tsx"
+    ],
+    "features/legacy/components/NotificationDrawer.tsx": [
+      "infrastructure/shared/contexts/NotificationContext.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/scroll-area.tsx",
+      "infrastructure/shared/ui/sheet.tsx"
+    ],
+    "features/legacy/components/ProtectedRoute.tsx": [
+      "infrastructure/shared/contexts/AuthContext.tsx"
+    ],
+    "features/legacy/components/auth/LoginForm.tsx": [
+      "infrastructure/shared/contexts/AuthContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/checkbox.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx"
+    ],
+    "features/legacy/components/auth/index.ts": [
+      "features/legacy/components/auth/LoginForm.tsx"
+    ],
+    "features/legacy/components/dashboard/BarChartComponent.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/dashboard/DashboardCard.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/dashboard/EnhancedDashboard.tsx": [
+      "features/features/dashboard/EnhancedDashboard.tsx"
+    ],
+    "features/legacy/components/dashboard/LineChartComponent.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/dashboard/PieChartComponent.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/dashboard/index.ts": [
+      "features/legacy/components/dashboard/BarChartComponent.tsx",
+      "features/legacy/components/dashboard/DashboardCard.tsx",
+      "features/legacy/components/dashboard/EnhancedDashboard.tsx",
+      "features/legacy/components/dashboard/LineChartComponent.tsx",
+      "features/legacy/components/dashboard/PieChartComponent.tsx"
+    ],
+    "features/legacy/components/geo-areas/GeoAreaStats.tsx": [
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/data/mockGeoData.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/progress.tsx"
+    ],
+    "features/legacy/components/geo-areas/InteractiveMap.tsx": [
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/data/mockGeoData.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx"
+    ],
+    "features/legacy/components/geo-areas/index.ts": [
+      "features/legacy/components/geo-areas/GeoAreaStats.tsx",
+      "features/legacy/components/geo-areas/InteractiveMap.tsx"
+    ],
+    "features/legacy/components/index.ts": [
+      "features/legacy/components/ErrorBoundary.tsx",
+      "features/legacy/components/NotificationDrawer.tsx",
+      "features/legacy/components/ProtectedRoute.tsx"
+    ],
+    "features/legacy/components/layout/Header.tsx": [
+      "features/legacy/components/notifications/NotificationDrawer.tsx",
+      "infrastructure/shared/contexts/AuthContext.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/contexts/NotificationContext.tsx",
+      "infrastructure/shared/contexts/ThemeContext.tsx",
+      "infrastructure/shared/hooks/useWindowSize.ts",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dropdown-menu.tsx"
+    ],
+    "features/legacy/components/layout/MainLayout.tsx": [
+      "ui/layouts/DashboardShell.tsx"
+    ],
+    "features/legacy/components/layout/__tests__/Header.test.tsx": [
+      "features/legacy/components/layout/Header.tsx"
+    ],
+    "features/legacy/components/layout/__tests__/index.ts": [
+      "features/legacy/components/layout/__tests__/Header.test.tsx"
+    ],
+    "features/legacy/components/layout/index.ts": [
+      "features/legacy/components/layout/Header.tsx",
+      "features/legacy/components/layout/MainLayout.tsx"
+    ],
+    "features/legacy/components/notifications/NotificationDrawer.tsx": [
+      "features/legacy/components/NotificationDrawer.tsx",
+      "infrastructure/shared/contexts/NotificationContext.tsx"
+    ],
+    "features/legacy/components/notifications/index.ts": [
+      "features/legacy/components/notifications/NotificationDrawer.tsx"
+    ],
+    "features/legacy/components/sidebar/core/SidebarContainer.tsx": [
+      "features/legacy/components/sidebar/core/SidebarProvider.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/sheet.tsx"
+    ],
+    "features/legacy/components/sidebar/core/SidebarInset.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/sidebar/core/SidebarProvider.tsx": [
+      "infrastructure/shared/hooks/use-mobile.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/tooltip.tsx"
+    ],
+    "features/legacy/components/sidebar/core/SidebarRail.tsx": [
+      "features/legacy/components/sidebar/core/SidebarProvider.tsx",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/sidebar/core/SidebarTrigger.tsx": [
+      "features/legacy/components/sidebar/core/SidebarProvider.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/legacy/components/sidebar/core/index.ts": [
+      "features/legacy/components/sidebar/core/SidebarContainer.tsx",
+      "features/legacy/components/sidebar/core/SidebarInset.tsx",
+      "features/legacy/components/sidebar/core/SidebarProvider.tsx",
+      "features/legacy/components/sidebar/core/SidebarRail.tsx",
+      "features/legacy/components/sidebar/core/SidebarTrigger.tsx"
+    ],
+    "features/legacy/components/sidebar/index.ts": [
+      "features/legacy/components/sidebar/core/index.ts",
+      "features/legacy/components/sidebar/smart/index.ts",
+      "features/legacy/components/sidebar/ui/index.ts"
+    ],
+    "features/legacy/components/sidebar/smart/SmartItem.tsx": [
+      "features/legacy/components/sidebar/smart/navigation.config.ts",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/tooltip.tsx"
+    ],
+    "features/legacy/components/sidebar/smart/SmartNavigation.tsx": [
+      "features/legacy/components/sidebar/core/index.ts",
+      "features/legacy/components/sidebar/smart/SmartItem.tsx",
+      "features/legacy/components/sidebar/smart/navigation.config.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/sidebar/smart/SmartSidebar.tsx": [
+      "features/legacy/components/sidebar/core/index.ts",
+      "features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+      "features/legacy/components/sidebar/smart/navigation.config.ts",
+      "features/legacy/components/sidebar/ui/index.ts",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/legacy/components/sidebar/smart/index.ts": [
+      "features/legacy/components/sidebar/smart/SmartItem.tsx",
+      "features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+      "features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+      "features/legacy/components/sidebar/smart/navigation.config.ts"
+    ],
+    "features/legacy/components/sidebar/smart/navigation.config.ts": [],
+    "features/legacy/components/sidebar/ui/SidebarFooter.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/sidebar/ui/SidebarGroup.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/sidebar/ui/SidebarHeader.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/sidebar/ui/SidebarInput.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/input.tsx"
+    ],
+    "features/legacy/components/sidebar/ui/SidebarMenu.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/components/sidebar/ui/SidebarSeparator.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/separator.tsx"
+    ],
+    "features/legacy/components/sidebar/ui/index.ts": [
+      "features/legacy/components/sidebar/ui/SidebarFooter.tsx",
+      "features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+      "features/legacy/components/sidebar/ui/SidebarHeader.tsx",
+      "features/legacy/components/sidebar/ui/SidebarInput.tsx",
+      "features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+      "features/legacy/components/sidebar/ui/SidebarSeparator.tsx"
+    ],
+    "features/legacy/components/transition/BarbaTransitionProvider.tsx": [
+      "infrastructure/shared/contexts/LanguageContext.tsx"
+    ],
+    "features/legacy/components/transition/index.ts": [
+      "features/legacy/components/transition/BarbaTransitionProvider.tsx"
+    ],
+    "features/legacy/hooks/index.ts": [
+      "features/legacy/hooks/useAuth.ts",
+      "features/legacy/hooks/useFancybox.ts"
+    ],
+    "features/legacy/hooks/useAuth.ts": [
+      "infrastructure/shared/contexts/AuthContext.tsx"
+    ],
+    "features/legacy/hooks/useFancybox.ts": [],
+    "features/legacy/pages/Auth/AuthLayout.tsx": [
+      "features/legacy/components/layout/Header.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "features/legacy/pages/Auth/ForgotPassword.tsx": [
+      "features/legacy/pages/Auth/AuthLayout.tsx",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx"
+    ],
+    "features/legacy/pages/Auth/Login.tsx": [
+      "features/legacy/pages/Auth/AuthLayout.tsx",
+      "infrastructure/shared/contexts/AuthContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/checkbox.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx"
+    ],
+    "features/legacy/pages/Auth/Register.tsx": [
+      "features/legacy/pages/Auth/AuthLayout.tsx",
+      "infrastructure/shared/contexts/AuthContext.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx"
+    ],
+    "features/legacy/pages/Auth/index.ts": [
+      "features/legacy/pages/Auth/AuthLayout.tsx",
+      "features/legacy/pages/Auth/ForgotPassword.tsx",
+      "features/legacy/pages/Auth/Login.tsx",
+      "features/legacy/pages/Auth/Register.tsx"
+    ],
+    "features/legacy/pages/AuthRedirect.tsx": [],
+    "features/legacy/pages/Dashboard/Campaigns.tsx": [
+      "features/legacy/components/dashboard/DashboardCard.tsx"
+    ],
+    "features/legacy/pages/Dashboard/Reports.tsx": [
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/table.tsx"
+    ],
+    "features/legacy/pages/Dashboard/Settings.tsx": [
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/switch.tsx"
+    ],
+    "features/legacy/pages/Dashboard/Users.tsx": [
+      "infrastructure/shared/ui/avatar.tsx",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/legacy/pages/Dashboard/index.ts": [
+      "features/legacy/pages/Dashboard/Campaigns.tsx",
+      "features/legacy/pages/Dashboard/Reports.tsx",
+      "features/legacy/pages/Dashboard/Settings.tsx",
+      "features/legacy/pages/Dashboard/Users.tsx"
+    ],
+    "features/legacy/pages/Dashboard/index.tsx": [
+      "features/legacy/components/dashboard/BarChartComponent.tsx",
+      "features/legacy/components/dashboard/DashboardCard.tsx",
+      "features/legacy/components/dashboard/LineChartComponent.tsx",
+      "features/legacy/components/dashboard/PieChartComponent.tsx"
+    ],
+    "features/legacy/pages/GeoAreas.tsx": [
+      "features/legacy/components/geo-areas/GeoAreaStats.tsx",
+      "features/legacy/components/geo-areas/InteractiveMap.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/data/mockGeoData.ts",
+      "infrastructure/shared/hooks/use-toast.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/dropdown-menu.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/select.tsx",
+      "infrastructure/shared/ui/tabs.tsx"
+    ],
+    "features/legacy/pages/Index.tsx": [
+      "features/legacy/components/dashboard/EnhancedDashboard.tsx"
+    ],
+    "features/legacy/pages/Landing.tsx": [
+      "features/legacy/components/layout/Header.tsx",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "features/legacy/pages/Login.tsx": [
+      "features/legacy/components/auth/LoginForm.tsx"
+    ],
+    "features/legacy/pages/NotFound.tsx": [],
+    "features/legacy/pages/__tests__/Login.test.tsx": [
+      "features/legacy/pages/Login.tsx",
+      "infrastructure/shared/contexts/AuthContext.tsx",
+      "infrastructure/shared/lib/api.ts"
+    ],
+    "features/legacy/pages/__tests__/index.ts": [
+      "features/legacy/pages/__tests__/Login.test.tsx"
+    ],
+    "features/legacy/pages/index.ts": [
+      "features/legacy/pages/AuthRedirect.tsx",
+      "features/legacy/pages/GeoAreas.tsx",
+      "features/legacy/pages/Index.tsx",
+      "features/legacy/pages/Landing.tsx",
+      "features/legacy/pages/Login.tsx",
+      "features/legacy/pages/NotFound.tsx"
+    ],
+    "index.css": [
+      "infrastructure/theme/theme.css",
+      "ui/styles/animations.css",
+      "ui/styles/utilities.css"
+    ],
+    "infrastructure/config/index.ts": [
+      "infrastructure/config/motion.config.ts",
+      "infrastructure/config/sidebar-sections.ts",
+      "infrastructure/config/theme.config.ts"
+    ],
+    "infrastructure/config/motion.config.ts": [],
+    "infrastructure/config/sidebar-sections.ts": [],
+    "infrastructure/config/theme.config.ts": [],
+    "infrastructure/i18n/index.ts": [
+      "infrastructure/i18n/locales/ar.json",
+      "infrastructure/i18n/locales/en.json"
+    ],
+    "infrastructure/i18n/locales/ar.json": [],
+    "infrastructure/i18n/locales/en.json": [],
+    "infrastructure/i18n/locales/index.ts": [],
+    "infrastructure/i18n/sidebar.ts": [],
+    "infrastructure/shared/components/.gitkeep": [],
+    "infrastructure/shared/components/index.ts": [
+      "infrastructure/shared/components/.gitkeep"
+    ],
+    "infrastructure/shared/contexts/AuthContext.tsx": [
+      "infrastructure/shared/lib/api.ts"
+    ],
+    "infrastructure/shared/contexts/CampaignContext.tsx": [
+      "infrastructure/shared/lib/campaign.ts"
+    ],
+    "infrastructure/shared/contexts/FeatureFlagContext.tsx": [
+      "routing/nav/nav.schema.ts"
+    ],
+    "infrastructure/shared/contexts/LanguageContext.tsx": [],
+    "infrastructure/shared/contexts/NotificationContext.tsx": [
+      "infrastructure/shared/contexts/AuthContext.tsx",
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/echo.ts"
+    ],
+    "infrastructure/shared/contexts/ThemeContext.tsx": [],
+    "infrastructure/shared/contexts/index.ts": [
+      "infrastructure/shared/contexts/AuthContext.tsx",
+      "infrastructure/shared/contexts/CampaignContext.tsx",
+      "infrastructure/shared/contexts/FeatureFlagContext.tsx",
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/contexts/NotificationContext.tsx",
+      "infrastructure/shared/contexts/ThemeContext.tsx"
+    ],
+    "infrastructure/shared/data/index.ts": [
+      "infrastructure/shared/data/landing.ts",
+      "infrastructure/shared/data/mockGeoData.ts"
+    ],
+    "infrastructure/shared/data/landing.ts": [],
+    "infrastructure/shared/data/mockGeoData.ts": [],
+    "infrastructure/shared/devtools/index.tsx": [
+      "features/legacy/hooks/useAuth.ts",
+      "infrastructure/shared/contexts/NotificationContext.tsx"
+    ],
+    "infrastructure/shared/hooks/.gitkeep": [],
+    "infrastructure/shared/hooks/index.ts": [
+      "infrastructure/shared/hooks/.gitkeep",
+      "infrastructure/shared/hooks/use-mobile.tsx",
+      "infrastructure/shared/hooks/use-toast.ts",
+      "infrastructure/shared/hooks/useThemePalette.ts",
+      "infrastructure/shared/hooks/useWindowSize.ts"
+    ],
+    "infrastructure/shared/hooks/use-mobile.tsx": [],
+    "infrastructure/shared/hooks/use-toast.ts": [
+      "infrastructure/shared/ui/toast.tsx"
+    ],
+    "infrastructure/shared/hooks/useThemePalette.ts": [],
+    "infrastructure/shared/hooks/useWindowSize.ts": [],
+    "infrastructure/shared/index.ts": [
+      "infrastructure/shared/components/index.ts",
+      "infrastructure/shared/contexts/index.ts",
+      "infrastructure/shared/hooks/index.ts",
+      "infrastructure/shared/layout/index.ts",
+      "infrastructure/shared/ui/index.ts"
+    ],
+    "infrastructure/shared/integrations/supabase/client.ts": [
+      "infrastructure/shared/integrations/supabase/types.ts"
+    ],
+    "infrastructure/shared/integrations/supabase/index.ts": [
+      "infrastructure/shared/integrations/supabase/client.ts",
+      "infrastructure/shared/integrations/supabase/types.ts"
+    ],
+    "infrastructure/shared/integrations/supabase/types.ts": [],
+    "infrastructure/shared/layout/Sidebar.tsx": [
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/contexts/NotificationContext.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "routing/nav/nav.map.ts",
+      "routing/nav/nav.schema.ts",
+      "routing/nav/useNavigationContext.ts"
+    ],
+    "infrastructure/shared/layout/index.ts": [
+      "infrastructure/shared/layout/Sidebar.tsx"
+    ],
+    "infrastructure/shared/lib/api.ts": [],
+    "infrastructure/shared/lib/campaign.ts": [],
+    "infrastructure/shared/lib/echo.ts": [],
+    "infrastructure/shared/lib/endpoints.ts": [
+      "infrastructure/shared/lib/campaign.ts"
+    ],
+    "infrastructure/shared/lib/gsap.ts": [],
+    "infrastructure/shared/lib/index.ts": [
+      "infrastructure/shared/lib/api.ts",
+      "infrastructure/shared/lib/campaign.ts",
+      "infrastructure/shared/lib/echo.ts",
+      "infrastructure/shared/lib/endpoints.ts",
+      "infrastructure/shared/lib/gsap.ts",
+      "infrastructure/shared/lib/logging.ts",
+      "infrastructure/shared/lib/safeData.ts",
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/lib/logging.ts": [],
+    "infrastructure/shared/lib/safeData.ts": [],
+    "infrastructure/shared/lib/utils.ts": [],
+    "infrastructure/shared/ui/.gitkeep": [],
+    "infrastructure/shared/ui/__tests__/Button.test.tsx": [
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "infrastructure/shared/ui/__tests__/Input.test.tsx": [
+      "infrastructure/shared/ui/input.tsx"
+    ],
+    "infrastructure/shared/ui/__tests__/index.ts": [
+      "infrastructure/shared/ui/__tests__/Button.test.tsx",
+      "infrastructure/shared/ui/__tests__/Input.test.tsx"
+    ],
+    "infrastructure/shared/ui/accordion.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/alert-dialog.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "infrastructure/shared/ui/alert.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/aspect-ratio.tsx": [],
+    "infrastructure/shared/ui/assign-dialog.tsx": [
+      "infrastructure/shared/contexts/LanguageContext.tsx",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/dialog.tsx",
+      "infrastructure/shared/ui/input.tsx"
+    ],
+    "infrastructure/shared/ui/avatar.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/badge.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/breadcrumb.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/button.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/calendar.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "infrastructure/shared/ui/card.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/carousel.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "infrastructure/shared/ui/chart.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/checkbox.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/collapsible.tsx": [],
+    "infrastructure/shared/ui/command.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/dialog.tsx"
+    ],
+    "infrastructure/shared/ui/context-menu.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/data-table-skeleton.tsx": [],
+    "infrastructure/shared/ui/dialog.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/drawer.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/dropdown-menu.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/enhanced-geo-areas-list.tsx": [
+      "features/features/geo-areas/api.ts",
+      "features/features/geo-areas/types.ts",
+      "infrastructure/shared/hooks/use-toast.ts",
+      "infrastructure/shared/lib/safeData.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/safe-data-renderer.tsx",
+      "infrastructure/shared/ui/select.tsx"
+    ],
+    "infrastructure/shared/ui/form.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/label.tsx"
+    ],
+    "infrastructure/shared/ui/hover-card.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/index.ts": [
+      "infrastructure/shared/ui/.gitkeep",
+      "infrastructure/shared/ui/accordion.tsx",
+      "infrastructure/shared/ui/alert-dialog.tsx",
+      "infrastructure/shared/ui/alert.tsx",
+      "infrastructure/shared/ui/aspect-ratio.tsx",
+      "infrastructure/shared/ui/assign-dialog.tsx",
+      "infrastructure/shared/ui/avatar.tsx",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/breadcrumb.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/calendar.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/carousel.tsx",
+      "infrastructure/shared/ui/chart.tsx",
+      "infrastructure/shared/ui/checkbox.tsx",
+      "infrastructure/shared/ui/collapsible.tsx",
+      "infrastructure/shared/ui/command.tsx",
+      "infrastructure/shared/ui/context-menu.tsx",
+      "infrastructure/shared/ui/data-table-skeleton.tsx",
+      "infrastructure/shared/ui/dialog.tsx",
+      "infrastructure/shared/ui/drawer.tsx",
+      "infrastructure/shared/ui/dropdown-menu.tsx",
+      "infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+      "infrastructure/shared/ui/form.tsx",
+      "infrastructure/shared/ui/hover-card.tsx",
+      "infrastructure/shared/ui/input-otp.tsx",
+      "infrastructure/shared/ui/input.tsx",
+      "infrastructure/shared/ui/label.tsx",
+      "infrastructure/shared/ui/map-visualization.tsx",
+      "infrastructure/shared/ui/menubar.tsx",
+      "infrastructure/shared/ui/navigation-menu.tsx",
+      "infrastructure/shared/ui/pagination.tsx",
+      "infrastructure/shared/ui/popover.tsx",
+      "infrastructure/shared/ui/progress.tsx",
+      "infrastructure/shared/ui/radio-group.tsx",
+      "infrastructure/shared/ui/resizable.tsx",
+      "infrastructure/shared/ui/safe-data-renderer.tsx",
+      "infrastructure/shared/ui/scroll-area.tsx",
+      "infrastructure/shared/ui/select.tsx",
+      "infrastructure/shared/ui/separator.tsx",
+      "infrastructure/shared/ui/sheet.tsx",
+      "infrastructure/shared/ui/skeleton.tsx",
+      "infrastructure/shared/ui/slider.tsx",
+      "infrastructure/shared/ui/sonner.tsx",
+      "infrastructure/shared/ui/status-badge.tsx",
+      "infrastructure/shared/ui/switch.tsx",
+      "infrastructure/shared/ui/table.tsx",
+      "infrastructure/shared/ui/tabs.tsx",
+      "infrastructure/shared/ui/textarea.tsx",
+      "infrastructure/shared/ui/toast.tsx",
+      "infrastructure/shared/ui/toaster.tsx",
+      "infrastructure/shared/ui/toggle-group.tsx",
+      "infrastructure/shared/ui/toggle.tsx",
+      "infrastructure/shared/ui/tooltip.tsx",
+      "infrastructure/shared/ui/use-toast.ts"
+    ],
+    "infrastructure/shared/ui/input-otp.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/input.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/label.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/map-visualization.tsx": [
+      "features/features/geo-areas/types.ts",
+      "infrastructure/shared/lib/safeData.ts",
+      "infrastructure/shared/ui/badge.tsx",
+      "infrastructure/shared/ui/button.tsx",
+      "infrastructure/shared/ui/card.tsx",
+      "infrastructure/shared/ui/input.tsx"
+    ],
+    "infrastructure/shared/ui/menubar.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/navigation-menu.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/pagination.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "infrastructure/shared/ui/popover.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/progress.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/radio-group.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/resizable.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/safe-data-renderer.tsx": [
+      "infrastructure/shared/ui/alert.tsx",
+      "infrastructure/shared/ui/button.tsx"
+    ],
+    "infrastructure/shared/ui/scroll-area.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/select.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/separator.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/sheet.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/skeleton.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/slider.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/sonner.tsx": [],
+    "infrastructure/shared/ui/status-badge.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/badge.tsx"
+    ],
+    "infrastructure/shared/ui/switch.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/table.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/tabs.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/textarea.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/toast.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/toaster.tsx": [
+      "infrastructure/shared/hooks/use-toast.ts",
+      "infrastructure/shared/ui/toast.tsx"
+    ],
+    "infrastructure/shared/ui/toggle-group.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/shared/ui/toggle.tsx"
+    ],
+    "infrastructure/shared/ui/toggle.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/tooltip.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "infrastructure/shared/ui/use-toast.ts": [
+      "infrastructure/shared/hooks/use-toast.ts"
+    ],
+    "infrastructure/shared/vendor/index.ts": [
+      "infrastructure/shared/vendor/leaflet-heat-stub.ts",
+      "infrastructure/shared/vendor/treejs.ts"
+    ],
+    "infrastructure/shared/vendor/leaflet-heat-stub.ts": [],
+    "infrastructure/shared/vendor/treejs.ts": [],
+    "infrastructure/theme/index.ts": [
+      "infrastructure/theme/tokens.ts"
+    ],
+    "infrastructure/theme/theme.css": [],
+    "infrastructure/theme/tokens.ts": [],
+    "infrastructure/types/Activity.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Agent.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/AnalyticsSnapshot.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Campaign.ts": [
+      "infrastructure/types/Activity.ts",
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Committee.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Election.ts": [
+      "infrastructure/types/GeoArea.ts",
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/GeoArea.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Notification.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Permission.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Role.ts": [
+      "infrastructure/types/Permission.ts",
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/User.ts": [
+      "infrastructure/types/Permission.ts",
+      "infrastructure/types/Role.ts",
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Volunteer.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/Voter.ts": [
+      "infrastructure/types/common.ts"
+    ],
+    "infrastructure/types/assets.d.ts": [],
+    "infrastructure/types/common.ts": [],
+    "infrastructure/types/index.ts": [
+      "infrastructure/types/Activity.ts",
+      "infrastructure/types/Agent.ts",
+      "infrastructure/types/AnalyticsSnapshot.ts",
+      "infrastructure/types/Campaign.ts",
+      "infrastructure/types/Committee.ts",
+      "infrastructure/types/Election.ts",
+      "infrastructure/types/GeoArea.ts",
+      "infrastructure/types/Notification.ts",
+      "infrastructure/types/Permission.ts",
+      "infrastructure/types/Role.ts",
+      "infrastructure/types/User.ts",
+      "infrastructure/types/Volunteer.ts",
+      "infrastructure/types/Voter.ts",
+      "infrastructure/types/assets.d.ts",
+      "infrastructure/types/common.ts"
+    ],
+    "main.tsx": [
+      "App.tsx",
+      "features/legacy/components/ErrorBoundary.tsx",
+      "index.css"
+    ],
+    "routing/nav/NavGuard.tsx": [
+      "routing/nav/nav.map.ts",
+      "routing/nav/nav.schema.ts",
+      "routing/nav/useNavigationContext.ts"
+    ],
+    "routing/nav/__tests__/__snapshots__/index.ts": [],
+    "routing/nav/__tests__/index.ts": [
+      "routing/nav/__tests__/nav.map.test.ts"
+    ],
+    "routing/nav/__tests__/nav.map.test.ts": [
+      "routing/nav/nav.map.ts"
+    ],
+    "routing/nav/index.ts": [
+      "routing/nav/NavGuard.tsx",
+      "routing/nav/nav.config.ts",
+      "routing/nav/nav.map.ts",
+      "routing/nav/nav.schema.ts",
+      "routing/nav/useNavigationContext.ts"
+    ],
+    "routing/nav/nav.config.ts": [
+      "routing/nav/nav.schema.ts"
+    ],
+    "routing/nav/nav.map.ts": [
+      "routing/nav/nav.config.ts",
+      "routing/nav/nav.schema.ts"
+    ],
+    "routing/nav/nav.schema.ts": [],
+    "routing/nav/useNavigationContext.ts": [
+      "features/legacy/hooks/useAuth.ts",
+      "infrastructure/shared/contexts/FeatureFlagContext.tsx",
+      "infrastructure/shared/hooks/useWindowSize.ts",
+      "routing/nav/nav.map.ts",
+      "routing/nav/nav.schema.ts"
+    ],
+    "routing/routes/index.ts": [
+      "routing/routes/post-auth.tsx"
+    ],
+    "routing/routes/post-auth.tsx": [
+      "features/features/marketing/pages/LandingPage.tsx",
+      "features/legacy/hooks/useAuth.ts",
+      "routing/nav/nav.map.ts",
+      "routing/nav/useNavigationContext.ts"
+    ],
+    "testing/test/setup.ts": [
+      "infrastructure/i18n/index.ts"
+    ],
+    "ui/assets/img/index.ts": [],
+    "ui/components/dashboard/DashboardCard.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "ui/components/dashboard/DashboardTable.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "ui/components/dashboard/DashboardToolbar.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "ui/components/dashboard/FilterBar.tsx": [
+      "infrastructure/shared/lib/utils.ts"
+    ],
+    "ui/components/dashboard/StatMetric.tsx": [
+      "infrastructure/shared/lib/utils.ts",
+      "ui/components/dashboard/DashboardCard.tsx"
+    ],
+    "ui/components/dashboard/charts/StackedBarChart.tsx": [],
+    "ui/components/dashboard/charts/TrendLineChart.tsx": [],
+    "ui/components/dashboard/charts/index.ts": [
+      "ui/components/dashboard/charts/StackedBarChart.tsx",
+      "ui/components/dashboard/charts/TrendLineChart.tsx"
+    ],
+    "ui/components/dashboard/index.ts": [
+      "ui/components/dashboard/DashboardCard.tsx",
+      "ui/components/dashboard/DashboardTable.tsx",
+      "ui/components/dashboard/DashboardToolbar.tsx",
+      "ui/components/dashboard/FilterBar.tsx",
+      "ui/components/dashboard/StatMetric.tsx"
+    ],
+    "ui/layouts/DashboardShell.tsx": [
+      "features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+      "features/features/marketing/components/ui/AuroraBackground.tsx",
+      "features/legacy/components/layout/Header.tsx",
+      "infrastructure/shared/hooks/useWindowSize.ts",
+      "infrastructure/shared/layout/Sidebar.tsx",
+      "infrastructure/shared/lib/utils.ts",
+      "infrastructure/theme/tokens.ts",
+      "routing/nav/nav.config.ts",
+      "routing/nav/useNavigationContext.ts"
+    ],
+    "ui/layouts/index.ts": [
+      "ui/layouts/DashboardShell.tsx"
+    ],
+    "ui/styles/__tests__/index.ts": [
+      "ui/styles/__tests__/tokens.test.ts"
+    ],
+    "ui/styles/__tests__/tokens.test.ts": [
+      "ui/styles/colorTokens.ts"
+    ],
+    "ui/styles/animations.css": [],
+    "ui/styles/colorTokens.ts": [],
+    "ui/styles/index.ts": [
+      "ui/styles/colorTokens.ts"
+    ],
+    "ui/styles/utilities.css": [],
+    "vite-env.d.ts": []
+  },
+  "orphans": [
+    "features/app/dashboard/__tests__/index.ts",
+    "features/app/dashboard/data/index.ts",
+    "features/app/dashboard/index.ts",
+    "features/app/dashboard/layout/index.ts",
+    "features/app/dashboard/state/index.ts",
+    "features/app/index.ts",
+    "features/features/activities/index.ts",
+    "features/features/agents/index.ts",
+    "features/features/analytics/__tests__/index.ts",
+    "features/features/analytics/index.ts",
+    "features/features/automation/index.ts",
+    "features/features/campaigns/__tests__/index.ts",
+    "features/features/campaigns/index.ts",
+    "features/features/candidates/__tests__/index.ts",
+    "features/features/candidates/index.ts",
+    "features/features/committees/__tests__/index.ts",
+    "features/features/committees/index.ts",
+    "features/features/dashboard/DashboardWidgets/index.ts",
+    "features/features/dashboard/__tests__/index.ts",
+    "features/features/dashboard/components/index.ts",
+    "features/features/dashboard/index.ts",
+    "features/features/elections/__tests__/index.ts",
+    "features/features/elections/index.ts",
+    "features/features/geo-areas/__tests__/index.ts",
+    "features/features/geo-areas/components/index.ts",
+    "features/features/geo-areas/data/index.ts",
+    "features/features/geo-areas/index.ts",
+    "features/features/landing/components/index.ts",
+    "features/features/landing/hooks/index.ts",
+    "features/features/marketing/components/landing/index.ts",
+    "features/features/marketing/components/layout/charts/index.ts",
+    "features/features/marketing/components/ui/index.ts",
+    "features/features/marketing/pages/index.ts",
+    "features/features/observations/__tests__/index.ts",
+    "features/features/observations/index.ts",
+    "features/features/reports/index.ts",
+    "features/features/roles/index.ts",
+    "features/features/settings/__tests__/index.ts",
+    "features/features/settings/index.ts",
+    "features/features/volunteers/index.ts",
+    "features/features/voters/__tests__/index.ts",
+    "features/features/voters/index.ts",
+    "features/features/zones/data/index.ts",
+    "features/features/zones/hooks/index.ts",
+    "features/features/zones/index.ts",
+    "features/legacy/components/auth/index.ts",
+    "features/legacy/components/dashboard/index.ts",
+    "features/legacy/components/geo-areas/index.ts",
+    "features/legacy/components/index.ts",
+    "features/legacy/components/layout/__tests__/index.ts",
+    "features/legacy/components/layout/index.ts",
+    "features/legacy/components/notifications/index.ts",
+    "features/legacy/components/sidebar/index.ts",
+    "features/legacy/components/transition/index.ts",
+    "features/legacy/hooks/index.ts",
+    "features/legacy/pages/Auth/index.ts",
+    "features/legacy/pages/Dashboard/index.ts",
+    "features/legacy/pages/Dashboard/index.tsx",
+    "features/legacy/pages/__tests__/index.ts",
+    "features/legacy/pages/index.ts",
+    "infrastructure/config/index.ts",
+    "infrastructure/i18n/locales/index.ts",
+    "infrastructure/i18n/sidebar.ts",
+    "infrastructure/shared/data/index.ts",
+    "infrastructure/shared/index.ts",
+    "infrastructure/shared/integrations/supabase/index.ts",
+    "infrastructure/shared/lib/index.ts",
+    "infrastructure/shared/ui/__tests__/index.ts",
+    "infrastructure/shared/vendor/index.ts",
+    "infrastructure/theme/index.ts",
+    "infrastructure/types/index.ts",
+    "main.tsx",
+    "routing/nav/__tests__/__snapshots__/index.ts",
+    "routing/nav/__tests__/index.ts",
+    "routing/nav/index.ts",
+    "routing/routes/index.ts",
+    "testing/test/setup.ts",
+    "ui/assets/img/index.ts",
+    "ui/layouts/index.ts",
+    "ui/styles/__tests__/index.ts",
+    "ui/styles/index.ts",
+    "vite-env.d.ts"
+  ],
+  "circular": [],
+  "depcheck": {
+    "dependencies": [
+      "@types/jest",
+      "leaflet.heat",
+      "pusher-js"
+    ],
+    "devDependencies": [
+      "@tailwindcss/typography",
+      "@vitejs/plugin-react-swc",
+      "autoprefixer",
+      "lovable-tagger",
+      "postcss",
+      "vite-tsconfig-paths"
+    ],
+    "missing": {
+      "eslint-plugin-import": [
+        "/workspace/foda/frontend/eslint.config.js"
+      ],
+      "geojson": [
+        "/workspace/foda/frontend/src/features/features/zones/types.ts",
+        "/workspace/foda/frontend/src/features/features/zones/data/mansouraZones.ts",
+        "/workspace/foda/frontend/src/features/features/dashboard/api.ts",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx"
+      ]
+    },
+    "using": {
+      "@eslint/js": [
+        "/workspace/foda/frontend/eslint.config.js"
+      ],
+      "globals": [
+        "/workspace/foda/frontend/eslint.config.js"
+      ],
+      "eslint-plugin-react-hooks": [
+        "/workspace/foda/frontend/eslint.config.js"
+      ],
+      "eslint-plugin-react-refresh": [
+        "/workspace/foda/frontend/eslint.config.js"
+      ],
+      "typescript-eslint": [
+        "/workspace/foda/frontend/eslint.config.js"
+      ],
+      "eslint-plugin-import": [
+        "/workspace/foda/frontend/eslint.config.js"
+      ],
+      "eslint": [
+        "/workspace/foda/frontend/eslint.config.js",
+        "/workspace/foda/frontend/package.json"
+      ],
+      "typescript": [
+        "/workspace/foda/frontend/eslint.config.js",
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/LanguageContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/i18n/index.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerForm.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteersList.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/SettingsForm.tsx",
+        "/workspace/foda/frontend/src/features/features/reports/ReportsDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationForm.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationsList.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/LandingPage.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/CallToAction.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FeaturesSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/Footer.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/LoginCtaSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaList.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/StatsCard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignForm.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignsList.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentForm.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentsList.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+        "/workspace/foda/frontend/scripts/scan-components.ts",
+        "/workspace/foda/frontend/scripts/scan-i18n.ts",
+        "/workspace/foda/frontend/scripts/scan-queries.ts",
+        "/workspace/foda/frontend/scripts/scan-routes.ts",
+        "/workspace/foda/frontend/scripts/lib/ts-utils.ts",
+        "/workspace/foda/frontend/scripts/dist/scan-components.js",
+        "/workspace/foda/frontend/scripts/dist/scan-i18n.js",
+        "/workspace/foda/frontend/scripts/dist/scan-queries.js",
+        "/workspace/foda/frontend/scripts/dist/scan-routes.js",
+        "/workspace/foda/frontend/scripts/dist/lib/ts-utils.js"
+      ],
+      "vite": [
+        "/workspace/foda/frontend/package.json",
+        "/workspace/foda/frontend/tsconfig.base.json",
+        "/workspace/foda/frontend/vite.config.ts"
+      ],
+      "vitest": [
+        "/workspace/foda/frontend/package.json",
+        "/workspace/foda/frontend/src/ui/styles/__tests__/tokens.test.ts",
+        "/workspace/foda/frontend/src/testing/test/setup.ts",
+        "/workspace/foda/frontend/src/routing/nav/__tests__/nav.map.test.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Button.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Input.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/__tests__/Login.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/__tests__/Settings.test.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/Dashboard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/__tests__/Analytics.test.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "@types/node": [
+        "/workspace/foda/frontend/package.json",
+        "/workspace/foda/frontend/tsconfig.base.json",
+        "/workspace/foda/frontend/vite.config.ts",
+        "/workspace/foda/frontend/src/ui/styles/__tests__/tokens.test.ts",
+        "/workspace/foda/frontend/src/testing/test/setup.ts",
+        "/workspace/foda/frontend/src/routing/nav/__tests__/nav.map.test.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Button.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Input.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/__tests__/Login.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/__tests__/Settings.test.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/Dashboard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/__tests__/Analytics.test.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx",
+        "/workspace/foda/frontend/scripts/analyze-deps.ts",
+        "/workspace/foda/frontend/scripts/scan-components.ts",
+        "/workspace/foda/frontend/scripts/scan-i18n.ts",
+        "/workspace/foda/frontend/scripts/scan-queries.ts",
+        "/workspace/foda/frontend/scripts/scan-routes.ts",
+        "/workspace/foda/frontend/scripts/tsconfig.json",
+        "/workspace/foda/frontend/scripts/lib/fs-utils.ts",
+        "/workspace/foda/frontend/scripts/lib/ts-utils.ts"
+      ],
+      "jsdom": [
+        "/workspace/foda/frontend/package.json",
+        "/workspace/foda/frontend/src/ui/styles/__tests__/tokens.test.ts",
+        "/workspace/foda/frontend/src/testing/test/setup.ts",
+        "/workspace/foda/frontend/src/routing/nav/__tests__/nav.map.test.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Button.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Input.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/__tests__/Login.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/__tests__/Settings.test.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/Dashboard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/__tests__/Analytics.test.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "react": [
+        "/workspace/foda/frontend/package.json",
+        "/workspace/foda/frontend/src/App.tsx",
+        "/workspace/foda/frontend/src/main.tsx",
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/DashboardCard.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/StatMetric.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/StackedBarChart.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/TrendLineChart.tsx",
+        "/workspace/foda/frontend/src/routing/routes/post-auth.tsx",
+        "/workspace/foda/frontend/src/routing/nav/NavGuard.tsx",
+        "/workspace/foda/frontend/src/routing/nav/nav.config.ts",
+        "/workspace/foda/frontend/src/routing/nav/useNavigationContext.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/accordion.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/aspect-ratio.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/avatar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/badge.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/breadcrumb.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/button.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/calendar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/card.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/carousel.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/chart.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/checkbox.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/collapsible.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/command.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/context-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/data-table-skeleton.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/drawer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dropdown-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/form.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/hover-card.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/input-otp.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/input.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/label.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/menubar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/navigation-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/pagination.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/popover.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/progress.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/radio-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/resizable.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/scroll-area.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/select.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/separator.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sheet.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/slider.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sonner.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/switch.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/table.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tabs.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/textarea.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toast.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tooltip.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Button.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Input.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/lib/api.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/use-mobile.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/use-toast.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/useThemePalette.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/useWindowSize.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/devtools/index.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/AuthContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/CampaignContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/FeatureFlagContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/LanguageContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/NotificationContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/ThemeContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/i18n/index.ts",
+        "/workspace/foda/frontend/src/infrastructure/config/motion.config.ts",
+        "/workspace/foda/frontend/src/infrastructure/config/sidebar-sections.ts",
+        "/workspace/foda/frontend/src/features/legacy/pages/GeoAreas.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Landing.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/NotFound.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/__tests__/Login.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Campaigns.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Reports.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Settings.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Users.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/index.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/AuthLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/ForgotPassword.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Login.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Register.tsx",
+        "/workspace/foda/frontend/src/features/legacy/hooks/useFancybox.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/ErrorBoundary.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/NotificationDrawer.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/ProtectedRoute.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/transition/BarbaTransitionProvider.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarFooter.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarHeader.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarInput.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarSeparator.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartItem.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/navigation.config.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarContainer.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarInset.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarProvider.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarRail.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarTrigger.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/notifications/NotificationDrawer.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/MainLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/BarChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/DashboardCard.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/LineChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/PieChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/ZoneDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/hooks/useZoneFilter.ts",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerForm.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteersList.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/SettingsForm.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/__tests__/Settings.test.tsx",
+        "/workspace/foda/frontend/src/features/features/roles/RoleManager.tsx",
+        "/workspace/foda/frontend/src/features/features/reports/ReportsDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationForm.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationsList.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/LandingPage.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/AuroraBackground.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlassPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlowButton.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/DashboardContent.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/FloatingActions.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/GlassCard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/store.ts",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/AreaChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/BarChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/LineChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/PieChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/CallToAction.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FeaturesSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FloatingNav.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/Footer.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useFeatureTreeAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useHeroTimeline.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useLoginCtaAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/usePartnersAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useTestimonialsAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/components/FeatureTreeSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/LoginCtaSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/PartnersSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/TestimonialsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaList.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaMap.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/ArchitecturalControlCenter.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/StatsCard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/ActivityFeed.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/Dashboard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/ProgressChart.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/StatsCard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ProgressOverview.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/StatsOverview.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/SummaryPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignForm.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignsList.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/automation/AutomationDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/DashboardCharts.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/__tests__/Analytics.test.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentForm.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentsList.tsx",
+        "/workspace/foda/frontend/src/features/features/activities/ActivitiesTimeline.tsx",
+        "/workspace/foda/frontend/src/features/app/routes.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/HierarchicalDashboard.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/state/dashboardSelectionStore.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/state/useDashboardSelectionSync.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/data/hierarchy.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "tailwindcss": [
+        "/workspace/foda/frontend/tailwind.config.ts"
+      ],
+      "tailwindcss-animate": [
+        "/workspace/foda/frontend/tailwind.config.ts"
+      ],
+      "@vitejs/plugin-react": [
+        "/workspace/foda/frontend/vite.config.ts"
+      ],
+      "@tanstack/react-query": [
+        "/workspace/foda/frontend/src/App.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/SettingsForm.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/__tests__/Settings.test.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/data/hierarchy.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "react-router-dom": [
+        "/workspace/foda/frontend/src/App.tsx",
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/routing/routes/post-auth.tsx",
+        "/workspace/foda/frontend/src/routing/nav/NavGuard.tsx",
+        "/workspace/foda/frontend/src/routing/nav/useNavigationContext.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/NotFound.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/__tests__/Login.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/ForgotPassword.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Login.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Register.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/ProtectedRoute.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/transition/BarbaTransitionProvider.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartItem.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/MainLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlowButton.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/app/routes.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/state/useDashboardSelectionSync.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "react-dom": [
+        "/workspace/foda/frontend/src/App.tsx",
+        "/workspace/foda/frontend/src/main.tsx",
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/StackedBarChart.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/TrendLineChart.tsx",
+        "/workspace/foda/frontend/src/routing/routes/post-auth.tsx",
+        "/workspace/foda/frontend/src/routing/nav/NavGuard.tsx",
+        "/workspace/foda/frontend/src/routing/nav/useNavigationContext.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/accordion.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/aspect-ratio.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/avatar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/chart.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/checkbox.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/collapsible.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/command.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/context-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/data-table-skeleton.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/drawer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dropdown-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/form.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/hover-card.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/input-otp.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/label.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/menubar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/navigation-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/popover.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/progress.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/radio-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/resizable.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/scroll-area.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/select.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/separator.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sheet.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/slider.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sonner.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/switch.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tabs.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toast.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tooltip.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Button.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Input.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/NotificationContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/config/motion.config.ts",
+        "/workspace/foda/frontend/src/features/legacy/pages/GeoAreas.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Landing.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/NotFound.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/__tests__/Login.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Campaigns.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Reports.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Settings.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Users.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/index.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/AuthLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/ForgotPassword.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Login.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Register.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/ProtectedRoute.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/transition/BarbaTransitionProvider.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartItem.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/MainLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/BarChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/DashboardCard.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/LineChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/PieChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/ZoneDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/__tests__/Settings.test.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/AuroraBackground.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlassPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlowButton.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/DashboardContent.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/FloatingActions.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/GlassCard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/AreaChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/BarChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/LineChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/PieChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/CallToAction.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FeaturesSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FloatingNav.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaList.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaMap.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/StatsCard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/ActivityFeed.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/Dashboard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/ProgressChart.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/StatsCard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/automation/AutomationDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/DashboardCharts.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/__tests__/Analytics.test.tsx",
+        "/workspace/foda/frontend/src/features/app/routes.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/state/useDashboardSelectionSync.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "@types/react-dom": [
+        "/workspace/foda/frontend/src/main.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/accordion.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/aspect-ratio.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/avatar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/checkbox.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/collapsible.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/command.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/context-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dropdown-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/form.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/hover-card.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/label.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/menubar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/navigation-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/popover.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/progress.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/radio-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/scroll-area.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/select.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/separator.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sheet.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/slider.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/switch.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tabs.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toast.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tooltip.tsx"
+      ],
+      "@types/react": [
+        "/workspace/foda/frontend/src/main.tsx",
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/DashboardCard.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/DashboardTable.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/DashboardToolbar.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/FilterBar.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/StatMetric.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/StackedBarChart.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/TrendLineChart.tsx",
+        "/workspace/foda/frontend/src/testing/test/setup.ts",
+        "/workspace/foda/frontend/src/routing/routes/post-auth.tsx",
+        "/workspace/foda/frontend/src/routing/nav/NavGuard.tsx",
+        "/workspace/foda/frontend/src/routing/nav/useNavigationContext.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/accordion.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/aspect-ratio.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/avatar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/badge.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/breadcrumb.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/button.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/calendar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/card.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/carousel.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/chart.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/checkbox.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/collapsible.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/command.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/context-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/data-table-skeleton.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/drawer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dropdown-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/form.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/hover-card.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/input-otp.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/input.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/label.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/menubar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/navigation-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/pagination.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/popover.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/progress.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/radio-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/scroll-area.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/select.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/separator.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sheet.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/slider.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/switch.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/table.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tabs.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/textarea.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toast.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tooltip.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/lib/api.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/use-mobile.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/use-toast.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/useThemePalette.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/hooks/useWindowSize.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/devtools/index.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/AuthContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/CampaignContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/FeatureFlagContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/LanguageContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/NotificationContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/ThemeContext.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/GeoAreas.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/NotFound.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Settings.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/AuthLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/ForgotPassword.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Login.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Register.tsx",
+        "/workspace/foda/frontend/src/features/legacy/hooks/useFancybox.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/ErrorBoundary.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/transition/BarbaTransitionProvider.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarFooter.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarHeader.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarInput.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarSeparator.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartItem.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarContainer.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarInset.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarProvider.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarRail.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarTrigger.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/notifications/NotificationDrawer.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/MainLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/DashboardCard.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/ZoneDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/hooks/useZoneFilter.ts",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerForm.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteersList.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/SettingsForm.tsx",
+        "/workspace/foda/frontend/src/features/features/roles/RoleManager.tsx",
+        "/workspace/foda/frontend/src/features/features/reports/ReportsDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationForm.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationsList.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/LandingPage.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/AuroraBackground.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlassPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlowButton.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/GlassCard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/store.ts",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useFeatureTreeAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useHeroTimeline.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useLoginCtaAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/usePartnersAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/hooks/useTestimonialsAnimation.ts",
+        "/workspace/foda/frontend/src/features/features/landing/components/FeatureTreeSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/LoginCtaSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/PartnersSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/TestimonialsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/ArchitecturalControlCenter.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/StatsOverview.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignForm.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignsList.tsx",
+        "/workspace/foda/frontend/src/features/features/automation/AutomationDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/DashboardCharts.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentForm.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentsList.tsx",
+        "/workspace/foda/frontend/src/features/features/activities/ActivitiesTimeline.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/HierarchicalDashboard.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/state/dashboardSelectionStore.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/state/useDashboardSelectionSync.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/data/hierarchy.ts"
+      ],
+      "framer-motion": [
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/data-table-skeleton.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/config/motion.config.ts",
+        "/workspace/foda/frontend/src/features/legacy/pages/GeoAreas.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Landing.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Campaigns.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Reports.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Settings.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Users.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/index.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/AuthLayout.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/ForgotPassword.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Login.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Register.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/BarChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/DashboardCard.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/LineChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/PieChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/AuroraBackground.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlassPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/ui/GlowButton.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/DashboardContent.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/FloatingActions.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/GlassCard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/CallToAction.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FeaturesSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FloatingNav.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaList.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaMap.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/StatsCard.tsx",
+        "/workspace/foda/frontend/src/features/features/automation/AutomationDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx"
+      ],
+      "react-i18next": [
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/LanguageContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/i18n/index.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerForm.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteersList.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/SettingsForm.tsx",
+        "/workspace/foda/frontend/src/features/features/reports/ReportsDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationForm.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationsList.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/LandingPage.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/CallToAction.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FeaturesSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/Footer.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/LoginCtaSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaList.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/StatsCard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignForm.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignsList.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentForm.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentsList.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx"
+      ],
+      "i18next": [
+        "/workspace/foda/frontend/src/ui/layouts/DashboardShell.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/LanguageContext.tsx",
+        "/workspace/foda/frontend/src/infrastructure/i18n/index.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/List.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerForm.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteersList.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/SettingsForm.tsx",
+        "/workspace/foda/frontend/src/features/features/reports/ReportsDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationForm.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationsList.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/pages/LandingPage.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/CallToAction.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/FeaturesSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/Footer.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/LoginCtaSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaList.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/List.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/StatsCard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/List.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Details.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/List.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignForm.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignsList.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentForm.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentsList.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx"
+      ],
+      "lucide-react": [
+        "/workspace/foda/frontend/src/ui/components/dashboard/StatMetric.tsx",
+        "/workspace/foda/frontend/src/routing/nav/nav.config.ts",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/accordion.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/breadcrumb.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/calendar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/carousel.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/checkbox.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/command.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/context-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dropdown-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/input-otp.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/menubar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/navigation-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/pagination.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/radio-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/resizable.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/select.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sheet.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toast.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/infrastructure/config/sidebar-sections.ts",
+        "/workspace/foda/frontend/src/features/legacy/pages/GeoAreas.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/Campaigns.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Dashboard/index.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/ForgotPassword.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Login.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/Auth/Register.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/NotificationDrawer.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartItem.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/smart/navigation.config.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/core/SidebarTrigger.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/DashboardCard.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/auth/LoginForm.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteerForm.tsx",
+        "/workspace/foda/frontend/src/features/features/volunteers/VolunteersList.tsx",
+        "/workspace/foda/frontend/src/features/features/reports/ReportsDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationForm.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/ObservationsList.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/DashboardContent.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/FloatingActions.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Header.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/Sidebar.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Dashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/List.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/StatsCard.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/ActivityFeed.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/StatsCard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ProgressOverview.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/StatsOverview.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/SummaryPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignForm.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/CampaignsList.tsx",
+        "/workspace/foda/frontend/src/features/features/automation/AutomationDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentDetails.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentForm.tsx",
+        "/workspace/foda/frontend/src/features/features/agents/AgentsList.tsx",
+        "/workspace/foda/frontend/src/features/features/activities/ActivitiesTimeline.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/data/hierarchy.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "recharts": [
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/StackedBarChart.tsx",
+        "/workspace/foda/frontend/src/ui/components/dashboard/charts/TrendLineChart.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/chart.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/BarChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/LineChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/dashboard/PieChartComponent.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/AreaChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/BarChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/LineChart.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/charts/PieChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/DashboardCharts.tsx"
+      ],
+      "@testing-library/jest-dom": [
+        "/workspace/foda/frontend/src/testing/test/setup.ts"
+      ],
+      "leaflet": [
+        "/workspace/foda/frontend/src/infrastructure/shared/vendor/leaflet-heat-stub.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/ZoneDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx"
+      ],
+      "@types/leaflet": [
+        "/workspace/foda/frontend/src/infrastructure/shared/vendor/leaflet-heat-stub.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/ZoneDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx"
+      ],
+      "@radix-ui/react-accordion": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/accordion.tsx"
+      ],
+      "@radix-ui/react-alert-dialog": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert-dialog.tsx"
+      ],
+      "class-variance-authority": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/alert.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/badge.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/button.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/label.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/navigation-menu.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sheet.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toast.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle-group.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle.tsx"
+      ],
+      "@radix-ui/react-aspect-ratio": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/aspect-ratio.tsx"
+      ],
+      "@radix-ui/react-avatar": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/avatar.tsx"
+      ],
+      "@radix-ui/react-slot": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/breadcrumb.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/button.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/form.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx"
+      ],
+      "react-day-picker": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/calendar.tsx"
+      ],
+      "date-fns": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/calendar.tsx",
+        "/workspace/foda/frontend/src/features/features/activities/ActivitiesTimeline.tsx"
+      ],
+      "embla-carousel-react": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/carousel.tsx"
+      ],
+      "@radix-ui/react-checkbox": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/checkbox.tsx"
+      ],
+      "@radix-ui/react-collapsible": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/collapsible.tsx"
+      ],
+      "@radix-ui/react-dialog": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/command.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dialog.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sheet.tsx"
+      ],
+      "cmdk": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/command.tsx"
+      ],
+      "@radix-ui/react-context-menu": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/context-menu.tsx"
+      ],
+      "vaul": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/drawer.tsx"
+      ],
+      "@radix-ui/react-dropdown-menu": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/dropdown-menu.tsx"
+      ],
+      "@radix-ui/react-label": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/form.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/label.tsx"
+      ],
+      "react-hook-form": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/form.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Form.tsx"
+      ],
+      "@radix-ui/react-hover-card": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/hover-card.tsx"
+      ],
+      "input-otp": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/input-otp.tsx"
+      ],
+      "@radix-ui/react-menubar": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/menubar.tsx"
+      ],
+      "@radix-ui/react-navigation-menu": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/navigation-menu.tsx"
+      ],
+      "@radix-ui/react-popover": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/popover.tsx"
+      ],
+      "@radix-ui/react-progress": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/progress.tsx"
+      ],
+      "@radix-ui/react-radio-group": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/radio-group.tsx"
+      ],
+      "react-resizable-panels": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/resizable.tsx"
+      ],
+      "@radix-ui/react-scroll-area": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/scroll-area.tsx"
+      ],
+      "@radix-ui/react-select": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/select.tsx"
+      ],
+      "@radix-ui/react-separator": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/separator.tsx"
+      ],
+      "@radix-ui/react-slider": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/slider.tsx"
+      ],
+      "next-themes": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sonner.tsx"
+      ],
+      "sonner": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/sonner.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/contexts/NotificationContext.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+        "/workspace/foda/frontend/src/features/features/automation/AutomationDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/Analytics.tsx"
+      ],
+      "@radix-ui/react-switch": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/switch.tsx"
+      ],
+      "@radix-ui/react-tabs": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tabs.tsx"
+      ],
+      "@radix-ui/react-toast": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toast.tsx"
+      ],
+      "@radix-ui/react-toggle-group": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle-group.tsx"
+      ],
+      "@radix-ui/react-toggle": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/toggle.tsx"
+      ],
+      "@radix-ui/react-tooltip": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/tooltip.tsx"
+      ],
+      "@testing-library/react": [
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Button.test.tsx",
+        "/workspace/foda/frontend/src/infrastructure/shared/ui/__tests__/Input.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/pages/__tests__/Login.test.tsx",
+        "/workspace/foda/frontend/src/features/legacy/components/layout/__tests__/Header.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/voters/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/settings/__tests__/Settings.test.tsx",
+        "/workspace/foda/frontend/src/features/features/observations/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/ActivityFeed.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/Dashboard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/ProgressChart.test.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/__tests__/StatsCard.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Details.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/Form.test.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/campaigns/__tests__/List.test.tsx",
+        "/workspace/foda/frontend/src/features/features/analytics/__tests__/Analytics.test.tsx",
+        "/workspace/foda/frontend/src/features/app/dashboard/__tests__/HierarchicalDashboard.test.tsx"
+      ],
+      "axios": [
+        "/workspace/foda/frontend/src/infrastructure/shared/lib/api.ts"
+      ],
+      "gsap": [
+        "/workspace/foda/frontend/src/infrastructure/shared/lib/gsap.ts",
+        "/workspace/foda/frontend/src/features/legacy/components/transition/BarbaTransitionProvider.tsx"
+      ],
+      "clsx": [
+        "/workspace/foda/frontend/src/infrastructure/shared/lib/utils.ts"
+      ],
+      "tailwind-merge": [
+        "/workspace/foda/frontend/src/infrastructure/shared/lib/utils.ts"
+      ],
+      "@supabase/supabase-js": [
+        "/workspace/foda/frontend/src/infrastructure/shared/integrations/supabase/client.ts"
+      ],
+      "i18next-browser-languagedetector": [
+        "/workspace/foda/frontend/src/infrastructure/i18n/index.ts"
+      ],
+      "@fancyapps/ui": [
+        "/workspace/foda/frontend/src/features/legacy/hooks/useFancybox.ts"
+      ],
+      "react-leaflet": [
+        "/workspace/foda/frontend/src/features/legacy/components/geo-areas/InteractiveMap.tsx",
+        "/workspace/foda/frontend/src/features/features/zones/ZoneDashboard.tsx",
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+        "/workspace/foda/frontend/src/features/features/geo-areas/components/GeoAreaMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx"
+      ],
+      "geojson": [
+        "/workspace/foda/frontend/src/features/features/zones/types.ts",
+        "/workspace/foda/frontend/src/features/features/zones/data/mansouraZones.ts",
+        "/workspace/foda/frontend/src/features/features/dashboard/api.ts",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+        "/workspace/foda/frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx"
+      ],
+      "zod": [
+        "/workspace/foda/frontend/src/features/features/voters/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Form.tsx"
+      ],
+      "@hookform/resolvers": [
+        "/workspace/foda/frontend/src/features/features/voters/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/elections/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/committees/Form.tsx",
+        "/workspace/foda/frontend/src/features/features/candidates/Form.tsx"
+      ],
+      "zustand": [
+        "/workspace/foda/frontend/src/features/features/marketing/components/layout/store.ts",
+        "/workspace/foda/frontend/src/features/app/dashboard/state/dashboardSelectionStore.ts"
+      ],
+      "swiper": [
+        "/workspace/foda/frontend/src/features/features/landing/components/HeroSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/PartnersSection.tsx",
+        "/workspace/foda/frontend/src/features/features/landing/components/TestimonialsSection.tsx"
+      ]
+    },
+    "invalidFiles": {},
+    "invalidDirs": {}
+  }
+}

@@ -1,0 +1,319 @@
+[
+  {
+    "id": "frontend/src/features/app/routes.tsx:<RouterShell />",
+    "element": "<RouterShell />",
+    "lazy": false,
+    "filePath": "frontend/src/features/app/routes.tsx",
+    "guards": [],
+    "wrappers": [],
+    "children": [
+      {
+        "id": "frontend/src/features/app/routes.tsx:/",
+        "path": "/",
+        "element": "<FloatingLandingPage />",
+        "lazy": false,
+        "filePath": "frontend/src/features/app/routes.tsx",
+        "guards": [],
+        "wrappers": []
+      },
+      {
+        "id": "frontend/src/features/app/routes.tsx:/experience",
+        "path": "/experience",
+        "element": "<FloatingDashboard />",
+        "lazy": false,
+        "filePath": "frontend/src/features/app/routes.tsx",
+        "guards": [],
+        "wrappers": []
+      },
+      {
+        "id": "frontend/src/features/app/routes.tsx:/app",
+        "path": "/app",
+        "element": "<PostAuthRedirect />",
+        "lazy": false,
+        "filePath": "frontend/src/features/app/routes.tsx",
+        "guards": [],
+        "wrappers": []
+      },
+      {
+        "id": "frontend/src/features/app/routes.tsx:/login",
+        "path": "/login",
+        "element": "<Login />",
+        "lazy": false,
+        "filePath": "frontend/src/features/app/routes.tsx",
+        "guards": [],
+        "wrappers": []
+      },
+      {
+        "id": "frontend/src/features/app/routes.tsx:<ProtectedRoute />",
+        "element": "<ProtectedRoute />",
+        "lazy": false,
+        "filePath": "frontend/src/features/app/routes.tsx",
+        "guards": [
+          "ProtectedRoute"
+        ],
+        "wrappers": [],
+        "children": [
+          {
+            "id": "frontend/src/features/app/routes.tsx:<MainLayoutWrapper />",
+            "element": "<MainLayoutWrapper />",
+            "lazy": false,
+            "filePath": "frontend/src/features/app/routes.tsx",
+            "guards": [],
+            "wrappers": [],
+            "children": [
+              {
+                "id": "frontend/src/features/app/routes.tsx:/reports",
+                "path": "/reports",
+                "element": "(\n                  <NavGuard>\n                    <ReportsDashboard />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/dashboard",
+                "path": "/dashboard",
+                "element": "(\n                  <NavGuard>\n                    <EnhancedDashboard />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/control-center",
+                "path": "/control-center",
+                "element": "(\n                  <NavGuard>\n                    <ArchitecturalControlCenter />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/elections",
+                "path": "/elections",
+                "element": "(\n                  <NavGuard>\n                    <ElectionsList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/elections/:id",
+                "path": "/elections/:id",
+                "element": "(\n                  <NavGuard>\n                    <ElectionDetails />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/geo-areas",
+                "path": "/geo-areas",
+                "element": "(\n                  <NavGuard>\n                    <GeoAreasDashboard />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/geo-areas/:id",
+                "path": "/geo-areas/:id",
+                "element": "(\n                  <NavGuard>\n                    <GeoAreaDetails />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/committees",
+                "path": "/committees",
+                "element": "(\n                  <NavGuard>\n                    <CommitteesList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/committees/:id",
+                "path": "/committees/:id",
+                "element": "(\n                  <NavGuard>\n                    <CommitteeDetails />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/voters",
+                "path": "/voters",
+                "element": "(\n                  <NavGuard>\n                    <VotersList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/voters/:id",
+                "path": "/voters/:id",
+                "element": "(\n                  <NavGuard>\n                    <VoterDetails />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/candidates",
+                "path": "/candidates",
+                "element": "(\n                  <NavGuard>\n                    <CandidatesList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/candidates/:id",
+                "path": "/candidates/:id",
+                "element": "(\n                  <NavGuard>\n                    <CandidateDetails />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/agents",
+                "path": "/agents",
+                "element": "(\n                  <NavGuard>\n                    <AgentsList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/volunteers",
+                "path": "/volunteers",
+                "element": "(\n                  <NavGuard>\n                    <VolunteersList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/observations",
+                "path": "/observations",
+                "element": "(\n                  <NavGuard>\n                    <ObservationsList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/campaigns",
+                "path": "/campaigns",
+                "element": "(\n                  <NavGuard>\n                    <CampaignsList />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/automation",
+                "path": "/automation",
+                "element": "(\n                  <NavGuard>\n                    <AutomationDashboard />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/analytics",
+                "path": "/analytics",
+                "element": "(\n                  <NavGuard>\n                    <ComingSoon module=\"Analytics\" />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/zones/mansoura",
+                "path": "/zones/mansoura",
+                "element": "(\n                  <NavGuard>\n                    <ZoneDashboard />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:/settings",
+                "path": "/settings",
+                "element": "(\n                  <NavGuard>\n                    <Settings />\n                  </NavGuard>\n                )",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [
+                  "NavGuard"
+                ],
+                "wrappers": []
+              },
+              {
+                "id": "frontend/src/features/app/routes.tsx:*",
+                "path": "*",
+                "element": "<NotFound />",
+                "lazy": false,
+                "filePath": "frontend/src/features/app/routes.tsx",
+                "guards": [],
+                "wrappers": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "frontend/src/features/app/routes.tsx:*",
+        "path": "*",
+        "element": "<NotFound />",
+        "lazy": false,
+        "filePath": "frontend/src/features/app/routes.tsx",
+        "guards": [],
+        "wrappers": []
+      }
+    ]
+  }
+]

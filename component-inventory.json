@@ -1,0 +1,3595 @@
+[
+  {
+    "name": "ActivitiesTimeline",
+    "filePath": "frontend/src/features/features/activities/ActivitiesTimeline.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useCampaignContext",
+      "useEffect",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ActivityFeed",
+    "filePath": "frontend/src/features/features/dashboard/components/ActivityFeed.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "activities",
+        "type": "ActivityItem[]",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ActivityPanel",
+    "filePath": "frontend/src/features/features/dashboard/DashboardWidgets/ActivityPanel.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "activities",
+        "type": "ActivityItem[]",
+        "optional": false
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "heading",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useMemo",
+      "useThemePalette",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AgentDetails",
+    "filePath": "frontend/src/features/features/agents/AgentDetails.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "agent",
+        "type": "any",
+        "optional": false
+      },
+      {
+        "name": "onEdit",
+        "type": "(agent: Agent) => void",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AgentForm",
+    "filePath": "frontend/src/features/features/agents/AgentForm.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "onSuccess",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "agent",
+        "type": "any",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AgentsList",
+    "filePath": "frontend/src/features/features/agents/AgentsList.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useAgentsData",
+      "useCallback",
+      "useMemo",
+      "useState",
+      "useToast",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Analytics",
+    "filePath": "frontend/src/features/features/analytics/Analytics.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useMemo",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "App",
+    "filePath": "frontend/src/App.tsx",
+    "kind": "function",
+    "category": "shared",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AreaChartCard",
+    "filePath": "frontend/src/features/features/marketing/components/layout/charts/AreaChart.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AssignDialog",
+    "filePath": "frontend/src/infrastructure/shared/ui/assign-dialog.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "onAssign",
+        "type": "(selectedIds: string[]) => void",
+        "optional": false
+      },
+      {
+        "name": "items",
+        "type": "{ id: string; name: string; role?: string | undefined; status?: string | undefined; }[] | undefined",
+        "optional": true,
+        "defaultValue": "[]"
+      },
+      {
+        "name": "multiSelect",
+        "type": "boolean | undefined",
+        "optional": true,
+        "defaultValue": "false"
+      }
+    ],
+    "hooks": [
+      "useLanguage",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AuroraBackground",
+    "filePath": "frontend/src/features/features/marketing/components/ui/AuroraBackground.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AuthLayout",
+    "filePath": "frontend/src/features/legacy/pages/Auth/AuthLayout.tsx",
+    "kind": "arrow",
+    "category": "page",
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "subtitle",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      },
+      {
+        "name": "footer",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useLanguage"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AuthProvider",
+    "filePath": "frontend/src/infrastructure/shared/contexts/AuthContext.tsx",
+    "kind": "arrow",
+    "category": "context",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useCallback",
+      "useContext",
+      "useEffect",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "AutomationDashboard",
+    "filePath": "frontend/src/features/features/automation/AutomationDashboard.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "BarbaTransitionProvider",
+    "filePath": "frontend/src/features/legacy/components/transition/BarbaTransitionProvider.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useEffect",
+      "useLanguage",
+      "useLocation",
+      "useRef"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "BarChartCard",
+    "filePath": "frontend/src/features/features/marketing/components/layout/charts/BarChart.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "BarChartComponent",
+    "filePath": "frontend/src/features/legacy/components/dashboard/BarChartComponent.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "subtitle",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "data",
+        "type": "BarDataPoint[] | undefined",
+        "optional": true,
+        "defaultValue": "defaultBarData"
+      },
+      {
+        "name": "delay",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "0"
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CallToAction",
+    "filePath": "frontend/src/features/features/marketing/components/landing/CallToAction.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CampaignDetails",
+    "filePath": "frontend/src/features/features/campaigns/CampaignDetails.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "campaign",
+        "type": "any",
+        "optional": false
+      },
+      {
+        "name": "onEdit",
+        "type": "(c: CampaignEntity) => void",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CampaignForm",
+    "filePath": "frontend/src/features/features/campaigns/CampaignForm.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "onSuccess",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "campaign",
+        "type": "any",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CampaignProvider",
+    "filePath": "frontend/src/infrastructure/shared/contexts/CampaignContext.tsx",
+    "kind": "arrow",
+    "category": "context",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useCallback",
+      "useContext",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CampaignsList",
+    "filePath": "frontend/src/features/features/campaigns/CampaignsList.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useCallback",
+      "useEffect",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CandidateDetails",
+    "filePath": "frontend/src/features/features/candidates/Details.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useParams",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CandidateForm",
+    "filePath": "frontend/src/features/features/candidates/Form.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "defaultValues",
+        "type": "CandidateFormData | undefined",
+        "optional": true
+      },
+      {
+        "name": "onSubmit",
+        "type": "(data: CandidateFormData) => void",
+        "optional": false
+      },
+      {
+        "name": "onCancel",
+        "type": "(() => void) | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useForm",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CandidatesList",
+    "filePath": "frontend/src/features/features/candidates/List.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CommitteeDetails",
+    "filePath": "frontend/src/features/features/committees/Details.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useParams",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CommitteeForm",
+    "filePath": "frontend/src/features/features/committees/Form.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "defaultValues",
+        "type": "CommitteeFormData | undefined",
+        "optional": true
+      },
+      {
+        "name": "onSubmit",
+        "type": "(data: CommitteeFormData) => void",
+        "optional": false
+      },
+      {
+        "name": "onCancel",
+        "type": "(() => void) | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useForm",
+      "useLanguage",
+      "useQuery",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "CommitteesList",
+    "filePath": "frontend/src/features/features/committees/List.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useLanguage",
+      "useMutation",
+      "useNavigate",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ControlPanel",
+    "filePath": "frontend/src/features/app/dashboard/layout/ControlPanel.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "panel",
+        "type": "DashboardPanel",
+        "optional": false
+      },
+      {
+        "name": "activeRole",
+        "type": "GovernanceRole",
+        "optional": false
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardBreadcrumbs",
+    "filePath": "frontend/src/features/app/dashboard/layout/DashboardBreadcrumbs.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "items",
+        "type": "DashboardBreadcrumb[] | undefined",
+        "optional": true
+      },
+      {
+        "name": "onNavigate",
+        "type": "((item: DashboardBreadcrumb) => void) | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useEffect",
+      "useMemo",
+      "useNavBreadcrumbs",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCard",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardCard.tsx",
+    "kind": "forwardRef",
+    "category": "ui",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCard",
+    "filePath": "frontend/src/features/legacy/components/dashboard/DashboardCard.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "value",
+        "type": "string | number | undefined",
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "trend",
+        "type": "number | undefined",
+        "optional": true
+      },
+      {
+        "name": "trendLabel",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "Icon",
+        "type": "unknown",
+        "optional": false
+      },
+      {
+        "name": "footer",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "delay",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "0"
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCardBody",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardCard.tsx",
+    "kind": "forwardRef",
+    "category": "ui",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCardFooter",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardCard.tsx",
+    "kind": "forwardRef",
+    "category": "ui",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCardHeader",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardCard.tsx",
+    "kind": "forwardRef",
+    "category": "ui",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCardMeta",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardCard.tsx",
+    "kind": "forwardRef",
+    "category": "ui",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCardSubtitle",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardCard.tsx",
+    "kind": "forwardRef",
+    "category": "ui",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCardTitle",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardCard.tsx",
+    "kind": "forwardRef",
+    "category": "ui",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardCharts",
+    "filePath": "frontend/src/features/features/analytics/DashboardCharts.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "regions",
+        "type": "RegionAnalytics[]",
+        "optional": false
+      },
+      {
+        "name": "trends",
+        "type": "SupportTrendPoint[]",
+        "optional": false
+      },
+      {
+        "name": "distribution",
+        "type": "ReportDistributionSlice[]",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useMemo"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardContent",
+    "filePath": "frontend/src/features/features/marketing/components/layout/DashboardContent.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardShell",
+    "filePath": "frontend/src/ui/layouts/DashboardShell.tsx",
+    "kind": "arrow",
+    "category": "ui",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "toolbar",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useEffect",
+      "useMemo",
+      "useNavBreadcrumbs",
+      "useState",
+      "useTranslation",
+      "useWindowSize"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardTable",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardTable.tsx",
+    "kind": "function",
+    "category": "ui",
+    "props": [
+      {
+        "name": "columns",
+        "type": "DashboardTableColumn<T>[]",
+        "optional": false
+      },
+      {
+        "name": "rows",
+        "type": "T[]",
+        "optional": false
+      },
+      {
+        "name": "getRowKey",
+        "type": "((row: T, index: number) => Key) | undefined",
+        "optional": true
+      },
+      {
+        "name": "emptyState",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DashboardToolbar",
+    "filePath": "frontend/src/ui/components/dashboard/DashboardToolbar.tsx",
+    "kind": "arrow",
+    "category": "ui",
+    "props": [
+      {
+        "name": "title",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "actions",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "DataTableSkeleton",
+    "filePath": "frontend/src/infrastructure/shared/ui/data-table-skeleton.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "rows",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "5"
+      },
+      {
+        "name": "columns",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "6"
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ElectionDetails",
+    "filePath": "frontend/src/features/features/elections/Details.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useParams",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ElectionForm",
+    "filePath": "frontend/src/features/features/elections/Form.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "defaultValues",
+        "type": "ElectionFormData | undefined",
+        "optional": true
+      },
+      {
+        "name": "onSubmit",
+        "type": "(data: ElectionFormData) => void",
+        "optional": false
+      },
+      {
+        "name": "onCancel",
+        "type": "(() => void) | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useForm",
+      "useLanguage",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ElectionsList",
+    "filePath": "frontend/src/features/features/elections/List.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useLanguage",
+      "useMutation",
+      "useNavigate",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "EmptyState",
+    "filePath": "frontend/src/infrastructure/shared/ui/data-table-skeleton.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "description",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "action",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "icon",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "EmptyState",
+    "filePath": "frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "action",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "Icon",
+        "type": "unknown",
+        "optional": false,
+        "defaultValue": "Database"
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "EnhancedDashboard",
+    "filePath": "frontend/src/features/features/dashboard/EnhancedDashboard.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useApi",
+      "useCampaignContext",
+      "useEffect",
+      "useMemo",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "EnhancedGeoAreasList",
+    "filePath": "frontend/src/infrastructure/shared/ui/enhanced-geo-areas-list.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useQuery",
+      "useQueryClient",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ErrorBoundary",
+    "filePath": "frontend/src/features/legacy/components/ErrorBoundary.tsx",
+    "kind": "class",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ErrorDisplay",
+    "filePath": "frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "error",
+        "type": "string | Error",
+        "optional": false
+      },
+      {
+        "name": "onRetry",
+        "type": "(() => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FeatureFlagProvider",
+    "filePath": "frontend/src/infrastructure/shared/contexts/FeatureFlagContext.tsx",
+    "kind": "arrow",
+    "category": "context",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      },
+      {
+        "name": "initialFlags",
+        "type": "string | Iterable<FeatureFlag> | FeatureFlag[] | Set<FeatureFlag> | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useCallback",
+      "useContext",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FeaturesSection",
+    "filePath": "frontend/src/features/features/marketing/components/landing/FeaturesSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FeatureTreeSection",
+    "filePath": "frontend/src/features/features/landing/components/FeatureTreeSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "tree",
+        "type": "FeatureNode",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useFeatureTreeAnimation",
+      "useMemo",
+      "useRef"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FilterBar",
+    "filePath": "frontend/src/ui/components/dashboard/FilterBar.tsx",
+    "kind": "arrow",
+    "category": "ui",
+    "props": [
+      {
+        "name": "options",
+        "type": "FilterOption[]",
+        "optional": false
+      },
+      {
+        "name": "onSelect",
+        "type": "((id: string) => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FloatingActions",
+    "filePath": "frontend/src/features/features/marketing/components/layout/FloatingActions.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useFloatingExperienceStore"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FloatingDashboard",
+    "filePath": "frontend/src/features/features/marketing/pages/Dashboard.tsx",
+    "kind": "arrow",
+    "category": "page",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useFloatingExperienceStore"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FloatingLandingPage",
+    "filePath": "frontend/src/features/features/marketing/pages/LandingPage.tsx",
+    "kind": "arrow",
+    "category": "page",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useFloatingExperienceStore",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "FloatingNav",
+    "filePath": "frontend/src/features/features/marketing/components/landing/FloatingNav.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Footer",
+    "filePath": "frontend/src/features/features/marketing/components/landing/Footer.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useFloatingExperienceStore",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GeoAreaDetails",
+    "filePath": "frontend/src/features/features/geo-areas/Details.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useParams",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GeoAreaForm",
+    "filePath": "frontend/src/features/features/geo-areas/Form.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "onSuccess",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "area",
+        "type": "any",
+        "optional": true
+      },
+      {
+        "name": "parentAreas",
+        "type": "GeoAreaEntity[]",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useEffect",
+      "useForm",
+      "useLanguage",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GeoAreaList",
+    "filePath": "frontend/src/features/features/geo-areas/components/GeoAreaList.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "areas",
+        "type": "GeoDistrict[]",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useLanguage",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GeoAreaMap",
+    "filePath": "frontend/src/features/features/geo-areas/components/GeoAreaMap.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "areas",
+        "type": "GeoDistrict[]",
+        "optional": false
+      },
+      {
+        "name": "selectedId",
+        "type": "string | null | undefined",
+        "optional": true
+      },
+      {
+        "name": "onSelect",
+        "type": "((id: string) => void) | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useLanguage"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GeoAreasDashboard",
+    "filePath": "frontend/src/features/features/geo-areas/Dashboard.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useLanguage",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GeoAreasList",
+    "filePath": "frontend/src/features/features/geo-areas/List.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useLanguage",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GeoAreaStats",
+    "filePath": "frontend/src/features/features/geo-areas/components/GeoAreaStats.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "area",
+        "type": "GeoDistrict",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GlassCard",
+    "filePath": "frontend/src/features/features/marketing/components/layout/GlassCard.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "title",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "description",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"\""
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GlassPanel",
+    "filePath": "frontend/src/features/features/marketing/components/ui/GlassPanel.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"\""
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "GlowButton",
+    "filePath": "frontend/src/features/features/marketing/components/ui/GlowButton.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "children",
+        "type": "((string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Iterable<...>) & (string | ... 4 more ... | ReactPortal)) | null | undefined",
+        "optional": true
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "variant",
+        "type": "\"primary\" | \"secondary\" | undefined",
+        "optional": true,
+        "defaultValue": "\"primary\""
+      },
+      {
+        "name": "props",
+        "type": "unknown",
+        "optional": false
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Header",
+    "filePath": "frontend/src/features/legacy/components/layout/Header.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "onToggleSidebar",
+        "type": "(() => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "variant",
+        "type": "\"dashboard\" | \"public\" | undefined",
+        "optional": true,
+        "defaultValue": "\"dashboard\""
+      }
+    ],
+    "hooks": [
+      "useAuth",
+      "useEffect",
+      "useLanguage",
+      "useMemo",
+      "useNavigate",
+      "useNotifications",
+      "useState",
+      "useTheme",
+      "useTranslation",
+      "useWindowSize"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Header",
+    "filePath": "frontend/src/features/features/marketing/components/layout/Header.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useFloatingExperienceStore",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "HeroSection",
+    "filePath": "frontend/src/features/features/marketing/components/landing/HeroSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useFloatingExperienceStore",
+      "useMemo",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "HeroSection",
+    "filePath": "frontend/src/features/features/landing/components/HeroSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "slides",
+        "type": "HeroSlide[]",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useHeroTimeline",
+      "useRef",
+      "useState"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "HierarchicalDashboard",
+    "filePath": "frontend/src/features/app/dashboard/HierarchicalDashboard.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useDashboardHierarchy",
+      "useDashboardSelectionStore",
+      "useDashboardSelectionSync",
+      "useMemo"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LanguageProvider",
+    "filePath": "frontend/src/infrastructure/shared/contexts/LanguageContext.tsx",
+    "kind": "arrow",
+    "category": "context",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useContext",
+      "useEffect",
+      "useMemo",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LineChartCard",
+    "filePath": "frontend/src/features/features/marketing/components/layout/charts/LineChart.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LineChartComponent",
+    "filePath": "frontend/src/features/legacy/components/dashboard/LineChartComponent.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "data",
+        "type": "LineChartPoint[] | undefined",
+        "optional": true,
+        "defaultValue": "defaultData"
+      },
+      {
+        "name": "subtitle",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"تطور التفاعل الشهري\""
+      },
+      {
+        "name": "delay",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "0"
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LiveOperationsMap",
+    "filePath": "frontend/src/features/features/dashboard/components/LiveOperationsMap.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useCampaignContext",
+      "useEffect",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LiveOperationsMapCanvas",
+    "filePath": "frontend/src/features/features/dashboard/components/LiveOperationsMapCanvas.tsx",
+    "kind": "memo",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useMapEvents",
+      "useMemo",
+      "useRef"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": true,
+    "forwardRef": false
+  },
+  {
+    "name": "LiveOperationsPanel",
+    "filePath": "frontend/src/features/features/dashboard/DashboardWidgets/LiveOperationsPanel.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "loading",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "heading",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "optional": false
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LoadingSpinner",
+    "filePath": "frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "size",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "40"
+      },
+      {
+        "name": "message",
+        "type": "string | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Login",
+    "filePath": "frontend/src/features/legacy/pages/Login.tsx",
+    "kind": "arrow",
+    "category": "page",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LoginCtaSection",
+    "filePath": "frontend/src/features/features/landing/components/LoginCtaSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useLoginCtaAnimation",
+      "useRef",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "LoginForm",
+    "filePath": "frontend/src/features/legacy/components/auth/LoginForm.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useAuth",
+      "useEffect",
+      "useNavigate",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "MainLayout",
+    "filePath": "frontend/src/features/legacy/components/layout/MainLayout.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "MainTabs",
+    "filePath": "frontend/src/features/app/dashboard/layout/MainTabs.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "modules",
+        "type": "DashboardModule[]",
+        "optional": false
+      },
+      {
+        "name": "activeModuleId",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "onSelect",
+        "type": "(moduleId: string) => void",
+        "optional": false
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "MapSection",
+    "filePath": "frontend/src/features/features/marketing/components/layout/MapSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useFloatingExperienceStore",
+      "useMemo"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "MapVisualization",
+    "filePath": "frontend/src/infrastructure/shared/ui/map-visualization.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "geoAreas",
+        "type": "GeoAreaEntity[]",
+        "optional": false
+      },
+      {
+        "name": "onAreaClick",
+        "type": "((area: GeoAreaEntity) => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"\""
+      }
+    ],
+    "hooks": [
+      "useEffect",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "NavGuard",
+    "filePath": "frontend/src/routing/nav/NavGuard.tsx",
+    "kind": "arrow",
+    "category": "route",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      },
+      {
+        "name": "path",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "itemId",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "fallback",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "redirectTo",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"/app\""
+      }
+    ],
+    "hooks": [
+      "useLocation",
+      "useMemo",
+      "useNavigationContext"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "NotificationDrawer",
+    "filePath": "frontend/src/features/legacy/components/NotificationDrawer.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useNotifications"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "NotificationDrawer",
+    "filePath": "frontend/src/features/legacy/components/notifications/NotificationDrawer.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useNotifications"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "NotificationProvider",
+    "filePath": "frontend/src/infrastructure/shared/contexts/NotificationContext.tsx",
+    "kind": "arrow",
+    "category": "context",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useAuth",
+      "useCallback",
+      "useContext",
+      "useEffect",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ObservationDetails",
+    "filePath": "frontend/src/features/features/observations/ObservationDetails.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "observation",
+        "type": "Observation | null",
+        "optional": false
+      },
+      {
+        "name": "onEdit",
+        "type": "(obs: Observation) => void",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ObservationForm",
+    "filePath": "frontend/src/features/features/observations/ObservationForm.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "onSuccess",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "observation",
+        "type": "Observation | null | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ObservationsList",
+    "filePath": "frontend/src/features/features/observations/ObservationsList.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useCallback",
+      "useEffect",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "PartnersSection",
+    "filePath": "frontend/src/features/features/landing/components/PartnersSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "partners",
+        "type": "Partner[]",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "usePartnersAnimation",
+      "useRef"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "PieChartCard",
+    "filePath": "frontend/src/features/features/marketing/components/layout/charts/PieChart.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "PieChartComponent",
+    "filePath": "frontend/src/features/legacy/components/dashboard/PieChartComponent.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "data",
+        "type": "PieDataPoint[] | undefined",
+        "optional": true,
+        "defaultValue": "defaultData"
+      },
+      {
+        "name": "delay",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "0"
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "PostAuthRedirect",
+    "filePath": "frontend/src/routing/routes/post-auth.tsx",
+    "kind": "arrow",
+    "category": "route",
+    "props": [],
+    "hooks": [
+      "useAuth",
+      "useEffect",
+      "useLocation",
+      "useMemo",
+      "useNavigate",
+      "useNavigationContext",
+      "useSearchParams"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ProgressChart",
+    "filePath": "frontend/src/features/features/dashboard/components/ProgressChart.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "data",
+        "type": "ProgressItem[]",
+        "optional": false
+      },
+      {
+        "name": "overall",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "remaining",
+        "type": "number",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useMemo",
+      "useThemePalette",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ProgressOverview",
+    "filePath": "frontend/src/features/features/dashboard/DashboardWidgets/ProgressOverview.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "data",
+        "type": "ProgressDatum[]",
+        "optional": false
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "error",
+        "type": "Error | null",
+        "optional": false
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "overall",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "remaining",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "heading",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "overallLabel",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "remainingLabel",
+        "type": "string",
+        "optional": false
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ProtectedRoute",
+    "filePath": "frontend/src/features/legacy/components/ProtectedRoute.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "redirectTo",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"/auth/login\""
+      }
+    ],
+    "hooks": [
+      "useAuth"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ReportsDashboard",
+    "filePath": "frontend/src/features/features/reports/ReportsDashboard.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMemo",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "RoleManager",
+    "filePath": "frontend/src/features/features/roles/RoleManager.tsx",
+    "kind": "function",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useCallback",
+      "useEffect",
+      "useMemo",
+      "useState",
+      "useToast"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SafeDataRenderer",
+    "filePath": "frontend/src/infrastructure/shared/ui/safe-data-renderer.tsx",
+    "kind": "function",
+    "category": "shared",
+    "props": [
+      {
+        "name": "data",
+        "type": "T[] | null | undefined",
+        "optional": false
+      },
+      {
+        "name": "loading",
+        "type": "boolean | undefined",
+        "optional": true,
+        "defaultValue": "false"
+      },
+      {
+        "name": "error",
+        "type": "string | Error | null | undefined",
+        "optional": true,
+        "defaultValue": "null"
+      },
+      {
+        "name": "onRetry",
+        "type": "(() => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "loadingMessage",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "emptyTitle",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "emptyDescription",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "emptyAction",
+        "type": "ReactNode",
+        "optional": true
+      },
+      {
+        "name": "children",
+        "type": "(data: T[]) => ReactNode",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Settings",
+    "filePath": "frontend/src/features/features/settings/Settings.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SettingsForm",
+    "filePath": "frontend/src/features/features/settings/SettingsForm.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useLanguage",
+      "useMutation",
+      "useQuery",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Sidebar",
+    "filePath": "frontend/src/infrastructure/shared/layout/Sidebar.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onToggleCollapse",
+        "type": "(() => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "isMobile",
+        "type": "boolean | undefined",
+        "optional": true,
+        "defaultValue": "false"
+      }
+    ],
+    "hooks": [
+      "useEffect",
+      "useLanguage",
+      "useLocation",
+      "useMemo",
+      "useNavTree",
+      "useNavigationContext",
+      "useNotifications",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Sidebar",
+    "filePath": "frontend/src/features/features/marketing/components/layout/Sidebar.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useFloatingExperienceStore"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarContainer",
+    "filePath": "frontend/src/features/legacy/components/sidebar/core/SidebarContainer.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useSidebar"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarContent",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarFooter",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarFooter.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarGroup",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarGroupAction",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarGroupContent",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarGroupLabel",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarGroup.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarHeader",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarHeader.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarInput",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarInput.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarInset",
+    "filePath": "frontend/src/features/legacy/components/sidebar/core/SidebarInset.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenu",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuAction",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuBadge",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuButton",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuItem",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuSkeleton",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuSub",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuSubButton",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarMenuSubItem",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarMenu.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": true,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarProvider",
+    "filePath": "frontend/src/features/legacy/components/sidebar/core/SidebarProvider.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useIsMobile"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarRail",
+    "filePath": "frontend/src/features/legacy/components/sidebar/core/SidebarRail.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useSidebar"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarSeparator",
+    "filePath": "frontend/src/features/legacy/components/sidebar/ui/SidebarSeparator.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SidebarTrigger",
+    "filePath": "frontend/src/features/legacy/components/sidebar/core/SidebarTrigger.tsx",
+    "kind": "forwardRef",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useSidebar"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SideSubTabs",
+    "filePath": "frontend/src/features/app/dashboard/layout/SideSubTabs.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "submodules",
+        "type": "DashboardSubmodule[]",
+        "optional": false
+      },
+      {
+        "name": "activeSubmoduleId",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "activePanelId",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "onSelectSubmodule",
+        "type": "(submoduleId: string) => void",
+        "optional": false
+      },
+      {
+        "name": "onSelectPanel",
+        "type": "(panel: DashboardPanel, submoduleId: string) => void",
+        "optional": false
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SmartItem",
+    "filePath": "frontend/src/features/legacy/components/sidebar/smart/SmartItem.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "item",
+        "type": "NavigationItem",
+        "optional": false
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "isCollapsed",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "isExpanded",
+        "type": "boolean | undefined",
+        "optional": true
+      },
+      {
+        "name": "isActive",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "direction",
+        "type": "\"ltr\" | \"rtl\"",
+        "optional": false
+      },
+      {
+        "name": "onToggle",
+        "type": "(() => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "onNavigate",
+        "type": "(() => void) | undefined",
+        "optional": true
+      },
+      {
+        "name": "badge",
+        "type": "number | undefined",
+        "optional": true
+      },
+      {
+        "name": "depth",
+        "type": "number | undefined",
+        "optional": true,
+        "defaultValue": "0"
+      },
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SmartNavigation",
+    "filePath": "frontend/src/features/legacy/components/sidebar/smart/SmartNavigation.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "items",
+        "type": "NavigationItem[]",
+        "optional": false
+      },
+      {
+        "name": "onNavigate",
+        "type": "(() => void) | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useLanguage",
+      "useLocation",
+      "useSidebar",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SmartSidebar",
+    "filePath": "frontend/src/features/legacy/components/sidebar/smart/SmartSidebar.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "defaultCollapsed",
+        "type": "boolean | undefined",
+        "optional": true,
+        "defaultValue": "true"
+      },
+      {
+        "name": "side",
+        "type": "\"left\" | \"right\" | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useLanguage",
+      "useSidebar",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "StackedBarChart",
+    "filePath": "frontend/src/ui/components/dashboard/charts/StackedBarChart.tsx",
+    "kind": "arrow",
+    "category": "ui",
+    "props": [
+      {
+        "name": "data",
+        "type": "StackedBarDatum[]",
+        "optional": false
+      },
+      {
+        "name": "series",
+        "type": "{ key: keyof StackedBarDatum; label: string; color: string; }[] | undefined",
+        "optional": true,
+        "defaultValue": "defaultSeries"
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "StatMetric",
+    "filePath": "frontend/src/ui/components/dashboard/StatMetric.tsx",
+    "kind": "arrow",
+    "category": "ui",
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "value",
+        "type": "string | number",
+        "optional": false
+      },
+      {
+        "name": "change",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "trend",
+        "type": "\"up\" | \"down\" | undefined",
+        "optional": true,
+        "defaultValue": "\"up\""
+      },
+      {
+        "name": "tone",
+        "type": "StatTone | undefined",
+        "optional": true,
+        "defaultValue": "\"primary\""
+      },
+      {
+        "name": "Icon",
+        "type": "unknown",
+        "optional": false
+      },
+      {
+        "name": "footer",
+        "type": "string | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "StatsCard",
+    "filePath": "frontend/src/features/features/dashboard/components/StatsCard.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "change",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "trend",
+        "type": "\"up\" | \"down\"",
+        "optional": false
+      },
+      {
+        "name": "Icon",
+        "type": "unknown",
+        "optional": false
+      },
+      {
+        "name": "color",
+        "type": "\"primary\" | \"secondary\" | \"success\" | \"accent\"",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "StatsSection",
+    "filePath": "frontend/src/features/features/marketing/components/landing/StatsSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useFloatingExperienceStore",
+      "useSpring",
+      "useTransform",
+      "useTranslation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "StatusBadge",
+    "filePath": "frontend/src/infrastructure/shared/ui/status-badge.tsx",
+    "kind": "arrow",
+    "category": "shared",
+    "props": [
+      {
+        "name": "status",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "variant",
+        "type": "\"primary\" | \"secondary\" | \"success\" | \"warning\" | \"default\" | \"destructive\" | undefined",
+        "optional": true,
+        "defaultValue": "\"default\""
+      },
+      {
+        "name": "className",
+        "type": "string | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "SummaryPanel",
+    "filePath": "frontend/src/features/features/dashboard/DashboardWidgets/SummaryPanel.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "headline",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "overallLabel",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "overallValue",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "turnoutLabel",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "turnoutValue",
+        "type": "number",
+        "optional": false
+      },
+      {
+        "name": "remainingLabel",
+        "type": "string",
+        "optional": false
+      },
+      {
+        "name": "remainingValue",
+        "type": "number",
+        "optional": false
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "TestimonialsSection",
+    "filePath": "frontend/src/features/features/landing/components/TestimonialsSection.tsx",
+    "kind": "arrow",
+    "category": "feature-component",
+    "props": [
+      {
+        "name": "testimonials",
+        "type": "Testimonial[]",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useRef",
+      "useTestimonialsAnimation"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ThemeProvider",
+    "filePath": "frontend/src/infrastructure/shared/contexts/ThemeContext.tsx",
+    "kind": "arrow",
+    "category": "context",
+    "props": [
+      {
+        "name": "children",
+        "type": "ReactNode",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useContext",
+      "useEffect",
+      "useMemo",
+      "useState"
+    ],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "Toaster",
+    "filePath": "frontend/src/infrastructure/shared/ui/toaster.tsx",
+    "kind": "function",
+    "category": "shared",
+    "props": [],
+    "hooks": [
+      "useToast"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "TrendLineChart",
+    "filePath": "frontend/src/ui/components/dashboard/charts/TrendLineChart.tsx",
+    "kind": "arrow",
+    "category": "ui",
+    "props": [
+      {
+        "name": "data",
+        "type": "TrendDatum[]",
+        "optional": false
+      },
+      {
+        "name": "stroke",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"hsl(var(--primary))\""
+      },
+      {
+        "name": "gradientId",
+        "type": "string | undefined",
+        "optional": true,
+        "defaultValue": "\"trendLine\""
+      }
+    ],
+    "hooks": [],
+    "usesShadcn": false,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "VolunteerDetails",
+    "filePath": "frontend/src/features/features/volunteers/VolunteerDetails.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "volunteer",
+        "type": "any",
+        "optional": false
+      },
+      {
+        "name": "committeeName",
+        "type": "string | undefined",
+        "optional": true
+      },
+      {
+        "name": "onEdit",
+        "type": "(volunteer: VolunteerEntity) => void",
+        "optional": false
+      }
+    ],
+    "hooks": [
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "VolunteerForm",
+    "filePath": "frontend/src/features/features/volunteers/VolunteerForm.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "isOpen",
+        "type": "boolean",
+        "optional": false
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "onSuccess",
+        "type": "() => void",
+        "optional": false
+      },
+      {
+        "name": "volunteer",
+        "type": "any",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useEffect",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "VolunteersList",
+    "filePath": "frontend/src/features/features/volunteers/VolunteersList.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useCallback",
+      "useEffect",
+      "useMemo",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "VoterDetails",
+    "filePath": "frontend/src/features/features/voters/Details.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useParams",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "VoterForm",
+    "filePath": "frontend/src/features/features/voters/Form.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [
+      {
+        "name": "defaultValues",
+        "type": "VoterFormData | undefined",
+        "optional": true
+      },
+      {
+        "name": "onSubmit",
+        "type": "(data: VoterFormData) => void",
+        "optional": false
+      },
+      {
+        "name": "onCancel",
+        "type": "(() => void) | undefined",
+        "optional": true
+      }
+    ],
+    "hooks": [
+      "useForm",
+      "useLanguage",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "VotersList",
+    "filePath": "frontend/src/features/features/voters/List.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useMutation",
+      "useNavigate",
+      "useQuery",
+      "useQueryClient",
+      "useState",
+      "useTranslation"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  },
+  {
+    "name": "ZoneDashboard",
+    "filePath": "frontend/src/features/features/zones/ZoneDashboard.tsx",
+    "kind": "arrow",
+    "category": "feature",
+    "props": [],
+    "hooks": [
+      "useEffect",
+      "useLanguage",
+      "useMemo",
+      "useState",
+      "useZoneFilter"
+    ],
+    "usesShadcn": true,
+    "usesRadix": false,
+    "memoized": false,
+    "forwardRef": false
+  }
+]
