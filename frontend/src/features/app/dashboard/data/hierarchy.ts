@@ -23,7 +23,7 @@ import {
 import { request } from "@/infrastructure/shared/lib/api";
 import { API_ENDPOINTS } from "@/infrastructure/shared/lib/endpoints";
 import { useCampaignContext } from "@/infrastructure/shared/contexts/CampaignContext";
-import type { AnalyticsResponse } from "@/features/features/analytics/types";
+import type { AnalyticsResponse } from "@/features/modules/analytics/types";
 
 export type GovernanceRole = "domain-owner" | "data-steward" | "operator";
 

@@ -6,7 +6,7 @@ import { Button } from "./button";
 import { Input } from "./input";
 import { Badge } from "./badge";
 import { Card, CardContent, CardHeader, CardTitle } from "./card";
-import { GeoArea } from "@/features/features/geo-areas/types";
+import { GeoArea } from "@/features/modules/geo-areas/types";
 import { safeArray } from "@/infrastructure/shared/lib/safeData";
 
 interface MapVisualizationProps {

@@ -1,10 +1,16 @@
 import {
-  createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
 } from "react";
 import { request } from "@/infrastructure/shared/lib/api";
 import { getEcho } from "@/infrastructure/shared/lib/echo";
 import { toast } from "sonner";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "@/features/legacy/hooks/useAuth";
 
 export type NotificationType = "performance" | "field" | "risk" | "other";
 
@@ -30,7 +36,7 @@ interface NotificationContextValue {
   unreadCount: number;
   loading: boolean;
   filter: NotificationFilter;
-  setFilter: (f: NotificationFilter) => void;
+  setFilter: (filter: NotificationFilter) => void;
   markAsRead: (id: number) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   refresh: () => Promise<void>;
@@ -38,156 +44,174 @@ interface NotificationContextValue {
   setDrawerOpen: (open: boolean) => void;
 }
 
-const NotificationContext = createContext<NotificationContextValue | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextValue | undefined>(
+  undefined,
+);
 
-export const useNotifications = () => {
-  const ctx = useContext(NotificationContext);
-  if (!ctx) throw new Error("useNotifications must be used within a NotificationProvider");
-  return ctx;
-};
+interface PaginatedNotificationResponse {
+  data: NotificationItem[];
+}
 
-// Echo typing (خفيفة)
-type EchoChannelLike = {
-  listen: (event: string, cb: (payload: any) => void) => void;
-  stopListening: (event: string, cb: (payload: any) => void) => void;
-};
-type EchoLike = { channel: (name: string) => EchoChannelLike };
-const isEchoLike = (x: unknown): x is EchoLike => !!x && typeof (x as any).channel === "function";
-
-type Props = { children: ReactNode; enabled?: boolean };
-
-export const NotificationProvider = ({ children, enabled = true }: Props) => {
-  const { isAuthenticated } = useAuth();
-
-  const hasToken =
-    typeof window !== "undefined" && !!localStorage.getItem("token");
-
-  // لا تشغّل أي منطق قبل الدخول + التوكن + تمكين المزوّد
-  const disabled = !enabled || !isAuthenticated || !hasToken;
-
-  // Hooks دائماً بنفس الترتيب
+export const NotificationProvider = ({ children }: { children: ReactNode }) => {
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState<NotificationFilter>("all");
   const [isDrawerOpen, setDrawerOpen] = useState(false);
 
   const fetchNotifications = useCallback(
-    async ({ showLoader = true, suppressToasts = true } = {}) => {
-      if (disabled) return;
-      if (showLoader) setLoading(true);
+    async ({ showLoader = true, suppressToasts = false } = {}) => {
+      if (!isAuthenticated || authLoading) {
+        return;
+      }
+      if (showLoader) {
+        setLoading(true);
+      }
       try {
-        const res = await request<{ data: NotificationItem[] }>({
+        const response = await request<PaginatedNotificationResponse>({
           url: "/notifications",
           method: "get",
-          params: { per_page: 50 },
+          params: {
+            per_page: 50,
+          },
         });
 
-        const incoming = [...(res.data ?? [])].sort(
-          (a, b) => +new Date(b.created_at) - +new Date(a.created_at)
+        const incoming = [...(response.data ?? [])].sort(
+          (a, b) =>
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
         );
 
-        setNotifications(prev => {
-          const prevIds = new Set(prev.map(n => n.id));
-          const newItems = incoming.filter(n => !prevIds.has(n.id));
+        setNotifications((previous) => {
+          const previousIds = new Set(previous.map((item) => item.id));
+          const newItems = incoming.filter((item) => !previousIds.has(item.id));
+
           if (!suppressToasts) {
             newItems
-              .filter(n => n.priority === "high")
-              .forEach(n => toast(n.title, { description: n.message }));
+              .filter((item) => item.priority === "high")
+              .forEach((item) => {
+                toast(item.title, {
+                  description: item.message,
+                });
+              });
           }
+
           return incoming;
         });
-      } catch (e) {
-        // تجاهل هدوء ERR_CANCELED / ERR_NETWORK في التطوير
-        console.error("Failed to load notifications", e);
+      } catch (error) {
+        console.error("Failed to load notifications", error);
       } finally {
-        if (showLoader) setLoading(false);
+        if (showLoader) {
+          setLoading(false);
+        }
       }
     },
-    [disabled]
+    [isAuthenticated, authLoading],
   );
 
-  // أول تحميل
+  const prependNotification = useCallback((incoming: NotificationItem) => {
+    setNotifications((prev) => {
+      const existing = prev.filter((item) => item.id !== incoming.id);
+      const next = [incoming, ...existing];
+      return next.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+      );
+    });
+  }, []);
+
   useEffect(() => {
-    if (disabled) {
+    if (authLoading) {
+      return;
+    }
+    
+    if (!isAuthenticated) {
       setNotifications([]);
       setLoading(false);
       return;
     }
-    void fetchNotifications({ showLoader: true, suppressToasts: true });
-  }, [disabled, fetchNotifications]);
 
-  // Polling كل 60 ثانية
+    fetchNotifications({ showLoader: true, suppressToasts: true });
+  }, [fetchNotifications, isAuthenticated, authLoading]);
+
   useEffect(() => {
-    if (disabled) return;
-    const id = window.setInterval(() => {
-      void fetchNotifications({ showLoader: false, suppressToasts: false });
-    }, 60_000);
-    return () => window.clearInterval(id);
-  }, [disabled, fetchNotifications]);
+    if (!isAuthenticated || authLoading) {
+      return undefined;
+    }
 
-  // بث لحظي عبر Echo
+    const interval = window.setInterval(() => {
+      fetchNotifications({ showLoader: false, suppressToasts: false });
+    }, 60000);
+
+    return () => window.clearInterval(interval);
+  }, [fetchNotifications, isAuthenticated, authLoading]);
+
   useEffect(() => {
-    if (disabled) return;
-    const maybeEcho = getEcho();
-    if (!isEchoLike(maybeEcho)) return;
+    if (!isAuthenticated || authLoading) {
+      return undefined;
+    }
 
-    const channel = maybeEcho.channel("notifications");
-    const handler = (p: { data: NotificationItem }) => {
-      setNotifications(prev => {
-        const existing = prev.filter(x => x.id !== p.data.id);
-        const next = [p.data, ...existing].sort(
-          (a, b) => +new Date(b.created_at) - +new Date(a.created_at)
-        );
-        return next;
-      });
-      if (p.data.priority === "high") {
-        toast(p.data.title, { description: p.data.message });
+    const echo = getEcho();
+    if (!echo) return;
+
+    const channel = echo.channel("notifications");
+    const handler = (payload: { data: NotificationItem }) => {
+      const notification = payload.data;
+      prependNotification(notification);
+
+      if (notification.priority === "high") {
+        toast(notification.title, {
+          description: notification.message,
+        });
       }
     };
 
     channel.listen(".App\\Events\\NotificationCreated", handler);
-    return () => channel.stopListening(".App\\Events\\NotificationCreated", handler);
-  }, [disabled]);
+
+    return () => {
+      channel.stopListening(".App\\Events\\NotificationCreated", handler);
+    };
+  }, [isAuthenticated, prependNotification]);
 
   const markAsRead = useCallback(async (id: number) => {
-    if (disabled) return;
-    await request({ url: `/notifications/${id}/read`, method: "patch" });
-    setNotifications(prev =>
-      prev.map(n => (n.id === id ? { ...n, read_at: new Date().toISOString() } : n))
+    await request<{ data: NotificationItem }>({
+      url: `/notifications/${id}/read`,
+      method: "patch",
+    });
+
+    setNotifications((prev) =>
+      prev.map((notification) =>
+        notification.id === id
+          ? { ...notification, read_at: new Date().toISOString() }
+          : notification,
+      ),
     );
-  }, [disabled]);
+  }, []);
 
   const markAllAsRead = useCallback(async () => {
-    if (disabled) return;
-    await request({ url: "/notifications/read-all", method: "post" });
-    setNotifications(prev => prev.map(n => ({ ...n, read_at: new Date().toISOString() })));
-  }, [disabled]);
+    await request({
+      url: "/notifications/read-all",
+      method: "post",
+    });
 
-  const filteredNotifications = useMemo(
-    () => (filter === "all" ? notifications : notifications.filter(n => n.type === filter)),
-    [filter, notifications]
-  );
+    setNotifications((prev) =>
+      prev.map((notification) => ({
+        ...notification,
+        read_at: new Date().toISOString(),
+      })),
+    );
+  }, []);
+
+  const filteredNotifications = useMemo(() => {
+    if (filter === "all") return notifications;
+    return notifications.filter((notification) => notification.type === filter);
+  }, [filter, notifications]);
 
   const unreadCount = useMemo(
-    () => notifications.filter(n => !n.read_at).length,
-    [notifications]
+    () => notifications.filter((notification) => !notification.read_at).length,
+    [notifications],
   );
 
-  const valueWhenDisabled: NotificationContextValue = {
-    notifications: [],
-    filteredNotifications: [],
-    unreadCount: 0,
-    loading: false,
-    filter,
-    setFilter,
-    markAsRead: async () => {},
-    markAllAsRead: async () => {},
-    refresh: async () => {},
-    isDrawerOpen,
-    setDrawerOpen,
-  };
-
-  const valueActive: NotificationContextValue = {
+  const value: NotificationContextValue = {
     notifications,
     filteredNotifications,
     unreadCount,
@@ -196,14 +220,26 @@ export const NotificationProvider = ({ children, enabled = true }: Props) => {
     setFilter,
     markAsRead,
     markAllAsRead,
-    refresh: () => fetchNotifications({ showLoader: true, suppressToasts: true }),
+    refresh: () =>
+      fetchNotifications({ showLoader: true, suppressToasts: true }),
     isDrawerOpen,
     setDrawerOpen,
   };
 
   return (
-    <NotificationContext.Provider value={disabled ? valueWhenDisabled : valueActive}>
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );
+};
+
+export const useNotifications = (): NotificationContextValue => {
+  const context = useContext(NotificationContext);
+  if (!context) {
+    throw new Error(
+      "useNotifications must be used within a NotificationProvider",
+    );
+  }
+
+  return context;
 };

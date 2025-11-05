@@ -11,5 +11,5 @@ export * from './Role';
 export * from './User';
 export * from './Volunteer';
 export * from './Voter';
-export * from './assets.d';
+export * from './assets';
 export * from './common';

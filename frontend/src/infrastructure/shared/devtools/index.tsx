@@ -1,49 +1,58 @@
 import { useEffect } from "react";
-
-import { useNotifications, NotificationItem } from "@/infrastructure/shared/contexts/NotificationContext";
 import { useAuth } from "@/features/legacy/hooks/useAuth";
+import type { NotificationItem } from "@/infrastructure/shared/contexts/NotificationContext";
 
 interface DevtoolsWindow extends Window {
   __FODA_DEVTOOLS__?: Record<string, unknown>;
 }
 
+const registerDevtools = (payload: Record<string, unknown>) => {
+  if (typeof window === "undefined") return;
+  const target = window as DevtoolsWindow;
+  target.__FODA_DEVTOOLS__ = { ...target.__FODA_DEVTOOLS__, ...payload };
+  if (import.meta.env.DEV) {
+    console.info("[DevTools] context payload updated", target.__FODA_DEVTOOLS__);
+  }
+};
+
 export const DevTools = () => {
   const { user, isAuthenticated } = useAuth();
 
+  // استخدم متغيرات محلية بدلاً من hook مباشرة
   let notifications: NotificationItem[] = [];
-  let unreadCount: number = 0;
-  let isDrawerOpen: boolean = false;
+  let unreadCount = 0;
+  let isDrawerOpen = false;
 
   try {
-    const notifCtx = useNotifications();
-    notifications = notifCtx.notifications;
-    unreadCount = notifCtx.unreadCount;
-    isDrawerOpen = notifCtx.isDrawerOpen;
-  } catch {
-    // useNotifications تم استدعاؤه خارج NotificationProvider
+    if (isAuthenticated) {
+      const notif = require("@/infrastructure/shared/contexts/NotificationContext").useNotifications();
+      notifications = notif.notifications;
+      unreadCount = notif.unreadCount;
+      isDrawerOpen = notif.isDrawerOpen;
+    }
+  } catch (err) {
+    // تجاهل الخطأ إن لم تكن داخل NotificationProvider
   }
 
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const target = window as DevtoolsWindow;
-
-    target.__FODA_DEVTOOLS__ = {
+    registerDevtools({
       notifications,
       unreadCount,
       isDrawerOpen,
       user,
       isAuthenticated,
-    };
+    });
 
     return () => {
-      target.__FODA_DEVTOOLS__ = {
+      registerDevtools({
         notifications: [],
         unreadCount: 0,
         isDrawerOpen: false,
         user: null,
         isAuthenticated: false,
-      };
+      });
     };
   }, [isAuthenticated, isDrawerOpen, notifications, unreadCount, user]);
 

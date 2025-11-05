@@ -43,11 +43,11 @@ export const LoginForm = () => {
     setError(null);
     setLoading(true);
     try {
-      await login({ email, password, remember }); // استخدام login
-      navigate("/dashboard"); // استخدام navigate هنا بعد تسجيل الدخول الناجح
+      await login({ email, password, remember });
+      navigate("/dashboard");
     } catch (err: unknown) {
       if (err instanceof Error && err.message.trim()) {
-        setError(err.message); // التعامل مع الخطأ بشكل آمن
+        setError(err.message);
       } else {
         setError(t("auth.unknown_error"));
       }

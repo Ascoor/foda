@@ -11,7 +11,7 @@ import { useWindowSize } from "@/infrastructure/shared/hooks/useWindowSize";
 import { cn } from "@/infrastructure/shared/lib/utils";
 import { dashboardTokens } from "@/infrastructure/theme//tokens";
 import { navConfig } from "@/routing/nav/nav.config";
-import { AuroraBackground } from "@/features/features/marketing/components/ui/AuroraBackground";
+import { AuroraBackground } from "@/features/modules/marketing/components/ui/AuroraBackground";
 
 const DESKTOP_BREAKPOINT = 1024;
 

@@ -1,1 +1,1 @@
-export * from './nav.map.test.ts';
+export * from './nav.map.test.js';

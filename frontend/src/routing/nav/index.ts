@@ -1,5 +1,4 @@
-export * from './NavGuard';
-export * from './README';
+export * from './NavGuard'; 
 export * from './nav.config';
 export * from './nav.map';
 export * from './nav.schema';

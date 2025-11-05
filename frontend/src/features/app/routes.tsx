@@ -1,4 +1,5 @@
-import { createBrowserRouter, Navigate, Outlet, useLocation } from "react-router-dom";
+// src/features/app/routes.tsx
+import { createBrowserRouter, Outlet, useLocation } from "react-router-dom";
 
 import { ProtectedRoute } from "@/features/legacy/components/ProtectedRoute";
 import { MainLayout } from "@/features/legacy/components/layout/MainLayout";
@@ -7,30 +8,33 @@ import { BarbaTransitionProvider } from "@/features/legacy/components/transition
 import { Login } from "@/features/legacy/pages/Login";
 import NotFound from "@/features/legacy/pages/NotFound";
 
-import { ReportsDashboard } from "@/features/features/reports/ReportsDashboard";
-import { ElectionsList } from "@/features/features/elections/List";
-import { ElectionDetails } from "@/features/features/elections/Details";
-import { GeoAreasDashboard } from "@/features/features/geo-areas/Dashboard";
-import { GeoAreaDetails } from "@/features/features/geo-areas/Details";
-import { VotersList } from "@/features/features/voters/List";
-import { VoterDetails } from "@/features/features/voters/Details";
-import { AgentsList } from "@/features/features/agents/AgentsList";
-import { CandidatesList } from "@/features/features/candidates/List";
-import { CandidateDetails } from "@/features/features/candidates/Details";
-import { VolunteersList } from "@/features/features/volunteers/VolunteersList";
-import { ZoneDashboard } from "@/features/features/zones/ZoneDashboard";
-import { CommitteesList } from "@/features/features/committees/List";
-import { CommitteeDetails } from "@/features/features/committees/Details";
-import { AutomationDashboard } from "@/features/features/automation/AutomationDashboard";
-import { CampaignsList } from "@/features/features/campaigns/CampaignsList";  
-import { Settings } from "@/features/features/settings/Settings";
-import { ObservationsList } from "@/features/features/observations/ObservationsList";
-import FloatingLandingPage from "@/features/features/marketing/pages/LandingPage";
-import FloatingDashboard from "@/features/features/marketing/pages/Dashboard";
+// NOTE: make sure these paths exist. If your modules live under src/features/...,
+// avoid "features/features/...". Adjust imports if needed.
+import { ReportsDashboard } from "@/features/modules/reports/ReportsDashboard";
+import { ElectionsList } from "@/features/modules/elections/List";
+import { ElectionDetails } from "@/features/modules/elections/Details";
+import { GeoAreasDashboard } from "@/features/modules/geo-areas/Dashboard";
+import { GeoAreaDetails } from "@/features/modules/geo-areas/Details";
+import { VotersList } from "@/features/modules/voters/List";
+import { VoterDetails } from "@/features/modules/voters/Details";
+import { AgentsList } from "@/features/modules/agents/AgentsList";
+import { CandidatesList } from "@/features/modules/candidates/List";
+import { CandidateDetails } from "@/features/modules/candidates/Details";
+import { VolunteersList } from "@/features/modules/volunteers/VolunteersList";
+import { ZoneDashboard } from "@/features/modules/zones/ZoneDashboard";
+import { CommitteesList } from "@/features/modules/committees/List";
+import { CommitteeDetails } from "@/features/modules/committees/Details";
+import { AutomationDashboard } from "@/features/modules/automation/AutomationDashboard";
+import { CampaignsList } from "@/features/modules/campaigns/CampaignsList";
+import { Settings } from "@/features/modules/settings/Settings";
+import { ObservationsList } from "@/features/modules/observations/ObservationsList";
+import FloatingLandingPage from "@/features/modules/marketing/pages/LandingPage";
+import FloatingDashboard from "@/features/modules/marketing/pages/Dashboard";
+
 import PostAuthRedirect from "@/routing/routes/post-auth";
-import { NavGuard } from "@/routing/nav/NavGuard"; 
-import { EnhancedDashboard } from "@/features/features/dashboard/EnhancedDashboard"; 
-import { ArchitecturalControlCenter } from "@/features/features/dashboard/ArchitecturalControlCenter";
+import { NavGuard } from "@/routing/nav/NavGuard";
+import { EnhancedDashboard } from "@/features/modules/dashboard/EnhancedDashboard";
+import { ArchitecturalControlCenter } from "@/features/modules/dashboard/ArchitecturalControlCenter";
 
 const RouterShell = () => (
   <BarbaTransitionProvider>
@@ -41,7 +45,6 @@ const RouterShell = () => (
 const MainLayoutWrapper = () => {
   const location = useLocation();
   const namespace = location.pathname.replace(/\//g, "-") || "app";
-
   return (
     <div
       data-barba="container"
@@ -66,8 +69,9 @@ export const router = createBrowserRouter([
     children: [
       { path: "/", element: <FloatingLandingPage /> },
       { path: "/experience", element: <FloatingDashboard /> },
-      { path: "/app", element: <PostAuthRedirect /> },
+      { path: "/post-auth", element: <PostAuthRedirect /> },
       { path: "/login", element: <Login /> },
+
       {
         element: <ProtectedRoute />,
         children: [
@@ -247,6 +251,7 @@ export const router = createBrowserRouter([
           },
         ],
       },
+
       { path: "*", element: <NotFound /> },
     ],
   },

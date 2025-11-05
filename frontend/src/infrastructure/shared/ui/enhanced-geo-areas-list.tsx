@@ -26,8 +26,8 @@ import {
   SelectValue,
 } from "./select";
 import { SafeDataRenderer } from "./safe-data-renderer";
-import { fetchGeoAreas, deleteGeoArea } from "@/features/features/geo-areas/api";
-import { GeoArea } from "@/features/features/geo-areas/types";
+import { fetchGeoAreas, deleteGeoArea } from "@/features/modules/geo-areas/api";
+import { GeoArea } from "@/features/modules/geo-areas/types";
 import { safeArray, safeNumber } from "@/infrastructure/shared/lib/safeData";
 import { toast } from "@/infrastructure/shared/hooks/use-toast";
 

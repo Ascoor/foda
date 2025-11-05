@@ -7,7 +7,8 @@ import {
   useState,
   ReactNode,
 } from "react";
-import api, { setAuthToken } from "@/infrastructure/shared/lib/api";
+import { supabase } from "@/integrations/supabase/client";
+import type { User as SupabaseUser, Session } from "@supabase/supabase-js";
 
 export interface Role {
   id?: number | string;
@@ -17,7 +18,7 @@ export interface Role {
 }
 
 export interface User {
-  id: number | string;
+  id: string;
   name: string;
   email: string;
   roles?: Role[];
@@ -41,6 +42,7 @@ export interface RegisterData {
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
   isAuthenticated: boolean;
   loading: boolean;
   login: (credentials: LoginData) => Promise<void>;
@@ -49,79 +51,16 @@ interface AuthContextType {
   refresh: () => Promise<void>;
 }
 
-const TOKEN_STORAGE_KEY = "token";
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const getStoredToken = () =>
-  typeof window !== "undefined"
-    ? localStorage.getItem(TOKEN_STORAGE_KEY)
-    : null;
-
-const persistToken = (token: string | null) => {
-  if (typeof window === "undefined") {
-    return;
-  }
-
-  if (token) {
-    localStorage.setItem(TOKEN_STORAGE_KEY, token);
-  } else {
-    localStorage.removeItem(TOKEN_STORAGE_KEY);
-  }
-};
-
-const extractToken = (payload: unknown): string | null => {
-  if (!payload || typeof payload !== "object") {
-    return null;
-  }
-
-  const candidate =
-    (payload as Record<string, unknown>).token ||
-    (payload as Record<string, unknown>).access_token ||
-    (payload as Record<string, unknown>).authToken ||
-    (payload as Record<string, unknown>).data;
-
-  if (typeof candidate === "string") {
-    return candidate;
-  }
-
-  if (candidate && typeof candidate === "object") {
-    return (
-      ((candidate as Record<string, unknown>).token as string | undefined) ??
-      ((candidate as Record<string, unknown>).access_token as
-        | string
-        | undefined) ??
-      null
-    );
-  }
-
-  return null;
-};
-
-const normalizeUser = (payload: unknown): User => {
-  const raw =
-    (payload as Record<string, unknown>)?.data ??
-    (payload as Record<string, unknown>)?.user ??
-    payload;
-
-  if (!raw || typeof raw !== "object") {
-    throw new Error("Invalid user payload received from API");
-  }
-
-  const rawRoles = Array.isArray((raw as Record<string, unknown>).roles)
-    ? ((raw as Record<string, unknown>).roles as Role[])
-    : [];
-
-  const roles = rawRoles.map((role) => ({
-    ...role,
-    name: String(role?.name ?? role),
-  }));
-
+const convertSupabaseUser = (supabaseUser: SupabaseUser): User => {
   return {
-    ...(raw as Record<string, unknown>),
-    roles,
-    roleNames: roles.map((role) => role.name),
-  } as User;
+    id: supabaseUser.id,
+    name: supabaseUser.user_metadata?.full_name || supabaseUser.email?.split('@')[0] || 'User',
+    email: supabaseUser.email || '',
+    roles: [],
+    roleNames: [],
+  };
 };
 
 export const useAuthContext = () => {
@@ -138,129 +77,106 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const clearSession = useCallback(() => {
-    setUser(null);
-    persistToken(null);
-    setAuthToken(null);
+  const login = useCallback(async (credentials: LoginData) => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: credentials.email,
+        password: credentials.password,
+      });
+
+      if (error) throw error;
+
+      if (data.user) {
+        setSession(data.session);
+        setUser(convertSupabaseUser(data.user));
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const bootstrapUser = useCallback(
-    async (token?: string | null) => {
-      const activeToken = token ?? getStoredToken();
+  const register = useCallback(async (data: RegisterData) => {
+    setLoading(true);
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { data: authData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            full_name: data.name,
+          },
+        },
+      });
 
-      if (!activeToken) {
-        clearSession();
-        return;
+      if (error) throw error;
+
+      if (authData.user) {
+        setSession(authData.session);
+        setUser(convertSupabaseUser(authData.user));
       }
-
-      setAuthToken(activeToken);
-
-      try {
-        const response = await api.get("/api/v1/me");
-        const nextUser = normalizeUser(response.data);
-        setUser(nextUser);
-      } catch (error) {
-        console.error("Failed to fetch authenticated user", error);
-        clearSession();
-        throw error;
-      }
-    },
-    [clearSession],
-  );
-
-  const login = useCallback(
-    async (credentials: LoginData) => {
-      setLoading(true);
-      try {
-        const response = await api.post("/api/v1/login", credentials);
-        const token = extractToken(response.data);
-        if (token) {
-          setAuthToken(token);
-          persistToken(token);
-        }
-
-        const nextUser = normalizeUser(response.data);
-        setUser(nextUser);
-
-        if (!token) {
-          await bootstrapUser();
-        }
-      } catch (error) {
-        clearSession();
-        throw error;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [bootstrapUser, clearSession],
-  );
-
-  const register = useCallback(
-    async (data: RegisterData) => {
-      setLoading(true);
-      try {
-        const response = await api.post("/api/v1/register", data);
-        const token = extractToken(response.data);
-
-        if (token) {
-          setAuthToken(token);
-          persistToken(token);
-        }
-
-        const nextUser = normalizeUser(response.data);
-        setUser(nextUser);
-
-        if (!token) {
-          await bootstrapUser();
-        }
-      } catch (error) {
-        clearSession();
-        throw error;
-      } finally {
-        setLoading(false);
-      }
-    },
-    [bootstrapUser, clearSession],
-  );
+    } catch (error) {
+      console.error("Registration error:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   const logout = useCallback(async () => {
     setLoading(true);
     try {
-      await api.post("/api/v1/logout");
+      await supabase.auth.signOut();
+      setUser(null);
+      setSession(null);
     } catch (error) {
-      console.warn("Failed to call logout endpoint", error);
+      console.error("Logout error:", error);
     } finally {
-      clearSession();
       setLoading(false);
     }
-  }, [clearSession]);
+  }, []);
 
   const refresh = useCallback(async () => {
     setLoading(true);
     try {
-      await bootstrapUser();
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      setSession(currentSession);
+      setUser(currentSession?.user ? convertSupabaseUser(currentSession.user) : null);
     } finally {
       setLoading(false);
     }
-  }, [bootstrapUser]);
+  }, []);
 
   useEffect(() => {
-    const initialize = async () => {
-      try {
-        await bootstrapUser();
-      } finally {
-        setLoading(false);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, currentSession) => {
+        setSession(currentSession);
+        setUser(currentSession?.user ? convertSupabaseUser(currentSession.user) : null);
       }
-    };
+    );
 
-    void initialize();
-  }, [bootstrapUser]);
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      setSession(currentSession);
+      setUser(currentSession?.user ? convertSupabaseUser(currentSession.user) : null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const value = useMemo<AuthContextType>(
     () => ({
       user,
+      session,
       isAuthenticated: Boolean(user),
       loading,
       login,
@@ -268,7 +184,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       logout,
       refresh,
     }),
-    [loading, login, logout, refresh, register, user],
+    [loading, login, logout, refresh, register, session, user],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
