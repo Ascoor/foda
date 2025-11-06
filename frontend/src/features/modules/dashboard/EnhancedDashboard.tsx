@@ -12,23 +12,7 @@ import { safeArray, safeNumber } from "@/infrastructure/shared/lib/safeData";
 import { API_ENDPOINTS } from "@/infrastructure/shared/lib/endpoints";
 import { useCampaignContext } from "@/infrastructure/shared/contexts/CampaignContext";
 import { toast } from "@/infrastructure/shared/hooks/use-toast";
-
-interface DashboardData {
-  stats: Record<
-    string,
-    { value: number; change?: string; trend?: "up" | "down" }
-  >;
-  activities: Array<{ id: number; type: string; title: string; time: string }>;
-  progress: {
-    registration: number;
-    verification: number;
-    campaign: number;
-    voting: number;
-    overall: number;
-    remaining: number;
-  };
-  turnout: number[];
-}
+import type { DashboardOverviewResponse } from "./types";
 
 const AnimatedCounter = ({
   value,
@@ -136,7 +120,7 @@ export const EnhancedDashboard: React.FC = () => {
     loading: dashboardLoading,
     error: dashboardError,
     execute: refetchDashboard,
-  } = useApi<DashboardData>({
+  } = useApi<DashboardOverviewResponse>({
     url: dashboardEndpoint,
     method: "GET",
   });
@@ -155,7 +139,10 @@ export const EnhancedDashboard: React.FC = () => {
   const safeStats = useMemo(() => {
     const stats = dashboardData?.stats;
     if (!stats || typeof stats !== "object") {
-      return {} as Record<string, Partial<DashboardData["stats"][string]>>;
+      return {} as Record<
+        string,
+        Partial<DashboardOverviewResponse["stats"][string]>
+      >;
     }
 
     return stats;
@@ -176,7 +163,7 @@ export const EnhancedDashboard: React.FC = () => {
   const safeActivities = useMemo(() => {
     return safeArray(dashboardData?.activities).map((activity, index) => {
       const normalized = activity as
-        | Partial<DashboardData["activities"][number]>
+        | Partial<DashboardOverviewResponse["activities"][number]>
         | undefined;
 
       return {

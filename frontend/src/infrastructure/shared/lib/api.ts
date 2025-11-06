@@ -5,6 +5,7 @@ import axios, {
   InternalAxiosRequestConfig,
 } from "axios";
 import { useState, useCallback, useEffect, useRef } from "react";
+import { resolveDevFallback } from "@/infrastructure/dev/requestFallback";
 
 let authToken: string | null = null;
 
@@ -134,13 +135,25 @@ export async function request<T = unknown>(
     }
   }
 
-  const response: AxiosResponse<T> = await api.request<T>(normalizedConfig);
+  try {
+    const response: AxiosResponse<T> = await api.request<T>(normalizedConfig);
 
-  if (useCache) {
-    cache.set(key, { data: response.data, expiry: Date.now() + ttl });
+    if (useCache) {
+      cache.set(key, { data: response.data, expiry: Date.now() + ttl });
+    }
+
+    return response.data;
+  } catch (error) {
+    const fallback = await resolveDevFallback(normalizedConfig, error);
+    if (fallback !== undefined) {
+      if (useCache) {
+        cache.set(key, { data: fallback, expiry: Date.now() + ttl });
+      }
+      return fallback as T;
+    }
+
+    throw error;
   }
-
-  return response.data;
 }
 
 export function useApi<T = unknown>(
