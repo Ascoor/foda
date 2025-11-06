@@ -1,5 +1,5 @@
 // src/integrations/auth/laravel.ts
-import api from "@/infrastructure/shared/lib/api";
+import { request } from "@/infrastructure/shared/lib/api";
 import type { AuthInterface, AuthResult } from "./types";
 
 interface LaravelAuthUser {
@@ -26,13 +26,17 @@ interface LaravelRegisterResponse {
 export function importLaravelAuth(): AuthInterface {
   return {
     async login({ email, password, remember }) {
-      const response = await api.post<LaravelLoginResponse>("/login", {
-        email,
-        password,
-        remember,
+      const response = await request<LaravelLoginResponse>({
+        url: "/login",
+        method: "post",
+        data: {
+          email,
+          password,
+          remember,
+        },
       });
 
-      const { token, user } = response.data ?? {};
+      const { token, user } = response ?? {};
 
       return {
         token,
@@ -40,11 +44,18 @@ export function importLaravelAuth(): AuthInterface {
       } satisfies AuthResult;
     },
     async logout() {
-      await api.post("/logout");
+      await request({
+        url: "/logout",
+        method: "post",
+      });
     },
     async register(data) {
-      const response = await api.post<LaravelRegisterResponse>("/register", data);
-      const payload = response.data?.data ?? {};
+      const response = await request<LaravelRegisterResponse>({
+        url: "/register",
+        method: "post",
+        data,
+      });
+      const payload = response?.data ?? {};
 
       return {
         token: payload.token,
@@ -52,9 +63,12 @@ export function importLaravelAuth(): AuthInterface {
       } satisfies AuthResult;
     },
     async refresh() {
-      const response = await api.get<LaravelAuthUser>("/me");
+      const response = await request<LaravelAuthUser>({
+        url: "/me",
+        method: "get",
+      });
       return {
-        user: response.data,
+        user: response,
       } satisfies AuthResult;
     },
   };
