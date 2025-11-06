@@ -28,7 +28,7 @@ export const NavGuard = ({
   path,
   itemId,
   fallback,
-  redirectTo = "/app",
+  redirectTo = "/dashboard",
 }: NavGuardProps) => {
   const ctx = useNavigationContext();
   const location = useLocation();
@@ -46,11 +46,10 @@ export const NavGuard = ({
   }, [ctx, itemId, targetPath]);
 
   if (!allowed) {
-    if (fallback) {
-      return <>{fallback}</>;
-    }
+    if (location.pathname === redirectTo) return null; // منع حلقة إعادة التوجيه
     return <Navigate to={redirectTo} state={{ from: location }} replace />;
   }
+  
 
   return <>{children}</>;
 };
