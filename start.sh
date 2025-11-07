@@ -114,7 +114,7 @@ if command -v npm &>/dev/null; then
     npm install
   fi
   echo "⚡ Running frontend dev server..."
-  npm run dev -- --port 8080 &
+  npm run dev -- --host 0.0.0.0 --port 8080 &
 else
   print_section "⚠️ npm not found — skipping frontend startup."
 fi
@@ -131,7 +131,7 @@ if [ ! -d "vendor" ]; then
 fi
 
 echo "🧩 NoSQL mode detected — skipping migrations."
-php artisan serve --host=127.0.0.1 --port=8000 &
+php artisan serve --host=0.0.0.0 --port=8000 &
 PHP_SERVER_PID=$!
 
 print_section "🧵 Starting Laravel queue worker for broadcasts"
@@ -140,8 +140,8 @@ QUEUE_WORKER_PID=$!
 
 # === Summary ===
 print_section "✅ Elections360 Development Environment Ready!"
-echo "🌐 Frontend: http://127.0.0.1:8080"
-echo "⚖️ Backend:  http://127.0.0.1:8000"
+echo "🌐 Frontend: http://0.0.0.0:8080"
+echo "⚖️ Backend:  http://0.0.0.0:8000"
 echo "🧠 Redis:    localhost:$REDIS_PORT"
 echo "🔔 Queue worker PID: $QUEUE_WORKER_PID"
 echo "📊 Dashboard will load after both servers are up."
