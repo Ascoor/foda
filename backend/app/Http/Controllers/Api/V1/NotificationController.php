@@ -62,7 +62,7 @@ class NotificationController extends Controller
         return response()->json(['status' => 'ok']);
     }
 
-    protected function authorizeForUser(Request $request, Notification $notification): void
+    public function authorizeForUser(Request $request, Notification $notification): void
     {
         $user = $request->user();
         if (!$user) {
