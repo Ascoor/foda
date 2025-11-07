@@ -2,95 +2,91 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Events\LiveElectionResultsUpdated;
 use App\Http\Controllers\Controller;
 use App\Services\External\ElectionDataService;
 use App\Services\External\GeoDataService;
 use App\Services\External\GoogleMapsService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 
 class ExternalDataController extends Controller
 {
-    public function __construct(
-        private readonly GeoDataService $geoDataService,
-        private readonly ElectionDataService $electionDataService,
-        private readonly GoogleMapsService $googleMapsService,
-    ) {
-    }
-
-    public function geoAreas(Request $request): JsonResponse
+    public function geoAreas(Request $request, GeoDataService $geoDataService): JsonResponse
     {
-        $filters = $this->filtersFromRequest($request);
+        $filters = $request->only([
+            'province',
+            'state',
+            'committee',
+            'search',
+            'page',
+            'per_page',
+        ]);
 
-        $areas = $this->geoDataService->areas($filters);
+        $areas = $geoDataService->areas($this->cleanupFilters($filters));
 
         return response()->json(['data' => $areas]);
     }
 
-    public function electionSummary(Request $request): JsonResponse
+    public function electionSummary(Request $request, ElectionDataService $electionDataService): JsonResponse
     {
-        $filters = $this->filtersFromRequest($request);
+        $filters = $request->only(['province', 'state', 'committee']);
 
-        $summary = $this->electionDataService->summary($filters);
+        $normalizedFilters = $this->cleanupFilters($filters);
 
-        return response()->json(['data' => $summary]);
+        $summary = $electionDataService->summary($normalizedFilters);
+        $turnout = $electionDataService->turnout($normalizedFilters);
+
+        return response()->json([
+            'data' => [
+                'summary' => $summary,
+                'turnout' => $turnout,
+            ],
+        ]);
     }
 
-    public function liveResults(Request $request): JsonResponse
+    public function liveResults(Request $request, ElectionDataService $electionDataService): JsonResponse
     {
-        $filters = $this->filtersFromRequest($request);
+        $filters = $request->only(['province', 'state', 'committee']);
+        $normalizedFilters = $this->cleanupFilters($filters);
+        $results = $electionDataService->liveResults($normalizedFilters);
 
-        $results = $this->electionDataService->liveResults($filters);
+        if ($this->shouldBroadcast($request)) {
+            Event::dispatch(new LiveElectionResultsUpdated([
+                'results' => $results,
+                'filters' => $normalizedFilters,
+                'fetched_at' => now()->toIso8601String(),
+            ]));
+        }
 
         return response()->json(['data' => $results]);
     }
 
-    public function mapConfiguration(Request $request): JsonResponse
+    public function mapConfiguration(Request $request, GoogleMapsService $googleMapsService): JsonResponse
     {
-        $filters = $this->filtersFromRequest($request);
+        $config = $googleMapsService->buildInteractiveConfig($request->all());
 
-        $configuration = $this->googleMapsService->buildInteractiveConfig($filters);
-
-        return response()->json(['data' => $configuration]);
+        return response()->json(['data' => $config]);
     }
 
-    /**
-     * @return array<mixed>
-     */
-    private function filtersFromRequest(Request $request): array
+    private function shouldBroadcast(Request $request): bool
     {
-        $filters = $request->query();
-
-        foreach ($filters as $key => $value) {
-            if ($value === null) {
-                unset($filters[$key]);
-                continue;
-            }
-
-            if (is_string($value)) {
-                $trimmed = trim($value);
-                if ($trimmed === '') {
-                    unset($filters[$key]);
-                    continue;
-                }
-
-                $filters[$key] = $trimmed;
-                continue;
-            }
-
-            if (is_array($value)) {
-                $cleaned = array_filter($value, static fn ($item) => $item !== null && $item !== '');
-
-                if (empty($cleaned)) {
-                    unset($filters[$key]);
-                    continue;
-                }
-
-                $filters[$key] = $cleaned;
-                continue;
-            }
+        if (! $request->has('broadcast')) {
+            return false;
         }
 
-        return $filters;
+        return filter_var($request->get('broadcast'), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    private function cleanupFilters(array $filters): array
+    {
+        return array_filter($filters, static function ($value) {
+            if (is_array($value)) {
+                return ! empty($value);
+            }
+
+            return $value !== null && $value !== '';
+        });
     }
 }
