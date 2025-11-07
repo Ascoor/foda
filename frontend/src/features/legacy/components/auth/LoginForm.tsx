@@ -1,6 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import {
+  createSearchParams,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Button } from "@/infrastructure/shared/ui/button";
 import {
   Card,
@@ -20,9 +25,17 @@ import { Loader2 } from "lucide-react";
  * Reusable login form component.
  * Shows validation errors and redirects to dashboard on success.
  */
+const sanitizePath = (candidate: unknown): string | null => {
+  if (typeof candidate !== "string") return null;
+  if (!candidate.startsWith("/")) return null;
+  return candidate;
+};
+
 export const LoginForm = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate(); // تم استخدام navigate هنا
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -37,6 +50,14 @@ export const LoginForm = () => {
   const isPasswordValid = password.trim().length >= 6; // Example of more complex password validation.
   const canSubmit = isEmailValid && isPasswordValid && !loading;
 
+  const returnTo = useMemo(() => {
+    const stateReturnTo = sanitizePath(
+      (location.state as { returnTo?: string } | undefined)?.returnTo,
+    );
+    const queryReturnTo = sanitizePath(searchParams.get("returnTo"));
+    return stateReturnTo ?? queryReturnTo ?? null;
+  }, [location.state, searchParams]);
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (loading) return;
@@ -44,7 +65,10 @@ export const LoginForm = () => {
     setLoading(true);
     try {
       await login({ email, password, remember });
-      navigate("/dashboard");
+      const search = returnTo
+        ? `?${createSearchParams({ returnTo })}`
+        : "";
+      navigate(`/campaigns/launch${search}`, { replace: true });
     } catch (err: unknown) {
       if (err instanceof Error && err.message.trim()) {
         setError(err.message);

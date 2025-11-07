@@ -26,6 +26,7 @@ import { CommitteesList } from "@/features/modules/committees/List";
 import { CommitteeDetails } from "@/features/modules/committees/Details";
 import { AutomationDashboard } from "@/features/modules/automation/AutomationDashboard";
 import { CampaignsList } from "@/features/modules/campaigns/CampaignsList";
+import { CampaignLaunchpad } from "@/features/modules/campaigns/CampaignLaunchpad";
 import { Settings } from "@/features/modules/settings/Settings";
 import { ObservationsList } from "@/features/modules/observations/ObservationsList";
 import FloatingLandingPage from "@/features/modules/marketing/pages/LandingPage";
@@ -75,6 +76,7 @@ export const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          { path: "/campaigns/launch", element: <CampaignLaunchpad /> },
           {
             element: <MainLayoutWrapper />,
             children: [
