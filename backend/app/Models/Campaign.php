@@ -13,6 +13,7 @@ class Campaign extends Model
     use HasFactory;
 
     protected $fillable = [
+        'election_id',
         'name',
         'slug',
         'description',

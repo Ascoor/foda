@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolesAndPermissionsSeeder::class,
+            AreaSeeder::class,
             GovernoratesAreaSeeder::class,
             ElectionSeeder::class,
             CampaignSeeder::class,

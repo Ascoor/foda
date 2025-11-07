@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Campaign;
+use App\Models\Election;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -11,6 +12,8 @@ class CampaignSeeder extends Seeder
 {
     public function run(): void
     {
+        $election = Election::query()->first() ?? Election::factory()->create();
+
         $campaigns = [
             [
                 'name' => 'حملة التوعية الوطنية',
@@ -21,6 +24,7 @@ class CampaignSeeder extends Seeder
                 'spatial_level' => 'governorate',
                 'bbox' => [29.9, 30.5, 31.2, 32.1],
                 'status' => 'active',
+                'election_id' => $election->id,
             ],
             [
                 'name' => 'حملة الدقهلية',
@@ -31,16 +35,23 @@ class CampaignSeeder extends Seeder
                 'spatial_level' => 'city',
                 'bbox' => [31.0, 31.2, 31.3, 31.5],
                 'status' => 'planned',
+                'election_id' => $election->id,
             ],
         ];
 
         foreach ($campaigns as $spec) {
             $unique = Arr::only($spec, ['name', 'starts_at', 'ends_at']);
 
-            Campaign::query()->updateOrCreate(
-                $unique,
-                array_merge($spec, ['bbox' => Arr::get($spec, 'bbox')])
-            );
+            Campaign::query()->updateOrCreate($unique, [
+                'slug' => Arr::get($spec, 'slug'),
+                'description' => Arr::get($spec, 'description'),
+                'starts_at' => Arr::get($spec, 'starts_at'),
+                'ends_at' => Arr::get($spec, 'ends_at'),
+                'spatial_level' => Arr::get($spec, 'spatial_level'),
+                'bbox' => Arr::get($spec, 'bbox'),
+                'status' => Arr::get($spec, 'status'),
+                'election_id' => Arr::get($spec, 'election_id'),
+            ]);
         }
     }
 }
