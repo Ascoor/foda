@@ -1,0 +1,1517 @@
+diff --git a/backend/app/Models/Candidate.php b/backend/app/Models/Candidate.php
+index 0364e8b71b72216155502a581f876c6c0eabb7d8..1489e76e7a3a15490dfd2bf037bfaa829fdc6cd9 100644
+--- a/backend/app/Models/Candidate.php
++++ b/backend/app/Models/Candidate.php
+@@ -1,31 +1,32 @@
+ <?php
+ 
+ namespace App\Models;
+ 
+ use App\Models\Concerns\BelongsToCampaign;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
+ use Illuminate\Database\Eloquent\Model;
+ use Illuminate\Database\Eloquent\Relations\HasMany;
+ 
+ class Candidate extends Model
+ {
+     use HasFactory;
+     use BelongsToCampaign;
+ 
+     protected $fillable = [
++        'election_id',
+         'campaign_id',
+         'name',
+         'party',
+         'bio',
+         'contact',
+     ];
+ 
+     protected $casts = [
+         'contact' => 'array',
+     ];
+ 
+     public function agents(): HasMany
+     {
+         return $this->hasMany(Agent::class);
+     }
+ }
+diff --git a/backend/app/Models/GeoArea.php b/backend/app/Models/GeoArea.php
+index 7443bb40b9a3b8ac7d5206be6ff92acbc0c464e4..5a9bb8c6e3665e94739baa4337b7e7fe25176350 100644
+--- a/backend/app/Models/GeoArea.php
++++ b/backend/app/Models/GeoArea.php
+@@ -1,41 +1,42 @@
+ <?php
+ 
+ namespace App\Models;
+ 
+ use App\Models\Concerns\BelongsToCampaign;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
+ use Illuminate\Database\Eloquent\Model;
+ use Illuminate\Database\Eloquent\Relations\BelongsTo;
+ use Illuminate\Database\Eloquent\Relations\HasMany;
+ 
+ class GeoArea extends Model
+ {
+     use HasFactory;
+     use BelongsToCampaign;
+ 
+     protected $fillable = [
++        'election_id',
+         'campaign_id',
+         'name',
+         'level',
+         'parent_id',
+         'code',
+         'meta',
+     ];
+ 
+     protected $casts = [
+         'meta' => 'array',
+     ];
+ 
+     public function parent(): BelongsTo
+     {
+         return $this->belongsTo(self::class, 'parent_id');
+     }
+ 
+     public function children(): HasMany
+     {
+         return $this->hasMany(self::class, 'parent_id');
+     }
+ 
+     public function committees(): HasMany
+     {
+         return $this->hasMany(Committee::class);
+diff --git a/backend/app/Models/Voter.php b/backend/app/Models/Voter.php
+index 0b9a8fb4438915af3bc4ff95f221cf40319426de..81952bd389fb5c7e350fa29623f7061d1db6bbfa 100644
+--- a/backend/app/Models/Voter.php
++++ b/backend/app/Models/Voter.php
+@@ -1,43 +1,45 @@
+ <?php
+ 
+ namespace App\Models;
+ 
+ use App\Models\Concerns\BelongsToCampaign;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
+ use Illuminate\Database\Eloquent\Model;
+ use Illuminate\Database\Eloquent\Relations\BelongsTo;
+ 
+ class Voter extends Model
+ {
+     use HasFactory;
+     use BelongsToCampaign;
+ 
+     protected $fillable = [
+         'campaign_id',
+         'committee_id',
++        'area_id',
+         'name',
++        'voter_id',
+         'national_id',
+         'voter_uid',
+         'address',
+         'phone',
+         'gender',
+         'birthdate',
+         'meta',
+     ];
+ 
+     protected $casts = [
+         'birthdate' => 'date',
+         'meta' => 'array',
+     ];
+ 
+     public function committee(): BelongsTo
+     {
+         return $this->belongsTo(Committee::class);
+     }
+ 
+     public function scopeSearch($query, ?string $term)
+     {
+         return $query->when($term, function ($q) use ($term) {
+             $like = '%' . $term . '%';
+             $q->where(function ($inner) use ($like) {
+                 $inner->where('name', 'like', $like)
+diff --git a/backend/app/Services/Schema/SchemaSynchronizer.php b/backend/app/Services/Schema/SchemaSynchronizer.php
+index ae4c78a5ffe739e3ab7d656aba40a3de2eb0a954..e2f7026fa47bac7bcc934726dfabdf5676785973 100644
+--- a/backend/app/Services/Schema/SchemaSynchronizer.php
++++ b/backend/app/Services/Schema/SchemaSynchronizer.php
+@@ -1,61 +1,68 @@
+ <?php
+ 
+ namespace App\Services\Schema;
+ 
+ use Doctrine\DBAL\Schema\AbstractSchemaManager;
+ use Doctrine\DBAL\Schema\Column as DoctrineColumn;
+ use Illuminate\Database\Connection;
+ use Illuminate\Database\DatabaseManager;
+ use Illuminate\Database\Schema\Blueprint;
+ use Illuminate\Support\Facades\Schema;
+ use Illuminate\Support\Str;
+ 
+ class SchemaSynchronizer
+ {
+-    private AbstractSchemaManager $schemaManager;
++    private ?AbstractSchemaManager $schemaManager = null;
+ 
+     private string $connectionName;
+ 
++    private ?\Throwable $connectionException = null;
++
+     private array $ignoreTables = [
+         'migrations',
+         'failed_jobs',
+         'password_resets',
+         'personal_access_tokens',
+         'schema_migrations_log',
+         'cache',
+         'jobs',
+     ];
+ 
+     public function __construct(
+         private BlueprintRepository $blueprints,
+         private SchemaAuditLogger $auditLogger,
+-        DatabaseManager $db
++        private DatabaseManager $db
+     ) {
+         $this->connectionName = $db->getDefaultConnection();
+-        $connection = $db->connection($this->connectionName);
+-        $this->schemaManager = $this->resolveSchemaManager($connection);
++
++        try {
++            $connection = $db->connection($this->connectionName);
++            $this->schemaManager = $this->resolveSchemaManager($connection);
++        } catch (\Throwable $exception) {
++            $this->connectionException = $exception;
++        }
+     }
+ 
+     /**
+      * @param  array<int, string>|null  $tables
+      */
+     public function sync(?array $tables, bool $apply, bool $cleanup, ?int $userId = null): array
+     {
+         $inspection = $this->inspect($tables);
+ 
+         $results = [
+             'matched' => [],
+             'added' => [],
+             'updated' => [],
+             'deleted' => [],
+             'warnings' => [],
+             'missing' => $inspection['missing'],
+             'diverged' => [],
+             'extra' => $inspection['extra'],
+         ];
+ 
+         foreach ($inspection['tables'] as $table => $info) {
+             if (! $info['exists']) {
+                 if ($apply) {
+                     $this->createTable($info['blueprint']);
+                     $results['added'][] = $table;
+@@ -87,118 +94,121 @@ public function sync(?array $tables, bool $apply, bool $cleanup, ?int $userId =
+                     $results['deleted'][] = $table;
+                     $this->auditLogger->log($table, 'deleted', $userId);
+                 }
+             }
+         }
+ 
+         $finalInspection = $apply ? $this->inspect($tables) : $inspection;
+         $results['final_status'] = $this->determineStatus($finalInspection, $results, $cleanup, $apply);
+         $results['final_inspection'] = $finalInspection;
+ 
+         return $results;
+     }
+ 
+     /**
+      * @param  array<int, string>  $tables
+      */
+     public function updateTables(array $tables, ?int $userId = null): array
+     {
+         return $this->sync($tables, true, false, $userId);
+     }
+ 
+     public function addTable(string $table, ?int $userId = null): array
+     {
+         $blueprint = $this->blueprints->require($table);
+ 
+-        $exists = $this->schemaManager->tablesExist([$table]);
++        $schemaManager = $this->schemaManager();
++        $exists = $schemaManager->tablesExist([$table]);
+ 
+         if ($exists) {
+             return [
+                 'status' => 'exists',
+                 'table' => $table,
+             ];
+         }
+ 
+         $this->createTable($blueprint);
+         $this->auditLogger->log($table, 'added', $userId);
+ 
+         return [
+             'status' => 'created',
+             'table' => $table,
+         ];
+     }
+ 
+     public function removeTable(string $table, ?int $userId = null): array
+     {
+-        if (! $this->schemaManager->tablesExist([$table])) {
++        $schemaManager = $this->schemaManager();
++
++        if (! $schemaManager->tablesExist([$table])) {
+             return [
+                 'status' => 'missing',
+                 'table' => $table,
+             ];
+         }
+ 
+         $this->dropTable($table);
+         $this->auditLogger->log($table, 'deleted', $userId);
+ 
+         return [
+             'status' => 'deleted',
+             'table' => $table,
+         ];
+     }
+ 
+     /**
+      * @param  array<int, string>|null  $tables
+      */
+     public function inspect(?array $tables = null): array
+     {
+         $blueprints = $this->blueprints->forTables($tables);
+         $existingTables = $this->listExistingTables();
+ 
+         $inspection = [
+             'tables' => [],
+             'missing' => [],
+             'extra' => [],
+         ];
+ 
+         foreach ($blueprints as $table => $blueprint) {
+             $info = [
+                 'exists' => in_array($table, $existingTables, true),
+                 'matches' => false,
+                 'differences' => [
+                     'missing_columns' => [],
+                     'extra_columns' => [],
+                     'type_mismatches' => [],
+                     'missing_indexes' => [],
+                     'missing_foreign_keys' => [],
+                 ],
+                 'blueprint' => $blueprint,
+             ];
+ 
+             if (! $info['exists']) {
+                 $inspection['missing'][] = $table;
+             } else {
+-                $tableDetails = $this->schemaManager->introspectTable($table);
++                $tableDetails = $this->schemaManager()->introspectTable($table);
+ 
+                 $info['matches'] = $this->compareTable($tableDetails, $blueprint, $info['differences']);
+             }
+ 
+             $inspection['tables'][$table] = $info;
+         }
+ 
+         $expectedTables = $blueprints->keys()->all();
+         $trackedTables = $tables ? array_values(array_intersect($existingTables, $tables)) : $existingTables;
+ 
+         foreach ($trackedTables as $existingTable) {
+             if (in_array($existingTable, $this->ignoreTables, true)) {
+                 continue;
+             }
+ 
+             if (! in_array($existingTable, $expectedTables, true)) {
+                 $inspection['extra'][] = $existingTable;
+             }
+         }
+ 
+         sort($inspection['missing']);
+         sort($inspection['extra']);
+ 
+         return $inspection;
+     }
+@@ -488,43 +498,65 @@ private function applyForeignKeys(Blueprint $table, TableBlueprint $blueprint):
+         foreach ($blueprint->foreignKeys() as $foreignKey) {
+             $columns = $foreignKey['columns'] ?? null;
+             $references = $foreignKey['references'] ?? null;
+             $on = $foreignKey['on'] ?? null;
+ 
+             if (! $columns || ! $references || ! $on) {
+                 continue;
+             }
+ 
+             $definition = $table->foreign($columns, $foreignKey['name'] ?? null)
+                 ->references($references)
+                 ->on($on);
+ 
+             if (isset($foreignKey['onDelete'])) {
+                 $definition->onDelete($foreignKey['onDelete']);
+             }
+ 
+             if (isset($foreignKey['onUpdate'])) {
+                 $definition->onUpdate($foreignKey['onUpdate']);
+             }
+         }
+     }
+ 
+     private function listExistingTables(): array
+     {
+-        $tables = $this->schemaManager->listTableNames();
++        $tables = $this->schemaManager()->listTableNames();
+ 
+         return array_map(fn ($table) => $table, $tables);
+     }
+ 
++    private function schemaManager(): AbstractSchemaManager
++    {
++        if ($this->schemaManager instanceof AbstractSchemaManager) {
++            return $this->schemaManager;
++        }
++
++        try {
++            $connection = $this->db->connection($this->connectionName);
++            $this->schemaManager = $this->resolveSchemaManager($connection);
++
++            return $this->schemaManager;
++        } catch (\Throwable $exception) {
++            $this->connectionException = $exception;
++
++            $message = 'A database connection is required to inspect or synchronize the schema. '
++                .'Unable to connect using the ['.$this->connectionName.'] connection: '
++                .$exception->getMessage();
++
++            throw new \RuntimeException($message, previous: $exception);
++        }
++    }
++
+     private function resolveSchemaManager(Connection $connection): AbstractSchemaManager
+     {
+         if (method_exists($connection, 'getDoctrineSchemaManager')) {
+             return $connection->getDoctrineSchemaManager();
+         }
+ 
+         if (method_exists($connection, 'getDoctrineConnection')) {
+             return $connection->getDoctrineConnection()->createSchemaManager();
+         }
+ 
+         throw new \RuntimeException('Unable to resolve Doctrine schema manager for the current connection.');
+     }
+ }
+diff --git a/backend/config/database.php b/backend/config/database.php
+index e265ce67d7154d6ef9edd68801398da141269d07..0d7966200a0782498d85db67f923439130cab66d 100644
+--- a/backend/config/database.php
++++ b/backend/config/database.php
+@@ -1,43 +1,43 @@
+ <?php
+ 
+ use Illuminate\Support\Str;
+ 
+ return [
+ 
+     /*
+     |--------------------------------------------------------------------------
+     | Default Database Connection Name
+     |--------------------------------------------------------------------------
+     |
+     | Here you may specify which of the database connections below you wish
+     | to use as your default connection for all database work. Of course
+     | you may use many connections at once using the Database library.
+     |
+     */
+ 
+-    'default' => env('DB_CONNECTION', 'mysql'),
++    'default' => env('DB_CONNECTION', 'sqlite'),
+ 
+     /*
+     |--------------------------------------------------------------------------
+     | Database Connections
+     |--------------------------------------------------------------------------
+     |
+     | Here are each of the database connections setup for your application.
+     | Of course, examples of configuring each database platform that is
+     | supported by Laravel is shown below to make development simple.
+     |
+     |
+     | All database work in Laravel is done through the PHP PDO facilities
+     | so make sure you have the driver for your particular database of
+     | choice installed on your machine before you begin development.
+     |
+     */
+ 
+     'connections' => [
+ 
+         'sqlite' => [
+             'driver' => 'sqlite',
+             'url' => env('DATABASE_URL'),
+             'database' => env('DB_DATABASE') ?: database_path('database.sqlite'),
+             'prefix' => '',
+             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+diff --git a/backend/database/database.sqlite b/backend/database/database.sqlite
+index e69de29bb2d1d6434b8b29ae775ad8c2e48c5391..ff86ae1025fec10a1b1b3e13aa70032bbec32081 100644
+GIT binary patch
+literal 471040
+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
+zAOR$R1dsp{Kmter2_OL^fCP}hO-!J%0AODK_i*3W@BhDvl}6Q&01`j~NB{{S0VIF~
+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
+U*w`xFof6E!w?|>~%f4^@U&cuP2><{9
+
+literal 0
+HcmV?d00001
+
+diff --git a/backend/database/factories/GeoAreaFactory.php b/backend/database/factories/GeoAreaFactory.php
+index c6d61bf58f18bc1f7b845a21f7489fe969c5d532..8724017cb1d360b6c3c82b2f2316ebd9355c1121 100644
+--- a/backend/database/factories/GeoAreaFactory.php
++++ b/backend/database/factories/GeoAreaFactory.php
+@@ -1,25 +1,34 @@
+ <?php
+ 
+ namespace Database\Factories;
+ 
+ use App\Models\GeoArea;
++use App\Models\Election;
+ use Database\Factories\Concerns\ResolvesCampaign;
+ use Illuminate\Database\Eloquent\Factories\Factory;
+ 
+ class GeoAreaFactory extends Factory
+ {
+     use ResolvesCampaign;
+ 
+     protected $model = GeoArea::class;
+ 
+     public function definition(): array
+     {
+         return [
+             'campaign_id' => $this->resolveCampaignId(),
++            'election_id' => $this->resolveElectionId(),
+             'name' => $this->faker->city(),
+             'level' => $this->faker->randomElement(['city', 'center', 'governorate', 'region']),
+             'code' => strtoupper($this->faker->lexify('GA-????')),
+             'meta' => ['population' => $this->faker->numberBetween(1000, 50000)],
+         ];
+     }
++
++    protected function resolveElectionId(): int
++    {
++        $existing = Election::query()->inRandomOrder()->value('id');
++
++        return $existing ?: Election::factory()->create()->id;
++    }
+ }
+diff --git a/backend/database/factories/VoterFactory.php b/backend/database/factories/VoterFactory.php
+index 6cf378fa1c3d4379684d5ca8f61d86293f5da0fe..4c31a4af076dc705b2f8fdfdf8ed5703d5e7001f 100644
+--- a/backend/database/factories/VoterFactory.php
++++ b/backend/database/factories/VoterFactory.php
+@@ -1,41 +1,51 @@
+ <?php
+ 
+ namespace Database\Factories;
+ 
++use App\Models\Area;
+ use App\Models\Committee;
+ use App\Models\Voter;
+ use Database\Factories\Concerns\ResolvesCampaign;
+ use Illuminate\Database\Eloquent\Factories\Factory;
+ use Illuminate\Support\Str;
+ 
+ class VoterFactory extends Factory
+ {
+     use ResolvesCampaign;
+ 
+     protected $model = Voter::class;
+ 
+     public function definition(): array
+     {
+         $nationalId = Str::padLeft((string) $this->faker->unique()->randomNumber(8), 14, '1');
+ 
+         return [
+             'campaign_id' => $this->resolveCampaignId(),
+             'committee_id' => $this->resolveCommitteeId(),
++            'area_id' => $this->resolveAreaId(),
+             'name' => $this->faker->name(),
+             'national_id' => $nationalId,
++            'voter_id' => 'LEG-' . $this->faker->unique()->numberBetween(100000, 999999),
+             'voter_uid' => 'V-' . $this->faker->unique()->numberBetween(1000, 9999),
+             'address' => $this->faker->address(),
+             'phone' => '01' . $this->faker->numerify('########'),
+             'gender' => $this->faker->randomElement(['male', 'female']),
+             'birthdate' => $this->faker->dateTimeBetween('-70 years', '-18 years'),
+             'meta' => ['notes' => $this->faker->sentence()],
+         ];
+     }
+ 
+     protected function resolveCommitteeId(): ?int
+     {
+         $existing = Committee::query()->inRandomOrder()->value('id');
+ 
+         return $existing ?: Committee::factory()->create()->id;
+     }
++
++    protected function resolveAreaId(): int
++    {
++        $existing = Area::query()->inRandomOrder()->value('id');
++
++        return $existing ?: Area::factory()->create()->id;
++    }
+ }
+diff --git a/backend/database/migrations/2025_11_07_000900_update_geo_areas_table_structure.php b/backend/database/migrations/2025_11_07_000900_update_geo_areas_table_structure.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..02e9fac50fcd2f592de290a7127f78b0ab2e3503
+--- /dev/null
++++ b/backend/database/migrations/2025_11_07_000900_update_geo_areas_table_structure.php
+@@ -0,0 +1,55 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Support\Facades\Schema;
++
++return new class extends Migration {
++    public function up(): void
++    {
++        Schema::table('geo_areas', function (Blueprint $table) {
++            if (! Schema::hasColumn('geo_areas', 'parent_id')) {
++                $table->foreignId('parent_id')
++                    ->nullable()
++                    ->after('name')
++                    ->constrained('geo_areas')
++                    ->nullOnDelete();
++            }
++
++            if (! Schema::hasColumn('geo_areas', 'level')) {
++                $table->string('level', 50)->nullable()->after('parent_id');
++            }
++
++            if (! Schema::hasColumn('geo_areas', 'code')) {
++                $table->string('code', 50)->nullable()->after('level');
++                $table->unique('code', 'geo_areas_code_unique');
++            }
++
++            if (! Schema::hasColumn('geo_areas', 'meta')) {
++                $table->json('meta')->nullable()->after('code');
++            }
++        });
++    }
++
++    public function down(): void
++    {
++        Schema::table('geo_areas', function (Blueprint $table) {
++            if (Schema::hasColumn('geo_areas', 'meta')) {
++                $table->dropColumn('meta');
++            }
++
++            if (Schema::hasColumn('geo_areas', 'code')) {
++                $table->dropUnique('geo_areas_code_unique');
++                $table->dropColumn('code');
++            }
++
++            if (Schema::hasColumn('geo_areas', 'level')) {
++                $table->dropColumn('level');
++            }
++
++            if (Schema::hasColumn('geo_areas', 'parent_id')) {
++                $table->dropConstrainedForeignId('parent_id');
++            }
++        });
++    }
++};
+diff --git a/backend/database/migrations/2025_11_07_001000_align_voters_table_with_campaign_scope.php b/backend/database/migrations/2025_11_07_001000_align_voters_table_with_campaign_scope.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..8327f51f714ed12a92d2dd52e45b1ad4999a8274
+--- /dev/null
++++ b/backend/database/migrations/2025_11_07_001000_align_voters_table_with_campaign_scope.php
+@@ -0,0 +1,57 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Support\Facades\Schema;
++
++return new class extends Migration {
++    public function up(): void
++    {
++        Schema::table('voters', function (Blueprint $table) {
++            if (Schema::hasColumn('voters', 'sex') && ! Schema::hasColumn('voters', 'gender')) {
++                $table->renameColumn('sex', 'gender');
++            }
++        });
++
++        Schema::table('voters', function (Blueprint $table) {
++            if (! Schema::hasColumn('voters', 'national_id')) {
++                $table->string('national_id', 50)->nullable()->after('name');
++            }
++
++            if (! Schema::hasColumn('voters', 'voter_uid')) {
++                $table->string('voter_uid', 64)->nullable()->after('national_id');
++            }
++
++            if (! Schema::hasColumn('voters', 'gender')) {
++                $table->string('gender', 10)->nullable()->after('phone');
++            }
++
++            if (! Schema::hasColumn('voters', 'meta')) {
++                $table->json('meta')->nullable()->after('birthdate');
++            }
++        });
++    }
++
++    public function down(): void
++    {
++        Schema::table('voters', function (Blueprint $table) {
++            if (Schema::hasColumn('voters', 'meta')) {
++                $table->dropColumn('meta');
++            }
++
++            if (Schema::hasColumn('voters', 'voter_uid')) {
++                $table->dropColumn('voter_uid');
++            }
++
++            if (Schema::hasColumn('voters', 'national_id')) {
++                $table->dropColumn('national_id');
++            }
++        });
++
++        Schema::table('voters', function (Blueprint $table) {
++            if (Schema::hasColumn('voters', 'gender') && ! Schema::hasColumn('voters', 'sex')) {
++                $table->renameColumn('gender', 'sex');
++            }
++        });
++    }
++};
+diff --git a/backend/database/migrations/2025_11_07_001100_update_volunteers_table_structure.php b/backend/database/migrations/2025_11_07_001100_update_volunteers_table_structure.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..1bb0725f211c90956b36dc2aaae1d001ac95c981
+--- /dev/null
++++ b/backend/database/migrations/2025_11_07_001100_update_volunteers_table_structure.php
+@@ -0,0 +1,25 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Support\Facades\Schema;
++
++return new class extends Migration {
++    public function up(): void
++    {
++        Schema::table('volunteers', function (Blueprint $table) {
++            if (! Schema::hasColumn('volunteers', 'tags')) {
++                $table->json('tags')->nullable()->after('phone');
++            }
++        });
++    }
++
++    public function down(): void
++    {
++        Schema::table('volunteers', function (Blueprint $table) {
++            if (Schema::hasColumn('volunteers', 'tags')) {
++                $table->dropColumn('tags');
++            }
++        });
++    }
++};
+diff --git a/backend/database/migrations/2025_11_07_001200_update_observations_table_structure.php b/backend/database/migrations/2025_11_07_001200_update_observations_table_structure.php
+new file mode 100644
+index 0000000000000000000000000000000000000000..56749774812745cf516b0c71b34a75d37ff30b95
+--- /dev/null
++++ b/backend/database/migrations/2025_11_07_001200_update_observations_table_structure.php
+@@ -0,0 +1,44 @@
++<?php
++
++use Illuminate\Database\Migrations\Migration;
++use Illuminate\Database\Schema\Blueprint;
++use Illuminate\Support\Facades\Schema;
++
++return new class extends Migration {
++    public function up(): void
++    {
++        Schema::table('observations', function (Blueprint $table) {
++            if (! Schema::hasColumn('observations', 'campaign_id')) {
++                $table->foreignId('campaign_id')
++                    ->after('id')
++                    ->constrained('campaigns')
++                    ->cascadeOnDelete();
++            }
++
++            if (! Schema::hasColumn('observations', 'recorded_at')) {
++                $table->dateTime('recorded_at')->nullable()->after('notes');
++            }
++
++            if (! Schema::hasColumn('observations', 'meta')) {
++                $table->json('meta')->nullable()->after('recorded_at');
++            }
++        });
++    }
++
++    public function down(): void
++    {
++        Schema::table('observations', function (Blueprint $table) {
++            if (Schema::hasColumn('observations', 'meta')) {
++                $table->dropColumn('meta');
++            }
++
++            if (Schema::hasColumn('observations', 'recorded_at')) {
++                $table->dropColumn('recorded_at');
++            }
++
++            if (Schema::hasColumn('observations', 'campaign_id')) {
++                $table->dropConstrainedForeignId('campaign_id');
++            }
++        });
++    }
++};
+diff --git a/backend/database/seeders/CandidateSeeder.php b/backend/database/seeders/CandidateSeeder.php
+index 0a0d098890d8946e2a06f88e300ed8aca1e0bc9d..b0eadb7b29ac68c56d247c307e4eeeffaee956eb 100644
+--- a/backend/database/seeders/CandidateSeeder.php
++++ b/backend/database/seeders/CandidateSeeder.php
+@@ -1,25 +1,33 @@
+ <?php
+ 
+ namespace Database\Seeders;
+ 
+ use App\Models\Campaign;
+ use App\Models\Candidate;
++use App\Models\Election;
+ use Illuminate\Database\Seeder;
+ 
+ class CandidateSeeder extends Seeder
+ {
+     public function run(): void
+     {
+         $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
++        $election = Election::query()->first() ?? Election::factory()->create();
+ 
+         Candidate::query()->updateOrCreate(
+             ['campaign_id' => $campaign->id, 'name' => 'المرشح الأول'],
+-            ['party' => 'الحزب الأول']
++            [
++                'election_id' => $election->id,
++                'party' => 'الحزب الأول',
++            ]
+         );
+ 
+         Candidate::query()->updateOrCreate(
+             ['campaign_id' => $campaign->id, 'name' => 'المرشح الثاني'],
+-            ['party' => 'الحزب الثاني']
++            [
++                'election_id' => $election->id,
++                'party' => 'الحزب الثاني',
++            ]
+         );
+     }
+ }
+diff --git a/backend/database/seeders/EventSeeder.php b/backend/database/seeders/EventSeeder.php
+index eb9330f8f1a40093c40f2b0c50143876cb1174e6..e52c90f11aa0124a1ea634892ac0bcd9c12781b6 100644
+--- a/backend/database/seeders/EventSeeder.php
++++ b/backend/database/seeders/EventSeeder.php
+@@ -1,44 +1,55 @@
+ <?php
+ 
+ namespace Database\Seeders;
+ 
+ use App\Models\Area;
+ use App\Models\Campaign;
+ use App\Models\Event;
+ use App\Models\Team;
+ use Illuminate\Database\Seeder;
++use Illuminate\Support\Str;
+ 
+ class EventSeeder extends Seeder
+ {
+     public function run(): void
+     {
+         $area = Area::query()->first() ?? Area::factory()->create();
+         $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
+         $team = Team::query()->first() ?? Team::factory()->create(['campaign_id' => $campaign->id]);
+         $campaignId = $team->campaign_id ?? $campaign->id;
+ 
+-        Event::query()->updateOrCreate(
+-            ['campaign_id' => $campaignId, 'name' => 'لقاء تعريفي'],
++        $events = [
+             [
++                'name' => 'لقاء تعريفي',
+                 'description' => 'فعالية تعريفية للمتطوعين الجدد',
+                 'organiser' => 'منظم 1',
+                 'location' => 'الرياض',
+                 'date' => now()->addDays(5),
+-                'area_id' => $area->id,
+-                'team_id' => $team->id,
+-            ]
+-        );
+-
+-        Event::query()->updateOrCreate(
+-            ['campaign_id' => $campaignId, 'name' => 'Kickoff Meeting'],
++            ],
+             [
++                'name' => 'Kickoff Meeting',
+                 'description' => 'Kickoff for the upcoming campaign',
+                 'organiser' => 'Organizer 1',
+                 'location' => 'New York',
+                 'date' => now()->addDays(10),
+-                'area_id' => $area->id,
+-                'team_id' => $team->id,
+-            ]
+-        );
++            ],
++        ];
++
++        foreach ($events as $event) {
++            $slug = Str::slug($event['name'], '-');
++
++            if ($slug === '') {
++                $slug = Str::ulid();
++            }
++
++            Event::query()->updateOrCreate(
++                ['campaign_id' => $campaignId, 'name' => $event['name']],
++                array_merge($event, [
++                    'event_id' => Str::upper(sprintf('EVT-%d-%s', $campaignId, str_replace('-', '', $slug))),
++                    'area_id' => $area->id,
++                    'team_id' => $team->id,
++                ])
++            );
++        }
+     }
+ }
+diff --git a/backend/database/seeders/GeoAreaSeeder.php b/backend/database/seeders/GeoAreaSeeder.php
+index 540a12456d6aaa33d823dd9724bd9bca2e0cd875..aeb2ec7df254e7ccd7252c9f6072ebc28aa7c102 100644
+--- a/backend/database/seeders/GeoAreaSeeder.php
++++ b/backend/database/seeders/GeoAreaSeeder.php
+@@ -1,25 +1,37 @@
+ <?php
+ 
+ namespace Database\Seeders;
+ 
+ use App\Models\Campaign;
++use App\Models\Election;
+ use App\Models\GeoArea;
+ use Illuminate\Database\Seeder;
+ 
+ class GeoAreaSeeder extends Seeder
+ {
+     public function run(): void
+     {
+         $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
++        $election = Election::query()->first() ?? Election::factory()->create();
+ 
+         GeoArea::query()->updateOrCreate(
+             ['campaign_id' => $campaign->id, 'code' => 'GA-001'],
+-            ['name' => 'الدائرة الأولى', 'level' => 'city']
++            [
++                'election_id' => $election->id,
++                'name' => 'الدائرة الأولى',
++                'level' => 'city',
++                'meta' => ['centroid' => ['lat' => 24.7136, 'lng' => 46.6753]],
++            ]
+         );
+ 
+         GeoArea::query()->updateOrCreate(
+             ['campaign_id' => $campaign->id, 'code' => 'GA-002'],
+-            ['name' => 'الدائرة الثانية', 'level' => 'city']
++            [
++                'election_id' => $election->id,
++                'name' => 'الدائرة الثانية',
++                'level' => 'city',
++                'meta' => ['centroid' => ['lat' => 21.3891, 'lng' => 39.8579]],
++            ]
+         );
+     }
+ }
+diff --git a/backend/database/seeders/HomeSeeder.php b/backend/database/seeders/HomeSeeder.php
+index 7100ea352beffe0ea585e08bb8b5d33df1aba798..cdc93aef5e10bcfee180443495507dab6131e545 100644
+--- a/backend/database/seeders/HomeSeeder.php
++++ b/backend/database/seeders/HomeSeeder.php
+@@ -1,44 +1,54 @@
+ <?php
+ 
+ namespace Database\Seeders;
+ 
+ use App\Models\Area;
++use App\Models\Campaign;
+ use App\Models\Event;
+ use App\Models\Team;
+ use App\Models\User;
+ use App\Models\Volunteer;
+ use App\Models\Voter;
+ use Illuminate\Database\Seeder;
+ 
+ class HomeSeeder extends Seeder
+ {
+     public function run(): void
+     {
++        $campaign = Campaign::query()->first() ?? Campaign::factory()->create();
+         $user = User::factory()->create();
+ 
+         $area = Area::factory()->create();
+ 
+         $team = Team::factory()->create([
++            'campaign_id' => $campaign->id,
+             'area_id' => $area->id,
+             'supervisor_id' => $user->id,
+         ]);
+ 
+         Volunteer::create([
+             'name' => 'Demo Volunteer',
++            'campaign_id' => $team->campaign_id,
+             'team_id' => $team->id,
+         ]);
+ 
+         Voter::factory()->create([
++            'campaign_id' => $team->campaign_id,
++            'area_id' => $area->id,
+             'created_at' => now()->subMonth(),
+             'updated_at' => now()->subMonth(),
+         ]);
+ 
+-        Voter::factory()->create();
++        Voter::factory()->create([
++            'campaign_id' => $team->campaign_id,
++            'area_id' => $area->id,
++        ]);
+ 
+         Event::factory()->create([
++            'campaign_id' => $team->campaign_id,
+             'area_id' => $area->id,
+             'team_id' => $team->id,
+         ]);
+     }
+ }
+ 

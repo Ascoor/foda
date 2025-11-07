@@ -15,7 +15,9 @@ class Voter extends Model
     protected $fillable = [
         'campaign_id',
         'committee_id',
+        'area_id',
         'name',
+        'voter_id',
         'national_id',
         'voter_uid',
         'address',

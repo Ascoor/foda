@@ -12,9 +12,11 @@ use Illuminate\Support\Str;
 
 class SchemaSynchronizer
 {
-    private AbstractSchemaManager $schemaManager;
+    private ?AbstractSchemaManager $schemaManager = null;
 
     private string $connectionName;
+
+    private ?\Throwable $connectionException = null;
 
     private array $ignoreTables = [
         'migrations',
@@ -29,11 +31,16 @@ class SchemaSynchronizer
     public function __construct(
         private BlueprintRepository $blueprints,
         private SchemaAuditLogger $auditLogger,
-        DatabaseManager $db
+        private DatabaseManager $db
     ) {
         $this->connectionName = $db->getDefaultConnection();
-        $connection = $db->connection($this->connectionName);
-        $this->schemaManager = $this->resolveSchemaManager($connection);
+
+        try {
+            $connection = $db->connection($this->connectionName);
+            $this->schemaManager = $this->resolveSchemaManager($connection);
+        } catch (\Throwable $exception) {
+            $this->connectionException = $exception;
+        }
     }
 
     /**
@@ -109,7 +116,8 @@ class SchemaSynchronizer
     {
         $blueprint = $this->blueprints->require($table);
 
-        $exists = $this->schemaManager->tablesExist([$table]);
+        $schemaManager = $this->schemaManager();
+        $exists = $schemaManager->tablesExist([$table]);
 
         if ($exists) {
             return [
@@ -129,7 +137,9 @@ class SchemaSynchronizer
 
     public function removeTable(string $table, ?int $userId = null): array
     {
-        if (! $this->schemaManager->tablesExist([$table])) {
+        $schemaManager = $this->schemaManager();
+
+        if (! $schemaManager->tablesExist([$table])) {
             return [
                 'status' => 'missing',
                 'table' => $table,
@@ -176,7 +186,7 @@ class SchemaSynchronizer
             if (! $info['exists']) {
                 $inspection['missing'][] = $table;
             } else {
-                $tableDetails = $this->schemaManager->introspectTable($table);
+                $tableDetails = $this->schemaManager()->introspectTable($table);
 
                 $info['matches'] = $this->compareTable($tableDetails, $blueprint, $info['differences']);
             }
@@ -510,9 +520,31 @@ class SchemaSynchronizer
 
     private function listExistingTables(): array
     {
-        $tables = $this->schemaManager->listTableNames();
+        $tables = $this->schemaManager()->listTableNames();
 
         return array_map(fn ($table) => $table, $tables);
+    }
+
+    private function schemaManager(): AbstractSchemaManager
+    {
+        if ($this->schemaManager instanceof AbstractSchemaManager) {
+            return $this->schemaManager;
+        }
+
+        try {
+            $connection = $this->db->connection($this->connectionName);
+            $this->schemaManager = $this->resolveSchemaManager($connection);
+
+            return $this->schemaManager;
+        } catch (\Throwable $exception) {
+            $this->connectionException = $exception;
+
+            $message = 'A database connection is required to inspect or synchronize the schema. '
+                .'Unable to connect using the ['.$this->connectionName.'] connection: '
+                .$exception->getMessage();
+
+            throw new \RuntimeException($message, previous: $exception);
+        }
     }
 
     private function resolveSchemaManager(Connection $connection): AbstractSchemaManager

@@ -13,6 +13,7 @@ class Candidate extends Model
     use BelongsToCampaign;
 
     protected $fillable = [
+        'election_id',
         'campaign_id',
         'name',
         'party',
