@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Campaign;
 
 use App\Models\Campaign;
@@ -10,27 +12,24 @@ class UpdateCampaignRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        /** @var Campaign $campaign */
-        $campaign = $this->route('campaign');
-
-        return $this->user()?->can('update', $campaign) ?? false;
+        return true;
     }
 
     public function rules(): array
     {
-        /** @var Campaign $campaign */
         $campaign = $this->route('campaign');
+        $campaignId = $campaign instanceof Campaign ? $campaign->getKey() : $campaign;
 
         return [
-            'name' => ['sometimes', 'required', 'string', 'max:255'],
-            'slug' => ['nullable', 'string', 'max:255', Rule::unique('campaigns', 'slug')->ignore($campaign->getKey())],
+            'name' => ['sometimes', 'string', 'max:255'],
+            'slug' => ['sometimes', 'nullable', 'string', 'max:255', Rule::unique('campaigns', 'slug')->ignore($campaignId)],
             'description' => ['nullable', 'string'],
-            'starts_at' => ['sometimes', 'required', 'date'],
-            'ends_at' => ['sometimes', 'required', 'date', 'after:starts_at'],
-            'spatial_level' => ['sometimes', 'required', 'string', Rule::in(['city', 'center', 'governorate', 'region', 'custom'])],
+            'starts_at' => ['sometimes', 'date'],
+            'ends_at' => ['sometimes', 'date', 'after:starts_at'],
+            'spatial_level' => ['sometimes', 'string', Rule::in(['city', 'center', 'governorate', 'region', 'custom'])],
             'bbox' => ['nullable', 'array', 'size:4'],
             'bbox.*' => ['numeric'],
-            'status' => ['nullable', 'string', 'max:50'],
+            'status' => ['sometimes', 'string', 'max:50'],
         ];
     }
 }

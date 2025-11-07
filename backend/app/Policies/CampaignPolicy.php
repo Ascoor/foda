@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Campaign;
@@ -43,7 +45,7 @@ class CampaignPolicy
     protected function belongsToCampaign(User $user, Campaign $campaign): bool
     {
         if ($user->relationLoaded('campaigns')) {
-            return $user->campaigns->contains(fn ($attached) => (int) $attached->getKey() === (int) $campaign->getKey());
+            return $user->campaigns->contains(fn (Campaign $attached) => (int) $attached->getKey() === (int) $campaign->getKey());
         }
 
         return $user->campaigns()->whereKey($campaign->getKey())->exists();

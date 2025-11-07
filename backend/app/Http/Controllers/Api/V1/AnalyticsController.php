@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
@@ -16,7 +18,7 @@ use Illuminate\Support\Carbon;
 
 class AnalyticsController extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function overview(Request $request): JsonResponse
     {
         $scope = $request->input('scope', 'campaign');
         $campaignId = $this->resolveCampaignId($request);
@@ -82,7 +84,7 @@ class AnalyticsController extends Controller
         return response()->json(['data' => $payload]);
     }
 
-    public function forecast(Request $request): JsonResponse
+    public function timeseries(Request $request): JsonResponse
     {
         $campaignId = $this->resolveCampaignId($request);
         $limit = max(1, min((int) $request->input('limit', 30), 100));
@@ -107,8 +109,17 @@ class AnalyticsController extends Controller
         return response()->json(['data' => $snapshots]);
     }
 
+    public function dashboard(Request $request): JsonResponse
+    {
+        return $this->overview($request);
+    }
+
     protected function resolveCampaignId(Request $request): ?int
     {
+        if (app()->bound('currentCampaignId')) {
+            return (int) app('currentCampaignId');
+        }
+
         $routeCampaign = $request->route('campaign');
         if ($routeCampaign instanceof Campaign) {
             return (int) $routeCampaign->getKey();
@@ -122,7 +133,7 @@ class AnalyticsController extends Controller
             return (int) $request->input('scope_uuid');
         }
 
-        return Campaign::query()->value('id');
+        return null;
     }
 
     protected function buildRegionMetrics($activities, $teams, ?int $campaignId)
@@ -159,39 +170,32 @@ class AnalyticsController extends Controller
                 return optional($activity->reported_at)->isToday();
             })->count();
 
-            $supportAverage = (float) $activities->avg('support_score');
-
             return [
-                'geo_area_uuid' => $area ? (string) $area->getKey() : (string) $areaId,
-                'region' => $area?->name ?? 'Unassigned',
-                'total_voters' => $votersCount,
-                'active_agents' => (int) $teamData['volunteers'],
+                'area_id' => $areaId,
+                'area_name' => $area?->name,
+                'volunteers' => $teamData['volunteers'],
                 'reports_today' => $reportsToday,
-                'support_score_avg' => round($supportAverage, 1),
+                'voters_count' => $votersCount,
             ];
-        })->values();
+        });
     }
 
     protected function buildSupportTrends($activities)
     {
-        return $activities->filter(fn (Activity $activity) => $activity->reported_at)
-            ->groupBy(function (Activity $activity) {
-                return optional($activity->reported_at)->toDateString();
-            })
-            ->sortKeys()
-            ->map(function ($group, $date) {
-                return [
-                    'date' => $date,
-                    'support_score_avg' => round((float) $group->avg('support_score'), 1),
-                ];
-            });
+        return $activities->groupBy(function (Activity $activity) {
+            return optional($activity->reported_at)->format('Y-m-d');
+        })->map(function ($group, $date) {
+            return [
+                'date' => $date,
+                'average_support' => round((float) $group->avg('support_score'), 2),
+                'reports' => $group->count(),
+            ];
+        })->sortKeys();
     }
 
     protected function buildReportDistribution($activities)
     {
-        return $activities->groupBy(function (Activity $activity) {
-            return $activity->type ?: 'other';
-        })->map(function ($group, $type) {
+        return $activities->groupBy('type')->map(function ($group, $type) {
             return [
                 'type' => $type,
                 'count' => $group->count(),

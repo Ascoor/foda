@@ -124,3 +124,36 @@ GOOGLE_MAPS_API_KEY
 ```
 
 The services leverage response caching via `EXTERNAL_CACHE_TTL` to limit redundant requests while keeping the experience responsive.
+
+## Unified API controller runbook
+
+The API surface is organized under `routes/api/v1` with separate bundles for public and protected endpoints.  When adding a new module, drop a `{module}.php` file under `routes/api/v1/protected/` and load the controller from `App\Http\Controllers\Api\V1`.  Campaign-scoped routes must opt into the `campaign.context` middleware so that the active campaign is resolved from `X-Campaign-ID`, the query string, or the `{campaign}` route parameter.
+
+### Daily driver commands
+
+```bash
+# sync autoloaded classes after adding controllers, requests, or resources
+composer dump-autoload
+
+# inspect the namespaced API map
+php artisan route:list | grep "api/v1"
+
+# static lint for route definitions
+find routes/api -name '*.php' -print0 | xargs -0 -n1 php -l
+```
+
+### Happy-path smoke test
+
+```bash
+# 1. Authenticate to obtain a Sanctum token
+curl -X POST /api/v1/auth/login -d '{"email":"me@example.com","password":"secret"}'
+
+# 2. List visible campaigns (no campaign context required)
+curl -H "Authorization: Bearer <token>" /api/v1/campaigns
+
+# 3. Create a campaign via the service layer
+curl -X POST -H "Authorization: Bearer <token>" -d '{"name":"Primary 2024","starts_at":"2024-01-01" ... }' /api/v1/campaigns
+
+# 4. Query scoped analytics (requires X-Campaign-ID or ?campaign_id)
+curl -H "Authorization: Bearer <token>" -H "X-Campaign-ID: <id>" /api/v1/dashboard-stats
+```
