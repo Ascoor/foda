@@ -111,6 +111,16 @@ foda/
    npm run dev -- --port=8080
    ```
 
+### Database Initialization
+
+Run the canonical migration + seeding workflow from the backend directory:
+
+```bash
+cd backend
+php artisan migrate:fresh --seed
+php artisan migrate:fresh --seed -- --demo # includes demo fixtures
+```
+
 ### Environment Variables
 
 **Frontend (.env):**
