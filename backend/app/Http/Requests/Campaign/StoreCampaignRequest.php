@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Campaign;
 
-use App\Models\Campaign;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -10,7 +11,7 @@ class StoreCampaignRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return $this->user()?->can('create', Campaign::class) ?? false;
+        return true;
     }
 
     public function rules(): array

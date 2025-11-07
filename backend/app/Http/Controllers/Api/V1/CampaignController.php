@@ -1,67 +1,64 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Api\V1\Base\ApiController;
 use App\Http\Requests\Campaign\StoreCampaignRequest;
 use App\Http\Requests\Campaign\UpdateCampaignRequest;
-use App\Http\Resources\Campaign\CampaignCollection;
-use App\Http\Resources\Campaign\CampaignResource;
+use App\Http\Resources\CampaignResource;
 use App\Models\Campaign;
+use App\Services\CampaignService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
-class CampaignController extends Controller
+class CampaignController extends ApiController
 {
-    public function index(Request $request): CampaignCollection
+    public function __construct(private readonly CampaignService $service)
     {
-        $perPage = min((int) $request->input('per_page', 15), 100);
+    }
+
+    public function index(Request $request): JsonResponse
+    {
         $this->authorize('viewAny', Campaign::class);
 
-        $campaigns = Campaign::query()
-            ->search($request->input('q'))
-            ->orderByDesc('starts_at')
-            ->paginate($perPage)
-            ->appends($request->query());
+        $campaigns = $this->service->listForUser($request->user(), $request->input('q'));
 
-        return new CampaignCollection($campaigns);
+        return $this->resource(CampaignResource::collection($campaigns));
     }
 
     public function store(StoreCampaignRequest $request): JsonResponse
     {
         $this->authorize('create', Campaign::class);
 
-        $campaign = Campaign::query()->create($request->validated());
+        $campaign = $this->service->create($request->user(), $request->validated());
 
-        return (new CampaignResource($campaign))
-            ->response()
-            ->setStatusCode(Response::HTTP_CREATED);
+        return $this->resource(new CampaignResource($campaign), 201);
     }
 
-    public function show(Request $request, Campaign $campaign): CampaignResource
+    public function show(Campaign $campaign): JsonResponse
     {
         $this->authorize('view', $campaign);
 
-        return new CampaignResource($campaign);
+        return $this->resource(new CampaignResource($campaign));
     }
 
-    public function update(UpdateCampaignRequest $request, Campaign $campaign): CampaignResource
+    public function update(UpdateCampaignRequest $request, Campaign $campaign): JsonResponse
     {
         $this->authorize('update', $campaign);
 
-        $campaign->fill($request->validated());
-        $campaign->save();
+        $campaign = $this->service->update($campaign, $request->validated());
 
-        return new CampaignResource($campaign->refresh());
+        return $this->resource(new CampaignResource($campaign));
     }
 
-    public function destroy(Request $request, Campaign $campaign): JsonResponse
+    public function destroy(Campaign $campaign): JsonResponse
     {
         $this->authorize('delete', $campaign);
 
-        $campaign->delete();
+        $this->service->delete($campaign);
 
-        return response()->json([], Response::HTTP_NO_CONTENT);
+        return $this->noContent();
     }
 }

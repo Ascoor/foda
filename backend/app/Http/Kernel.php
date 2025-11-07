@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -29,7 +31,6 @@ class Kernel extends HttpKernel
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\ResolveActiveCampaign::class,
         ],
     ];
 
@@ -45,6 +46,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
         'sanctum.stateful' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        'resolve.campaign' => \App\Http\Middleware\ResolveActiveCampaign::class,
+        'campaign.context' => \App\Http\Middleware\SetCurrentCampaign::class,
     ];
 }
