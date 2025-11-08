@@ -27,7 +27,7 @@ export function importLaravelAuth(): AuthInterface {
   return {
     async login({ email, password, remember }) {
       const response = await request<LaravelLoginResponse>({
-        url: "/login",
+        url: "/auth/login",
         method: "post",
         data: {
           email,
@@ -45,13 +45,13 @@ export function importLaravelAuth(): AuthInterface {
     },
     async logout() {
       await request({
-        url: "/logout",
+        url: "/auth/logout",
         method: "post",
       });
     },
     async register(data) {
       const response = await request<LaravelRegisterResponse>({
-        url: "/register",
+        url: "/auth/register",
         method: "post",
         data,
       });
@@ -64,7 +64,7 @@ export function importLaravelAuth(): AuthInterface {
     },
     async refresh() {
       const response = await request<LaravelAuthUser>({
-        url: "/me",
+        url: "/auth/me",
         method: "get",
       });
       return {
