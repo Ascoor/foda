@@ -1,18 +1,14 @@
 import { type ReactNode, useMemo } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-import {
-  useCampaignContext,
-  useOptionalCampaignContext,
-} from "@/infrastructure/shared/contexts/CampaignContext";
+import { useCampaignContext } from "@/infrastructure/shared/contexts/CampaignContext";
 
 interface CampaignGuardProps {
   children: ReactNode;
 }
 
 export const CampaignGuard = ({ children }: CampaignGuardProps) => {
-  const optionalContext = useOptionalCampaignContext();
-  const { campaignId } = optionalContext ?? useCampaignContext();
+  const { campaignId } = useCampaignContext();
   const location = useLocation();
 
   const redirectTo = useMemo(() => {
