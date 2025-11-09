@@ -14,14 +14,16 @@ import {
 } from "@/infrastructure/shared/lib/campaign";
 
 interface CampaignContextValue {
-  campaignId: string;
+  campaignId: string | null;
   setCampaignId: (identifier: CampaignIdentifier | null) => void;
 }
 
 const CampaignContext = createContext<CampaignContextValue | undefined>(undefined);
 
 export const CampaignProvider = ({ children }: { children: ReactNode }) => {
-  const [campaignId, setCampaignIdState] = useState<string>(getActiveCampaignId);
+  const [campaignId, setCampaignIdState] = useState<string | null>(
+    getActiveCampaignId,
+  );
 
   const setCampaignId = useCallback((identifier: CampaignIdentifier | null) => {
     const normalized = setActiveCampaignId(identifier);
