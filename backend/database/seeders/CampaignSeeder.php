@@ -3,44 +3,58 @@
 namespace Database\Seeders;
 
 use App\Models\Campaign;
+use App\Models\Election;
+use Database\Seeders\Traits\EgyptDataHelpers;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 class CampaignSeeder extends Seeder
 {
+    use EgyptDataHelpers;
+
     public function run(): void
     {
-        $campaigns = [
-            [
-                'name' => 'حملة التوعية الوطنية',
-                'slug' => 'national-awareness',
-                'description' => 'حملة وطنية لرفع الوعي بالمشاركة الانتخابية.',
-                'starts_at' => Carbon::parse('2025-01-01'),
-                'ends_at' => Carbon::parse('2025-03-31'),
-                'spatial_level' => 'governorate',
-                'bbox' => [29.9, 30.5, 31.2, 32.1],
-                'status' => 'active',
-            ],
-            [
-                'name' => 'حملة الدقهلية',
-                'slug' => 'dakahlia-campaign',
-                'description' => 'حملة تغطي جميع مناطق محافظة الدقهلية.',
-                'starts_at' => Carbon::parse('2025-02-01'),
-                'ends_at' => Carbon::parse('2025-04-30'),
-                'spatial_level' => 'city',
-                'bbox' => [31.0, 31.2, 31.3, 31.5],
-                'status' => 'planned',
-            ],
-        ];
+        if (! Schema::hasTable('campaigns')) {
+            $this->command->warn('⚠️ جدول الحملات غير موجود، سيتم تخطي CampaignSeeder.');
 
-        foreach ($campaigns as $spec) {
-            $unique = Arr::only($spec, ['name', 'starts_at', 'ends_at']);
-
-            Campaign::query()->updateOrCreate(
-                $unique,
-                array_merge($spec, ['bbox' => Arr::get($spec, 'bbox')])
-            );
+            return;
         }
+
+        $election = Election::firstOrCreate(
+            ['name' => 'الانتخابات العامة 2025'],
+            [
+                'election_date' => now()->addMonths(2)->toDateString(),
+                'meta' => ['country' => 'EG', 'locale' => 'ar_EG'],
+            ]
+        );
+
+        $campaign = Campaign::updateOrCreate(
+            ['slug' => 'eg-2025-main'],
+            [
+                'name' => 'حملة مصر 2025',
+                'description' => 'بيانات تجريبية بالعربية المصرية لحملة انتخابية وطنية.',
+                'election_id' => $election->id,
+                'starts_at' => now()->subMonth(),
+                'ends_at' => now()->addMonths(3),
+                'spatial_level' => 'national',
+                'bbox' => [
+                    'minLng' => 24.7,
+                    'minLat' => 21.7,
+                    'maxLng' => 36.9,
+                    'maxLat' => 31.7,
+                ],
+                'status' => 'active',
+                'settings' => [
+                    'locale' => 'ar_EG',
+                    'branding' => [
+                        'primary_color' => '#d32f2f',
+                        'secondary_color' => '#f9a825',
+                    ],
+                ],
+            ]
+        );
+
+        $this->command->info('✅ الحملة الرئيسية: ' . $campaign->name . ' (' . Str::upper($campaign->status) . ')');
     }
 }

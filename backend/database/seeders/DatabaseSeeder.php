@@ -9,26 +9,23 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            RolesAndPermissionsSeeder::class,
-            GovernoratesAreaSeeder::class,
             ElectionSeeder::class,
             CampaignSeeder::class,
+            AreaSeeder::class,
+            CommitteeSeeder::class,
+            UserSeeder::class,
             TeamSeeder::class,
-            EventSeeder::class,
-            ExpenseCategorySeeder::class,
-            FinanceSeeder::class,
-            HomeSeeder::class,
-            ProfileSeeder::class,
-            SettingSeeder::class,
-            SmsSeeder::class,
-            SwotSeeder::class,
             VolunteerSeeder::class,
             VoterSeeder::class,
-            GeoAreaSeeder::class,
-            CommitteeSeeder::class,
             CandidateSeeder::class,
             AgentSeeder::class,
+            EventSeeder::class,
+            ActivitySeeder::class,
             ObservationSeeder::class,
+            ExpenseCategorySeeder::class,
+            FinanceSeeder::class,
+            AutomationSeeder::class,
+            AnalyticsSeeder::class,
         ]);
     }
 }
