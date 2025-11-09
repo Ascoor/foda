@@ -36,6 +36,7 @@ import PostAuthRedirect from "@/routing/routes/post-auth";
 import { NavGuard } from "@/routing/nav/NavGuard";
 import { EnhancedDashboard } from "@/features/modules/dashboard/EnhancedDashboard";
 import { ArchitecturalControlCenter } from "@/features/modules/dashboard/ArchitecturalControlCenter";
+import { CampaignGuard } from "./CampaignGuard";
 
 const RouterShell = () => (
   <BarbaTransitionProvider>
@@ -78,7 +79,11 @@ export const router = createBrowserRouter([
         children: [
           { path: "/campaign-gateway", element: <CampaignGateway /> },
           {
-            element: <MainLayoutWrapper />,
+            element: (
+              <CampaignGuard>
+                <MainLayoutWrapper />
+              </CampaignGuard>
+            ),
             children: [
               {
                 path: "/reports",

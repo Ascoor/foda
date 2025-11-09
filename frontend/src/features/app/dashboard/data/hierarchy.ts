@@ -891,8 +891,14 @@ export const useDashboardHierarchy = () => {
   const { campaignId } = useCampaignContext();
 
   return useQuery({
-    queryKey: ["dashboard", "hierarchy", campaignId],
-    queryFn: () => fetchDashboardHierarchy(campaignId),
+    queryKey: ["dashboard", "hierarchy", campaignId ?? "__none__"],
+    queryFn: () => {
+      if (!campaignId) {
+        throw new Error("No active campaign selected");
+      }
+      return fetchDashboardHierarchy(campaignId);
+    },
+    enabled: Boolean(campaignId),
     staleTime: 60_000,
   });
 };

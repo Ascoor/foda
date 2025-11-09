@@ -58,6 +58,14 @@ export const ActivitiesTimeline = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const loadActivities = async (pageNumber = 1, append = false) => {
+    if (!campaignId) {
+      setResponse(null);
+      setPage(1);
+      setLoading(false);
+      setIsLoadingMore(false);
+      return;
+    }
+
     if (append) {
       setIsLoadingMore(true);
     } else {
@@ -88,6 +96,12 @@ export const ActivitiesTimeline = () => {
   };
 
   useEffect(() => {
+    if (!campaignId) {
+      setResponse(null);
+      setLoading(false);
+      return;
+    }
+
     loadActivities();
   }, [campaignId]);
 
