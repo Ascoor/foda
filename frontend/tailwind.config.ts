@@ -197,6 +197,10 @@ const config: Config = {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-6px)" },
         },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
 
       // ⏯️ أنيميشـنات جاهزة
@@ -208,6 +212,7 @@ const config: Config = {
         "scale-in": "scale-in 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         "glow-pulse": "pulse-glow 2s ease-in-out infinite alternate",
         float: "float 3s ease-in-out infinite",
+        marquee: "marquee 24s linear infinite",
       },
     },
   },

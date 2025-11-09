@@ -282,7 +282,63 @@
     "message": "Message",
     "sent": "Sent",
     "delivered": "Delivered",
-    "send": "Send"
+    "send": "Send",
+    "gateway": {
+      "preamble": "Campaign control gate",
+      "title": "Choose the campaign you want to lead",
+      "subtitle": "Select an existing mission to enter the control center or launch a fresh campaign before moving into operations.",
+      "loading": "Loading live campaigns...",
+      "empty_marquee": "No live campaigns yet — launch your first mission.",
+      "choose_prompt": "Campaign selection",
+      "selected": "Ready to enter {{name}}",
+      "no_selection": "Select a campaign to continue.",
+      "actions": {
+        "new": "Launch new campaign",
+        "manage": "Open campaign manager",
+        "retry": "Try again",
+        "enter": "Enter campaign",
+        "launch": "Create & enter"
+      },
+      "create_title": "Launch a new campaign",
+      "fields": {
+        "name": "Campaign name",
+        "description": "Mission narrative",
+        "starts_at": "Starts on",
+        "ends_at": "Ends on",
+        "spatial_level": "Coverage level"
+      },
+      "placeholders": {
+        "name": "National get-out-the-vote wave",
+        "description": "Describe the focus and goals of this campaign...",
+        "spatial_level": "Select coverage level"
+      },
+      "spatial_levels": {
+        "region": "Region",
+        "governorate": "Governorate",
+        "center": "Center",
+        "city": "City",
+        "custom": "Custom"
+      },
+      "validation": {
+        "name": "Give the campaign a name before launching.",
+        "dates": "Please provide both start and end dates."
+      },
+      "missing_owner": "Unable to identify the campaign owner.",
+      "create_error": "We could not create the campaign. Please try again.",
+      "error_title": "We could not reach the campaign service",
+      "error_description": "Check your connection and try loading the campaigns again.",
+      "empty_state": {
+        "title": "No campaigns are connected yet",
+        "subtitle": "Launch a new campaign to activate the control center experience."
+      },
+      "no_description": "No mission summary provided.",
+      "metrics": {
+        "sent": "SENT {{value}}",
+        "delivered": "DELIVERED {{value}}"
+      },
+      "footer_hint": "Campaign context routes your data dashboards, analytics, and automations.",
+      "footer_cta": "Pick a campaign to synchronize with the operations hub."
+    }
   },
   "settings": {
     "title": "Settings",

@@ -45,8 +45,13 @@ export const PostAuthRedirect = () => {
     );
 
     const target = returnToParam ?? stateReturnTo ?? defaultDestination;
+    const params = new URLSearchParams();
+    params.set("returnTo", target);
 
-    navigate(target, { replace: true, state: undefined });
+    navigate(`/campaign-gateway?${params.toString()}`, {
+      replace: true,
+      state: { returnTo: target },
+    });
   }, [defaultDestination, isAuthenticated, loading, location.state, navigate, params]);
 
   if (loading) {
