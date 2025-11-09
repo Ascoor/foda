@@ -83,13 +83,41 @@ const withAuthorizationHeader = <
   const token =
     authToken ||
     (typeof window !== "undefined" ? localStorage.getItem("token") : null);
+  const campaignId =
+    typeof window !== "undefined" ? localStorage.getItem("campaignId") : null;
+  const campaignSlug =
+    typeof window !== "undefined" ? localStorage.getItem("campaignSlug") : null;
+
+  config.headers = config.headers || {};
 
   if (token) {
-    config.headers = config.headers || {};
     (config.headers as Record<string, unknown>).Authorization =
       `Bearer ${token}`;
-  } else if (config.headers && "Authorization" in config.headers) {
+  } else if ("Authorization" in config.headers) {
     delete (config.headers as Record<string, unknown>).Authorization;
+  }
+
+  if (campaignId) {
+    (config.headers as Record<string, unknown>)["X-Campaign-Id"] = String(
+      campaignId,
+    );
+    if ("X-Campaign-Slug" in config.headers) {
+      delete (config.headers as Record<string, unknown>)["X-Campaign-Slug"];
+    }
+  } else if (campaignSlug) {
+    (config.headers as Record<string, unknown>)["X-Campaign-Slug"] = String(
+      campaignSlug,
+    );
+    if ("X-Campaign-Id" in config.headers) {
+      delete (config.headers as Record<string, unknown>)["X-Campaign-Id"];
+    }
+  } else {
+    if ("X-Campaign-Id" in config.headers) {
+      delete (config.headers as Record<string, unknown>)["X-Campaign-Id"];
+    }
+    if ("X-Campaign-Slug" in config.headers) {
+      delete (config.headers as Record<string, unknown>)["X-Campaign-Slug"];
+    }
   }
 
   return config;
@@ -100,7 +128,17 @@ api.interceptors.request.use(withAuthorizationHeader);
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error),
+  (error) => {
+    const status = error?.response?.status;
+    if (typeof window !== "undefined") {
+      if (status === 401 || status === 419) {
+        window.location.href = "/login";
+      } else if (status === 403) {
+        window.location.href = "/campaigns/select";
+      }
+    }
+    return Promise.reject(error);
+  },
 );
 
 type CacheEntry<T> = { expiry: number; data: T };

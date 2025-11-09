@@ -19,6 +19,11 @@ use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
+    public function dashboard(HomeRequest $request): HomeDashboardResource
+    {
+        return $this->index($request);
+    }
+
     public function index(HomeRequest $request): HomeDashboardResource
     {
         $campaign = $request->route('campaign');
