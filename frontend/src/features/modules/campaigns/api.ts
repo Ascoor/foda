@@ -1,4 +1,4 @@
-import { request } from "@/infrastructure/shared/lib/api";
+import { request, type ApiResponse } from "@/infrastructure/shared/lib/api";
 import { API_ENDPOINTS } from "@/infrastructure/shared/lib/endpoints";
 import type { Campaign } from "@/types";
 import type { CampaignFormData } from "./types";
@@ -6,7 +6,7 @@ import type { CampaignFormData } from "./types";
 const CAMPAIGNS_ENDPOINT = API_ENDPOINTS.campaigns.campaigns;
 
 export const fetchCampaigns = async (params: Record<string, unknown> = {}) => {
-  const { data } = await request<{ data: Campaign[] }>({
+  const { data } = await request<ApiResponse<Campaign[]>>({
     url: CAMPAIGNS_ENDPOINT,
     method: "get",
     params,
@@ -17,7 +17,7 @@ export const fetchCampaigns = async (params: Record<string, unknown> = {}) => {
 export const createCampaign = async (
   payload: CampaignFormData,
 ): Promise<Campaign> => {
-  const { data } = await request<{ data: Campaign }>({
+  const { data } = await request<ApiResponse<Campaign>>({
     url: CAMPAIGNS_ENDPOINT,
     method: "post",
     data: payload,
@@ -29,7 +29,7 @@ export const updateCampaign = async (
   identifier: string | number,
   payload: Partial<CampaignFormData>,
 ): Promise<Campaign> => {
-  const { data } = await request<{ data: Campaign }>({
+  const { data } = await request<ApiResponse<Campaign>>({
     url: `${CAMPAIGNS_ENDPOINT}/${identifier}`,
     method: "put",
     data: payload,
