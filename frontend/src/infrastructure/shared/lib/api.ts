@@ -141,9 +141,12 @@ export const prepareCsrf = async (): Promise<void> => {
     };
     config[SKIP_MIDDLEWARE_FLAG] = true;
 
-    csrfPromise = axios.request(config).finally(() => {
-      csrfPromise = null;
-    }).then(() => undefined);
+    csrfPromise = axios
+      .request(config)
+      .finally(() => {
+        csrfPromise = null;
+      })
+      .then(() => undefined);
   }
 
   await csrfPromise;
@@ -291,8 +294,7 @@ const handleErrorResponse = (error: unknown) => {
         toast({
           variant: "destructive",
           title: "Unauthorized campaign access",
-          description:
-            messages[0] ?? "لا تملك صلاحية/عضوية في الحملة",
+          description: messages[0] ?? "لا تملك صلاحية/عضوية في الحملة",
         });
       }
       return Promise.reject(error);
