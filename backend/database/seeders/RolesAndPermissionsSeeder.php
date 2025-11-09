@@ -7,13 +7,17 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
     public function run(): void
     {
-        // 🧩 1. تعريف الصلاحيات
-        $permissionCatalog = [
+        // 0) امسح الكاش الخاص بالصلاحيات قبل أي تعديل
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        // 1) كتالوج الصلاحيات
+        $permissions = [
             'manage users'      => 'إدارة المستخدمين على مستوى النظام',
             'manage volunteers' => 'إدارة شبكة المتطوعين',
             'manage settings'   => 'ضبط إعدادات المنصة',
@@ -24,18 +28,18 @@ class RolesAndPermissionsSeeder extends Seeder
             'view analytics'    => 'عرض تحليلات الأداء الرئيسية',
         ];
 
-        foreach (array_keys($permissionCatalog) as $permission) {
+        foreach ($permissions as $name => $desc) {
             Permission::firstOrCreate(
-                ['name' => $permission],
-                ['guard_name' => 'web']
+                ['name' => $name, 'guard_name' => 'web'],
+                [] // وصف الصلاحية يمكن تخزينه في جدول منفصل/ميتا إن رغبت
             );
         }
 
-        // 🧩 2. تعريف الأدوار وربط الصلاحيات
-        $roleDefinitions = [
+        // 2) تعريف الأدوار وربط الصلاحيات
+        $rolesDefinition = [
             'admin' => [
                 'label' => 'مدير النظام',
-                'permissions' => array_keys($permissionCatalog),
+                'permissions' => array_keys($permissions),
             ],
             'supervisor' => [
                 'label' => 'مشرف اللجنة',
@@ -71,54 +75,66 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         $roles = [];
-        foreach ($roleDefinitions as $key => $def) {
+        foreach ($rolesDefinition as $name => $def) {
             $role = Role::firstOrCreate(
-                ['name' => $key, 'guard_name' => 'web']
+                ['name' => $name, 'guard_name' => 'web'],
+                []
             );
             $role->syncPermissions($def['permissions']);
-            $roles[$key] = $role;
+            $roles[$name] = $role;
         }
 
-        // 🧩 3. إنشاء مستخدمين رئيسيين وربطهم بالأدوار
+        // 3) مستخدمون افتراضيون + ربط بالأدوار
+        $defaultPassword = Hash::make('Password@123');
+
         $users = [
             [
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'roles' => ['admin', 'campaign_manager'],
             ],
             [
                 'name' => 'Supervisor',
                 'email' => 'supervisor@example.com',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'roles' => ['supervisor'],
             ],
             [
                 'name' => 'Volunteer',
                 'email' => 'volunteer@example.com',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'roles' => ['volunteer'],
             ],
             [
                 'name' => 'Auditor',
                 'email' => 'auditor@example.com',
-                'password' => Hash::make('password'),
+                'password' => $defaultPassword,
                 'roles' => ['auditor'],
             ],
         ];
 
-        foreach ($users as $data) {
-            $user = User::firstOrCreate(
-                ['email' => $data['email']],
+        foreach ($users as $userData) {
+            $user = User::updateOrCreate(
+                ['email' => $userData['email']],
                 [
-                    'name' => $data['name'],
-                    'password' => $data['password'],
+                    'name' => $userData['name'],
+                    'password' => $userData['password'],
                     'status' => 'active',
                 ]
             );
-            $user->syncRoles(array_map(fn($r) => $roles[$r] ?? null, $data['roles']));
+
+            // مهم: تأكد أن حارس المستخدم هو web (حسب config/auth)
+            // ثم اربط الأدوار:
+            $user->syncRoles([]); // تفريغ أي أدوار قديمة إن وُجدت
+            foreach ($userData['roles'] as $r) {
+                $user->assignRole($r);
+            }
         }
 
-        $this->command->info('✅ Roles, permissions, and default users seeded successfully!');
+        // 4) امسح كاش الصلاحيات بعد البناء
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
+        $this->command->info('✅ تم إنشاء الصلاحيات والأدوار والمستخدمين بنجاح!');
     }
 }
