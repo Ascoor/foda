@@ -25,23 +25,23 @@ const resolveInitialCampaignId = (): string | null => {
   return getEnvDefaultCampaignId();
 };
 
-const fallbackCampaignId = (): string => getEnvDefaultCampaignId() ?? "1";
+let activeCampaignId: string | null = resolveInitialCampaignId() ?? null;
 
-let activeCampaignId: string = resolveInitialCampaignId() ?? fallbackCampaignId();
-
-export const getActiveCampaignId = (): string => activeCampaignId;
+export const getActiveCampaignId = (): string | null => activeCampaignId;
 
 export const setActiveCampaignId = (
   value: CampaignIdentifier | null,
-): string => {
+): string | null => {
   activeCampaignId =
-    value !== null && value !== undefined
-      ? String(value)
-      : resolveInitialCampaignId() ?? fallbackCampaignId();
+    value !== null && value !== undefined ? String(value) : null;
 
   if (typeof window !== "undefined") {
     try {
-      window.localStorage.setItem(STORAGE_KEY, activeCampaignId);
+      if (activeCampaignId) {
+        window.localStorage.setItem(STORAGE_KEY, activeCampaignId);
+      } else {
+        window.localStorage.removeItem(STORAGE_KEY);
+      }
     } catch (error) {
       console.warn("Failed to persist campaign identifier", error);
     }
@@ -61,6 +61,10 @@ export const buildCampaignUrl = (
     campaignId !== undefined && campaignId !== null
       ? String(campaignId)
       : getActiveCampaignId();
+
+  if (!active) {
+    throw new Error("Cannot build campaign URL without an active campaign");
+  }
 
   const normalized = ensureLeadingSlash(path).replace(/\/{2,}/g, "/");
 

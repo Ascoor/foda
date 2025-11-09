@@ -6,9 +6,13 @@ import type { ActivitiesResponse, ActivityFilters } from "./types";
 export const fetchActivities = async (
   filters: ActivityFilters = {},
   campaignId?: CampaignIdentifier | null,
-) =>
-  request<ActivitiesResponse>({
+) => {
+  if (!campaignId) {
+    throw new Error("Cannot load activities without an active campaign");
+  }
+  return request<ActivitiesResponse>({
     url: API_ENDPOINTS.campaigns.activities(campaignId),
     method: "get",
     params: filters,
   });
+};

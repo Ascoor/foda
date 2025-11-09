@@ -5,9 +5,11 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AreaController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CampaignController;
 use App\Http\Controllers\Api\V1\ExternalDataController;
 use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\SettingController;
 
 Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('/auth/me', [AuthController::class, 'me']);
@@ -32,7 +34,7 @@ Route::middleware('auth:sanctum')->group(function (): void {
     });
 
     Route::prefix('ec')->group(function (): void {
-        Route::apiResource('campaigns', \App\Http\Controllers\ElectionCircle\CampaignController::class);
-        Route::apiResource('settings', \App\Http\Controllers\ElectionCircle\SettingController::class);
+        Route::apiResource('campaigns', CampaignController::class);
+        Route::apiResource('settings', SettingController::class);
     });
 });

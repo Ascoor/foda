@@ -128,7 +128,17 @@ const KPICard = ({
 export const EnhancedDashboard: React.FC = () => {
   const { t } = useTranslation();
   const { campaignId } = useCampaignContext();
-  const dashboardEndpoint = API_ENDPOINTS.dashboard.overview(campaignId);
+  const dashboardEndpoint = useMemo(() => {
+    if (!campaignId) {
+      return null;
+    }
+    try {
+      return API_ENDPOINTS.dashboard.overview(campaignId);
+    } catch (error) {
+      console.warn("Dashboard endpoint unavailable without campaign", error);
+      return null;
+    }
+  }, [campaignId]);
 
   // Dashboard data query
   const {
@@ -137,11 +147,15 @@ export const EnhancedDashboard: React.FC = () => {
     error: dashboardError,
     execute: refetchDashboard,
   } = useApi<DashboardData>({
-    url: dashboardEndpoint,
+    url: dashboardEndpoint ?? undefined,
     method: "GET",
   });
 
   useEffect(() => {
+    if (!dashboardEndpoint) {
+      return;
+    }
+
     refetchDashboard({ url: dashboardEndpoint })
       .then(() => toast({ description: t("dashboard.load_success") }))
       .catch(() =>

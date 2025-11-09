@@ -95,6 +95,15 @@
       let isMounted = true;
 
       const load = async () => {
+        if (!campaignId) {
+          setCommittees(EMPTY_COLLECTION);
+          setActivities(EMPTY_COLLECTION);
+          if (isMounted) {
+            setLoading(false);
+          }
+          return;
+        }
+
         setLoading(true);
         try {
           const [committeesGeo, activityGeo] = await Promise.all([
