@@ -1,25 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
-use App\Models\Concerns\HasCampaign;
-use App\Models\Concerns\WithinCampaignWindow;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Activity extends Model
 {
     use HasFactory;
-    use BelongsToCampaign;
-    use WithinCampaignWindow;
-    use HasCampaign;
-
-    protected string $dateColumn = 'reported_at';
 
     protected $fillable = [
         'campaign_id',
@@ -29,68 +18,40 @@ class Activity extends Model
         'created_by',
         'type',
         'status',
-        'title',
-        'description',
-        'latitude',
-        'longitude',
+        'location',
         'support_score',
         'reported_at',
-        'meta',
+        'payload',
     ];
 
     protected $casts = [
-        'meta' => 'array',
+        'location' => 'array',
+        'payload' => 'array',
         'reported_at' => 'datetime',
-        'latitude' => 'float',
-        'longitude' => 'float',
-        'support_score' => 'integer',
     ];
 
-    public function area(): BelongsTo
+    public function campaign(): R\BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
+
+    public function area(): R\BelongsTo
     {
         return $this->belongsTo(Area::class);
     }
 
-    public function committee(): BelongsTo
+    public function committee(): R\BelongsTo
     {
         return $this->belongsTo(Committee::class);
     }
 
-    public function voter(): BelongsTo
+    public function voter(): R\BelongsTo
     {
         return $this->belongsTo(Voter::class);
     }
 
-    public function creator(): BelongsTo
+    public function creator(): R\BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
-    }
-
-    public function scopeForRegion($query, ?int $areaId)
-    {
-        return $query->when($areaId, fn ($q) => $q->where('area_id', $areaId));
-    }
-
-    public function scopeForType($query, ?string $type)
-    {
-        return $query->when($type, fn ($q) => $q->where('type', $type));
-    }
-
-    public function scopeForStatus($query, ?string $status)
-    {
-        return $query->when($status, fn ($q) => $q->where('status', $status));
-    }
-
-    public function scopeBetweenDates($query, ?Carbon $start, ?Carbon $end)
-    {
-        if ($start) {
-            $query->where('reported_at', '>=', $start);
-        }
-
-        if ($end) {
-            $query->where('reported_at', '<=', $end);
-        }
-
-        return $query;
     }
 }

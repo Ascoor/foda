@@ -1,55 +1,47 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
-use App\Models\Concerns\HasCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Voter extends Model
 {
     use HasFactory;
-    use BelongsToCampaign;
-    use HasCampaign;
 
     protected $fillable = [
         'campaign_id',
-        'committee_id',
         'area_id',
-        'name',
-        'voter_id',
+        'committee_id',
+        'full_name',
         'national_id',
         'voter_uid',
-        'address',
-        'phone',
         'gender',
-        'birthdate',
+        'dob',
+        'phone',
+        'email',
+        'address',
         'meta',
     ];
 
     protected $casts = [
-        'birthdate' => 'date',
+        'dob' => 'date',
         'meta' => 'array',
     ];
 
-    public function committee(): BelongsTo
+    public function campaign(): R\BelongsTo
     {
-        return $this->belongsTo(Committee::class);
+        return $this->belongsTo(Campaign::class);
     }
 
-    public function scopeSearch($query, ?string $term)
+    public function area(): R\BelongsTo
     {
-        return $query->when($term, function ($q) use ($term) {
-            $like = '%' . $term . '%';
-            $q->where(function ($inner) use ($like) {
-                $inner->where('name', 'like', $like)
-                    ->orWhere('national_id', 'like', $like)
-                    ->orWhere('voter_uid', 'like', $like);
-            });
-        });
+        return $this->belongsTo(Area::class);
+    }
+
+    public function committee(): R\BelongsTo
+    {
+        return $this->belongsTo(Committee::class);
     }
 }

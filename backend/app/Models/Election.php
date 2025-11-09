@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Election extends Model
 {
@@ -12,26 +12,16 @@ class Election extends Model
 
     protected $fillable = [
         'name',
-        'start_date',
-        'end_date',
+        'election_date',
+        'meta',
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'meta' => 'array',
+        'election_date' => 'date',
     ];
 
-    public function geoAreas(): HasMany
-    {
-        return $this->hasMany(GeoArea::class);
-    }
-
-    public function candidates(): HasMany
-    {
-        return $this->hasMany(Candidate::class);
-    }
-
-    public function campaigns(): HasMany
+    public function campaigns(): R\HasMany
     {
         return $this->hasMany(Campaign::class);
     }
