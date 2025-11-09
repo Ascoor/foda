@@ -25,7 +25,13 @@ class CampaignController extends ApiController
 
         $campaigns = $this->service->listForUser($request->user(), $request->input('q'));
 
-        return $this->resource(CampaignResource::collection($campaigns));
+        $resource = CampaignResource::collection($campaigns)->additional([
+            'meta' => [
+                'total' => $campaigns->count(),
+            ],
+        ]);
+
+        return $this->resource($resource);
     }
 
     public function store(StoreCampaignRequest $request): JsonResponse

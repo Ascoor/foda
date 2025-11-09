@@ -5,66 +5,99 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Models\Campaign;
+use App\Support\ApiResponse;
 use Closure;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Symfony\Component\HttpFoundation\Response;
 
 class SetCurrentCampaign
 {
+    protected static ?bool $campaignHasUuid = null;
+
     public function handle(Request $request, Closure $next, string $required = 'optional'): Response|JsonResponse
     {
         $campaignCandidate = $request->header('X-Campaign-ID')
-            ?? $request->query('campaign_id')
+            ?? $request->header('X-Campaign-Id')
+            ?? $request->header('X-Campaign-Slug')
             ?? $request->route('campaign');
 
-        $campaignId = $this->resolveCampaignId($campaignCandidate);
+        $campaign = $this->resolveCampaign($campaignCandidate);
 
-        if ($campaignId !== null) {
+        if ($campaign !== null) {
             $user = $request->user();
 
             if (! $user) {
-                return response()->json([
-                    'message' => 'Authentication required for campaign context',
-                    'code' => Response::HTTP_UNAUTHORIZED,
-                ], Response::HTTP_UNAUTHORIZED);
+                return ApiResponse::error(
+                    'Authentication required for campaign context',
+                    Response::HTTP_UNAUTHORIZED,
+                    [],
+                    'AUTHENTICATION_ERROR'
+                );
             }
 
             $hasMembership = DB::table('campaign_user')->where([
-                ['campaign_id', '=', $campaignId],
+                ['campaign_id', '=', $campaign->getKey()],
                 ['user_id', '=', $user->getKey()],
+                ['status', '=', 'active'],
             ])->exists();
 
-            if (! $hasMembership) {
-                return response()->json([
-                    'message' => 'Unauthorized campaign access',
-                    'code' => Response::HTTP_FORBIDDEN,
-                ], Response::HTTP_FORBIDDEN);
+            if (! $hasMembership && ! $user->hasRole('admin')) {
+                return ApiResponse::error(
+                    'Unauthorized campaign access',
+                    Response::HTTP_FORBIDDEN,
+                    [],
+                    'AUTHORIZATION_ERROR'
+                );
             }
 
-            app()->instance('currentCampaignId', $campaignId);
-            $request->attributes->set('currentCampaignId', $campaignId);
+            app()->instance('currentCampaignId', (int) $campaign->getKey());
+            app()->instance('currentCampaign', $campaign);
+            $request->attributes->set('currentCampaignId', (int) $campaign->getKey());
+            $request->attributes->set('currentCampaign', $campaign);
         } elseif ($required === 'required') {
-            return response()->json([
-                'message' => 'Campaign context required',
-                'code' => Response::HTTP_UNPROCESSABLE_ENTITY,
-            ], Response::HTTP_UNPROCESSABLE_ENTITY);
+            return ApiResponse::error(
+                'Campaign context required',
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                [],
+                'CAMPAIGN_CONTEXT_REQUIRED'
+            );
         }
 
         return $next($request);
     }
 
-    protected function resolveCampaignId(mixed $candidate): ?int
+    protected function resolveCampaign(mixed $candidate): ?Campaign
     {
         if ($candidate instanceof Campaign) {
-            return (int) $candidate->getKey();
+            return $candidate;
         }
 
         if (is_numeric($candidate)) {
-            return (int) $candidate;
+            return Campaign::query()->find((int) $candidate);
+        }
+
+        if (is_string($candidate) && $candidate !== '') {
+            $query = Campaign::query()->where('slug', $candidate);
+
+            if ($this->campaignHasUuidColumn()) {
+                $query->orWhere('uuid', $candidate);
+            }
+
+            return $query->first();
         }
 
         return null;
+    }
+
+    protected function campaignHasUuidColumn(): bool
+    {
+        if (self::$campaignHasUuid === null) {
+            self::$campaignHasUuid = Schema::hasColumn('campaigns', 'uuid');
+        }
+
+        return self::$campaignHasUuid;
     }
 }

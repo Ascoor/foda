@@ -2,11 +2,14 @@
 
 namespace App\Exceptions;
 
+use App\Support\ApiResponse;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
@@ -29,11 +32,12 @@ class Handler extends ExceptionHandler
 
     protected function convertValidationExceptionToResponse(ValidationException $e, $request): JsonResponse
     {
-        return $this->jsonErrorResponse($e, $e->status, [
-            'message' => $e->getMessage(),
-            'errors' => $e->errors(),
-            'code' => 'VALIDATION_ERROR',
-        ]);
+        return ApiResponse::error(
+            $e->getMessage(),
+            $e->status,
+            $e->errors(),
+            'VALIDATION_ERROR'
+        );
     }
 
     public function render($request, Throwable $e)
@@ -42,11 +46,12 @@ class Handler extends ExceptionHandler
             if ($e instanceof QueryException && (string) $e->getCode() === '23000') {
                 $message = __('validation.unique', ['attribute' => 'record']);
 
-                return $this->jsonErrorResponse($e, 422, [
-                    'message' => $message,
-                    'errors' => ['date' => [__('validation.unique', ['attribute' => 'date'])]],
-                    'code' => 'VALIDATION_ERROR',
-                ]);
+                return ApiResponse::error(
+                    $message,
+                    422,
+                    ['date' => [__('validation.unique', ['attribute' => 'date'])]],
+                    'VALIDATION_ERROR'
+                );
             }
 
             $status = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
@@ -61,13 +66,10 @@ class Handler extends ExceptionHandler
                 $code = 'AUTHORIZATION_ERROR';
             }
 
-            $payload = [
-                'message' => $e->getMessage() ?: __('Server Error'),
-                'errors' => method_exists($e, 'errors') ? $e->errors() : [],
-                'code' => $code,
-            ];
+            $message = $e->getMessage() ?: __('Server Error');
+            $errors = method_exists($e, 'errors') ? (array) $e->errors() : [];
 
-            return $this->jsonErrorResponse($e, $status, $payload);
+            return ApiResponse::error($message, $status, $errors, $code);
         }
 
         return parent::render($request, $e);
@@ -75,6 +77,20 @@ class Handler extends ExceptionHandler
 
     protected function jsonErrorResponse(Throwable $e, int $status, array $payload): JsonResponse
     {
-        return response()->json($payload, $status);
+        return ApiResponse::error(
+            $payload['message'] ?? $e->getMessage() ?? __('Server Error'),
+            $status,
+            (array) ($payload['errors'] ?? []),
+            $payload['code'] ?? null
+        );
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception): JsonResponse|Response
+    {
+        if ($request->expectsJson()) {
+            return ApiResponse::error($exception->getMessage() ?: __('Unauthenticated.'), 401, [], 'AUTHENTICATION_ERROR');
+        }
+
+        return redirect()->guest(route('login'));
     }
 }

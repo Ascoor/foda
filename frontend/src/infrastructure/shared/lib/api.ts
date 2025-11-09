@@ -1,27 +1,18 @@
 import axios, {
+  AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
   AxiosResponse,
   InternalAxiosRequestConfig,
+  isAxiosError,
 } from "axios";
 import { useState, useCallback, useEffect, useRef } from "react";
 
-let authToken: string | null = null;
+import { getActiveCampaignId } from "@/infrastructure/shared/lib/campaign";
+import { toast } from "@/infrastructure/shared/ui/use-toast";
 
-export const setAuthToken = (token: string | null) => {
-  authToken = token;
-
-  if (token) {
-    api.defaults.headers.common = api.defaults.headers.common || {};
-    api.defaults.headers.common.Authorization = `Bearer ${token}`;
-  } else if (api.defaults.headers.common) {
-    delete (api.defaults.headers.common as Record<string, unknown>)
-      .Authorization;
-  }
-};
-
-const rawBaseURL =
-  import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api/v1";
+const DEFAULT_API_URL = "http://localhost:8000/api/v1";
+const rawBaseURL = import.meta.env.VITE_API_URL || DEFAULT_API_URL;
 
 const { resolvedBaseURL, apiPrefix } = (() => {
   try {
@@ -38,21 +29,65 @@ const { resolvedBaseURL, apiPrefix } = (() => {
   }
 })();
 
+const SKIP_MIDDLEWARE_FLAG = "__skipApiMiddleware" as const;
+
 const api: AxiosInstance = axios.create({
   baseURL: resolvedBaseURL,
+  withCredentials: true,
   headers: {
     Accept: "application/json",
   },
 });
 
-axios.defaults.baseURL = rawBaseURL;
+axios.defaults.baseURL = resolvedBaseURL;
+axios.defaults.withCredentials = true;
 axios.defaults.headers.common = axios.defaults.headers.common || {};
 axios.defaults.headers.common.Accept = "application/json";
+
+api.defaults.headers.common = api.defaults.headers.common || {};
+api.defaults.headers.common.Accept = "application/json";
+
+let authToken: string | null = null;
+
+export const setAuthToken = (token: string | null) => {
+  authToken = token;
+
+  const apply = (headers: Record<string, unknown>) => {
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    } else if ("Authorization" in headers) {
+      delete headers.Authorization;
+    }
+  };
+
+  apply(api.defaults.headers.common as Record<string, unknown>);
+  apply(axios.defaults.headers.common as Record<string, unknown>);
+};
+
+export interface ApiResponse<T> {
+  status: string;
+  data: T;
+  meta?: Record<string, unknown>;
+  errors?: string[];
+}
+
+export type ApiErrorResponse = {
+  status?: string;
+  data?: unknown;
+  errors?: unknown;
+  meta?: Record<string, unknown> | null;
+  message?: string;
+};
+
+type RequestConfig<T extends AxiosRequestConfig | InternalAxiosRequestConfig> = T & {
+  [SKIP_MIDDLEWARE_FLAG]?: boolean;
+};
 
 const ensureLeadingSlash = (value: string) =>
   value.startsWith("/") ? value : `/${value}`;
 
 const joinWithPrefix = (suffix: string) => {
+  if (!apiPrefix) return ensureLeadingSlash(suffix);
   const normalizedPrefix = ensureLeadingSlash(apiPrefix);
   const sanitizedSuffix = suffix.startsWith("/") ? suffix.slice(1) : suffix;
   return `${normalizedPrefix}/${sanitizedSuffix}`.replace(/\/{2,}/g, "/");
@@ -75,19 +110,55 @@ const normalizeUrl = (url?: string) => {
   return joinWithPrefix(url);
 };
 
+const HTTP_METHODS_REQUIRING_CSRF = new Set(["post", "put", "patch", "delete"]);
+
+const methodRequiresCsrf = (
+  config: AxiosRequestConfig | InternalAxiosRequestConfig,
+): boolean => {
+  const method = (config.method ?? "get").toLowerCase();
+  return HTTP_METHODS_REQUIRING_CSRF.has(method);
+};
+
+let csrfPromise: Promise<void> | null = null;
+
+const sanctumEndpoint = (() => {
+  try {
+    return new URL("/sanctum/csrf-cookie", resolvedBaseURL).toString();
+  } catch (error) {
+    return `${resolvedBaseURL.replace(/\/$/, "")}/sanctum/csrf-cookie`;
+  }
+})();
+
+export const prepareCsrf = async (): Promise<void> => {
+  if (!csrfPromise) {
+    const config: RequestConfig<AxiosRequestConfig> = {
+      method: "get",
+      url: sanctumEndpoint,
+      withCredentials: true,
+      headers: {
+        Accept: "application/json",
+      },
+    };
+    config[SKIP_MIDDLEWARE_FLAG] = true;
+
+    csrfPromise = axios.request(config).finally(() => {
+      csrfPromise = null;
+    }).then(() => undefined);
+  }
+
+  await csrfPromise;
+};
+
 const withAuthorizationHeader = <
-  T extends AxiosRequestConfig | InternalAxiosRequestConfig,
->(
-  config: T,
-): T => {
+  T extends RequestConfig<AxiosRequestConfig | InternalAxiosRequestConfig>,
+>(config: T): T => {
   const token =
     authToken ||
-    (typeof window !== "undefined" ? localStorage.getItem("token") : null);
+    (typeof window !== "undefined" ? window.localStorage.getItem("token") : null);
 
   if (token) {
     config.headers = config.headers || {};
-    (config.headers as Record<string, unknown>).Authorization =
-      `Bearer ${token}`;
+    (config.headers as Record<string, unknown>).Authorization = `Bearer ${token}`;
   } else if (config.headers && "Authorization" in config.headers) {
     delete (config.headers as Record<string, unknown>).Authorization;
   }
@@ -95,12 +166,165 @@ const withAuthorizationHeader = <
   return config;
 };
 
-axios.interceptors.request.use(withAuthorizationHeader);
-api.interceptors.request.use(withAuthorizationHeader);
+const ensureCampaignHeaders = <
+  T extends RequestConfig<AxiosRequestConfig | InternalAxiosRequestConfig>,
+>(config: T): T => {
+  config.headers = config.headers || {};
+
+  const resolveCampaignId = (): string => {
+    try {
+      const current = getActiveCampaignId();
+      if (current && current.trim()) {
+        return current;
+      }
+    } catch (error) {
+      // swallow - fallback below
+    }
+
+    if (typeof window !== "undefined") {
+      const legacy = window.localStorage.getItem("campaign_id");
+      if (legacy && legacy.trim()) {
+        return legacy;
+      }
+    }
+
+    return "1";
+  };
+
+  const campaignId = resolveCampaignId();
+
+  (config.headers as Record<string, unknown>)["X-Campaign-Id"] = campaignId;
+  (config.headers as Record<string, unknown>)["X-Requested-With"] = "XMLHttpRequest";
+
+  if (typeof window !== "undefined") {
+    const slug = window.localStorage.getItem("campaign_slug");
+    if (slug && slug.trim()) {
+      (config.headers as Record<string, unknown>)["X-Campaign-Slug"] = slug.trim();
+    } else if ("X-Campaign-Slug" in (config.headers as Record<string, unknown>)) {
+      delete (config.headers as Record<string, unknown>)["X-Campaign-Slug"];
+    }
+  }
+
+  return config;
+};
+
+const enhanceRequestConfig = async <
+  T extends RequestConfig<AxiosRequestConfig | InternalAxiosRequestConfig>,
+>(config: T): Promise<T> => {
+  if (config[SKIP_MIDDLEWARE_FLAG]) {
+    return config;
+  }
+
+  let next = withAuthorizationHeader(config);
+  next = ensureCampaignHeaders(next);
+
+  next.headers = next.headers || {};
+  if (!("Accept" in next.headers)) {
+    (next.headers as Record<string, unknown>).Accept = "application/json";
+  }
+
+  next.withCredentials = true;
+
+  if (methodRequiresCsrf(next)) {
+    await prepareCsrf();
+  }
+
+  return next;
+};
+
+const collectMessages = (source: unknown): string[] => {
+  if (!source) return [];
+  if (Array.isArray(source)) {
+    return source.flatMap((entry) => collectMessages(entry));
+  }
+  if (typeof source === "object") {
+    return Object.values(source as Record<string, unknown>).flatMap((entry) =>
+      collectMessages(entry),
+    );
+  }
+  if (typeof source === "string") {
+    const trimmed = source.trim();
+    return trimmed ? [trimmed] : [];
+  }
+  return [];
+};
+
+const extractErrorMessages = (
+  error: AxiosError<ApiErrorResponse>,
+): string[] => {
+  const payload = error.response?.data;
+  const messages = collectMessages(payload?.errors);
+
+  if (payload && typeof payload.message === "string" && payload.message.trim()) {
+    messages.push(payload.message.trim());
+  }
+
+  if (payload && typeof payload.data === "string" && payload.data.trim()) {
+    messages.push(payload.data.trim());
+  }
+
+  if (!messages.length && typeof error.message === "string") {
+    messages.push(error.message);
+  }
+
+  return Array.from(new Set(messages.filter((entry) => entry && entry.trim()))).map((entry) =>
+    entry.trim(),
+  );
+};
+
+const isBrowser = typeof window !== "undefined";
+
+const handleErrorResponse = (error: unknown) => {
+  if (isAxiosError<ApiErrorResponse>(error)) {
+    const status = error.response?.status;
+    const messages = extractErrorMessages(error);
+
+    if (status === 401) {
+      if (isBrowser && window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+      return Promise.reject(error);
+    }
+
+    if (status === 403) {
+      if (isBrowser) {
+        toast({
+          variant: "destructive",
+          title: "Unauthorized campaign access",
+          description:
+            messages[0] ?? "لا تملك صلاحية/عضوية في الحملة",
+        });
+      }
+      return Promise.reject(error);
+    }
+
+    if (status === 422) {
+      (error as AxiosError & { validationErrors?: string[] }).validationErrors = messages;
+      return Promise.reject(error);
+    }
+
+    if (messages.length && isBrowser) {
+      toast({
+        variant: "destructive",
+        title: "Request failed",
+        description: messages[0],
+      });
+    }
+  }
+
+  return Promise.reject(error);
+};
+
+api.interceptors.request.use((config) => enhanceRequestConfig(config));
+axios.interceptors.request.use((config) => enhanceRequestConfig(config));
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject(error),
+  (error) => handleErrorResponse(error),
+);
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => handleErrorResponse(error),
 );
 
 type CacheEntry<T> = { expiry: number; data: T };
@@ -183,3 +407,10 @@ export function useApi<T = unknown>(
 }
 
 export default api;
+
+declare module "axios" {
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface AxiosError<T = any, D = any> {
+    validationErrors?: string[];
+  }
+}

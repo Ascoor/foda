@@ -157,9 +157,17 @@ const extractMessageFromPayload = (payload: unknown): string | null => {
   }
 
   if ("errors" in payload) {
-    const { errors } = payload as { errors?: Record<string, unknown> };
-    if (errors && typeof errors === "object") {
-      for (const value of Object.values(errors)) {
+    const { errors } = payload as { errors?: unknown };
+
+    if (Array.isArray(errors)) {
+      const message = errors.find(
+        (entry): entry is string => typeof entry === "string" && entry.trim().length > 0,
+      );
+      if (message) {
+        return message;
+      }
+    } else if (errors && typeof errors === "object") {
+      for (const value of Object.values(errors as Record<string, unknown>)) {
         if (Array.isArray(value)) {
           const message = value.find(
             (entry): entry is string => typeof entry === "string" && entry.trim().length > 0,
@@ -169,6 +177,8 @@ const extractMessageFromPayload = (payload: unknown): string | null => {
           return value;
         }
       }
+    } else if (typeof errors === "string" && errors.trim()) {
+      return errors;
     }
   }
 

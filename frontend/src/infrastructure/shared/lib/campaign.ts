@@ -17,6 +17,12 @@ const resolveInitialCampaignId = (): string | null => {
       if (stored) {
         return stored;
       }
+
+      const legacy = window.localStorage.getItem("campaign_id");
+      if (legacy) {
+        window.localStorage.setItem(STORAGE_KEY, legacy);
+        return legacy;
+      }
     } catch (error) {
       console.warn("Unable to access stored campaign identifier", error);
     }
@@ -42,6 +48,7 @@ export const setActiveCampaignId = (
   if (typeof window !== "undefined") {
     try {
       window.localStorage.setItem(STORAGE_KEY, activeCampaignId);
+      window.localStorage.setItem("campaign_id", activeCampaignId);
     } catch (error) {
       console.warn("Failed to persist campaign identifier", error);
     }
