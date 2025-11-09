@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations as R;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations as R;
 class Candidate extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
     protected $fillable = [
         'election_id',
@@ -25,11 +27,6 @@ class Candidate extends Model
     public function election(): R\BelongsTo
     {
         return $this->belongsTo(Election::class);
-    }
-
-    public function campaign(): R\BelongsTo
-    {
-        return $this->belongsTo(Campaign::class);
     }
 
     public function agents(): R\HasMany

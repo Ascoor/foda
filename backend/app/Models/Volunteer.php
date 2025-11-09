@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations as R;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations as R;
 class Volunteer extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
     protected $fillable = [
         'campaign_id',
@@ -26,11 +28,6 @@ class Volunteer extends Model
         'tags' => 'array',
         'meta' => 'array',
     ];
-
-    public function campaign(): R\BelongsTo
-    {
-        return $this->belongsTo(Campaign::class);
-    }
 
     public function team(): R\BelongsTo
     {
