@@ -2,31 +2,36 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Finance extends Model
 {
     use HasFactory;
-    use BelongsToCampaign;
 
     protected $fillable = [
         'campaign_id',
+        'category_id',
         'amount',
         'type',
-        'date',
+        'txn_date',
         'description',
-        'reference_id',
-        'category_id',
+        'external_ref',
+        'meta',
     ];
 
     protected $casts = [
-        'date' => 'date',
-        'amount' => 'decimal:2',
+        'txn_date' => 'date',
+        'meta' => 'array',
     ];
 
-    public function category()
+    public function campaign(): R\BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
+
+    public function category(): R\BelongsTo
     {
         return $this->belongsTo(ExpenseCategory::class, 'category_id');
     }

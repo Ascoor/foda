@@ -2,32 +2,34 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Sms extends Model
 {
     use HasFactory;
-    use BelongsToCampaign;
 
     protected $fillable = [
         'campaign_id',
         'user_id',
-        'message',
-        'recipient',
+        'to',
         'status',
-        'sent_at',
-        'scheduled_for',
+        'provider_message_id',
+        'body',
+        'meta',
     ];
 
     protected $casts = [
-        'sent_at' => 'datetime',
-        'scheduled_for' => 'datetime',
+        'meta' => 'array',
     ];
 
-    public function user(): BelongsTo
+    public function campaign(): R\BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
+
+    public function user(): R\BelongsTo
     {
         return $this->belongsTo(User::class);
     }

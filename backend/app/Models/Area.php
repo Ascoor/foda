@@ -4,47 +4,47 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Area extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
-
-    protected $casts = [
-        'meta' => 'array',
+    protected $fillable = [
+        'name',
+        'code',
+        'level',
+        'parent_id',
+        'names',
+        'meta',
+        'centroid',
+        'bbox',
     ];
 
-    public function parent(): BelongsTo
+    protected $casts = [
+        'names' => 'array',
+        'meta' => 'array',
+        'centroid' => 'array',
+        'bbox' => 'array',
+    ];
+
+    public function parent(): R\BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_id');
     }
 
-    public function children(): HasMany
+    public function children(): R\HasMany
     {
         return $this->hasMany(self::class, 'parent_id');
     }
 
-    public function swots(): MorphMany
+    public function committees(): R\HasMany
     {
-        return $this->morphMany(Swot::class, 'entity');
+        return $this->hasMany(Committee::class);
     }
 
-    public function teams(): HasMany
+    public function campaigns(): R\BelongsToMany
     {
-        return $this->hasMany(Team::class);
-    }
-
-    public function events(): HasMany
-    {
-        return $this->hasMany(Event::class);
-    }
-
-    public function voters(): HasMany
-    {
-        return $this->hasMany(Voter::class);
+        return $this->belongsToMany(Campaign::class, 'campaign_area')->withTimestamps();
     }
 }

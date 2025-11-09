@@ -4,15 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Campaign extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'election_id',
         'name',
         'slug',
         'description',
@@ -21,77 +20,70 @@ class Campaign extends Model
         'spatial_level',
         'bbox',
         'status',
+        'settings',
     ];
 
     protected $casts = [
+        'bbox' => 'array',
+        'settings' => 'array',
         'starts_at' => 'datetime',
         'ends_at' => 'datetime',
-        'bbox' => 'array',
     ];
 
-    protected static function booted(): void
-    {
-        static::creating(function (self $campaign): void {
-            if (! $campaign->slug) {
-                $campaign->slug = Str::slug($campaign->name) ?: Str::random(12);
-            }
-        });
-    }
-
-    public function election(): BelongsTo
+    public function election(): R\BelongsTo
     {
         return $this->belongsTo(Election::class);
     }
 
-    public function pollingDays(): HasMany
+    public function users(): R\BelongsToMany
     {
-        return $this->hasMany(CampaignPollingDay::class);
+        return $this->belongsToMany(User::class, 'campaign_user')
+            ->withPivot(['role', 'status', 'permissions'])
+            ->withTimestamps();
     }
 
-    public function voters(): HasMany
+    public function areas(): R\BelongsToMany
     {
-        return $this->hasMany(Voter::class);
+        return $this->belongsToMany(Area::class, 'campaign_area')->withTimestamps();
     }
 
-    public function committees(): HasMany
+    public function committees(): R\HasMany
     {
         return $this->hasMany(Committee::class);
     }
 
-    public function geoAreas(): HasMany
+    public function teams(): R\HasMany
     {
-        return $this->hasMany(GeoArea::class);
+        return $this->hasMany(Team::class);
     }
 
-    public function volunteers(): HasMany
+    public function volunteers(): R\HasMany
     {
         return $this->hasMany(Volunteer::class);
     }
 
-    public function agents(): HasMany
+    public function voters(): R\HasMany
     {
-        return $this->hasMany(Agent::class);
+        return $this->hasMany(Voter::class);
     }
 
-    public function candidates(): HasMany
-    {
-        return $this->hasMany(Candidate::class);
-    }
-
-    public function events(): HasMany
+    public function events(): R\HasMany
     {
         return $this->hasMany(Event::class);
     }
 
-    public function scopeSearch($query, ?string $term)
+    public function activities(): R\HasMany
     {
-        return $query->when($term, function ($q) use ($term) {
-            $like = '%' . $term . '%';
-            $q->where(function ($inner) use ($like) {
-                $inner->where('name', 'like', $like)
-                    ->orWhere('description', 'like', $like)
-                    ->orWhere('slug', 'like', $like);
-            });
-        });
+        return $this->hasMany(Activity::class);
+    }
+
+    public function finances(): R\HasMany
+    {
+        return $this->hasMany(Finance::class);
+    }
+
+    public function analytics(): R\HasMany
+    {
+        return $this->hasMany(AnalyticsSnapshot::class);
     }
 }

@@ -2,34 +2,40 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Swot extends Model
 {
     use HasFactory;
-    use BelongsToCampaign;
+
+    protected $table = 'swots';
 
     protected $fillable = [
         'campaign_id',
         'entity_type',
         'entity_id',
+        'created_by',
         'strengths',
         'weaknesses',
         'opportunities',
         'threats',
-        'created_by',
     ];
 
-    public function entity(): MorphTo
+    protected $casts = [
+        'strengths' => 'array',
+        'weaknesses' => 'array',
+        'opportunities' => 'array',
+        'threats' => 'array',
+    ];
+
+    public function campaign(): R\BelongsTo
     {
-        return $this->morphTo();
+        return $this->belongsTo(Campaign::class);
     }
 
-    public function creator(): BelongsTo
+    public function creator(): R\BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
     }

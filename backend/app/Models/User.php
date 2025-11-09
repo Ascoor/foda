@@ -3,33 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
     use HasFactory;
     use Notifiable;
-    use HasRoles;
 
     protected $fillable = [
         'name',
         'email',
         'password',
-        'role_id',
-        'status',
         'last_login_at',
-    ];
-
-    protected $hidden = [
-        'password',
-        'remember_token',
-        'permissions',
     ];
 
     protected $casts = [
@@ -37,25 +24,20 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
     ];
 
-    public function sms(): HasMany
-    {
-        return $this->hasMany(Sms::class);
-    }
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-    public function teams(): HasMany
-    {
-        return $this->hasMany(Team::class, 'supervisor_id');
-    }
-
-    public function notifications(): HasMany
-    {
-        return $this->hasMany(Notification::class);
-    }
-
-    public function campaigns(): BelongsToMany
+    public function campaigns(): R\BelongsToMany
     {
         return $this->belongsToMany(Campaign::class, 'campaign_user')
             ->withPivot(['role', 'status', 'permissions'])
             ->withTimestamps();
+    }
+
+    public function supervisedTeams(): R\HasMany
+    {
+        return $this->hasMany(Team::class, 'supervisor_id');
     }
 }

@@ -1,56 +1,44 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
-use App\Models\Concerns\HasCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Volunteer extends Model
 {
     use HasFactory;
-    use BelongsToCampaign;
-    use HasCampaign;
 
     protected $fillable = [
         'campaign_id',
         'team_id',
-        'name',
-        'email',
+        'area_id',
+        'first_name',
+        'last_name',
         'phone',
+        'email',
         'tags',
+        'meta',
     ];
 
     protected $casts = [
         'tags' => 'array',
+        'meta' => 'array',
     ];
 
-    public function team(): BelongsTo
+    public function campaign(): R\BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
+
+    public function team(): R\BelongsTo
     {
         return $this->belongsTo(Team::class);
     }
 
-    public function swots(): MorphMany
+    public function area(): R\BelongsTo
     {
-        return $this->morphMany(Swot::class, 'entity');
-    }
-
-    public function campaigns(): BelongsToMany
-    {
-        return $this->belongsToMany(Campaign::class, 'campaign_volunteer')
-            ->withPivot(['assignment', 'shift', 'tags'])
-            ->withTimestamps();
-    }
-
-    public function agent(): HasOne
-    {
-        return $this->hasOne(Agent::class, 'person_id');
+        return $this->belongsTo(Area::class);
     }
 }

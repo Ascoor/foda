@@ -2,21 +2,21 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations as R;
 
 class Observation extends Model
 {
-    use BelongsToCampaign;
+    use HasFactory;
 
     protected $fillable = [
         'campaign_id',
         'committee_id',
         'volunteer_id',
-        'notes',
         'recorded_at',
         'meta',
+        'notes',
     ];
 
     protected $casts = [
@@ -24,12 +24,17 @@ class Observation extends Model
         'meta' => 'array',
     ];
 
-    public function committee(): BelongsTo
+    public function campaign(): R\BelongsTo
+    {
+        return $this->belongsTo(Campaign::class);
+    }
+
+    public function committee(): R\BelongsTo
     {
         return $this->belongsTo(Committee::class);
     }
 
-    public function volunteer(): BelongsTo
+    public function volunteer(): R\BelongsTo
     {
         return $this->belongsTo(Volunteer::class);
     }
