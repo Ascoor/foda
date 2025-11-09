@@ -19,7 +19,10 @@ class NotificationController extends ApiController
         $campaign = $this->campaign($request);
 
         $query = Notification::query()
-            ->where('user_id', $user->id)
+            ->where(function ($inner) use ($user) {
+                $inner->whereNull('user_id')
+                    ->orWhere('user_id', $user->id);
+            })
             ->when($campaign, fn ($q) => $q->where('campaign_id', $campaign->id))
             ->orderByDesc('created_at');
 
