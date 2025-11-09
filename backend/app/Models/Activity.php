@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations as R;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations as R;
 class Activity extends Model
 {
     use HasFactory;
+    use BelongsToCampaign;
 
     protected $fillable = [
         'campaign_id',
@@ -29,11 +31,6 @@ class Activity extends Model
         'payload' => 'array',
         'reported_at' => 'datetime',
     ];
-
-    public function campaign(): R\BelongsTo
-    {
-        return $this->belongsTo(Campaign::class);
-    }
 
     public function area(): R\BelongsTo
     {

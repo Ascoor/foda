@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Base;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Routing\Controller as BaseController;
 
-abstract class ApiController extends BaseController
+abstract class ApiController extends Controller
 {
     protected function ok(mixed $data = null, int $code = 200): JsonResponse
     {

@@ -34,7 +34,7 @@ export const API_ENDPOINTS = {
     observations: "/api/v1/ec/observations",
   },
   analytics: {
-    metrics: "/api/v1/analytics",
+    metrics: "/api/v1/analytics/overview",
     snapshots: "/api/v1/analytics/forecast",
   },
   notifications: {

@@ -6,6 +6,8 @@ import axios, {
 } from "axios";
 import { useState, useCallback, useEffect, useRef } from "react";
 
+import { getActiveCampaignId } from "@/infrastructure/shared/lib/campaign";
+
 let authToken: string | null = null;
 
 export const setAuthToken = (token: string | null) => {
@@ -90,6 +92,14 @@ const withAuthorizationHeader = <
       `Bearer ${token}`;
   } else if (config.headers && "Authorization" in config.headers) {
     delete (config.headers as Record<string, unknown>).Authorization;
+  }
+
+  const campaignId = getActiveCampaignId();
+  if (campaignId) {
+    config.headers = config.headers || {};
+    (config.headers as Record<string, unknown>)["X-Campaign-ID"] = campaignId;
+  } else if (config.headers && "X-Campaign-ID" in config.headers) {
+    delete (config.headers as Record<string, unknown>)["X-Campaign-ID"];
   }
 
   return config;

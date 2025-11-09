@@ -5,6 +5,7 @@ import { useAuth } from "@/features/legacy/hooks/useAuth";
 import FloatingLandingPage from "@/features/modules/marketing/pages/LandingPage";
 import { getNavTree } from "@/routing/nav/nav.map";
 import { useNavigationContext } from "@/routing/nav/useNavigationContext";
+import { useCampaignContext } from "@/infrastructure/shared/contexts/CampaignContext";
 
 const sanitizePath = (candidate: unknown): string | null => {
   if (typeof candidate !== "string") return null;
@@ -18,6 +19,7 @@ export const PostAuthRedirect = () => {
   const location = useLocation();
   const [params] = useSearchParams();
   const navContext = useNavigationContext();
+  const { setCampaignId } = useCampaignContext();
 
   const defaultDestination = useMemo(() => {
     const tree = getNavTree(navContext, { surface: "sidebar" });
@@ -39,6 +41,8 @@ export const PostAuthRedirect = () => {
       return;
     }
 
+    setCampaignId(null);
+
     const returnToParam = sanitizePath(params.get("returnTo"));
     const stateReturnTo = sanitizePath(
       (location.state as { returnTo?: string } | undefined)?.returnTo,
@@ -52,7 +56,15 @@ export const PostAuthRedirect = () => {
       replace: true,
       state: { returnTo: target },
     });
-  }, [defaultDestination, isAuthenticated, loading, location.state, navigate, params]);
+  }, [
+    defaultDestination,
+    isAuthenticated,
+    loading,
+    location.state,
+    navigate,
+    params,
+    setCampaignId,
+  ]);
 
   if (loading) {
     return null;

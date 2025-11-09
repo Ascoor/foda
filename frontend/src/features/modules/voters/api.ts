@@ -21,6 +21,9 @@ export const fetchVoters = async (
   } = {},
   campaignId?: CampaignIdentifier | null,
 ) => {
+  if (!campaignId) {
+    throw new Error("Cannot load voters without an active campaign");
+  }
   const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const response = await request<PaginatedResponse<Voter>>(
     {
@@ -41,6 +44,9 @@ export const fetchVoter = async (
   identifier: string | number,
   campaignId?: CampaignIdentifier | null,
 ) => {
+  if (!campaignId) {
+    throw new Error("Cannot load voter details without an active campaign");
+  }
   const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const response = await request<{ data: Voter }>(
     { url: `${endpoint}/${identifier}`, method: "get" },
@@ -53,6 +59,9 @@ export const createVoter = async (
   payload: VoterFormData,
   campaignId?: CampaignIdentifier | null,
 ) => {
+  if (!campaignId) {
+    throw new Error("Cannot create voters without an active campaign");
+  }
   const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const res = await request<{ data: Voter }>({
     url: endpoint,
@@ -67,6 +76,9 @@ export const updateVoter = async (
   payload: VoterFormData,
   campaignId?: CampaignIdentifier | null,
 ) => {
+  if (!campaignId) {
+    throw new Error("Cannot update voters without an active campaign");
+  }
   const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   const res = await request<{ data: Voter }>({
     url: `${endpoint}/${identifier}`,
@@ -80,6 +92,9 @@ export const deleteVoter = async (
   identifier: string | number,
   campaignId?: CampaignIdentifier | null,
 ) => {
+  if (!campaignId) {
+    throw new Error("Cannot delete voters without an active campaign");
+  }
   const endpoint = API_ENDPOINTS.crm.voters(campaignId);
   await request({ url: `${endpoint}/${identifier}`, method: "delete" });
 };

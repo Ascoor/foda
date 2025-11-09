@@ -36,7 +36,7 @@ class NotificationController extends Controller
 
     public function markAsRead(Request $request, Notification $notification)
     {
-        $this->authorizeForUser($request, $notification);
+        $this->ensureNotificationAccess($request, $notification);
 
         $notification->markAsRead();
 
@@ -62,9 +62,10 @@ class NotificationController extends Controller
         return response()->json(['status' => 'ok']);
     }
 
-    public function authorizeForUser(Request $request, Notification $notification): void
+    private function ensureNotificationAccess(Request $request, Notification $notification): void
     {
         $user = $request->user();
+
         if (!$user) {
             abort(Response::HTTP_FORBIDDEN);
         }
@@ -73,8 +74,10 @@ class NotificationController extends Controller
             abort(Response::HTTP_FORBIDDEN);
         }
 
-        if ($notification->campaign_id && $request->filled('campaign_id')) {
-            if ((int) $notification->campaign_id !== (int) $request->integer('campaign_id')) {
+        if ($notification->campaign_id) {
+            $campaignId = $request->integer('campaign_id') ?? optional($request->route('campaign'))->getKey();
+
+            if ($campaignId && (int) $notification->campaign_id !== (int) $campaignId) {
                 abort(Response::HTTP_FORBIDDEN);
             }
         }
