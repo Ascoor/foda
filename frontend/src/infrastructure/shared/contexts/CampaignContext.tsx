@@ -52,3 +52,5 @@ export const useCampaignContext = () => {
   }
   return context;
 };
+
+export const useOptionalCampaignContext = () => useContext(CampaignContext);
