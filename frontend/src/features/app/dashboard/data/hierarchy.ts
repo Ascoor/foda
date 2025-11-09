@@ -359,501 +359,526 @@ export const buildDashboardHierarchy = ({
       ? totalVolunteers / totalTeams
       : undefined;
 
-  const modules: DashboardModule[] = [
-    {
-      id: "electoral-operations",
-      label: "العمليات الانتخابية",
-      description:
-        "إشراف مركزي على المعطيات الانتخابية مع ارتباط مباشر بمصادر البيانات الحية.",
-      icon: iconRegistry.compass,
-      submodules: [
-        {
-          id: "elections",
-          label: "إدارة الانتخابات",
-          description:
-            "ملخص شامل للتسجيل والمشاركة ونقاط الإبلاغ التي يتم تحديثها تلقائياً.",
-          panels: [
-            {
-              id: "election-overview",
-              label: "وضع الانتخابات الحالي",
-              summary:
-                "مؤشرات التسجيل والإبلاغ الميداني المجمّعة من التكاملات الانتخابية الرسمية.",
-              icon: iconRegistry.fileStack,
-              analytics: [
-                {
-                  id: "registered",
-                  label: "الإجمالي المسجل",
-                  value: formatNumber(registeredVoters),
-                  trend: registrationStats.trend,
-                  change: formatChange(registrationStats.percentChange, {
-                    isPercent: true,
-                  }),
-                },
-                {
-                  id: "turnout",
-                  label: "نسبة المشاركة",
-                  value: formatPercent(turnoutPercentage),
-                  trend: supportChange.trend,
-                  change: formatChange(supportChange.change, { isPercent: true }),
-                },
-                {
-                  id: "reporting",
-                  label: "مراكز الإبلاغ النشطة",
-                  value: formatNumber(reportingPrecincts),
-                  trend:
-                    precinctProgress !== undefined
-                      ? precinctProgress >= 50
-                        ? "up"
-                        : "down"
-                      : undefined,
-                  change: formatChange(precinctProgress, { isPercent: true }),
-                },
-              ],
-              actions: [
-                {
-                  id: "view-overview",
-                  label: "عرض نظرة عامة",
-                  description:
-                    "استعراض ملخص الحالة الراهنة لكل انتخابات مع المؤشرات الحرجة.",
-                  type: "view",
-                  roles: ["domain-owner", "data-steward", "operator"],
-                  emphasis: "primary",
-                },
-                {
-                  id: "update-status",
-                  label: "تحديث الحالة",
-                  description:
-                    "تعديل الحالة التشغيلية ومواءمتها مع الجدول الزمني العام.",
-                  type: "update",
-                  roles: ["domain-owner", "data-steward"],
-                },
-                {
-                  id: "sync-observers",
-                  label: "مزامنة المراقبين",
-                  description:
-                    "توزيع فرق المراقبة على اللجان بناءً على أحدث بيانات المشاركة.",
-                  type: "sync",
-                  roles: ["domain-owner", "operator"],
-                },
-              ],
-              reports: [
-                "تقرير الحالة اليومية",
-                "مؤشر المخاطر",
-                "توزيع اللجان",
-              ],
-            },
-            {
-              id: "participation-insights",
-              label: "تحليلات المشاركة",
-              summary:
-                "تحليل اتجاهات الدعم والتقارير اليومية مع إبراز المناطق الأكثر نشاطاً.",
-              icon: iconRegistry.barChart,
-              analytics: [
-                {
-                  id: "support-score",
-                  label: "مؤشر الدعم",
-                  value: formatPercent(supportPercentage),
-                  trend: supportChange.trend,
-                  change: formatChange(supportChange.change, { isPercent: true }),
-                },
-                {
-                  id: "reports-today",
-                  label: "تقارير اليوم",
-                  value: formatNumber(regionSummary.totalReports),
-                  trend:
-                    regionSummary.totalReports > 0 ? "up" : undefined,
-                  change:
-                    regionSummary.totalReports > 0
-                      ? `${formatNumber(regionSummary.totalReports)} تقارير`
-                      : undefined,
-                },
-                {
-                  id: "top-region",
-                  label: "أكثر المناطق نشاطاً",
-                  value: regionSummary.busiestRegion ?? "—",
-                  trend:
-                    regionSummary.busiestReports > 0 ? "up" : undefined,
-                  change:
-                    regionSummary.busiestReports > 0
-                      ? `${formatNumber(regionSummary.busiestReports)} بلاغ`
-                      : undefined,
-                },
-              ],
-              actions: [
-                {
-                  id: "view-timeseries",
-                  label: "استعراض الاتجاهات",
-                  description:
-                    "عرض الرسوم البيانية التفاعلية لمعدلات المشاركة عبر الوقت.",
-                  type: "view",
-                  roles: ["domain-owner", "data-steward", "operator"],
-                  emphasis: "primary",
-                },
-                {
-                  id: "flag-anomaly",
-                  label: "إبلاغ عن شذوذ",
-                  description:
-                    "إرسال تنبيه فوري عن أي تراجع مفاجئ في المؤشرات الحيوية.",
-                  type: "update",
-                  roles: ["domain-owner", "operator"],
-                },
-                {
-                  id: "download-report",
-                  label: "تحميل تقرير",
-                  description:
-                    "استخراج تقرير المشاركة التفصيلي لمشاركته مع اللجان العليا.",
-                  type: "report",
-                  roles: ["data-steward", "operator"],
-                },
-              ],
-              reports: [
-                "ملخص المشاركة اليومي",
-                "تحليل المناطق",
-                "إنذار مبكر",
-              ],
-            },
-          ],
-        },
-        {
-          id: "scheduling",
-          label: "جدولة العمليات",
-          description:
-            "متابعة الموارد والمهام الميدانية لضمان الالتزام بالخطط الزمنية.",
-          panels: [
-            {
-              id: "ballot-schedules",
-              label: "جداول الموارد",
-              summary:
-                "متابعة الطاقة التشغيلية وعدد الفعاليات المعتمدة خلال فترة التقارير الأخيرة.",
-              icon: iconRegistry.clipboard,
-              analytics: [
-                {
-                  id: "events",
-                  label: "الفعاليات المجدولة",
-                  value: formatNumber(totalEvents),
-                  trend: totalEvents && totalEvents > 0 ? "up" : undefined,
-                },
-                {
-                  id: "coverage",
-                  label: "نسبة تغطية الفرق",
-                  value: formatPercent(volunteerCoverage),
-                  trend:
-                    volunteerCoverage !== undefined
-                      ? volunteerCoverage >= 75
-                        ? "up"
-                        : "down"
-                      : undefined,
-                },
-                {
-                  id: "teams",
-                  label: "الفرق الجاهزة",
-                  value: formatNumber(totalTeams),
-                  trend: totalTeams && totalTeams > 0 ? "up" : undefined,
-                },
-              ],
-              actions: [
-                {
-                  id: "generate-schedule",
-                  label: "إنشاء جدول",
-                  description:
-                    "إطلاق معالج لإنشاء جدول محسّن بناءً على الطاقة الميدانية.",
-                  type: "create",
-                  roles: ["domain-owner", "data-steward"],
-                },
-                {
-                  id: "publish-updates",
-                  label: "نشر التحديثات",
-                  description:
-                    "إعلام جميع الأطراف بالتعديلات الجديدة عبر قنوات الاتصال الرسمية.",
-                  type: "sync",
-                  roles: ["domain-owner", "operator"],
-                },
-                {
-                  id: "export-schedule",
-                  label: "تصدير الجدول",
-                  description:
-                    "تصدير الجداول إلى تنسيقات متعددة وإرسالها إلى غرفة العمليات.",
-                  type: "report",
-                  roles: ["data-steward", "operator"],
-                },
-              ],
-              reports: ["تحليل الجاهزية", "قائمة التغطية", "مخطط الموارد"],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "field-operations",
-      label: "العمليات الميدانية",
-      description:
-        "متابعة مباشرة للفرق والمتطوعين مع مراقبة مستويات الجاهزية والانتشار.",
-      icon: iconRegistry.workflow,
-      submodules: [
-        {
-          id: "teams-overview",
-          label: "إدارة الفرق",
-          description:
-            "تحليلات حول هيكل الفرق الميدانية وتوزيع المتطوعين على المناطق.",
-          panels: [
-            {
-              id: "team-readiness",
-              label: "جاهزية الفرق",
-              summary:
-                "مؤشرات تعكس أعداد الفرق والمتطوعين ونسبة التوزيع على الوحدات المختلفة.",
-              icon: iconRegistry.users,
-              analytics: [
-                {
-                  id: "active-teams",
-                  label: "الفرق النشطة",
-                  value: formatNumber(totalTeams),
-                  trend: totalTeams && totalTeams > 0 ? "up" : undefined,
-                },
-                {
-                  id: "volunteer-count",
-                  label: "عدد المتطوعين",
-                  value: formatNumber(totalVolunteers),
-                  trend:
-                    totalVolunteers && totalVolunteers > 0 ? "up" : undefined,
-                },
-                {
-                  id: "avg-team-size",
-                  label: "متوسط حجم الفريق",
-                  value: formatDecimal(avgTeamSize),
-                  trend: avgTeamSize && avgTeamSize > 0 ? "up" : undefined,
-                },
-              ],
-              actions: [
-                {
-                  id: "plan-training",
-                  label: "خطة تدريب",
-                  description:
-                    "بناء خطة تدريبية تستهدف الفرق ذات الأداء الأقل في المؤشرات.",
-                  type: "create",
-                  roles: ["domain-owner", "operator"],
-                },
-                {
-                  id: "assign-volunteers",
-                  label: "توزيع المتطوعين",
-                  description:
-                    "إعادة توزيع المتطوعين بشكل ديناميكي بناءً على كثافة البلاغات.",
-                  type: "update",
-                  roles: ["data-steward", "operator"],
-                },
-                {
-                  id: "export-teams",
-                  label: "تصدير كشوف",
-                  description:
-                    "إصدار كشوف الفرق والمتطوعين لتنسيقها مع غرف العمليات المحلية.",
-                  type: "report",
-                  roles: ["domain-owner", "data-steward"],
-                },
-              ],
-              reports: ["تقرير الجاهزية", "توزيع الفرق", "سجلات المتطوعين"],
-            },
-            {
-              id: "resource-dispatch",
-              label: "توجيه الموارد",
-              summary:
-                "لوحة لتتبع الانتشار الميداني ونسبة تغطية الموارد مقارنة بالحاجة الفعلية.",
-              icon: iconRegistry.target,
-              analytics: [
-                {
-                  id: "coverage-index",
-                  label: "مؤشر التغطية",
-                  value: formatPercent(volunteerCoverage),
-                  trend:
-                    volunteerCoverage !== undefined
-                      ? volunteerCoverage >= 60
-                        ? "up"
-                        : "down"
-                      : undefined,
-                },
-                {
-                  id: "reports-total",
-                  label: "إجمالي البلاغات",
-                  value: formatNumber(reportDistribution.total),
-                  trend:
-                    reportDistribution.total > 0 ? "up" : undefined,
-                },
-                {
-                  id: "top-report-type",
-                  label: "أكثر أنواع البلاغات",
-                  value: reportDistribution.topType ?? "—",
-                  change: reportDistribution.topCount
-                    ? `${formatNumber(reportDistribution.topCount)} بلاغ`
+  
+const modules: DashboardModule[] = [
+  {
+    id: "operational-sections",
+    label: "لوحة المتابعة",
+    description:
+      "تصنيف واضح لأهم مكونات الحملة مع مؤشرات حية لكل قسم تشغيلي.",
+    icon: iconRegistry.compass,
+    submodules: [
+      {
+        id: "areas",
+        label: "المناطق",
+        description: "رصد حالة المناطق ومستوى النشاط في كل نطاق جغرافي.",
+        panels: [
+          {
+            id: "areas-overview",
+            label: "ملخص المناطق",
+            summary:
+              "إحصاءات سريعة حول توزيع المناطق وأبرز نقاط النشاط الحالية.",
+            icon: iconRegistry.mapPin,
+            analytics: [
+              {
+                id: "areas-total",
+                label: "إجمالي المناطق",
+                value: formatNumber(totalAreas),
+              },
+              {
+                id: "areas-busiest",
+                label: "أكثر منطقة نشاطاً",
+                value: regionSummary.busiestRegion ?? "—",
+                change:
+                  regionSummary.busiestReports > 0
+                    ? `${formatNumber(regionSummary.busiestReports)} بلاغ`
                     : undefined,
-                },
-              ],
-              actions: [
-                {
-                  id: "optimize-dispatch",
-                  label: "تحسين الانتشار",
-                  description:
-                    "اقتراح تغييرات فورية على توزيع الفرق بناءً على ضغط البلاغات.",
-                  type: "update",
-                  roles: ["domain-owner", "operator"],
-                },
-                {
-                  id: "share-brief",
-                  label: "مشاركة ملخص",
-                  description:
-                    "مشاركة ملخص ميداني مع المشرفين في الخطوط الأمامية.",
-                  type: "sync",
-                  roles: ["domain-owner", "data-steward", "operator"],
-                },
-                {
-                  id: "archive-logs",
-                  label: "أرشفة السجلات",
-                  description:
-                    "أرشفة البلاغات ومعايير القرار للمراجعة اللاحقة.",
-                  type: "report",
-                  roles: ["data-steward"],
-                },
-              ],
-              reports: ["ملخص الانتشار", "خريطة الضغط", "قائمة الأولويات"],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: "data-intelligence",
-      label: "الاستخبارات الرقمية",
-      description:
-        "تحليلات متقدمة حول التغطية والدعم لاتخاذ قرارات استراتيجية بسرعة.",
-      icon: iconRegistry.gauge,
-      submodules: [
-        {
-          id: "insights",
-          label: "ملخصات تنبؤية",
-          description:
-            "عرض موجز للاتجاهات الرئيسية وتحذيرات المخاطر المستندة إلى البيانات المجمعة.",
-          panels: [
-            {
-              id: "analytics-summary",
-              label: "مؤشرات الدعم",
-              summary:
-                "ملخص سريع لمؤشرات الدعم والتغطية والفجوات التي تحتاج إلى تدخل عاجل.",
-              icon: iconRegistry.pieChart,
-              analytics: [
-                {
-                  id: "support-percentage",
-                  label: "نسبة الدعم",
-                  value: formatPercent(supportPercentage),
-                  trend: supportChange.trend,
-                  change: formatChange(supportChange.change, { isPercent: true }),
-                },
-                {
-                  id: "turnout-estimate",
-                  label: "تقدير المشاركة",
-                  value: formatPercent(turnoutEstimate),
-                  trend:
-                    turnoutEstimate !== undefined
-                      ? turnoutEstimate >= 50
-                        ? "up"
-                        : "down"
-                      : undefined,
-                },
-                {
-                  id: "coverage-gap",
-                  label: "فجوة التغطية",
-                  value: formatPercent(coverageGap),
-                  trend:
-                    coverageGap !== undefined
-                      ? coverageGap <= 20
-                        ? "up"
-                        : "down"
-                      : undefined,
-                },
-              ],
-              actions: [
-                {
-                  id: "share-dashboard",
-                  label: "مشاركة لوحة",
-                  description:
-                    "نشر لوحة المؤشرات مع أصحاب المصلحة لاتخاذ قرارات مشتركة.",
-                  type: "sync",
-                  roles: ["domain-owner", "data-steward", "operator"],
-                },
-                {
-                  id: "configure-alerts",
-                  label: "ضبط التنبيهات",
-                  description:
-                    "تخصيص تنبيهات ذكية عند انخفاض المؤشرات الحيوية عن الحدود المحددة.",
-                  type: "update",
-                  roles: ["domain-owner", "data-steward"],
-                },
-                {
-                  id: "export-analytics",
-                  label: "تصدير التحليلات",
-                  description:
-                    "إرسال ملخص التحليلات إلى الأنظمة المتكاملة أو مستودعات البيانات.",
-                  type: "report",
-                  roles: ["data-steward"],
-                },
-              ],
-              reports: ["ملخص الاتجاهات", "خطة معالجة المخاطر", "ملف المؤشرات"],
-            },
-            {
-              id: "governance-controls",
-              label: "ضوابط الحوكمة",
-              summary:
-                "لوحة لمراقبة إجراءات الوصول والمهام الحرجة وتوزيع الأدوار التشغيلية.",
-              icon: iconRegistry.shield,
-              analytics: [
-                {
-                  id: "active-roles",
-                  label: "أدوار فعّالة",
-                  value: formatNumber(3),
-                  trend: "up",
-                },
-                {
-                  id: "policy-updates",
-                  label: "تحديثات السياسات",
-                  value: formatNumber(1),
-                  trend: "up",
-                },
-                {
-                  id: "audit-readiness",
-                  label: "جاهزية التدقيق",
-                  value: formatPercent(100),
-                  trend: "up",
-                },
-              ],
-              actions: [
-                {
-                  id: "review-integrations",
-                  label: "مراجعة الصلاحيات",
-                  description:
-                    "مراجعة تكامل الأدوار والمهام للتأكد من الالتزام بالسياسات الموحدة.",
-                  type: "view",
-                  roles: ["domain-owner", "operator"],
-                },
-                {
-                  id: "update-workflows",
-                  label: "تحديث مسارات العمل",
-                  description:
-                    "مواءمة المسارات التشغيلية مع متطلبات الضبط الجديدة.",
-                  type: "update",
-                  roles: ["domain-owner", "data-steward"],
-                },
-                {
-                  id: "audit-export",
-                  label: "تصدير سجلات",
-                  description:
-                    "إرسال سجلات الأنشطة الحساسة إلى أنظمة الحوكمة والتدقيق.",
-                  type: "report",
-                  roles: ["data-steward"],
-                },
-              ],
-              reports: ["سجل الضوابط", "مراجعة الامتثال", "خريطة المسؤوليات"],
-            },
-          ],
-        },
-      ],
-    },
-  ];
+              },
+              {
+                id: "areas-reports",
+                label: "تقارير اليوم",
+                value: formatNumber(regionSummary.totalReports),
+                trend:
+                  regionSummary.totalReports > 0 ? "up" : undefined,
+              },
+            ],
+            actions: [
+              {
+                id: "view-areas-map",
+                label: "عرض الخريطة",
+                description:
+                  "استعراض خريطة تفاعلية للمناطق مع حالة التغطية الحالية.",
+                type: "view",
+                roles: ["domain-owner", "operator"],
+                emphasis: "primary",
+              },
+              {
+                id: "update-area-status",
+                label: "تحديث حالة منطقة",
+                description:
+                  "تعديل حالة المناطق الحيوية بناءً على البلاغات الأخيرة.",
+                type: "update",
+                roles: ["domain-owner", "data-steward"],
+              },
+              {
+                id: "share-area-brief",
+                label: "مشاركة موجز",
+                description:
+                  "مشاركة ملخص المناطق مع القيادات الميدانية.",
+                type: "sync",
+                roles: ["domain-owner", "operator"],
+              },
+            ],
+            reports: ["تقرير المناطق", "خريطة النشاط", "بيانات الانتشار"],
+          },
+        ],
+      },
+      {
+        id: "committees",
+        label: "اللجان",
+        description: "متابعة جاهزية اللجان وتوازن توزيع المسؤوليات.",
+        panels: [
+          {
+            id: "committees-readiness",
+            label: "جاهزية اللجان",
+            summary:
+              "مؤشرات حول توزيع اللجان وحجم الفرق ومتطلبات الدعم المباشر.",
+            icon: iconRegistry.clipboard,
+            analytics: [
+              {
+                id: "committees-total",
+                label: "إجمالي اللجان",
+                value: formatNumber(totalTeams),
+              },
+              {
+                id: "committees-coverage",
+                label: "نسبة التغطية",
+                value: formatPercent(volunteerCoverage),
+                trend:
+                  volunteerCoverage !== undefined
+                    ? volunteerCoverage >= 60
+                      ? "up"
+                      : "down"
+                    : undefined,
+              },
+              {
+                id: "committees-average",
+                label: "متوسط حجم الفريق",
+                value: formatDecimal(avgTeamSize),
+              },
+            ],
+            actions: [
+              {
+                id: "manage-committees",
+                label: "إدارة اللجان",
+                description:
+                  "استعراض قوائم اللجان وتوزيع المسؤوليات التشغيلية.",
+                type: "view",
+                roles: ["domain-owner", "data-steward"],
+                emphasis: "primary",
+              },
+              {
+                id: "assign-leads",
+                label: "تعيين منسق",
+                description:
+                  "تحديث المنسقين لكل لجنة وفق مستويات الجاهزية.",
+                type: "update",
+                roles: ["domain-owner", "operator"],
+              },
+              {
+                id: "export-committees",
+                label: "تصدير سجل",
+                description:
+                  "تحميل سجل اللجان والمشرفين للمراجعة والتوثيق.",
+                type: "report",
+                roles: ["data-steward"],
+              },
+            ],
+            reports: ["خريطة اللجان", "سجل التغطية", "تقرير الموارد"],
+          },
+        ],
+      },
+      {
+        id: "candidates",
+        label: "المرشحون",
+        description: "قراءة متكاملة لأداء المرشحين وتوجهات الدعم الشعبي.",
+        panels: [
+          {
+            id: "candidates-support",
+            label: "مؤشرات المرشحين",
+            summary:
+              "مقاييس الدعم والتفاعل المرتبطة بحملات المرشحين عبر المناطق.",
+            icon: iconRegistry.barChart,
+            analytics: [
+              {
+                id: "support-index",
+                label: "مؤشر الدعم",
+                value: formatPercent(supportPercentage),
+                trend: supportChange.trend,
+                change: formatChange(supportChange.change, { isPercent: true }),
+              },
+              {
+                id: "turnout-estimate",
+                label: "تقدير المشاركة",
+                value: formatPercent(turnoutEstimate),
+              },
+              {
+                id: "top-support-region",
+                label: "أبرز منطقة داعمة",
+                value: regionSummary.busiestRegion ?? "—",
+              },
+            ],
+            actions: [
+              {
+                id: "view-candidate-profiles",
+                label: "عرض ملفات المرشحين",
+                description:
+                  "الاطلاع على الملفات المحدثة والمواد التعريفية لكل مرشح.",
+                type: "view",
+                roles: ["domain-owner", "operator"],
+                emphasis: "primary",
+              },
+              {
+                id: "update-candidate-message",
+                label: "تحديث الرسائل الإعلامية",
+                description:
+                  "مواءمة الرسائل والمحتوى مع نتائج الأداء في المناطق.",
+                type: "update",
+                roles: ["domain-owner", "data-steward"],
+              },
+              {
+                id: "share-support-brief",
+                label: "مشاركة ملخص الدعم",
+                description:
+                  "إرسال موجز بالتوجهات للفرق العاملة على الحملات الميدانية.",
+                type: "sync",
+                roles: ["domain-owner", "operator"],
+              },
+            ],
+            reports: ["تقرير الأداء الإعلامي", "تحليل الدعم", "خطط التفاعل"],
+          },
+        ],
+      },
+      {
+        id: "voters",
+        label: "الناخبون",
+        description: "متابعة دائمة لبيانات الناخبين ومعدلات المشاركة.",
+        panels: [
+          {
+            id: "voters-overview",
+            label: "ملخص الناخبين",
+            summary:
+              "قياسات التسجيل والمشاركة لتوجيه الجهود نحو الشرائح الأكثر أهمية.",
+            icon: iconRegistry.gauge,
+            analytics: [
+              {
+                id: "voters-total",
+                label: "إجمالي الناخبين",
+                value: formatNumber(totalVoters),
+                trend: registrationStats.trend,
+                change: formatChange(registrationStats.percentChange, {
+                  isPercent: true,
+                }),
+              },
+              {
+                id: "voters-registered",
+                label: "المقيدون رسمياً",
+                value: formatNumber(registeredVoters),
+              },
+              {
+                id: "voters-turnout",
+                label: "نسبة المشاركة",
+                value: formatPercent(turnoutPercentage),
+                trend: supportChange.trend,
+                change: formatChange(supportChange.change, { isPercent: true }),
+              },
+            ],
+            actions: [
+              {
+                id: "view-voter-segments",
+                label: "عرض الشرائح",
+                description:
+                  "استكشاف الشرائح الرئيسية للناخبين وتحديد أولويات الاستهداف.",
+                type: "view",
+                roles: ["domain-owner", "data-steward", "operator"],
+                emphasis: "primary",
+              },
+              {
+                id: "update-voter-records",
+                label: "تحديث البيانات",
+                description:
+                  "مراجعة بيانات الناخبين وتصحيح السجلات الحساسة.",
+                type: "update",
+                roles: ["domain-owner", "data-steward"],
+              },
+              {
+                id: "export-voter-lists",
+                label: "تصدير القوائم",
+                description:
+                  "تحميل قوائم الناخبين للاستخدام في الحملات الميدانية.",
+                type: "report",
+                roles: ["data-steward"],
+              },
+            ],
+            reports: ["تقرير الناخبين", "سجل التسجيل", "قوائم الاتصال"],
+          },
+        ],
+      },
+      {
+        id: "volunteers",
+        label: "المتطوعون",
+        description: "متابعة انتشار المتطوعين وجاهزيتهم لدعم الحملة.",
+        panels: [
+          {
+            id: "volunteers-distribution",
+            label: "توزيع المتطوعين",
+            summary:
+              "مؤشرات حول حجم المتطوعين وتوازن انتشارهم على المناطق واللجان.",
+            icon: iconRegistry.users,
+            analytics: [
+              {
+                id: "volunteers-total",
+                label: "إجمالي المتطوعين",
+                value: formatNumber(totalVolunteers),
+              },
+              {
+                id: "volunteers-coverage",
+                label: "نسبة التغطية",
+                value: formatPercent(volunteerCoverage),
+              },
+              {
+                id: "volunteers-average",
+                label: "متوسط حجم الفريق",
+                value: formatDecimal(avgTeamSize),
+              },
+            ],
+            actions: [
+              {
+                id: "manage-volunteers",
+                label: "إدارة المتطوعين",
+                description:
+                  "إدارة قوائم المتطوعين وتوزيعهم على المهام الميدانية.",
+                type: "view",
+                roles: ["domain-owner", "operator"],
+                emphasis: "primary",
+              },
+              {
+                id: "sync-trainings",
+                label: "مزامنة التدريبات",
+                description:
+                  "تحديث جداول التدريب وإشعارات الحضور للمتطوعين.",
+                type: "sync",
+                roles: ["domain-owner", "data-steward", "operator"],
+              },
+              {
+                id: "download-roster",
+                label: "تحميل القوائم",
+                description:
+                  "تصدير قوائم المتطوعين مع بيانات الاتصال والتوزيع.",
+                type: "report",
+                roles: ["data-steward"],
+              },
+            ],
+            reports: ["كشف المتطوعين", "خطة التدريب", "ملخص الجاهزية"],
+          },
+        ],
+      },
+      {
+        id: "agents",
+        label: "الوكلاء",
+        description: "متابعة نشاط الوكلاء والتغطية الميدانية المرتبطة بهم.",
+        panels: [
+          {
+            id: "agents-activity",
+            label: "نشاط الوكلاء",
+            summary:
+              "قياس حجم البلاغات وتوزيعها لتحديد الحاجة للدعم أو إعادة الانتشار.",
+            icon: iconRegistry.shield,
+            analytics: [
+              {
+                id: "agents-reports-total",
+                label: "إجمالي البلاغات",
+                value: formatNumber(reportDistribution.total),
+                trend:
+                  reportDistribution.total > 0 ? "up" : undefined,
+              },
+              {
+                id: "agents-top-report",
+                label: "أكثر البلاغات تكراراً",
+                value: reportDistribution.topType ?? "—",
+                change:
+                  reportDistribution.topCount
+                    ? `${formatNumber(reportDistribution.topCount)} حالة`
+                    : undefined,
+              },
+              {
+                id: "agents-prepared-sites",
+                label: "نسبة المواقع المجهزة",
+                value: formatPercent(precinctProgress),
+              },
+            ],
+            actions: [
+              {
+                id: "view-agent-assignments",
+                label: "متابعة التكليفات",
+                description:
+                  "مراجعة تكليفات الوكلاء وتغطيتهم للمواقع الحرجة.",
+                type: "view",
+                roles: ["domain-owner", "operator"],
+                emphasis: "primary",
+              },
+              {
+                id: "sync-agent-observers",
+                label: "مزامنة الفرق",
+                description:
+                  "مزامنة الوكلاء والمراقبين مع التغيرات اليومية في الميدان.",
+                type: "sync",
+                roles: ["domain-owner", "operator"],
+              },
+              {
+                id: "archive-agent-logs",
+                label: "أرشفة السجلات",
+                description:
+                  "أرشفة سجلات البلاغات لعمليات المتابعة والتدقيق.",
+                type: "report",
+                roles: ["data-steward"],
+              },
+            ],
+            reports: ["تقرير الوكلاء", "قائمة البلاغات", "سجل المتابعة"],
+          },
+        ],
+      },
+      {
+        id: "settings",
+        label: "الإعدادات",
+        description: "ملخص سريع لحالة الحوكمة وضبط الصلاحيات داخل المنصة.",
+        panels: [
+          {
+            id: "settings-governance",
+            label: "ضوابط المنصة",
+            summary:
+              "مراقبة شاملة للتغيرات الإدارية وإجراءات الامتثال والرقابة.",
+            icon: iconRegistry.settings,
+            analytics: [
+              {
+                id: "settings-active-roles",
+                label: "أدوار فعّالة",
+                value: formatNumber(3),
+                trend: "up",
+              },
+              {
+                id: "settings-policy-updates",
+                label: "تحديثات السياسات",
+                value: formatNumber(1),
+                trend: "up",
+              },
+              {
+                id: "settings-audit",
+                label: "جاهزية التدقيق",
+                value: formatPercent(100),
+                trend: "up",
+              },
+            ],
+            actions: [
+              {
+                id: "review-permissions",
+                label: "مراجعة الصلاحيات",
+                description:
+                  "التأكد من توافق الأدوار مع سياسات الوصول المعتمدة.",
+                type: "view",
+                roles: ["domain-owner", "operator"],
+                emphasis: "primary",
+              },
+              {
+                id: "update-workflows",
+                label: "تحديث مسارات العمل",
+                description:
+                  "مواءمة المسارات التشغيلية مع التحديثات الجديدة في الإعدادات.",
+                type: "update",
+                roles: ["domain-owner", "data-steward"],
+              },
+              {
+                id: "export-audit-log",
+                label: "تصدير سجلات",
+                description:
+                  "إرسال سجلات الأنشطة الحساسة إلى أنظمة الحوكمة والتدقيق.",
+                type: "report",
+                roles: ["data-steward"],
+              },
+            ],
+            reports: ["سجل الضوابط", "مراجعة الامتثال", "خريطة المسؤوليات"],
+          },
+        ],
+      },
+      {
+        id: "geo-insights",
+        label: "المنطقة الجغرافية",
+        description:
+          "عرض جغرافي لتوزيع الأنشطة مع إبراز المناطق التي تتطلب دعماً إضافياً.",
+        panels: [
+          {
+            id: "geo-summary",
+            label: "ملخص جغرافي",
+            summary:
+              "مؤشرات تغطي إجمالي المناطق وأعلى نقاط التركيز الميداني.",
+            icon: iconRegistry.target,
+            analytics: [
+              {
+                id: "geo-total-areas",
+                label: "إجمالي المناطق",
+                value: formatNumber(totalAreas),
+              },
+              {
+                id: "geo-total-reports",
+                label: "إجمالي البلاغات",
+                value: formatNumber(regionSummary.totalReports),
+                trend:
+                  regionSummary.totalReports > 0 ? "up" : undefined,
+              },
+              {
+                id: "geo-focus",
+                label: "منطقة التركيز",
+                value: regionSummary.busiestRegion ?? "—",
+                change:
+                  regionSummary.busiestReports > 0
+                    ? `${formatNumber(regionSummary.busiestReports)} بلاغ`
+                    : undefined,
+              },
+            ],
+            actions: [
+              {
+                id: "view-heatmap",
+                label: "عرض الخريطة الحرارية",
+                description:
+                  "تحليل الكثافات الميدانية وتحديد النقاط التي تتطلب الاستجابة.",
+                type: "view",
+                roles: ["domain-owner", "operator"],
+                emphasis: "primary",
+              },
+              {
+                id: "adjust-geo-layers",
+                label: "تعديل الطبقات",
+                description:
+                  "تخصيص الطبقات الجغرافية وفق مصادر البيانات المتاحة.",
+                type: "update",
+                roles: ["domain-owner", "data-steward"],
+              },
+              {
+                id: "download-geo-report",
+                label: "تحميل تقرير جغرافي",
+                description:
+                  "استخراج تقرير الخرائط لدعمه في غرف العمليات.",
+                type: "report",
+                roles: ["data-steward"],
+              },
+            ],
+            reports: ["خريطة التوزيع", "تحليل الكثافة", "مؤشر المناطق"],
+          },
+        ],
+      },
+    ],
+  },
+];
 
   return modules;
 };
