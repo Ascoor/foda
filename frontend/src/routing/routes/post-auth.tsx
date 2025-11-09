@@ -19,7 +19,7 @@ export const PostAuthRedirect = () => {
   const [params] = useSearchParams();
   const navContext = useNavigationContext();
 
-  const defaultDestination = useMemo(() => {
+  const fallbackDestination = useMemo(() => {
     const tree = getNavTree(navContext, { surface: "sidebar" });
     const stack = [...tree];
     while (stack.length) {
@@ -44,10 +44,16 @@ export const PostAuthRedirect = () => {
       (location.state as { returnTo?: string } | undefined)?.returnTo,
     );
 
+    const defaultDestination = "/gateway";
     const target = returnToParam ?? stateReturnTo ?? defaultDestination;
 
-    navigate(target, { replace: true, state: undefined });
-  }, [defaultDestination, isAuthenticated, loading, location.state, navigate, params]);
+    if (target === defaultDestination) {
+      navigate(defaultDestination, { replace: true, state: undefined });
+      return;
+    }
+
+    navigate(target ?? fallbackDestination, { replace: true, state: undefined });
+  }, [fallbackDestination, isAuthenticated, loading, location.state, navigate, params]);
 
   if (loading) {
     return null;
