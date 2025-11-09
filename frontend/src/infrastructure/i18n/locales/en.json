@@ -297,7 +297,8 @@
         "manage": "Open campaign manager",
         "retry": "Try again",
         "enter": "Enter campaign",
-        "launch": "Create & enter"
+        "launch": "Create & enter",
+        "switch": "Switch campaign"
       },
       "create_title": "Launch a new campaign",
       "fields": {

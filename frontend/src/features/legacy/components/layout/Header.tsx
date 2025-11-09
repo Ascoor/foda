@@ -5,6 +5,7 @@ import {
   Bell,
   Flame,
   Globe,
+  ArrowLeftRight,
   LogOut,
   Menu,
   Moon,
@@ -14,7 +15,7 @@ import {
   UserCircle,
   Vote,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { Button } from "@/infrastructure/shared/ui/button";
@@ -31,6 +32,7 @@ import { NotificationDrawer } from "@/features/legacy/components/notifications/N
 import { useTheme } from "@/infrastructure/shared/contexts/ThemeContext";
 import { useWindowSize } from "@/infrastructure/shared/hooks/useWindowSize";
 import { cn } from "@/infrastructure/shared/lib/utils";
+import { useCampaignContext } from "@/infrastructure/shared/contexts/CampaignContext";
 
 /* ============ Animations ============ */
 const SPRING = { type: "spring", stiffness: 160, damping: 22 } as const;
@@ -119,8 +121,10 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
   const isMobile = width < 768;
 
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout, isAuthenticated } = useAuth();
   const notifications = useNotifications();
+  const { setCampaignId } = useCampaignContext();
 
   const [now, setNow] = useState(() => new Date());
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -141,6 +145,18 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
     theme === "dark"
       ? "bg-[hsla(var(--color-surface)/0.32)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.45)]"
       : "bg-[hsla(var(--color-surface)/0.85)] text-[hsl(var(--foreground))] hover:bg-[hsla(var(--color-surface)/0.95)] shadow-sm";
+
+  const handleSwitchCampaign = () => {
+    const currentPath = `${location.pathname}${location.search ?? ""}`.replace(/\/{2,}/g, "/");
+    const params = new URLSearchParams();
+    if (currentPath) {
+      params.set("returnTo", currentPath);
+    }
+    setCampaignId(null);
+    navigate(`/campaign-gateway?${params.toString()}`, {
+      state: { returnTo: currentPath || "/dashboard" },
+    });
+  };
 
   const handleLogout = async () => {
     if (isLoggingOut) return;
@@ -217,6 +233,36 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
 
         {/* Right: controls */}
         <div className="shrink-0 flex items-center justify-end gap-2 sm:gap-3">
+          {variant === "dashboard" && isAuthenticated && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className={cn(
+                "hidden sm:inline-flex items-center gap-2 rounded-2xl px-3 py-2 font-semibold glass-button",
+                surfaceButtonClass,
+              )}
+              onClick={handleSwitchCampaign}
+            >
+              <ArrowLeftRight className="h-4 w-4" />
+              {t("campaigns.gateway.actions.switch")}
+            </Button>
+          )}
+
+          {variant === "dashboard" && isAuthenticated && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className={cn(
+                "sm:hidden rounded-full p-0.5 transition-all hover:scale-105 glass-button",
+                surfaceButtonClass,
+              )}
+              onClick={handleSwitchCampaign}
+              aria-label={language === "ar" ? "تبديل الحملة" : "Switch campaign"}
+            >
+              <ArrowLeftRight className="h-5 w-5" />
+            </Button>
+          )}
+
           {variant === "dashboard" && isAuthenticated && (
             <Button
               variant="ghost"
