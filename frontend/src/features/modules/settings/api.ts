@@ -11,6 +11,9 @@ interface SettingItem {
 export const fetchSettings = async (
   campaignId?: CampaignIdentifier | null,
 ): Promise<SystemSettings> => {
+  if (!campaignId) {
+    throw new Error("Cannot load settings without an active campaign");
+  }
   const res = await request<{ data: SettingItem[] }>(
     { url: API_ENDPOINTS.configuration.settings(campaignId), method: "get" },
     { useCache: true },
@@ -27,6 +30,9 @@ export const updateSettings = async (
   settings: SystemSettings,
   campaignId?: CampaignIdentifier | null,
 ): Promise<SystemSettings> => {
+  if (!campaignId) {
+    throw new Error("Cannot update settings without an active campaign");
+  }
   await request({
     url: API_ENDPOINTS.configuration.settings(campaignId),
     method: "put",
