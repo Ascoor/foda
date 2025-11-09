@@ -50,11 +50,12 @@ api.defaults.headers.common.Accept = "application/json";
 let authToken: string | null = null;
 
 export const setAuthToken = (token: string | null) => {
-  authToken = token;
+  const normalizedToken = token?.trim() || null;
+  authToken = normalizedToken;
 
   const apply = (headers: Record<string, unknown>) => {
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
+    if (normalizedToken) {
+      headers.Authorization = `Bearer ${normalizedToken}`;
     } else if ("Authorization" in headers) {
       delete headers.Authorization;
     }
@@ -155,9 +156,9 @@ export const prepareCsrf = async (): Promise<void> => {
 const withAuthorizationHeader = <
   T extends RequestConfig<AxiosRequestConfig | InternalAxiosRequestConfig>,
 >(config: T): T => {
-  const token =
-    authToken ||
-    (typeof window !== "undefined" ? window.localStorage.getItem("token") : null);
+  const storedToken =
+    typeof window !== "undefined" ? window.localStorage.getItem("token") : null;
+  const token = (authToken ?? storedToken)?.trim() || null;
 
   if (token) {
     config.headers = config.headers || {};
