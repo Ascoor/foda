@@ -1,5 +1,6 @@
 import { type ReactNode, useMemo } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+
 import { useOptionalCampaignContext } from "@/infrastructure/shared/contexts/CampaignContext";
 
 interface CampaignGuardProps {
@@ -14,22 +15,21 @@ export const CampaignGuard = ({ children }: CampaignGuardProps) => {
     const params = new URLSearchParams();
     params.set(
       "returnTo",
-      `${location.pathname}${location.search || ""}`.replace(/\/{2,}/g, "/"),
+      `${location.pathname}${location.search ?? ""}`.replace(/\/{2,}/g, "/"),
     );
     return `/campaign-gateway?${params.toString()}`;
   }, [location.pathname, location.search]);
 
-  // If the provider hasn't mounted yet or context is unavailable, don't render (avoids flicker).
-  if (!campaignContext) return null;
+  if (!campaignContext) {
+    return null;
+  }
 
-  const { campaignId } = campaignContext;
-
-  if (!campaignId) {
+  if (!campaignContext.campaignId) {
     return (
       <Navigate
         to={redirectTo}
         replace
-        state={{ returnTo: `${location.pathname}${location.search || ""}` }}
+        state={{ returnTo: `${location.pathname}${location.search ?? ""}` }}
       />
     );
   }
