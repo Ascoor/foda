@@ -2,35 +2,33 @@
 
 namespace App\Models;
 
-use App\Models\Concerns\BelongsToCampaign;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations as R;
 
 class Committee extends Model
 {
     use HasFactory;
-    use BelongsToCampaign;
 
     protected $fillable = [
-        'campaign_id',
-        'area_id',
-        'name',
-        'code',
-        'meta',
+        'campaign_id','area_id','name','code','location','lat','lng','meta'
     ];
 
-    protected $casts = [
-        'meta' => 'array',
-    ];
+    protected $casts = ['meta' => 'array'];
 
-    public function area(): R\BelongsTo
-    {
-        return $this->belongsTo(Area::class);
-    }
+    public function campaign(){ return $this->belongsTo(Campaign::class); }
+    public function area(){ return $this->belongsTo(Area::class); }
+    public function agents(){ return $this->hasMany(AgentAssignment::class); }
+    public function voters(){ return $this->hasMany(Voter::class); }
+    public function activities(){ return $this->hasMany(Activity::class); }
 
-    public function voters(): R\HasMany
-    {
-        return $this->hasMany(Voter::class);
+    /* Scopes */
+    public function scopeInCampaign($q, $campaignId){ return $q->where('campaign_id', $campaignId); }
+    public function scopeSearch($q, $term){
+        if(!$term) return $q;
+        return $q->where(function($qq) use ($term){
+            $qq->where('name','like',"%{$term}%")
+               ->orWhere('code','like',"%{$term}%")
+               ->orWhere('location','like',"%{$term}%");
+        });
     }
 }

@@ -9,8 +9,7 @@ class ExpenseCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'code',
-    ];
+    protected $fillable = ['name_ar','name_en'];
+
+    public function finances(){ return $this->hasMany(Finance::class, 'category_id'); }
 }

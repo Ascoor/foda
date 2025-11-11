@@ -1,6 +1,6 @@
 import { request } from "@/infrastructure/shared/lib/api";
 import { API_ENDPOINTS } from "@/infrastructure/shared/lib/endpoints";
-import type { Campaign } from "@/types";
+import type { Campaign } from "@/infrastructure/types";
 import type { CampaignFormData } from "./types";
 
 const CAMPAIGNS_ENDPOINT = API_ENDPOINTS.campaigns.campaigns;

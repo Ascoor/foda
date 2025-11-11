@@ -10,23 +10,20 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RolesAndPermissionsSeeder::class,
-            ElectionSeeder::class,
-            CampaignSeeder::class,
-            AreaSeeder::class,
-            CommitteeSeeder::class,
-          
-            TeamSeeder::class,
-            VolunteerSeeder::class,
-            VoterSeeder::class,
-            CandidateSeeder::class,
-            AgentSeeder::class,
-            EventSeeder::class,
-            ActivitySeeder::class,
-            ObservationSeeder::class,
-            ExpenseCategorySeeder::class,
-            FinanceSeeder::class,
-            AutomationSeeder::class,
-            AnalyticsSeeder::class,
+            CampaignsSeeder::class,
+            AreasSeeder::class,
+            CampaignAreaSeeder::class,
+            CampaignUserSeeder::class,
+            CommitteesSeeder::class,
+            TeamsSeeder::class,
+            AgentAssignmentsSeeder::class,
+            VotersSeeder::class,
+            ActivitiesSeeder::class,
+            EventsSeeder::class,
+            NotificationsSeeder::class,
+            AutomationTasksSeeder::class,
+            ElectionsSeeder::class,
+            CampaignPollingDaysSeeder::class,
         ]);
     }
 }

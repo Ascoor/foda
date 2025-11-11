@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AutomationTask extends Model
+class SmsMessage extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['campaign_id','task','display_name','is_enabled','status','last_run_at','meta'];
+    protected $fillable = ['campaign_id','user_id','to','body','status','sent_at','scheduled_for'];
 
     protected $casts = [
-        'is_enabled' => 'boolean',
-        'last_run_at' => 'datetime',
-        'meta' => 'array',
+        'sent_at' => 'datetime',
+        'scheduled_for' => 'datetime',
     ];
 
     public function campaign(){ return $this->belongsTo(Campaign::class); }
+    public function user(){ return $this->belongsTo(User::class); }
 
     public function scopeInCampaign($q, $campaignId){ return $q->where('campaign_id', $campaignId); }
 }

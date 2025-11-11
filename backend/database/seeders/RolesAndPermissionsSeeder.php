@@ -3,102 +3,68 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\PermissionRegistrar;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class RolesAndPermissionsSeeder extends Seeder
 {
     public function run(): void
     {
-        // 0) امسح الكاش الخاص بالصلاحيات قبل أي تعديل
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // 1) كتالوج الصلاحيات
-        $permissions = [
-            'manage users'      => 'إدارة المستخدمين على مستوى النظام',
-            'manage volunteers' => 'إدارة شبكة المتطوعين',
-            'manage settings'   => 'ضبط إعدادات المنصة',
-            'manage campaigns'  => 'تخطيط الحملات والإشراف عليها',
-            'assign committees' => 'تعيين اللجان ومتابعتها',
-            'monitor results'   => 'مراقبة النتائج لحظة بلحظة',
-            'audit activities'  => 'تدقيق الأنشطة الحساسة',
-            'view analytics'    => 'عرض تحليلات الأداء الرئيسية',
+        // Define permissions
+        $perms = [
+            'campaign.view','campaign.manage',
+            'committee.view','committee.manage',
+            'voter.view','voter.manage',
+            'activity.view','activity.manage',
+            'finance.view','finance.manage',
         ];
 
-        foreach ($permissions as $name => $desc) {
-            Permission::firstOrCreate(
-                ['name' => $name, 'guard_name' => 'web'],
-                [] // وصف الصلاحية يمكن تخزينه في جدول منفصل/ميتا إن رغبت
-            );
+        // Create permissions
+        foreach ($perms as $p) { 
+            Permission::firstOrCreate(['name' => $p]); 
         }
 
-        // 2) تعريف الأدوار وربط الصلاحيات
-        $rolesDefinition = [
-            'admin' => [
-                'label' => 'مدير النظام',
-                'permissions' => array_keys($permissions),
-            ],
-            'supervisor' => [
-                'label' => 'مشرف اللجنة',
-                'permissions' => [
-                    'manage volunteers',
-                    'assign committees',
-                    'view analytics',
-                ],
-            ],
-            'volunteer' => [
-                'label' => 'متطوع',
-                'permissions' => [
-                    'view analytics',
-                ],
-            ],
-            'campaign_manager' => [
-                'label' => 'مدير الحملة',
-                'permissions' => [
-                    'manage campaigns',
-                    'manage volunteers',
-                    'assign committees',
-                    'view analytics',
-                ],
-            ],
-            'auditor' => [
-                'label' => 'مراقب النتائج',
-                'permissions' => [
-                    'monitor results',
-                    'audit activities',
-                    'view analytics',
-                ],
-            ],
+        // Define roles and their associated permissions
+        $roles = [
+            'campaign_manager' => ['campaign.manage','committee.manage','voter.manage','activity.manage','finance.manage'],
+            'area_coordinator' => ['committee.manage','voter.manage','activity.manage'],
+            'committee_supervisor' => ['voter.manage','activity.manage'],
+            'agent' => ['activity.manage','voter.view'],
+            'volunteer' => ['activity.manage'],
+            'finance' => ['finance.manage'],
+            'viewer' => ['campaign.view','committee.view','voter.view','activity.view','finance.view'],
         ];
 
-        $roles = [];
-        foreach ($rolesDefinition as $name => $def) {
-            $role = Role::firstOrCreate(
-                ['name' => $name, 'guard_name' => 'web'],
-                []
-            );
-            $role->syncPermissions($def['permissions']);
-            $roles[$name] = $role;
+        // Create roles and assign permissions
+        foreach ($roles as $role => $permissions) {
+            $r = Role::firstOrCreate(['name' => $role]);
+            $r->syncPermissions($permissions);
         }
 
-        // 3) مستخدمون افتراضيون + ربط بالأدوار
+        // Define default users
         $defaultPassword = Hash::make('Password@123');
-
         $users = [
             [
                 'name' => 'Admin',
                 'email' => 'admin@example.com',
                 'password' => $defaultPassword,
-                'roles' => ['admin', 'campaign_manager'],
+                'roles' => ['campaign_manager'],
             ],
             [
-                'name' => 'Supervisor',
-                'email' => 'supervisor@example.com',
+                'name' => 'Area Coordinator',
+                'email' => 'area_coordinator@example.com',
                 'password' => $defaultPassword,
-                'roles' => ['supervisor'],
+                'roles' => ['area_coordinator'],
+            ],
+            [
+                'name' => 'Committee Supervisor',
+                'email' => 'committee_supervisor@example.com',
+                'password' => $defaultPassword,
+                'roles' => ['committee_supervisor'],
             ],
             [
                 'name' => 'Volunteer',
@@ -107,13 +73,20 @@ class RolesAndPermissionsSeeder extends Seeder
                 'roles' => ['volunteer'],
             ],
             [
-                'name' => 'Auditor',
-                'email' => 'auditor@example.com',
+                'name' => 'Finance',
+                'email' => 'finance@example.com',
                 'password' => $defaultPassword,
-                'roles' => ['auditor'],
+                'roles' => ['finance'],
+            ],
+            [
+                'name' => 'Viewer',
+                'email' => 'viewer@example.com',
+                'password' => $defaultPassword,
+                'roles' => ['viewer'],
             ],
         ];
 
+        // Create users and assign roles
         foreach ($users as $userData) {
             $user = User::updateOrCreate(
                 ['email' => $userData['email']],
@@ -124,17 +97,13 @@ class RolesAndPermissionsSeeder extends Seeder
                 ]
             );
 
-            // مهم: تأكد أن حارس المستخدم هو web (حسب config/auth)
-            // ثم اربط الأدوار:
-            $user->syncRoles([]); // تفريغ أي أدوار قديمة إن وُجدت
-            foreach ($userData['roles'] as $r) {
-                $user->assignRole($r);
+            // Sync roles for user
+            $user->syncRoles([]); // Remove old roles if any
+            foreach ($userData['roles'] as $role) {
+                $user->assignRole($role);
             }
         }
 
-        // 4) امسح كاش الصلاحيات بعد البناء
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
-        $this->command->info('✅ تم إنشاء الصلاحيات والأدوار والمستخدمين بنجاح!');
+        $this->command->info('✅ Permissions, roles, and users have been created successfully!');
     }
 }

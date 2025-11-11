@@ -4,47 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations as R;
 
 class Area extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'code',
-        'level',
-        'parent_id',
-        'names',
-        'meta',
-        'centroid',
-        'bbox',
+        'name_ar','name_en','type','parent_id','code','lat','lng','meta'
     ];
 
-    protected $casts = [
-        'names' => 'array',
-        'meta' => 'array',
-        'centroid' => 'array',
-        'bbox' => 'array',
-    ];
+    protected $casts = ['meta' => 'array'];
 
-    public function parent(): R\BelongsTo
-    {
-        return $this->belongsTo(self::class, 'parent_id');
-    }
+    public function parent(){ return $this->belongsTo(Area::class, 'parent_id'); }
+    public function children(){ return $this->hasMany(Area::class, 'parent_id'); }
+    public function committees(){ return $this->hasMany(Committee::class); }
 
-    public function children(): R\HasMany
-    {
-        return $this->hasMany(self::class, 'parent_id');
-    }
-
-    public function committees(): R\HasMany
-    {
-        return $this->hasMany(Committee::class);
-    }
-
-    public function campaigns(): R\BelongsToMany
-    {
-        return $this->belongsToMany(Campaign::class, 'campaign_area')->withTimestamps();
+    public function getDisplayNameAttribute(){
+        return $this->name_ar ?? $this->name_en ?? ('Area #'.$this->id);
     }
 }

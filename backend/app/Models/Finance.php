@@ -4,35 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations as R;
 
 class Finance extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'campaign_id',
-        'category_id',
-        'amount',
-        'type',
-        'txn_date',
-        'description',
-        'external_ref',
-        'meta',
+        'campaign_id','category_id','trx_type','amount','date','reference','description','meta'
     ];
 
     protected $casts = [
-        'txn_date' => 'date',
+        'date' => 'date',
         'meta' => 'array',
     ];
 
-    public function campaign(): R\BelongsTo
-    {
-        return $this->belongsTo(Campaign::class);
-    }
+    public function campaign(){ return $this->belongsTo(Campaign::class); }
+    public function category(){ return $this->belongsTo(ExpenseCategory::class, 'category_id'); }
 
-    public function category(): R\BelongsTo
-    {
-        return $this->belongsTo(ExpenseCategory::class, 'category_id');
-    }
+    public function scopeInCampaign($q, $campaignId){ return $q->where('campaign_id', $campaignId); }
+    public function scopeForMonth($q, $month){ return $q->whereMonth('date', $month); }
 }
