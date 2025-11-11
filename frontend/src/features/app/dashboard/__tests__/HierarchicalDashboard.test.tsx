@@ -1,8 +1,11 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
+import "@testing-library/jest-dom/vitest";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { vi, beforeEach } from "vitest";
+import { vi, beforeEach, test, expect } from "vitest";
 import { Compass, FileStack } from "lucide-react";
 import { MemoryRouter } from "react-router-dom";
+
+import { I18nextProvider } from "react-i18next";
 
 import { HierarchicalDashboard } from "../HierarchicalDashboard";
 import type { DashboardModule } from "../data/hierarchy";
@@ -10,6 +13,7 @@ import {
   DASHBOARD_SELECTION_STORAGE_KEY,
   useDashboardSelectionStore,
 } from "../state/dashboardSelectionStore";
+import i18n from "@/infrastructure/i18n";
 
 vi.mock("@/routing/nav/useNavigationContext", () => ({
   useNavBreadcrumbs: () => [],
@@ -58,6 +62,19 @@ const sampleHierarchy: DashboardModule[] = [
                 roles: ["domain-owner", "operator"],
               },
             ],
+            media: {
+              image: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjwvc3ZnPg==",
+              title: "مرشح تجريبي",
+              subtitle: "الدائرة الأولى",
+              description: "أعلى تفاعل جماهيري خلال الأسبوع",
+              badges: [
+                {
+                  id: "badge-leading",
+                  label: "متصدر",
+                  tone: "positive",
+                },
+              ],
+            },
             reports: ["تقرير تجريبي"],
           },
         ],
@@ -75,6 +92,19 @@ const createQueryResult = (data: DashboardModule[]) => ({
 });
 
 const mockUseDashboardHierarchy = vi.hoisted(() => vi.fn());
+
+const findControlPanel = async () => {
+  const headings = await screen.findAllByRole("heading", { name: "لوحة العمليات" });
+  const section = headings
+    .map((heading) => heading.closest("section"))
+    .find((container): container is HTMLElement => Boolean(container));
+
+  if (!section) {
+    throw new Error("تعذر العثور على عنصر لوحة التحكم");
+  }
+
+  return section;
+};
 
 vi.mock("../data/hierarchy", async () => {
   const actual = await vi.importActual<typeof import("../data/hierarchy")>(
@@ -107,9 +137,11 @@ const renderDashboard = () => {
 
   render(
     <MemoryRouter initialEntries={["/control-center"]}>
-      <QueryClientProvider client={queryClient}>
-        <HierarchicalDashboard />
-      </QueryClientProvider>
+      <I18nextProvider i18n={i18n}>
+        <QueryClientProvider client={queryClient}>
+          <HierarchicalDashboard />
+        </QueryClientProvider>
+      </I18nextProvider>
     </MemoryRouter>,
   );
 
@@ -119,12 +151,17 @@ const renderDashboard = () => {
 test("يعرض إجراءات الدور الافتراضي", async () => {
   const client = renderDashboard();
 
-  await waitFor(() => {
-    expect(screen.getByText("إجراء المالك")).toBeInTheDocument();
-  });
+  const controlPanel = await findControlPanel();
 
-  expect(screen.getByText("إجراء مشترك")).toBeInTheDocument();
-  expect(screen.queryByText("إجراء التنفيذي")).not.toBeInTheDocument();
+  expect(
+    within(controlPanel).getByText("إجراء المالك", { selector: "span" }),
+  ).toBeInTheDocument();
+  expect(
+    within(controlPanel).getByText("إجراء مشترك", { selector: "span" }),
+  ).toBeInTheDocument();
+  expect(
+    within(controlPanel).queryByText("إجراء التنفيذي", { selector: "span" }),
+  ).not.toBeInTheDocument();
 
   client.clear();
 });
@@ -132,18 +169,46 @@ test("يعرض إجراءات الدور الافتراضي", async () => {
 test("يتغير عرض الإجراءات عند تبديل الدور", async () => {
   const client = renderDashboard();
 
-  await waitFor(() => {
-    expect(screen.getByText("إجراء المالك")).toBeInTheDocument();
-  });
+  const controlPanel = await findControlPanel();
 
-  const operatorButton = screen.getByRole("button", { name: "مسؤول تنفيذي" });
+  const operatorButton = screen.getAllByRole("button", {
+    name: "مسؤول تنفيذي",
+  })[0];
   operatorButton.click();
 
   await waitFor(() => {
-    expect(screen.getByText("إجراء التنفيذي")).toBeInTheDocument();
+    expect(
+      within(controlPanel).getByText("إجراء التنفيذي", { selector: "span" }),
+    ).toBeInTheDocument();
   });
 
-  expect(screen.queryByText("إجراء المالك")).not.toBeInTheDocument();
+  expect(
+    within(controlPanel).queryByText("إجراء المالك", { selector: "span" }),
+  ).not.toBeInTheDocument();
+
+  client.clear();
+});
+
+test("يعرض وسائط المرشح وشاراته في لوحة التحكم", async () => {
+  const client = renderDashboard();
+
+  const controlPanel = await findControlPanel();
+
+  expect(
+    within(controlPanel).getByText("مرشح تجريبي", { selector: "p" }),
+  ).toBeInTheDocument();
+  expect(within(controlPanel).getByAltText("مرشح تجريبي")).toBeInTheDocument();
+  expect(
+    within(controlPanel).getByText("الدائرة الأولى", { selector: "p" }),
+  ).toBeInTheDocument();
+  expect(
+    within(controlPanel).getByText("أعلى تفاعل جماهيري خلال الأسبوع", {
+      selector: "p",
+    }),
+  ).toBeInTheDocument();
+  expect(
+    within(controlPanel).getByText("متصدر", { selector: "span" }),
+  ).toBeInTheDocument();
 
   client.clear();
 });

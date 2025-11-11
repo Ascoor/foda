@@ -3,6 +3,7 @@ import {
   DashboardAction,
   GovernanceRole,
   governanceRoles,
+  type DashboardPanelMediaBadge,
 } from "../data/hierarchy";
 import { cn } from "@/infrastructure/shared/lib/utils";
 
@@ -26,6 +27,16 @@ const emphasisStyles: Record<NonNullable<DashboardAction["emphasis"]>, string> =
   primary: "border border-primary/50 bg-primary/10 text-primary",
   secondary: "border border-foreground/30",
   destructive: "border border-destructive/60 text-destructive",
+};
+
+const badgeToneStyles: Record<
+  NonNullable<DashboardPanelMediaBadge["tone"]> | "default",
+  string
+> = {
+  default: "bg-foreground/10 text-foreground/80",
+  positive: "bg-emerald-500/10 text-emerald-400",
+  warning: "bg-amber-500/10 text-amber-400",
+  negative: "bg-rose-500/10 text-rose-400",
 };
 
 interface ControlPanelProps {
@@ -88,6 +99,59 @@ export const ControlPanel = ({ panel, activeRole }: ControlPanelProps) => {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {panel.media && (
+        <div className="glass-card rounded-2xl border border-white/10 bg-background/80 p-5">
+          <div className="flex items-center gap-4">
+            {panel.media.image && (
+              <img
+                src={panel.media.image}
+                alt={
+                  panel.media.title ??
+                  panel.media.subtitle ??
+                  "وسائط لوحة التحكم"
+                }
+                className="h-16 w-16 rounded-2xl border border-white/10 object-cover"
+              />
+            )}
+            <div className="space-y-1">
+              {panel.media.title && (
+                <p className="text-lg font-semibold text-foreground">
+                  {panel.media.title}
+                </p>
+              )}
+              {panel.media.subtitle && (
+                <p className="text-sm text-muted-foreground">
+                  {panel.media.subtitle}
+                </p>
+              )}
+              {panel.media.description && (
+                <p className="text-xs text-muted-foreground/80">
+                  {panel.media.description}
+                </p>
+              )}
+              {panel.media.badges && panel.media.badges.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {panel.media.badges.map((badge) => {
+                    const tone = (badge.tone ?? "default") as keyof typeof badgeToneStyles;
+                    return (
+                      <span
+                        key={badge.id}
+                        className={cn(
+                          "rounded-full px-3 py-1 text-xs font-medium",
+                          badgeToneStyles[tone],
+                        )}
+                      >
+                        {badge.label}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
         </div>
       )}
 

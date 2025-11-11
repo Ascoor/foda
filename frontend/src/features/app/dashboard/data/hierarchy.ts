@@ -6,6 +6,7 @@ import {
   CalendarClock,
   ClipboardCheck,
   Compass,
+  Crown,
   FileBarChart,
   FileStack,
   Gauge,
@@ -44,6 +45,20 @@ export interface DashboardAnalytics {
   change?: string;
 }
 
+export interface DashboardPanelMediaBadge {
+  id: string;
+  label: string;
+  tone?: "default" | "positive" | "warning" | "negative";
+}
+
+export interface DashboardPanelMedia {
+  image?: string | null;
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  badges?: DashboardPanelMediaBadge[];
+}
+
 export interface DashboardPanel {
   id: string;
   label: string;
@@ -52,6 +67,7 @@ export interface DashboardPanel {
   analytics?: DashboardAnalytics[];
   actions: DashboardAction[];
   reports?: string[];
+  media?: DashboardPanelMedia;
 }
 
 export interface DashboardSubmodule {
@@ -93,15 +109,166 @@ const iconRegistry = {
   fileBar: FileBarChart,
   settings: Settings,
   activity: Activity,
+  crown: Crown,
 } satisfies Record<string, ComponentType<{ className?: string }>>;
 
+interface CampaignEventSummary {
+  id?: number;
+  title?: string;
+  starts_at?: string;
+  ends_at?: string;
+  area?: { id?: number; name?: string | null } | null;
+  team?: { id?: number; name?: string | null } | null;
+}
+
+interface EventsSection {
+  total?: number;
+  upcoming?: CampaignEventSummary[] | null;
+  recent?: CampaignEventSummary[] | null;
+}
+
+interface CommitteeSummary {
+  id?: number;
+  name?: string | null;
+  code?: string | null;
+  area?: { id?: number; name?: string | null } | null;
+  voters_count?: number;
+  agents_count?: number;
+}
+
+interface CommitteesSection {
+  total?: number;
+  with_assignments?: number;
+  without_assignments?: number;
+  top?: CommitteeSummary[] | null;
+  distribution?: Array<{
+    area_id?: number | null;
+    area_name?: string | null;
+    committees?: number;
+    voters?: number;
+  }> | null;
+}
+
+interface GeographySection {
+  total_areas?: number;
+  assigned?: Array<{ id?: number; name?: string | null; level?: string | null }> | null;
+  coverage?: {
+    volunteer_to_voter_ratio?: number;
+    agent_to_committee_ratio?: number;
+    teams_per_area?: number;
+  } | null;
+}
+
+interface TeamActor {
+  id?: number;
+  type?: string;
+  name?: string | null;
+  team?: { id?: number; name?: string | null } | null;
+  area?: { id?: number; name?: string | null } | null;
+  contact?: Record<string, unknown> | null;
+  updated_at?: string | null;
+}
+
+interface TeamSection {
+  teams?: {
+    total?: number;
+    with_supervisors?: number;
+    average_size?: number;
+    top?: Array<{
+      id?: number;
+      name?: string | null;
+      area?: { id?: number; name?: string | null } | null;
+      volunteers_count?: number;
+    }> | null;
+  } | null;
+  volunteers?: {
+    total?: number;
+    active?: number;
+    coverage_ratio?: number;
+    sample?: TeamActor[] | null;
+  } | null;
+  agents?: {
+    total?: number;
+    assigned?: number;
+    coverage_ratio?: number;
+    sample?: TeamActor[] | null;
+  } | null;
+  actors?: TeamActor[] | null;
+}
+
+interface SettingsSection {
+  updated_at?: string | null;
+  flags?: string[] | null;
+  channels?: unknown[] | null;
+  owner?: { id?: number; name?: string | null; email?: string | null } | null;
+}
+
+interface VoterSummary {
+  id?: number;
+  name?: string | null;
+  committee?: { id?: number; name?: string | null } | null;
+  registered_at?: string | null;
+}
+
+interface VotersSection {
+  total?: number;
+  registrations?: Array<{ month?: string; count?: number }> | null;
+  latest?: VoterSummary[] | null;
+  by_committee?: Array<{
+    area_id?: number | null;
+    area_name?: string | null;
+    committees?: number;
+    voters?: number;
+  }> | null;
+}
+
+interface CandidateResults {
+  total_votes?: number | null;
+  percentage?: number | null;
+}
+
+interface CandidateSummary {
+  id?: number;
+  name?: string | null;
+  party?: string | null;
+  slogan?: string | null;
+  photo_url?: string | null;
+  support?: number | null;
+  results?: CandidateResults | null;
+  media?: Record<string, unknown> | null;
+}
+
+interface CandidatesSection {
+  total?: number;
+  featured?: CandidateSummary | null;
+  list?: CandidateSummary[] | null;
+  metrics?: Record<string, unknown> | null;
+}
+
+interface CampaignOverviewSections {
+  events?: EventsSection | null;
+  committees?: CommitteesSection | null;
+  geography?: GeographySection | null;
+  team?: TeamSection | null;
+  settings?: SettingsSection | null;
+  voters?: VotersSection | null;
+  candidates?: CandidatesSection | null;
+}
+
 interface DashboardOverviewData {
-  areas?: number;
-  volunteers?: number;
-  voters?: number;
-  teams?: number;
-  events?: number;
-  registrations?: Array<{ month?: string; count?: number }>;
+  campaign?: {
+    id?: number;
+    name?: string | null;
+    status?: string | null;
+    spatial_level?: string | null;
+    timeframe?: { starts_at?: string | null; ends_at?: string | null } | null;
+  } | null;
+  metrics?: Record<string, unknown> | null;
+  sections?: CampaignOverviewSections | null;
+  stats?: Record<string, { value?: unknown; change?: unknown; trend?: unknown }> | null;
+  progress?: Record<string, unknown> | null;
+  activities?: Array<Record<string, unknown>> | null;
+  turnout?: Array<unknown> | null;
 }
 
 interface ElectionSummaryEnvelope {
@@ -132,6 +299,16 @@ const decimalFormatter = new Intl.NumberFormat("en-US", {
 
 const absoluteChangeFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 0,
+});
+
+const dateFormatter = new Intl.DateTimeFormat("ar-EG", {
+  month: "short",
+  day: "numeric",
+});
+
+const dateTimeFormatter = new Intl.DateTimeFormat("ar-EG", {
+  dateStyle: "medium",
+  timeStyle: "short",
 });
 
 const parseNumber = (value: unknown): number | undefined => {
@@ -188,8 +365,34 @@ const formatChange = (
   return `${sign}${formatted}`;
 };
 
+const formatDay = (value: unknown, fallback = "—") => {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return fallback;
+  }
+
+  return dateFormatter.format(date);
+};
+
+const formatDateTimeValue = (value: unknown, fallback = "—") => {
+  if (typeof value !== "string") {
+    return fallback;
+  }
+
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return fallback;
+  }
+
+  return dateTimeFormatter.format(date);
+};
+
 const computeRegistrationStats = (
-  registrations?: DashboardOverviewData["registrations"],
+  registrations?: VotersSection["registrations"],
 ): {
   latest?: number;
   change?: number;
@@ -317,568 +520,722 @@ export const buildDashboardHierarchy = ({
   analytics,
   election,
 }: DashboardDataSources): DashboardModule[] => {
-  const totalVoters = parseNumber(overview?.voters);
-  const totalVolunteers = parseNumber(overview?.volunteers);
-  const totalAreas = parseNumber(overview?.areas);
-  const totalTeams = parseNumber(overview?.teams);
-  const totalEvents = parseNumber(overview?.events);
+  const metrics = overview?.metrics ?? {};
+  const sections = overview?.sections ?? {};
 
-  const registrationStats = computeRegistrationStats(overview?.registrations);
-  const supportChange = computeSupportChange(analytics?.support_trends);
+  const eventsSection = (sections?.events ?? {}) as EventsSection;
+  const committeesSection = (sections?.committees ?? {}) as CommitteesSection;
+  const geographySection = (sections?.geography ?? {}) as GeographySection;
+  const teamSection = (sections?.team ?? {}) as TeamSection;
+  const settingsSection = (sections?.settings ?? {}) as SettingsSection;
+  const votersSection = (sections?.voters ?? {}) as VotersSection;
+  const candidatesSection = (sections?.candidates ?? {}) as CandidatesSection;
+
+  const totalEvents = parseNumber(eventsSection.total ?? metrics.events);
+  const upcomingEvents = Array.isArray(eventsSection.upcoming)
+    ? eventsSection.upcoming
+    : [];
+  const recentEvents = Array.isArray(eventsSection.recent)
+    ? eventsSection.recent
+    : [];
+  const nextEvent = upcomingEvents[0];
+  const latestEvent = recentEvents[0];
+  const upcomingCount = upcomingEvents.length;
+
+  const totalCommittees = parseNumber(committeesSection.total ?? metrics.committees);
+  const committeesWithAssignments = parseNumber(committeesSection.with_assignments);
+  const committeesWithoutAssignments = parseNumber(
+    committeesSection.without_assignments,
+  );
+  const topCommittee = Array.isArray(committeesSection.top)
+    ? committeesSection.top[0]
+    : undefined;
+
+  const geographyCoverage = geographySection.coverage ?? {};
+  const volunteerCoverage = parseNumber(
+    geographyCoverage.volunteer_to_voter_ratio ??
+      teamSection.volunteers?.coverage_ratio,
+  );
+  const agentCoverage = parseNumber(
+    geographyCoverage.agent_to_committee_ratio ??
+      teamSection.agents?.coverage_ratio,
+  );
+  const teamsPerArea = parseNumber(geographyCoverage.teams_per_area);
+  const assignedAreas = Array.isArray(geographySection.assigned)
+    ? geographySection.assigned
+    : [];
   const regionSummary = computeRegionSummaries(analytics);
-  const reportDistribution = computeReportDistribution(analytics);
+  const primaryAreaName =
+    (assignedAreas.find((area) => typeof area?.name === "string")?.name as
+      | string
+      | undefined) ?? regionSummary.busiestRegion;
 
-  const supportPercentage = parseNumber(analytics?.summary?.support_percentage);
-  const turnoutEstimate = parseNumber(analytics?.summary?.turnout_estimate);
+  const totalVolunteers = parseNumber(
+    teamSection.volunteers?.total ?? metrics.volunteers,
+  );
+  const activeVolunteers = parseNumber(teamSection.volunteers?.active);
+  const totalAgents = parseNumber(teamSection.agents?.total ?? metrics.agents);
+  const assignedAgents = parseNumber(teamSection.agents?.assigned);
+  const totalTeams = parseNumber(teamSection.teams?.total ?? metrics.teams);
+  const averageTeamSize = parseNumber(teamSection.teams?.average_size);
+  const teamActors = Array.isArray(teamSection.actors) ? teamSection.actors : [];
+  const actorNamesPreview = teamActors
+    .map((actor) =>
+      typeof actor?.name === "string" ? (actor.name as string) : null,
+    )
+    .filter((name): name is string => Boolean(name))
+    .slice(0, 2);
+
+  const totalVoters = parseNumber(votersSection.total ?? metrics.voters);
+  const registrations = Array.isArray(votersSection.registrations)
+    ? votersSection.registrations
+    : [];
+  const registrationStats = computeRegistrationStats(registrations);
+  const voterLatestList = Array.isArray(votersSection.latest)
+    ? votersSection.latest
+    : [];
+  const lastRegisteredName =
+    typeof voterLatestList[0]?.name === "string"
+      ? (voterLatestList[0]?.name as string)
+      : undefined;
+  const committeeDistribution = Array.isArray(votersSection.by_committee)
+    ? votersSection.by_committee
+    : [];
+  const topCommitteeArea =
+    committeeDistribution.find((entry) => typeof entry?.area_name === "string")
+      ?.area_name ?? regionSummary.busiestRegion;
+
+  const candidatesSectionMetrics = candidatesSection.metrics ?? {};
+  const candidateTotal = parseNumber(candidatesSection.total ?? metrics.candidates);
+  const featuredCandidate = candidatesSection.featured as
+    | CandidateSummary
+    | undefined;
+  const candidateSupport = parseNumber(
+    featuredCandidate?.results?.percentage ?? featuredCandidate?.support,
+  );
+  const candidateVotes = parseNumber(featuredCandidate?.results?.total_votes);
+  const candidateName =
+    typeof featuredCandidate?.name === "string" ? featuredCandidate.name : undefined;
+  const candidateParty =
+    typeof featuredCandidate?.party === "string" ? featuredCandidate.party : undefined;
+  const candidateSlogan =
+    typeof featuredCandidate?.slogan === "string" ? featuredCandidate.slogan : undefined;
+  const candidatePhoto =
+    typeof featuredCandidate?.photo_url === "string"
+      ? featuredCandidate.photo_url
+      : undefined;
+
+  const supportChange = computeSupportChange(analytics?.support_trends);
+  const supportAverage = parseNumber(candidatesSectionMetrics.support_average);
+  const reportHighlights = computeReportDistribution(analytics);
+  const topReportType = reportHighlights.topType;
+  const topReportCount = reportHighlights.topCount;
+
+  const turnoutEstimate =
+    parseNumber(analytics?.summary?.turnout_estimate) ??
+    parseNumber(election?.turnout?.turnout_percentage);
   const coverageGap = parseNumber(analytics?.summary?.coverage_gap);
 
   const registeredVoters =
     parseNumber(election?.turnout?.registered_voters) ?? totalVoters;
-  const turnoutPercentage =
-    parseNumber(election?.turnout?.turnout_percentage) ?? turnoutEstimate;
 
-  const totalPrecincts =
-    parseNumber(election?.summary?.total_precincts) ??
-    parseNumber(election?.summary?.precincts_total);
-  const reportingPrecincts =
-    parseNumber(election?.summary?.reporting_precincts) ??
-    parseNumber(election?.summary?.reporting);
+  const settingsFlags = Array.isArray(settingsSection.flags)
+    ? settingsSection.flags
+    : [];
+  const settingsChannels = Array.isArray(settingsSection.channels)
+    ? settingsSection.channels
+    : [];
+  const settingsUpdated = formatDateTimeValue(settingsSection.updated_at);
+  const owner = settingsSection.owner as
+    | { name?: string; email?: string }
+    | undefined;
+  const ownerName =
+    typeof owner?.name === "string" ? (owner.name as string) : undefined;
 
-  const precinctProgress =
-    totalPrecincts && reportingPrecincts !== undefined && totalPrecincts > 0
-      ? (reportingPrecincts / totalPrecincts) * 100
-      : undefined;
+  const candidateBadges: DashboardPanelMediaBadge[] = [];
+  if (candidateSupport !== undefined) {
+    candidateBadges.push({
+      id: "candidate-support",
+      label: `دعم ${formatPercent(candidateSupport)}`,
+      tone: candidateSupport >= 50 ? "positive" : "warning",
+    });
+  }
+  if (candidateVotes !== undefined) {
+    candidateBadges.push({
+      id: "candidate-votes",
+      label: `${formatNumber(candidateVotes)} صوت متوقع`,
+      tone: "default",
+    });
+  }
+  if (coverageGap !== undefined) {
+    candidateBadges.push({
+      id: "coverage-gap",
+      label: `فجوة تغطية ${formatPercent(coverageGap)}`,
+      tone: "warning",
+    });
+  }
 
-  const volunteerCoverage =
-    totalVoters && totalVolunteers !== undefined && totalVoters > 0
-      ? (totalVolunteers / totalVoters) * 100
-      : undefined;
+  const eventsSummaryParts = [
+    nextEvent && typeof nextEvent.title === "string"
+      ? `أقرب فعالية: ${nextEvent.title} في ${formatDay(nextEvent.starts_at)}.`
+      : upcomingCount > 0
+        ? "تم جدولة فعاليات ميدانية قادمة."
+        : "لا توجد فعاليات قادمة حالياً، يمكن جدولة نشاط جديد لضمان استمرار الزخم.",
+    topReportType
+      ? `أكثر البلاغات نشاطاً من نوع ${topReportType}${
+          topReportCount ? ` (${formatNumber(topReportCount)} اليوم)` : ""
+        }.`
+      : null,
+  ].filter(Boolean);
 
-  const avgTeamSize =
-    totalTeams && totalVolunteers !== undefined && totalTeams > 0
-      ? totalVolunteers / totalTeams
-      : undefined;
+  const teamSummaryParts = [
+    `إجمالي ${formatNumber(totalTeams)} فريقاً نشطاً بمتوسط ${formatDecimal(
+      averageTeamSize,
+    )} متطوع لكل فريق`,
+    assignedAgents !== undefined
+      ? `مع ${formatNumber(assignedAgents)} وكيل ميداني مرتبط باللجان.`
+      : undefined,
+    actorNamesPreview.length > 0
+      ? `أبرز المنضمين: ${actorNamesPreview.join("، ")}.`
+      : undefined,
+  ].filter(Boolean);
 
-  
-const modules: DashboardModule[] = [
-  {
-    id: "operational-sections",
-    label: "لوحة المتابعة",
-    description:
-      "تصنيف واضح لأهم مكونات الحملة مع مؤشرات حية لكل قسم تشغيلي.",
-    icon: iconRegistry.compass,
-    submodules: [
-      {
-        id: "areas",
-        label: "المناطق",
-        description: "رصد حالة المناطق ومستوى النشاط في كل نطاق جغرافي.",
-        panels: [
-          {
-            id: "areas-overview",
-            label: "ملخص المناطق",
-            summary:
-              "إحصاءات سريعة حول توزيع المناطق وأبرز نقاط النشاط الحالية.",
-            icon: iconRegistry.mapPin,
-            analytics: [
-              {
-                id: "areas-total",
-                label: "إجمالي المناطق",
-                value: formatNumber(totalAreas),
-              },
-              {
-                id: "areas-busiest",
-                label: "أكثر منطقة نشاطاً",
-                value: regionSummary.busiestRegion ?? "—",
-                change:
-                  regionSummary.busiestReports > 0
-                    ? `${formatNumber(regionSummary.busiestReports)} بلاغ`
-                    : undefined,
-              },
-              {
-                id: "areas-reports",
-                label: "تقارير اليوم",
-                value: formatNumber(regionSummary.totalReports),
-                trend:
-                  regionSummary.totalReports > 0 ? "up" : undefined,
-              },
-            ],
-            actions: [
-              {
-                id: "view-areas-map",
-                label: "عرض الخريطة",
-                description:
-                  "استعراض خريطة تفاعلية للمناطق مع حالة التغطية الحالية.",
-                type: "view",
-                roles: ["domain-owner", "operator"],
-                emphasis: "primary",
-              },
-              {
-                id: "update-area-status",
-                label: "تحديث حالة منطقة",
-                description:
-                  "تعديل حالة المناطق الحيوية بناءً على البلاغات الأخيرة.",
-                type: "update",
-                roles: ["domain-owner", "data-steward"],
-              },
-              {
-                id: "share-area-brief",
-                label: "مشاركة موجز",
-                description:
-                  "مشاركة ملخص المناطق مع القيادات الميدانية.",
-                type: "sync",
-                roles: ["domain-owner", "operator"],
-              },
-            ],
-            reports: ["تقرير المناطق", "خريطة النشاط", "بيانات الانتشار"],
-          },
-        ],
-      },
-      {
-        id: "committees",
-        label: "اللجان",
-        description: "متابعة جاهزية اللجان وتوازن توزيع المسؤوليات.",
-        panels: [
-          {
-            id: "committees-readiness",
-            label: "جاهزية اللجان",
-            summary:
-              "مؤشرات حول توزيع اللجان وحجم الفرق ومتطلبات الدعم المباشر.",
-            icon: iconRegistry.clipboard,
-            analytics: [
-              {
-                id: "committees-total",
-                label: "إجمالي اللجان",
-                value: formatNumber(totalTeams),
-              },
-              {
-                id: "committees-coverage",
-                label: "نسبة التغطية",
-                value: formatPercent(volunteerCoverage),
-                trend:
-                  volunteerCoverage !== undefined
-                    ? volunteerCoverage >= 60
-                      ? "up"
-                      : "down"
-                    : undefined,
-              },
-              {
-                id: "committees-average",
-                label: "متوسط حجم الفريق",
-                value: formatDecimal(avgTeamSize),
-              },
-            ],
-            actions: [
-              {
-                id: "manage-committees",
-                label: "إدارة اللجان",
-                description:
-                  "استعراض قوائم اللجان وتوزيع المسؤوليات التشغيلية.",
-                type: "view",
-                roles: ["domain-owner", "data-steward"],
-                emphasis: "primary",
-              },
-              {
-                id: "assign-leads",
-                label: "تعيين منسق",
-                description:
-                  "تحديث المنسقين لكل لجنة وفق مستويات الجاهزية.",
-                type: "update",
-                roles: ["domain-owner", "operator"],
-              },
-              {
-                id: "export-committees",
-                label: "تصدير سجل",
-                description:
-                  "تحميل سجل اللجان والمشرفين للمراجعة والتوثيق.",
-                type: "report",
-                roles: ["data-steward"],
-              },
-            ],
-            reports: ["خريطة اللجان", "سجل التغطية", "تقرير الموارد"],
-          },
-        ],
-      },
-      {
-        id: "candidates",
-        label: "المرشحون",
-        description: "قراءة متكاملة لأداء المرشحين وتوجهات الدعم الشعبي.",
-        panels: [
-          {
-            id: "candidates-support",
-            label: "مؤشرات المرشحين",
-            summary:
-              "مقاييس الدعم والتفاعل المرتبطة بحملات المرشحين عبر المناطق.",
-            icon: iconRegistry.barChart,
-            analytics: [
-              {
-                id: "support-index",
-                label: "مؤشر الدعم",
-                value: formatPercent(supportPercentage),
-                trend: supportChange.trend,
-                change: formatChange(supportChange.change, { isPercent: true }),
-              },
-              {
-                id: "turnout-estimate",
-                label: "تقدير المشاركة",
-                value: formatPercent(turnoutEstimate),
-              },
-              {
-                id: "top-support-region",
-                label: "أبرز منطقة داعمة",
-                value: regionSummary.busiestRegion ?? "—",
-              },
-            ],
-            actions: [
-              {
-                id: "view-candidate-profiles",
-                label: "عرض ملفات المرشحين",
-                description:
-                  "الاطلاع على الملفات المحدثة والمواد التعريفية لكل مرشح.",
-                type: "view",
-                roles: ["domain-owner", "operator"],
-                emphasis: "primary",
-              },
-              {
-                id: "update-candidate-message",
-                label: "تحديث الرسائل الإعلامية",
-                description:
-                  "مواءمة الرسائل والمحتوى مع نتائج الأداء في المناطق.",
-                type: "update",
-                roles: ["domain-owner", "data-steward"],
-              },
-              {
-                id: "share-support-brief",
-                label: "مشاركة ملخص الدعم",
-                description:
-                  "إرسال موجز بالتوجهات للفرق العاملة على الحملات الميدانية.",
-                type: "sync",
-                roles: ["domain-owner", "operator"],
-              },
-            ],
-            reports: ["تقرير الأداء الإعلامي", "تحليل الدعم", "خطط التفاعل"],
-          },
-        ],
-      },
-      {
-        id: "voters",
-        label: "الناخبون",
-        description: "متابعة دائمة لبيانات الناخبين ومعدلات المشاركة.",
-        panels: [
-          {
-            id: "voters-overview",
-            label: "ملخص الناخبين",
-            summary:
-              "قياسات التسجيل والمشاركة لتوجيه الجهود نحو الشرائح الأكثر أهمية.",
-            icon: iconRegistry.gauge,
-            analytics: [
-              {
-                id: "voters-total",
-                label: "إجمالي الناخبين",
-                value: formatNumber(totalVoters),
-                trend: registrationStats.trend,
-                change: formatChange(registrationStats.percentChange, {
-                  isPercent: true,
-                }),
-              },
-              {
-                id: "voters-registered",
-                label: "المقيدون رسمياً",
-                value: formatNumber(registeredVoters),
-              },
-              {
-                id: "voters-turnout",
-                label: "نسبة المشاركة",
-                value: formatPercent(turnoutPercentage),
-                trend: supportChange.trend,
-                change: formatChange(supportChange.change, { isPercent: true }),
-              },
-            ],
-            actions: [
-              {
-                id: "view-voter-segments",
-                label: "عرض الشرائح",
-                description:
-                  "استكشاف الشرائح الرئيسية للناخبين وتحديد أولويات الاستهداف.",
-                type: "view",
-                roles: ["domain-owner", "data-steward", "operator"],
-                emphasis: "primary",
-              },
-              {
-                id: "update-voter-records",
-                label: "تحديث البيانات",
-                description:
-                  "مراجعة بيانات الناخبين وتصحيح السجلات الحساسة.",
-                type: "update",
-                roles: ["domain-owner", "data-steward"],
-              },
-              {
-                id: "export-voter-lists",
-                label: "تصدير القوائم",
-                description:
-                  "تحميل قوائم الناخبين للاستخدام في الحملات الميدانية.",
-                type: "report",
-                roles: ["data-steward"],
-              },
-            ],
-            reports: ["تقرير الناخبين", "سجل التسجيل", "قوائم الاتصال"],
-          },
-        ],
-      },
-      {
-        id: "volunteers",
-        label: "المتطوعون",
-        description: "متابعة انتشار المتطوعين وجاهزيتهم لدعم الحملة.",
-        panels: [
-          {
-            id: "volunteers-distribution",
-            label: "توزيع المتطوعين",
-            summary:
-              "مؤشرات حول حجم المتطوعين وتوازن انتشارهم على المناطق واللجان.",
-            icon: iconRegistry.users,
-            analytics: [
-              {
-                id: "volunteers-total",
-                label: "إجمالي المتطوعين",
-                value: formatNumber(totalVolunteers),
-              },
-              {
-                id: "volunteers-coverage",
-                label: "نسبة التغطية",
-                value: formatPercent(volunteerCoverage),
-              },
-              {
-                id: "volunteers-average",
-                label: "متوسط حجم الفريق",
-                value: formatDecimal(avgTeamSize),
-              },
-            ],
-            actions: [
-              {
-                id: "manage-volunteers",
-                label: "إدارة المتطوعين",
-                description:
-                  "إدارة قوائم المتطوعين وتوزيعهم على المهام الميدانية.",
-                type: "view",
-                roles: ["domain-owner", "operator"],
-                emphasis: "primary",
-              },
-              {
-                id: "sync-trainings",
-                label: "مزامنة التدريبات",
-                description:
-                  "تحديث جداول التدريب وإشعارات الحضور للمتطوعين.",
-                type: "sync",
-                roles: ["domain-owner", "data-steward", "operator"],
-              },
-              {
-                id: "download-roster",
-                label: "تحميل القوائم",
-                description:
-                  "تصدير قوائم المتطوعين مع بيانات الاتصال والتوزيع.",
-                type: "report",
-                roles: ["data-steward"],
-              },
-            ],
-            reports: ["كشف المتطوعين", "خطة التدريب", "ملخص الجاهزية"],
-          },
-        ],
-      },
-      {
-        id: "agents",
-        label: "الوكلاء",
-        description: "متابعة نشاط الوكلاء والتغطية الميدانية المرتبطة بهم.",
-        panels: [
-          {
-            id: "agents-activity",
-            label: "نشاط الوكلاء",
-            summary:
-              "قياس حجم البلاغات وتوزيعها لتحديد الحاجة للدعم أو إعادة الانتشار.",
-            icon: iconRegistry.shield,
-            analytics: [
-              {
-                id: "agents-reports-total",
-                label: "إجمالي البلاغات",
-                value: formatNumber(reportDistribution.total),
-                trend:
-                  reportDistribution.total > 0 ? "up" : undefined,
-              },
-              {
-                id: "agents-top-report",
-                label: "أكثر البلاغات تكراراً",
-                value: reportDistribution.topType ?? "—",
-                change:
-                  reportDistribution.topCount
-                    ? `${formatNumber(reportDistribution.topCount)} حالة`
-                    : undefined,
-              },
-              {
-                id: "agents-prepared-sites",
-                label: "نسبة المواقع المجهزة",
-                value: formatPercent(precinctProgress),
-              },
-            ],
-            actions: [
-              {
-                id: "view-agent-assignments",
-                label: "متابعة التكليفات",
-                description:
-                  "مراجعة تكليفات الوكلاء وتغطيتهم للمواقع الحرجة.",
-                type: "view",
-                roles: ["domain-owner", "operator"],
-                emphasis: "primary",
-              },
-              {
-                id: "sync-agent-observers",
-                label: "مزامنة الفرق",
-                description:
-                  "مزامنة الوكلاء والمراقبين مع التغيرات اليومية في الميدان.",
-                type: "sync",
-                roles: ["domain-owner", "operator"],
-              },
-              {
-                id: "archive-agent-logs",
-                label: "أرشفة السجلات",
-                description:
-                  "أرشفة سجلات البلاغات لعمليات المتابعة والتدقيق.",
-                type: "report",
-                roles: ["data-steward"],
-              },
-            ],
-            reports: ["تقرير الوكلاء", "قائمة البلاغات", "سجل المتابعة"],
-          },
-        ],
-      },
-      {
-        id: "settings",
-        label: "الإعدادات",
-        description: "ملخص سريع لحالة الحوكمة وضبط الصلاحيات داخل المنصة.",
-        panels: [
-          {
-            id: "settings-governance",
-            label: "ضوابط المنصة",
-            summary:
-              "مراقبة شاملة للتغيرات الإدارية وإجراءات الامتثال والرقابة.",
-            icon: iconRegistry.settings,
-            analytics: [
-              {
-                id: "settings-active-roles",
-                label: "أدوار فعّالة",
-                value: formatNumber(3),
-                trend: "up",
-              },
-              {
-                id: "settings-policy-updates",
-                label: "تحديثات السياسات",
-                value: formatNumber(1),
-                trend: "up",
-              },
-              {
-                id: "settings-audit",
-                label: "جاهزية التدقيق",
-                value: formatPercent(100),
-                trend: "up",
-              },
-            ],
-            actions: [
-              {
-                id: "review-permissions",
-                label: "مراجعة الصلاحيات",
-                description:
-                  "التأكد من توافق الأدوار مع سياسات الوصول المعتمدة.",
-                type: "view",
-                roles: ["domain-owner", "operator"],
-                emphasis: "primary",
-              },
-              {
-                id: "update-workflows",
-                label: "تحديث مسارات العمل",
-                description:
-                  "مواءمة المسارات التشغيلية مع التحديثات الجديدة في الإعدادات.",
-                type: "update",
-                roles: ["domain-owner", "data-steward"],
-              },
-              {
-                id: "export-audit-log",
-                label: "تصدير سجلات",
-                description:
-                  "إرسال سجلات الأنشطة الحساسة إلى أنظمة الحوكمة والتدقيق.",
-                type: "report",
-                roles: ["data-steward"],
-              },
-            ],
-            reports: ["سجل الضوابط", "مراجعة الامتثال", "خريطة المسؤوليات"],
-          },
-        ],
-      },
-      {
-        id: "geo-insights",
-        label: "المنطقة الجغرافية",
-        description:
-          "عرض جغرافي لتوزيع الأنشطة مع إبراز المناطق التي تتطلب دعماً إضافياً.",
-        panels: [
-          {
-            id: "geo-summary",
-            label: "ملخص جغرافي",
-            summary:
-              "مؤشرات تغطي إجمالي المناطق وأعلى نقاط التركيز الميداني.",
-            icon: iconRegistry.target,
-            analytics: [
-              {
-                id: "geo-total-areas",
-                label: "إجمالي المناطق",
-                value: formatNumber(totalAreas),
-              },
-              {
-                id: "geo-total-reports",
-                label: "إجمالي البلاغات",
-                value: formatNumber(regionSummary.totalReports),
-                trend:
-                  regionSummary.totalReports > 0 ? "up" : undefined,
-              },
-              {
-                id: "geo-focus",
-                label: "منطقة التركيز",
-                value: regionSummary.busiestRegion ?? "—",
-                change:
-                  regionSummary.busiestReports > 0
-                    ? `${formatNumber(regionSummary.busiestReports)} بلاغ`
-                    : undefined,
-              },
-            ],
-            actions: [
-              {
-                id: "view-heatmap",
-                label: "عرض الخريطة الحرارية",
-                description:
-                  "تحليل الكثافات الميدانية وتحديد النقاط التي تتطلب الاستجابة.",
-                type: "view",
-                roles: ["domain-owner", "operator"],
-                emphasis: "primary",
-              },
-              {
-                id: "adjust-geo-layers",
-                label: "تعديل الطبقات",
-                description:
-                  "تخصيص الطبقات الجغرافية وفق مصادر البيانات المتاحة.",
-                type: "update",
-                roles: ["domain-owner", "data-steward"],
-              },
-              {
-                id: "download-geo-report",
-                label: "تحميل تقرير جغرافي",
-                description:
-                  "استخراج تقرير الخرائط لدعمه في غرف العمليات.",
-                type: "report",
-                roles: ["data-steward"],
-              },
-            ],
-            reports: ["خريطة التوزيع", "تحليل الكثافة", "مؤشر المناطق"],
-          },
-        ],
-      },
-    ],
-  },
-];
+  const committeesSummaryParts = [
+    `تغطية ${formatNumber(committeesWithAssignments)} لجنة من إجمالي ${formatNumber(
+      totalCommittees,
+    )}.`,
+    topCommittee && typeof topCommittee.name === "string"
+      ? `اللجنة الأبرز ${topCommittee.name} تضم ${formatNumber(
+          topCommittee.voters_count,
+        )} ناخباً.`
+      : undefined,
+  ].filter(Boolean);
+
+  const votersSummaryParts = [
+    `إجمالي ${formatNumber(totalVoters)} ناخب مسجل مع تركيز على ${
+      topCommitteeArea ?? "المناطق ذات الأولوية"
+    }.`,
+    lastRegisteredName ? `آخر إضافة: ${lastRegisteredName}.` : undefined,
+  ].filter(Boolean);
+
+  const candidatesSummaryParts = [
+    candidateName
+      ? `المرشح الأبرز حالياً ${candidateName}${
+          candidateParty ? ` (${candidateParty})` : ""
+        } بمؤشر دعم ${formatPercent(candidateSupport)}.`
+      : "لم يتم تمييز مرشح رئيسي بعد، يمكن تحديث البيانات لإبراز المتصدر.",
+    candidateSlogan ? `الشعار: ${candidateSlogan}.` : undefined,
+  ].filter(Boolean);
+
+  const settingsSummaryParts = [
+    ownerName ? `المسؤول التنفيذي: ${ownerName}.` : undefined,
+    `آخر تحديث في ${settingsUpdated}.`,
+  ].filter(Boolean);
+
+  const modules: DashboardModule[] = [
+    {
+      id: "campaign-operations",
+      label: "العمليات الميدانية",
+      description:
+        "متابعة حية للحملة مع نظرة مركزة على الأنشطة الميدانية وتوزيع التغطية الجغرافية.",
+      icon: iconRegistry.workflow,
+      submodules: [
+        {
+          id: "events",
+          label: "الأحداث",
+          description:
+            "جدولة الفعاليات ومتابعة الاستجابة التنظيمية في كل منطقة.",
+          panels: [
+            {
+              id: "events-overview",
+              label: "ملخص الفعاليات",
+              summary: eventsSummaryParts.join(" "),
+              icon: iconRegistry.calendar,
+              analytics: [
+                {
+                  id: "events-total",
+                  label: "إجمالي الفعاليات",
+                  value: formatNumber(totalEvents),
+                },
+                {
+                  id: "events-upcoming",
+                  label: "فعاليات قادمة",
+                  value: formatNumber(upcomingCount),
+                  change:
+                    upcomingCount > 0 && latestEvent
+                      ? `آخر فعالية ${formatDay(latestEvent.starts_at)}`
+                      : undefined,
+                },
+                {
+                  id: "events-next",
+                  label: "أقرب فعالية",
+                  value:
+                    nextEvent && typeof nextEvent.title === "string"
+                      ? `${nextEvent.title} • ${formatDay(nextEvent.starts_at)}`
+                      : "—",
+                },
+              ],
+              actions: [
+                {
+                  id: "events-calendar",
+                  label: "عرض التقويم",
+                  description:
+                    "استعراض الجدول الكامل للفعاليات الميدانية مع توزيعها الجغرافي.",
+                  type: "view",
+                  roles: ["domain-owner", "operator"],
+                  emphasis: "primary",
+                },
+                {
+                  id: "events-schedule",
+                  label: "جدولة فعالية جديدة",
+                  description:
+                    "حجز فعالية ميدانية وتعيين الفريق المسؤول وقنوات المتابعة.",
+                  type: "create",
+                  roles: ["domain-owner", "operator"],
+                },
+                {
+                  id: "events-brief",
+                  label: "إرسال موجز ميداني",
+                  description:
+                    "مشاركة تفاصيل الفعاليات القادمة مع الفرق الميدانية والقيادة.",
+                  type: "sync",
+                  roles: ["domain-owner", "operator"],
+                },
+              ],
+              reports: ["تقرير الفعاليات", "توزيع الأنشطة", "جدول التغطية"],
+            },
+          ],
+        },
+        {
+          id: "geography",
+          label: "النطاق الجغرافي",
+          description:
+            "تحليل التغطية المكانية للحملة وتحديد المناطق ذات الأولوية للدعم.",
+          panels: [
+            {
+              id: "geography-overview",
+              label: "نظرة جغرافية",
+              summary:
+                primaryAreaName
+                  ? `أعلى نشاط في منطقة ${primaryAreaName} مع متابعة تغطية المتطوعين بنسبة ${formatPercent(
+                      volunteerCoverage,
+                    )}.`
+                  : "تمت مزامنة المناطق المرتبطة بالحملة مع مؤشرات التغطية الحالية.",
+              icon: iconRegistry.mapPin,
+              analytics: [
+                {
+                  id: "geography-areas",
+                  label: "المناطق المرتبطة",
+                  value: formatNumber(
+                    parseNumber(geographySection.total_areas ?? metrics.areas),
+                  ),
+                },
+                {
+                  id: "geography-volunteer-coverage",
+                  label: "تغطية المتطوعين",
+                  value: formatPercent(volunteerCoverage),
+                  trend:
+                    volunteerCoverage !== undefined
+                      ? volunteerCoverage >= 60
+                        ? "up"
+                        : "down"
+                      : undefined,
+                },
+                {
+                  id: "geography-teams",
+                  label: "فرق لكل منطقة",
+                  value: formatDecimal(teamsPerArea),
+                },
+              ],
+              actions: [
+                {
+                  id: "geography-map",
+                  label: "عرض الخريطة التفاعلية",
+                  description: "رسم تحليلي لتوزيع الفرق والبلاغات حسب المناطق.",
+                  type: "view",
+                  roles: ["domain-owner", "operator"],
+                  emphasis: "primary",
+                },
+                {
+                  id: "geography-adjust",
+                  label: "تعديل توزيع الفرق",
+                  description:
+                    "إعادة توزيع الموارد الميدانية وفق كثافة الناخبين والأولوية.",
+                  type: "update",
+                  roles: ["domain-owner", "data-steward"],
+                },
+                {
+                  id: "geography-export",
+                  label: "تحميل تقرير التغطية",
+                  description: "إصدار تقرير شامل للانتشار الجغرافي لدعم غرف العمليات.",
+                  type: "report",
+                  roles: ["data-steward"],
+                },
+              ],
+              reports: ["خريطة النطاقات", "تحليل التغطية", "تقرير البلاغات"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "field-organization",
+      label: "إدارة الفرق",
+      description:
+        "منصة تشغيل موحدة لمتابعة الفرق، المتطوعين والوكلاء عبر جميع اللجان.",
+      icon: iconRegistry.users,
+      submodules: [
+        {
+          id: "teams",
+          label: "الفرق والمتطوعون",
+          description:
+            "متابعة جاهزية الفرق وتنسيق الأدوار بين المتطوعين والوكلاء.",
+          panels: [
+            {
+              id: "teams-readiness",
+              label: "جاهزية الفرق",
+              summary: teamSummaryParts.join(" "),
+              icon: iconRegistry.layers,
+              analytics: [
+                {
+                  id: "teams-volunteers",
+                  label: "إجمالي المتطوعين",
+                  value: formatNumber(totalVolunteers),
+                  change: formatPercent(volunteerCoverage),
+                },
+                {
+                  id: "teams-active",
+                  label: "متطوعون نشطون",
+                  value: formatNumber(activeVolunteers),
+                  change:
+                    activeVolunteers !== undefined && totalVolunteers
+                      ? formatPercent(
+                          (activeVolunteers / Math.max(totalVolunteers, 1)) * 100,
+                        )
+                      : undefined,
+                },
+                {
+                  id: "teams-agents",
+                  label: "الوكلاء المعتمدون",
+                  value: formatNumber(totalAgents),
+                  change: formatPercent(agentCoverage),
+                },
+              ],
+              actions: [
+                {
+                  id: "teams-manage-volunteers",
+                  label: "إدارة المتطوعين",
+                  description: "تحديث البيانات الميدانية ومهام المتطوعين حسب الأولوية.",
+                  type: "update",
+                  roles: ["domain-owner", "operator"],
+                  emphasis: "primary",
+                },
+                {
+                  id: "teams-sync-agents",
+                  label: "مزامنة الوكلاء",
+                  description: "التحقق من حالة الوكلاء وربطهم باللجان المعينة.",
+                  type: "sync",
+                  roles: ["domain-owner", "operator"],
+                },
+                {
+                  id: "teams-assign-supervisors",
+                  label: "تعيين المشرفين",
+                  description: "ضبط الإشراف لكل فريق وتوزيع المسؤوليات حسب المنطقة.",
+                  type: "update",
+                  roles: ["domain-owner", "data-steward"],
+                },
+              ],
+              reports: ["سجل المتطوعين", "تقرير جاهزية الفرق", "متابعة الوكلاء"],
+            },
+          ],
+        },
+        {
+          id: "committees",
+          label: "اللجان الميدانية",
+          description:
+            "متابعة توزيع اللجان ومستوى التغطية البشرية لكل نطاق انتخابي.",
+          panels: [
+            {
+              id: "committees-coverage",
+              label: "تغطية اللجان",
+              summary: committeesSummaryParts.join(" "),
+              icon: iconRegistry.clipboard,
+              analytics: [
+                {
+                  id: "committees-total",
+                  label: "إجمالي اللجان",
+                  value: formatNumber(totalCommittees),
+                },
+                {
+                  id: "committees-covered",
+                  label: "لجان مغطاة",
+                  value: formatNumber(committeesWithAssignments),
+                  change: formatPercent(agentCoverage),
+                },
+                {
+                  id: "committees-pending",
+                  label: "لجان بدون تغطية",
+                  value: formatNumber(committeesWithoutAssignments),
+                  trend:
+                    committeesWithoutAssignments && committeesWithoutAssignments > 0
+                      ? "warning"
+                      : undefined,
+                },
+              ],
+              actions: [
+                {
+                  id: "committees-review",
+                  label: "مراجعة التغطية",
+                  description:
+                    "مقارنة اللجان المغطاة مع أهداف الحملة وتحديد الفجوات.",
+                  type: "view",
+                  roles: ["domain-owner", "data-steward"],
+                  emphasis: "primary",
+                },
+                {
+                  id: "committees-assign",
+                  label: "إسناد وكلاء",
+                  description:
+                    "تعيين وكلاء ميدانيين للجان غير المغطاة وتحديث جداول المناوبة.",
+                  type: "update",
+                  roles: ["domain-owner", "operator"],
+                },
+                {
+                  id: "committees-export",
+                  label: "تصدير كشف اللجان",
+                  description:
+                    "تحميل تقرير تفصيلي بعدد الناخبين والوكلاء لكل لجنة.",
+                  type: "report",
+                  roles: ["data-steward"],
+                },
+              ],
+              reports: ["كشف اللجان", "تقرير التغطية", "متابعة الانضباط"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "constituency-management",
+      label: "إدارة الناخبين",
+      description:
+        "رؤية متكاملة لسلوك الناخبين وتطور التسجيل عبر اللجان والمناطق.",
+      icon: iconRegistry.gauge,
+      submodules: [
+        {
+          id: "voters",
+          label: "الناخبون",
+          description:
+            "مؤشرات التوسع في قاعدة الناخبين مع إبراز اللجان الأكثر حيوية.",
+          panels: [
+            {
+              id: "voters-trends",
+              label: "رصد الناخبين",
+              summary: votersSummaryParts.join(" "),
+              icon: iconRegistry.lineChart,
+              analytics: [
+                {
+                  id: "voters-total",
+                  label: "إجمالي الناخبين",
+                  value: formatNumber(totalVoters),
+                },
+                {
+                  id: "voters-monthly",
+                  label: "تسجيلات الشهر",
+                  value: formatNumber(registrationStats.latest),
+                  change: formatChange(registrationStats.percentChange, {
+                    isPercent: true,
+                  }),
+                  trend: registrationStats.trend,
+                },
+                {
+                  id: "voters-registered",
+                  label: "ناخبون مسجلون",
+                  value: formatNumber(registeredVoters),
+                },
+              ],
+              actions: [
+                {
+                  id: "voters-segmentation",
+                  label: "إدارة الشرائح",
+                  description:
+                    "بناء قوائم مستهدفة حسب المنطقة أو مستوى التفاعل.",
+                  type: "view",
+                  roles: ["domain-owner", "data-steward"],
+                  emphasis: "primary",
+                },
+                {
+                  id: "voters-outreach",
+                  label: "إطلاق حملة تواصل",
+                  description:
+                    "تنشيط قنوات الاتصال الرقمية والهاتفية للناخبين المترددين.",
+                  type: "create",
+                  roles: ["domain-owner", "operator"],
+                },
+                {
+                  id: "voters-export",
+                  label: "تصدير بيانات الناخبين",
+                  description:
+                    "تجهيز ملفات الناخبين للاستخدام في المقرات الميدانية.",
+                  type: "report",
+                  roles: ["data-steward"],
+                },
+              ],
+              reports: ["تحليل الناخبين", "تقسيم الشرائح", "حالة التواصل"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "candidates-performance",
+      label: "المرشحون",
+      description:
+        "إدارة حالة المرشحين مع مؤشرات الدعم والنتائج التقديرية للحملة.",
+      icon: iconRegistry.barChart,
+      submodules: [
+        {
+          id: "candidates",
+          label: "أداء المرشحين",
+          description:
+            "مقارنة توجهات الدعم والجاهزية الإعلامية لكل مرشح في الحملة.",
+          panels: [
+            {
+              id: "candidates-overview",
+              label: "نظرة عامة",
+              summary: candidatesSummaryParts.join(" "),
+              icon: iconRegistry.crown,
+              analytics: [
+                {
+                  id: "candidates-count",
+                  label: "عدد المرشحين",
+                  value: formatNumber(candidateTotal),
+                },
+                {
+                  id: "candidates-support-avg",
+                  label: "متوسط الدعم",
+                  value: formatPercent(supportAverage),
+                  trend: supportChange.trend,
+                  change: formatChange(supportChange.change, { isPercent: true }),
+                },
+                {
+                  id: "candidates-turnout",
+                  label: "تقدير المشاركة",
+                  value: formatPercent(turnoutEstimate),
+                },
+              ],
+              media:
+                candidateName || candidatePhoto
+                  ? {
+                      image: candidatePhoto,
+                      title: candidateName ?? "مرشح غير مسمى",
+                      subtitle: candidateParty ?? undefined,
+                      description: candidateSlogan ?? undefined,
+                      badges: candidateBadges,
+                    }
+                  : undefined,
+              actions: [
+                {
+                  id: "candidates-profile",
+                  label: "عرض لوحة المرشح",
+                  description:
+                    "تفاصيل الأداء والأنشطة المرتبطة بكل مرشح في الحملة.",
+                  type: "view",
+                  roles: ["domain-owner", "operator"],
+                  emphasis: "primary",
+                },
+                {
+                  id: "candidates-messaging",
+                  label: "تحديث الرسائل",
+                  description:
+                    "مواءمة الرسائل الإعلامية مع نتائج الدعم الميداني.",
+                  type: "update",
+                  roles: ["domain-owner", "data-steward"],
+                },
+                {
+                  id: "candidates-share-results",
+                  label: "نشر موجز النتائج",
+                  description:
+                    "مشاركة التحديثات مع الفرق الإعلامية وقادة الحملة.",
+                  type: "sync",
+                  roles: ["domain-owner", "operator"],
+                },
+              ],
+              reports: ["تقرير الدعم الجماهيري", "تحليل النتائج", "أداء الحملات"],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "administrative-control",
+      label: "الإعدادات والتحكم",
+      description:
+        "حوكمة إعدادات الحملة وقنوات التواصل مع تتبع أحدث التغييرات.",
+      icon: iconRegistry.settings,
+      submodules: [
+        {
+          id: "settings",
+          label: "الإعدادات",
+          description:
+            "عرض حالة الإعدادات النشطة، المسؤول التنفيذي وقنوات التواصل المعتمدة.",
+          panels: [
+            {
+              id: "settings-overview",
+              label: "نظرة التحكم",
+              summary: settingsSummaryParts.join(" "),
+              icon: iconRegistry.settings,
+              analytics: [
+                {
+                  id: "settings-last-update",
+                  label: "آخر تحديث",
+                  value: settingsUpdated,
+                },
+                {
+                  id: "settings-flags",
+                  label: "ميزات مفعلة",
+                  value: formatNumber(settingsFlags.length),
+                },
+                {
+                  id: "settings-channels",
+                  label: "قنوات التواصل",
+                  value: formatNumber(settingsChannels.length),
+                },
+              ],
+              actions: [
+                {
+                  id: "settings-manage-permissions",
+                  label: "إدارة الأذونات",
+                  description:
+                    "ضبط صلاحيات الحملة والأدوار المرتبطة بالوصول.",
+                  type: "update",
+                  roles: ["domain-owner", "data-steward"],
+                  emphasis: "primary",
+                },
+                {
+                  id: "settings-communications",
+                  label: "تحديث قنوات التواصل",
+                  description:
+                    "إضافة أو تعطيل قنوات التواصل الرسمية للحملة.",
+                  type: "update",
+                  roles: ["domain-owner", "operator"],
+                },
+                {
+                  id: "settings-export-log",
+                  label: "تصدير سجل التغييرات",
+                  description:
+                    "إرسال سجل التعديلات الأخيرة إلى فريق الحوكمة.",
+                  type: "report",
+                  roles: ["data-steward"],
+                },
+              ],
+              reports: ["سجل التغييرات", "سياسة الوصول", "تكوين القنوات"],
+            },
+          ],
+        },
+      ],
+    },
+  ];
 
   return modules;
 };
