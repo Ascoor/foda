@@ -10,7 +10,9 @@ class ExpenseCategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'campaign_id' => $this->campaign_id,
             'name' => $this->name,
+            'description' => $this->description,
         ];
     }
 }

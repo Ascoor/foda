@@ -41,7 +41,9 @@ class CampaignController extends ApiController
     {
         $this->authorize('view', $campaign);
 
-        return $this->resource(new CampaignResource($campaign));
+        return $this->resource(new CampaignResource(
+            $campaign->load(['geographicScopes' => fn ($query) => $query->with('children', 'committees')])
+        ));
     }
 
     public function update(UpdateCampaignRequest $request, Campaign $campaign): JsonResponse

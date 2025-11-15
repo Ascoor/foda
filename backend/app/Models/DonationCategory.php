@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ExpenseCategory extends Model
+class DonationCategory extends Model
 {
     use HasFactory;
 
@@ -20,8 +20,8 @@ class ExpenseCategory extends Model
         return $this->belongsTo(Campaign::class);
     }
 
-    public function expenses()
+    public function donations()
     {
-        return $this->hasMany(Expense::class, 'category_id');
+        return $this->hasMany(Donation::class, 'category_id');
     }
 }

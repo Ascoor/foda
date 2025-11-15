@@ -3,8 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Area;
-use Faker\Factory as FakerFactory;
-use Faker\Generator;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /** @extends Factory<\App\Models\Area> */
@@ -12,20 +10,18 @@ class AreaFactory extends Factory
 {
     protected $model = Area::class;
 
-    protected function withFaker(): Generator
-    {
-        return FakerFactory::create('ar_SA');
-    }
-
     public function definition(): array
     {
-        $regions = ['منطقة الرياض', 'منطقة مكة المكرمة', 'منطقة القصيم', 'منطقة تبوك', 'المنطقة الشرقية'];
+        $nameAr = $this->faker->unique()->city();
 
         return [
-            'name' => $this->faker->unique()->randomElement($regions) . ' - ' . $this->faker->randomElement(['الوسطى', 'الشمالية', 'الجنوبية']),
-            'description' => $this->faker->sentence(8),
-            'x' => $this->faker->latitude(16.0, 32.0),
-            'y' => $this->faker->longitude(34.0, 55.0),
+            'name_ar' => $nameAr,
+            'name_en' => $this->faker->city(),
+            'type' => $this->faker->randomElement(['governorate', 'center', 'city', 'district']),
+            'code' => strtoupper($this->faker->lexify('AR-????')),
+            'lat' => $this->faker->latitude(16.0, 32.0),
+            'lng' => $this->faker->longitude(34.0, 55.0),
+            'meta' => ['population' => $this->faker->numberBetween(1000, 500000)],
         ];
     }
 }

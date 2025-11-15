@@ -43,11 +43,21 @@ class CampaignApiTest extends TestCase
         $payload = [
             'name' => 'حملة جديدة',
             'description' => 'تفاصيل حملة جديدة',
-            'starts_at' => now()->addWeek()->toDateString(),
-            'ends_at' => now()->addWeeks(4)->toDateString(),
-            'spatial_level' => 'city',
+            'start_date' => now()->addWeek()->toDateString(),
+            'end_date' => now()->addWeeks(4)->toDateString(),
+            'poll_date' => now()->addWeeks(5)->toDateString(),
+            'geographic_strategy' => 'city',
             'bbox' => [29.1, 30.2, 31.3, 32.4],
-            'status' => 'planned',
+            'status' => 'draft',
+            'geographic_scopes' => [
+                [
+                    'name' => 'المدينة',
+                    'level' => 'city',
+                    'committees' => [
+                        ['name' => 'اللجنة 1', 'code' => 'C-001'],
+                    ],
+                ],
+            ],
         ];
 
         $response = $this->postJson('/api/v1/campaigns', $payload);
@@ -80,7 +90,7 @@ class CampaignApiTest extends TestCase
 
         $response = $this->putJson("/api/v1/campaigns/{$campaign->id}", [
             'name' => 'محدث',
-            'ends_at' => now()->addWeeks(6)->toDateString(),
+            'end_date' => now()->addWeeks(6)->toDateString(),
         ]);
 
         $response->assertOk()

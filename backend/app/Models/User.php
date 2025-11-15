@@ -37,4 +37,14 @@ class User extends Authenticatable
                     ->withPivot(['role', 'status', 'permissions'])
                     ->withTimestamps();
     }
+
+    public function volunteerProfiles()
+    {
+        return $this->hasMany(Volunteer::class);
+    }
+
+    public function representativeProfiles()
+    {
+        return $this->hasMany(Representative::class);
+    }
 }
