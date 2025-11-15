@@ -11,6 +11,7 @@ Route::prefix('v1')->group(function (): void {
     require __DIR__ . '/api/v1/protected/campaign.php';
     require __DIR__ . '/api/v1/protected/analytics.php';
     require __DIR__ . '/api/v1/protected/activities.php';
+    require __DIR__ . '/api/v1/protected/volunteers.php';
     require __DIR__ . '/api/v1/protected/finance.php';
     require __DIR__ . '/api/v1/protected/notifications.php';
 });

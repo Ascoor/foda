@@ -143,6 +143,12 @@ return [
 
     'custom' => [
         'belongs_to_campaign' => 'The selected :attribute must belong to the current campaign.',
+        'committee_code' => [
+            'unique_within_campaign' => 'Committee codes must be unique within the campaign scope.',
+        ],
+        'committee_area' => [
+            'out_of_scope' => 'The selected committee area must match the parent geographic scope.',
+        ],
     ],
 
     /*

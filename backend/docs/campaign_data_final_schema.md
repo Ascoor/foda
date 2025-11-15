@@ -16,15 +16,11 @@
 - **الأعمدة**: `id`, `key` (فريد), `value`, `description`, `type`, الطوابع الزمنية.
 - **القيود**: `key` فريد لضمان عدم تكرار مفاتيح الإعداد.
 
-### geo_areas
-- **الأعمدة**: `id`, `election_id`, `name`, `campaign_id` (اختياري), `parent_id` (اختياري), `level`, `code`, `meta`, الطوابع الزمنية.
-- **القيود**: مفاتيح خارجية إلى `elections.id` (إلزامي) و `campaigns.id` و `geo_areas.id` (للهيكل الهرمي) مع حذف متسلسل أو تحويل إلى فارغ. فهرس على `campaign_id` وفريد على `code`.
-
 ## 2. إدارة الحملات
 
 ### campaigns
-- **الأعمدة**: `id`, `election_id` (اختياري), `name`, `slug` (فريد, يقبل الفراغ في البداية ثم يتم ملؤه), `description`, `starts_at`, `ends_at`, `spatial_level`, `bbox`, `status`, الطوابع الزمنية.
-- **القيود**: مفتاح خارجي إلى `elections.id` مع حذف بتحويل إلى فارغ، فهرس فريد على `slug`.
+- **الأعمدة**: `id`, `name`, `slug` (فريد), `description`, `status`, `start_date`, `end_date`, `poll_date`, `geographic_strategy`, `geographic_notes`, `bbox`, الطوابع الزمنية.
+- **القيود**: فهرس فريد على `slug`, وفهرس مركب على (`status`, `start_date`).
 
 ### campaign_polling_days
 - **الأعمدة**: `id`, `campaign_id`, `date`, `notes`, الطوابع الزمنية.
@@ -47,26 +43,30 @@
 ## 4. النطاق الجغرافي واللجان
 
 ### areas
-- **الأعمدة**: `id`, `name`, `description`, `x`, `y`, `name_ar`, `name_en`, `slug`, `type`, `level`, `parent_id` (اختياري), `code`, `meta`, `lat`, `lng`, الطوابع الزمنية.
-- **القيود**: مفتاح خارجي ذاتي على `parent_id` مع حذف بتحويل إلى فارغ، فهرس فريد على `slug`.
+- **الأعمدة**: `id`, `name_ar`, `name_en`, `type`, `parent_id` (اختياري), `code`, `lat`, `lng`, `meta`, الطوابع الزمنية.
+- **القيود**: مفتاح خارجي ذاتي على `parent_id` مع حذف بتحويل إلى فارغ، فهارس على `code`.
 
 ### campaign_area
 - **الأعمدة**: `id`, `campaign_id`, `area_id`, `alias`, `code`, الطوابع الزمنية.
 - **القيود**: مفاتيح خارجية إلى `campaigns.id` و`areas.id` مع حذف متسلسل، فريد مركب على (`campaign_id`, `area_id`).
 
+### geographic_scopes
+- **الأعمدة**: `id`, `campaign_id`, `name`, `level`, `area_id` (اختياري), `parent_id` (اختياري), `bbox`, `meta`, الطوابع الزمنية.
+- **القيود**: مفاتيح خارجية إلى `campaigns.id`, `areas.id`, و`geographic_scopes.id` (للهيكل الهرمي) مع حذف متسلسل، فريد مركب على (`campaign_id`, `name`).
+
 ### committees
-- **الأعمدة**: `id`, `campaign_id`, `geo_area_id`, `name`, `location`, `code`, الطوابع الزمنية.
-- **القيود**: مفاتيح خارجية إلى `campaigns.id` و`geo_areas.id` مع حذف متسلسل، فريد مركب على (`campaign_id`, `code`)، فهرس مركب على (`campaign_id`, `name`).
+- **الأعمدة**: `id`, `campaign_id`, `geographic_scope_id` (اختياري), `area_id` (اختياري), `name`, `code`, `location`, `lat`, `lng`, `meta`, الطوابع الزمنية.
+- **القيود**: مفاتيح خارجية إلى `campaigns.id`, `geographic_scopes.id`, و`areas.id` مع حذف متسلسل أو تحويل إلى فارغ، فريد مركب على (`campaign_id`, `code`)، فهارس على (`campaign_id`, `name`).
 
 ## 5. الفرق، المتطوعون، والوكلاء
 
-### teams
-- **الأعمدة**: `id`, `campaign_id`, `name`, `area_id`, `supervisor_id`, الطوابع الزمنية.
-- **القيود**: مفاتيح خارجية إلى `campaigns.id`, `areas.id`, و`users.id` مع حذف متسلسل، فهرس مركب على (`campaign_id`, `name`).
-
 ### volunteers
-- **الأعمدة**: `id`, `campaign_id`, `name`, `email` (فريد), `phone`, `team_id` (اختياري), `tags`, الطوابع الزمنية.
-- **القيود**: مفتاح خارجي إلى `campaigns.id` مع حذف متسلسل، مفتاح خارجي إلى `teams.id` بتحويل إلى فارغ، فهرس على `campaign_id`.
+- **الأعمدة**: `id`, `campaign_id`, `geographic_scope_id` (اختياري), `committee_id` (اختياري), `user_id` (اختياري), `name`, `email` (فريد داخل الحملة), `phone` (فريد داخل الحملة), `role`, `status`, `joined_at`, `skills`, `notes`, `deleted_at`, الطوابع الزمنية.
+- **القيود**: مفاتيح خارجية إلى `campaigns.id`, `geographic_scopes.id`, `committees.id`, و`users.id` مع حذف متسلسل أو تحويل إلى فارغ، فهارس مركبة على (`campaign_id`, `email`) و (`campaign_id`, `phone`).
+
+### representatives
+- **الأعمدة**: `id`, `campaign_id`, `geographic_scope_id` (اختياري), `committee_id` (اختياري), `user_id` (اختياري), `name`, `email`, `phone`, `position`, `assignment_type`, `status`, `assigned_at`, `responsibilities`, `notes`, `deleted_at`, الطوابع الزمنية.
+- **القيود**: مفاتيح خارجية إلى `campaigns.id`, `geographic_scopes.id`, `committees.id`, و`users.id` مع حذف متسلسل أو تحويل إلى فارغ.
 
 ### agents
 - **الأعمدة**: `id`, `campaign_id`, `candidate_id`, `committee_id`, `person_id`, `name`, `active`, `assigned_at`, `ended_at`, `meta`, الطوابع الزمنية.
@@ -114,13 +114,21 @@
 
 ## 8. الماليات والتحليلات
 
-### expense_categories
-- **الأعمدة**: `id`, `name`, الطوابع الزمنية.
-- **القيود**: فريد منطقي على `name` (يجب تطبيقه على مستوى التطبيق عند الحاجة).
+### donation_categories
+- **الأعمدة**: `id`, `campaign_id`, `name`, `description`, الطوابع الزمنية.
+- **القيود**: مفتاح خارجي إلى `campaigns.id` مع حذف متسلسل، فريد مركب على (`campaign_id`, `name`).
 
-### finances
-- **الأعمدة**: `id`, `campaign_id`, `amount`, `type`, `date`, `description`, `reference_id`, `category_id`, الطوابع الزمنية.
-- **القيود**: مفاتيح خارجية إلى `campaigns.id` و`expense_categories.id`, فهرس مركب على (`campaign_id`, `date`).
+### donations
+- **الأعمدة**: `id`, `campaign_id`, `category_id` (اختياري), `donor_name`, `donor_contact`, `amount`, `donated_at`, `reference`, `notes`, `meta`, الطوابع الزمنية.
+- **القيود**: مفاتيح خارجية إلى `campaigns.id` و`donation_categories.id` مع حذف متسلسل أو تحويل إلى فارغ، فهرس مركب على (`campaign_id`, `donated_at`).
+
+### expense_categories
+- **الأعمدة**: `id`, `campaign_id`, `name`, `description`, الطوابع الزمنية.
+- **القيود**: مفتاح خارجي إلى `campaigns.id` مع حذف متسلسل، فريد مركب على (`campaign_id`, `name`).
+
+### expenses
+- **الأعمدة**: `id`, `campaign_id`, `category_id` (اختياري), `vendor_name`, `amount`, `spent_at`, `reference`, `description`, `meta`, الطوابع الزمنية.
+- **القيود**: مفاتيح خارجية إلى `campaigns.id` و`expense_categories.id` مع حذف متسلسل أو تحويل إلى فارغ، فهرس مركب على (`campaign_id`, `spent_at`).
 
 ### analytics_snapshots
 - **الأعمدة**: `id`, `campaign_id`, `election_id`, `metric_key`, `snapshot_date`, `payload`, `forecast_value`, الطوابع الزمنية.
@@ -140,6 +148,6 @@
 - **profiles**, **homes**, **auths**: هياكل أولية تحتوي فقط على `id` والطوابع الزمنية (تستخدم كنقاط توسيع مستقبلية).
 
 ## 10. ملخص علاقات مفتاحية
-- كل الجداول التشغيلية (`committees`, `teams`, `volunteers`, `voters`, `activities`, `events`, `observations`, `sms`, `notifications`, `automation_tasks`, `finances`, `analytics_snapshots`, `swots`, `agents`) تحمل `campaign_id` لضمان العزل بين الحملات.
+- كل الجداول التشغيلية (`geographic_scopes`, `committees`, `volunteers`, `representatives`, `voters`, `activities`, `events`, `observations`, `sms`, `notifications`, `automation_tasks`, `donations`, `expenses`, `analytics_snapshots`, `swots`, `agents`) تحمل `campaign_id` لضمان العزل بين الحملات.
 - الجسور الأساسية (`campaign_user`, `campaign_volunteer`, `campaign_area`) تربط الكيانات العامة بسياق الحملة وتفرض تفردًا لكل حملة.
 - التسلسل الجغرافي يعتمد على `areas` للاستخدام الداخلي و`geo_areas` للبيانات المرتبطة بالانتخابات العامة، مع إمكانية ربط كل منهما بالحملة حسب الحاجة.

@@ -152,7 +152,7 @@ curl -X POST /api/v1/auth/login -d '{"email":"me@example.com","password":"secret
 curl -H "Authorization: Bearer <token>" /api/v1/campaigns
 
 # 3. Create a campaign via the service layer
-curl -X POST -H "Authorization: Bearer <token>" -d '{"name":"Primary 2024","starts_at":"2024-01-01" ... }' /api/v1/campaigns
+curl -X POST -H "Authorization: Bearer <token>" -d '{"name":"Primary 2024","start_date":"2024-01-01","end_date":"2024-06-01","geographic_strategy":"city"}' /api/v1/campaigns
 
 # 4. Query scoped analytics (requires X-Campaign-ID or ?campaign_id)
 curl -H "Authorization: Bearer <token>" -H "X-Campaign-ID: <id>" /api/v1/dashboard-stats

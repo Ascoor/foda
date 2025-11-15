@@ -11,13 +11,16 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->enum('spatial_level', ['governorate','city','center','custom'])->default('custom');
-            $table->dateTime('starts_at')->nullable();
-            $table->dateTime('ends_at')->nullable();
+            $table->text('description')->nullable();
+            $table->enum('status', ['draft', 'active', 'archived'])->default('draft');
+            $table->date('start_date');
+            $table->date('end_date');
             $table->date('poll_date')->nullable();
+            $table->enum('geographic_strategy', ['governorate', 'center', 'city', 'district', 'custom'])->default('custom');
+            $table->json('geographic_notes')->nullable();
             $table->json('bbox')->nullable();
-            $table->enum('status', ['draft','active','archived'])->default('draft');
             $table->timestamps();
+            $table->index(['status', 'start_date']);
         });
     }
 

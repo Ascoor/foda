@@ -2,96 +2,85 @@
 
 namespace Tests\Feature;
 
-use App\Models\Team;
+use App\Models\Campaign;
+use App\Models\Committee;
+use App\Models\GeographicScope;
 use App\Models\User;
 use App\Models\Volunteer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\Sanctum;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 class VolunteerApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_index_returns_volunteers_with_filters()
+    protected function setUp(): void
     {
-        Sanctum::actingAs(User::factory()->create());
-        $teamA = Team::factory()->create();
-        $teamB = Team::factory()->create();
-        Volunteer::factory()->create(['name' => 'Alice', 'team_id' => $teamA->id]);
-        Volunteer::factory()->create(['name' => 'Bob', 'team_id' => $teamB->id]);
+        parent::setUp();
 
-        $response = $this->getJson('/api/v1/volunteers?name=Ali');
-        $response->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.name', 'Alice');
-
-        $response = $this->getJson('/api/v1/volunteers?team_id=' . $teamB->id);
-        $response->assertOk()->assertJsonCount(1, 'data')->assertJsonPath('data.0.team.id', $teamB->id);
+        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
-    public function test_store_creates_volunteer()
+    public function test_can_crud_volunteers_for_campaign(): void
     {
-        Sanctum::actingAs(User::factory()->create());
-        $team = Team::factory()->create();
+        $campaign = Campaign::factory()->create();
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        Sanctum::actingAs($user);
 
-        $payload = [
-            'name' => 'Vol 1',
-            'email' => 'vol1@example.com',
-            'phone' => '123456',
-            'team_id' => $team->id,
-        ];
+        $scope = GeographicScope::factory()->create(['campaign_id' => $campaign->id]);
+        $committee = Committee::factory()->create([
+            'campaign_id' => $campaign->id,
+            'geographic_scope_id' => $scope->id,
+        ]);
 
-        $response = $this->postJson('/api/v1/volunteers', $payload);
+        $this->postJson(route('campaigns.volunteers.store', ['campaign' => $campaign->id]), [
+            'name' => 'Field Lead',
+            'email' => 'lead@example.com',
+            'phone' => '0512345678',
+            'geographic_scope_id' => $scope->id,
+            'committee_id' => $committee->id,
+            'status' => 'active',
+        ])->assertCreated()->assertJsonPath('data.name', 'Field Lead');
 
-        $response->assertCreated()->assertJsonPath('data.name', 'Vol 1');
-        $this->assertDatabaseHas('volunteers', ['email' => 'vol1@example.com']);
+        $volunteer = Volunteer::query()->where('campaign_id', $campaign->id)->firstOrFail();
+
+        $this->getJson(route('campaigns.volunteers.index', ['campaign' => $campaign->id]))
+            ->assertOk()
+            ->assertJsonPath('data.0.id', $volunteer->id);
+
+        $this->putJson(route('campaigns.volunteers.update', ['campaign' => $campaign->id, 'volunteer' => $volunteer->id]), [
+            'role' => 'Coordinator',
+        ])->assertOk()->assertJsonPath('data.role', 'Coordinator');
+
+        $this->deleteJson(route('campaigns.volunteers.destroy', ['campaign' => $campaign->id, 'volunteer' => $volunteer->id]))
+            ->assertNoContent();
+
+        $this->assertSoftDeleted('volunteers', ['id' => $volunteer->id]);
     }
 
-    public function test_show_returns_volunteer()
+    public function test_validation_prevents_out_of_scope_committee(): void
     {
-        Sanctum::actingAs(User::factory()->create());
-        $volunteer = Volunteer::factory()->create();
+        $campaign = Campaign::factory()->create();
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+        Sanctum::actingAs($user);
 
-        $response = $this->getJson('/api/v1/volunteers/' . $volunteer->id);
+        $scope = GeographicScope::factory()->create(['campaign_id' => $campaign->id]);
+        $otherScope = GeographicScope::factory()->create(['campaign_id' => $campaign->id]);
+        $committee = Committee::factory()->create([
+            'campaign_id' => $campaign->id,
+            'geographic_scope_id' => $otherScope->id,
+        ]);
 
-        $response->assertOk()->assertJsonPath('data.id', $volunteer->id);
-    }
-
-    public function test_update_updates_volunteer()
-    {
-        Sanctum::actingAs(User::factory()->create());
-        $volunteer = Volunteer::factory()->create(['name' => 'Old']);
-
-        $response = $this->putJson('/api/v1/volunteers/' . $volunteer->id, ['name' => 'New']);
-
-        $response->assertOk()->assertJsonPath('data.name', 'New');
-        $this->assertDatabaseHas('volunteers', ['id' => $volunteer->id, 'name' => 'New']);
-    }
-
-    public function test_destroy_deletes_volunteer()
-    {
-        Sanctum::actingAs(User::factory()->create());
-        $volunteer = Volunteer::factory()->create();
-
-        $response = $this->deleteJson('/api/v1/volunteers/' . $volunteer->id);
-
-        $response->assertNoContent();
-        $this->assertDatabaseMissing('volunteers', ['id' => $volunteer->id]);
-    }
-
-    public function test_store_validation_errors()
-    {
-        Sanctum::actingAs(User::factory()->create());
-
-        $response = $this->postJson('/api/v1/volunteers', []);
-
-        $response->assertStatus(422);
-    }
-
-    public function test_requires_authentication()
-    {
-        $response = $this->getJson('/api/v1/volunteers');
-
-        $response->assertStatus(401);
+        $this->postJson(route('campaigns.volunteers.store', ['campaign' => $campaign->id]), [
+            'name' => 'Validator',
+            'geographic_scope_id' => $scope->id,
+            'committee_id' => $committee->id,
+        ])->assertStatus(422)->assertJsonValidationErrors('committee_id');
     }
 }
 

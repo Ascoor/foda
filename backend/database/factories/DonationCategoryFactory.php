@@ -2,21 +2,16 @@
 
 namespace Database\Factories;
 
-use App\Models\ExpenseCategory;
+use App\Models\DonationCategory;
 use Database\Factories\Concerns\ResolvesCampaign;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ExpenseCategoryFactory extends Factory
+class DonationCategoryFactory extends Factory
 {
     use ResolvesCampaign;
 
-    protected $model = ExpenseCategory::class;
+    protected $model = DonationCategory::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition(): array
     {
         return [

@@ -3,8 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Models\{Campaign, Committee, Voter, Activity, AgentAssignment, Finance};
-use App\Policies\{CampaignPolicy, CommitteePolicy, VoterPolicy, ActivityPolicy, AgentAssignmentPolicy, FinancePolicy};
+use App\Models\{Campaign, Committee, Voter, Activity, AgentAssignment};
+use App\Policies\{CampaignPolicy, CommitteePolicy, VoterPolicy, ActivityPolicy, AgentAssignmentPolicy};
 
 class CampaignPolicyServiceProvider extends ServiceProvider
 {
@@ -14,7 +14,6 @@ class CampaignPolicyServiceProvider extends ServiceProvider
         Voter::class => VoterPolicy::class,
         Activity::class => ActivityPolicy::class,
         AgentAssignment::class => AgentAssignmentPolicy::class,
-        Finance::class => FinancePolicy::class,
     ];
 
     public function boot(): void

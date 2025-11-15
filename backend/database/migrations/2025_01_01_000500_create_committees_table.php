@@ -10,7 +10,8 @@ return new class extends Migration {
         Schema::create('committees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('campaign_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('area_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('geographic_scope_id')->nullable()->constrained('geographic_scopes')->cascadeOnDelete();
+            $table->foreignId('area_id')->nullable()->constrained()->nullOnDelete();
             $table->string('name');
             $table->string('code');
             $table->string('location')->nullable();
