@@ -17,13 +17,13 @@ class CampaignApiTest extends TestCase
     {
         parent::setUp();
 
-        Role::create(['name' => 'admin', 'guard_name' => 'web']);
+        Role::create(['name' => 'campaign_manager', 'guard_name' => 'web']);
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     public function test_can_list_campaigns(): void
     {
-        $user = $this->makeAdmin();
+        $user = $this->makeCampaignManager();
         Campaign::factory()->count(3)->create();
 
         Sanctum::actingAs($user);
@@ -37,7 +37,7 @@ class CampaignApiTest extends TestCase
 
     public function test_can_create_campaign(): void
     {
-        $user = $this->makeAdmin();
+        $user = $this->makeCampaignManager();
         Sanctum::actingAs($user);
 
         $payload = [
@@ -70,7 +70,7 @@ class CampaignApiTest extends TestCase
 
     public function test_can_show_campaign(): void
     {
-        $user = $this->makeAdmin();
+        $user = $this->makeCampaignManager();
         $campaign = Campaign::factory()->create();
 
         Sanctum::actingAs($user);
@@ -83,7 +83,7 @@ class CampaignApiTest extends TestCase
 
     public function test_can_update_campaign(): void
     {
-        $user = $this->makeAdmin();
+        $user = $this->makeCampaignManager();
         $campaign = Campaign::factory()->create(['name' => 'قديم']);
 
         Sanctum::actingAs($user);
@@ -123,10 +123,10 @@ class CampaignApiTest extends TestCase
             ->assertForbidden();
     }
 
-    protected function makeAdmin(): User
+    protected function makeCampaignManager(): User
     {
         $user = User::factory()->create();
-        $user->assignRole('admin');
+        $user->assignRole('campaign_manager');
 
         return $user;
     }

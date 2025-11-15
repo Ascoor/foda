@@ -20,7 +20,7 @@ class VolunteerApiTest extends TestCase
     {
         parent::setUp();
 
-        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'campaign_manager', 'guard_name' => 'web']);
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
@@ -28,7 +28,7 @@ class VolunteerApiTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $user = User::factory()->create();
-        $user->assignRole('admin');
+        $user->assignRole('campaign_manager');
         Sanctum::actingAs($user);
 
         $scope = GeographicScope::factory()->create(['campaign_id' => $campaign->id]);
@@ -66,7 +66,7 @@ class VolunteerApiTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $user = User::factory()->create();
-        $user->assignRole('admin');
+        $user->assignRole('campaign_manager');
         Sanctum::actingAs($user);
 
         $scope = GeographicScope::factory()->create(['campaign_id' => $campaign->id]);

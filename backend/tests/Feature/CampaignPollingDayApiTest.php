@@ -18,13 +18,13 @@ class CampaignPollingDayApiTest extends TestCase
     {
         parent::setUp();
 
-        Role::create(['name' => 'admin', 'guard_name' => 'web']);
+        Role::create(['name' => 'campaign_manager', 'guard_name' => 'web']);
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     public function test_can_manage_polling_days(): void
     {
-        $user = $this->makeAdmin();
+        $user = $this->makeCampaignManager();
         $campaign = Campaign::factory()->create();
         Sanctum::actingAs($user);
 
@@ -58,7 +58,7 @@ class CampaignPollingDayApiTest extends TestCase
 
     public function test_enforces_uniqueness_per_campaign_and_date(): void
     {
-        $user = $this->makeAdmin();
+        $user = $this->makeCampaignManager();
         $campaign = Campaign::factory()->create();
         Sanctum::actingAs($user);
 
@@ -91,10 +91,10 @@ class CampaignPollingDayApiTest extends TestCase
             ->assertForbidden();
     }
 
-    protected function makeAdmin(): User
+    protected function makeCampaignManager(): User
     {
         $user = User::factory()->create();
-        $user->assignRole('admin');
+        $user->assignRole('campaign_manager');
 
         return $user;
     }

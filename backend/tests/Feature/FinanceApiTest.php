@@ -21,7 +21,8 @@ class FinanceApiTest extends TestCase
     {
         parent::setUp();
 
-        Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'campaign_manager', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'finance', 'guard_name' => 'web']);
         app()->make(\Spatie\Permission\PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
@@ -29,7 +30,7 @@ class FinanceApiTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $user = User::factory()->create();
-        $user->assignRole('admin');
+        $user->assignRole('campaign_manager');
 
         Sanctum::actingAs($user);
 
@@ -62,7 +63,7 @@ class FinanceApiTest extends TestCase
     {
         $campaign = Campaign::factory()->create();
         $user = User::factory()->create();
-        $user->assignRole('admin');
+        $user->assignRole('finance');
         Sanctum::actingAs($user);
 
         $category = ExpenseCategory::factory()->create(['campaign_id' => $campaign->id]);

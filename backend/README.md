@@ -1,159 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Backend API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This Laravel 10 service powers the FODA campaign operations platform. The API surface is organised under `/api/v1` and is now grouped by campaign-centric resources (campaigns, geographic scopes, committees, volunteers, finance, polling logistics, analytics, notifications, and integrations). Every route listed below is protected by Sanctum and the role middleware noted in the tables.
 
-## About Laravel
+## Authentication & profile
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Method | Route | Controller | Roles |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/auth/login` | `AuthController@login` | public |
+| `POST` | `/api/v1/auth/logout` | `AuthController@logout` | authenticated |
+| `POST` | `/api/v1/auth/refresh` | `AuthController@refresh` | authenticated |
+| `GET` | `/api/v1/auth/me` | `AuthController@me` | authenticated |
+| `POST` | `/api/v1/auth/register` | `AuthController@register` | authenticated |
+| `GET` | `/api/v1/profile` | `ProfileController@show` | authenticated |
+| `PUT` | `/api/v1/profile` | `ProfileController@update` | authenticated |
+| `POST` | `/api/v1/profile/avatar` | `ProfileController@updateAvatar` | authenticated |
+| `PATCH` | `/api/v1/profile/password` | `ProfileController@updatePassword` | authenticated |
+| `POST` | `/api/v1/password/forgot` | `PasswordController@forgot` | public |
+| `POST` | `/api/v1/password/reset` | `PasswordController@reset` | public |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Campaigns
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Method | Route | Description | Roles |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/campaigns` | List campaigns visible to the user. | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `POST` | `/api/v1/campaigns` | Create a campaign. | campaign_manager |
+| `GET` | `/api/v1/campaigns/{campaign}` | Show campaign with geographic scopes & committees. | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `PUT` | `/api/v1/campaigns/{campaign}` | Update campaign metadata. | campaign_manager |
+| `DELETE` | `/api/v1/campaigns/{campaign}` | Archive a campaign. | campaign_manager |
 
-## Learning Laravel
+Nested resources beneath `/api/v1/campaigns/{campaign}`:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Geographic scopes
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Method | Route | Description | Roles |
+| --- | --- | --- | --- |
+| `GET` | `/geographic-scopes` | Paginated list with optional filters (`parent_id`, `level`, `search`). | campaign_manager, area_coordinator, viewer |
+| `POST` | `/geographic-scopes` | Create a scope with optional parent. | campaign_manager, area_coordinator |
+| `GET` | `/geographic-scopes/{geographic_scope}` | Show a scope (children + committees eager loaded). | campaign_manager, area_coordinator, viewer |
+| `PUT` | `/geographic-scopes/{geographic_scope}` | Update metadata, level, or hierarchy. | campaign_manager, area_coordinator |
+| `DELETE` | `/geographic-scopes/{geographic_scope}` | Remove the scope tree. | campaign_manager |
 
-## Laravel Sponsors
+### Committees
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+| Method | Route | Description | Roles |
+| --- | --- | --- | --- |
+| `GET` | `/committees` | Paginated committees (filter via `geographic_scope_id`). | campaign_manager, area_coordinator, committee_supervisor, viewer |
+| `GET` | `/committees/geo` | GeoJSON collection for heat-map views. | campaign_manager, area_coordinator, committee_supervisor, viewer |
+| `POST` | `/committees` | Create a committee and link to a scope. | campaign_manager, area_coordinator |
+| `GET` | `/committees/{committee}` | Show details. | campaign_manager, area_coordinator, committee_supervisor, viewer |
+| `PUT` | `/committees/{committee}` | Update metadata or scope. | campaign_manager, area_coordinator |
+| `DELETE` | `/committees/{committee}` | Delete a committee. | campaign_manager |
 
-### Premium Partners
+### Volunteers
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+| Method | Route | Roles |
+| --- | --- | --- |
+| `GET` | `/volunteers` | campaign_manager, area_coordinator, committee_supervisor, volunteer, viewer |
+| `POST` | `/volunteers` | campaign_manager, area_coordinator, committee_supervisor |
+| `GET` | `/volunteers/{volunteer}` | campaign_manager, area_coordinator, committee_supervisor, volunteer, viewer |
+| `PUT` | `/volunteers/{volunteer}` | campaign_manager, area_coordinator, committee_supervisor |
+| `DELETE` | `/volunteers/{volunteer}` | campaign_manager, area_coordinator, committee_supervisor |
 
-## Contributing
+### Finance
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Method | Route | Description | Roles |
+| --- | --- | --- | --- |
+| `GET` | `/donations` | List donations. | campaign_manager, finance, viewer |
+| `POST` | `/donations` | Record a donation. | campaign_manager, finance |
+| `GET` | `/donations/{donation}` | Show a donation. | campaign_manager, finance, viewer |
+| `PUT` | `/donations/{donation}` | Update a donation. | campaign_manager, finance |
+| `DELETE` | `/donations/{donation}` | Remove a donation. | campaign_manager, finance |
+| `GET` | `/expenses` | List expenses. | campaign_manager, finance, viewer |
+| `POST` | `/expenses` | Record an expense. | campaign_manager, finance |
+| `GET` | `/expenses/{expense}` | Show an expense. | campaign_manager, finance, viewer |
+| `PUT` | `/expenses/{expense}` | Update an expense. | campaign_manager, finance |
+| `DELETE` | `/expenses/{expense}` | Remove an expense. | campaign_manager, finance |
 
-## Code of Conduct
+### Logistics & dashboards
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+| Method | Route | Description | Roles |
+| --- | --- | --- | --- |
+| `GET` | `/polling-days` | List polling days. | campaign_manager, area_coordinator, committee_supervisor, viewer |
+| `POST` | `/polling-days` | Create polling day. | campaign_manager, area_coordinator |
+| `GET` | `/polling-days/{polling_day}` | Show polling day. | campaign_manager, area_coordinator, committee_supervisor, viewer |
+| `PUT` | `/polling-days/{polling_day}` | Update polling day. | campaign_manager, area_coordinator |
+| `DELETE` | `/polling-days/{polling_day}` | Delete polling day. | campaign_manager, area_coordinator |
+| `GET` | `/activities` | Campaign-scoped activity feed. | campaign_manager, area_coordinator, committee_supervisor, volunteer, viewer |
+| `GET` | `/activities/recent` | Geo feed for maps. | campaign_manager, area_coordinator, committee_supervisor, volunteer, viewer |
+| `GET` | `/automation/config` | Automation configuration. | campaign_manager, area_coordinator |
+| `PUT` | `/automation/config` | Save automation configuration. | campaign_manager, area_coordinator |
+| `POST` | `/automation/config/{task}/trigger` | Execute automation task manually. | campaign_manager |
+| `GET` | `/home` & `/dashboard` | Campaign dashboard summary. | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `GET` | `/home/heatmap` | Heatmap feed for the active campaign. | campaign_manager, area_coordinator, committee_supervisor, viewer |
+| `GET` | `/dashboard-stats` | Dashboard metrics bundle. | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `GET` | `/settings/key/{key}` | Fetch a keyed setting. | campaign_manager |
+| `PUT/PATCH` | `/settings` | Bulk update existing keys. | campaign_manager |
+| `REST` | `/settings` | CRUD over platform settings (campaign scoped, non-UI). | campaign_manager |
 
-## Security Vulnerabilities
+## Analytics endpoints
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Analytics responses can be fetched globally (via `X-Campaign-ID`) or through the new nested namespace.
 
-## License
+| Method | Route | Roles |
+| --- | --- | --- |
+| `GET` | `/api/v1/analytics/overview` | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `GET` | `/api/v1/analytics/timeseries` | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `GET` | `/api/v1/analytics/forecast` | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `GET` | `/api/v1/campaigns/{campaign}/analytics/overview` | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `GET` | `/api/v1/campaigns/{campaign}/analytics/timeseries` | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
+| `GET` | `/api/v1/campaigns/{campaign}/analytics/forecast` | campaign_manager, area_coordinator, committee_supervisor, finance, viewer |
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Notifications, areas, and external data
 
-## SMS API
+| Method | Route | Roles |
+| --- | --- | --- |
+| `GET` | `/api/v1/notifications` | campaign_manager, area_coordinator, committee_supervisor, volunteer, viewer |
+| `POST` | `/api/v1/notifications/read-all` | campaign_manager, area_coordinator, committee_supervisor, volunteer |
+| `PATCH` | `/api/v1/notifications/{notification}/read` | campaign_manager, area_coordinator, committee_supervisor, volunteer |
+| `REST` | `/api/v1/areas` | campaign_manager, area_coordinator, committee_supervisor, viewer |
+| `GET` | `/api/v1/integrations/geo-areas` | authenticated |
+| `GET` | `/api/v1/integrations/elections/summary` | authenticated |
+| `GET` | `/api/v1/integrations/elections/live-results` | authenticated |
+| `GET` | `/api/v1/integrations/maps/configuration` | authenticated |
 
-Endpoints for managing and sending SMS messages are available under the `/api/v1/sms` prefix.
+## Route refactor summary
 
-| Method | Endpoint            | Description                |
-|--------|---------------------|----------------------------|
-| GET    | `/api/v1/sms`       | List sent or scheduled SMS |
-| POST   | `/api/v1/sms`       | Send or schedule a message |
-| GET    | `/api/v1/sms/{id}`  | Show a single message      |
-| PUT    | `/api/v1/sms/{id}`  | Update or resend           |
-| DELETE | `/api/v1/sms/{id}`  | Remove a message           |
+See [`docs/api-route-refactor.md`](docs/api-route-refactor.md) for the detailed before/after map, removed legacy endpoints, and the migration notes for front-end engineers. The refactor removes the legacy `/api/v1/ec/*` namespaces, consolidates committee/volunteer/finance routes under the campaign prefix, and introduces dedicated controllers plus validation for geographic scopes and committees.
 
-### Examples
-
-Send immediately:
-
-```json
-POST /api/v1/sms
-{
-    "message": "Hello world",
-    "recipient": "+15551234567"
-}
-```
-
-Schedule for later:
-
-```json
-POST /api/v1/sms
-{
-    "message": "Reminder",
-    "recipient": "+15551234567",
-    "scheduled_for": "2024-08-03T10:00:00Z"
-}
-```
-
-## External data integrations
-
-Authenticated clients can access real-time electoral and geographic information through the `/api/v1/integrations` namespace.
-
-| Endpoint | Description |
-| --- | --- |
-| `GET /api/v1/integrations/geo-areas` | Proxy live geographic areas and committee boundaries from the configured external geo service. Supports filtering by `province`, `state`, `committee`, `search`, `page`, and `per_page`. |
-| `GET /api/v1/integrations/elections/summary` | Combines the summary and turnout feeds from the election service to power dashboards and report builders. |
-| `GET /api/v1/integrations/elections/live-results` | Streams the latest candidate results. Pass `broadcast=true` to emit a `results.updated` broadcast on the `elections.live` channel for WebSocket subscribers. |
-| `GET /api/v1/integrations/maps/configuration` | Returns map configuration, an embeddable Static Maps URL, and the set of visible data layers for interactive UIs. |
-
-Set the following environment variables (see `.env.example`) to point the platform at your production or staging data providers:
-
-```
-EXTERNAL_GEO_BASE_URL
-EXTERNAL_GEO_AREAS_ENDPOINT
-EXTERNAL_GEO_API_KEY
-ELECTION_API_BASE_URL
-ELECTION_API_SUMMARY_ENDPOINT
-ELECTION_API_RESULTS_ENDPOINT
-ELECTION_API_TURNOUT_ENDPOINT
-ELECTION_API_KEY
-GOOGLE_MAPS_API_KEY
-```
-
-The services leverage response caching via `EXTERNAL_CACHE_TTL` to limit redundant requests while keeping the experience responsive.
-
-## Unified API controller runbook
-
-The API surface is organized under `routes/api/v1` with separate bundles for public and protected endpoints.  When adding a new module, drop a `{module}.php` file under `routes/api/v1/protected/` and load the controller from `App\Http\Controllers\Api\V1`.  Campaign-scoped routes must opt into the `campaign.context` middleware so that the active campaign is resolved from `X-Campaign-ID`, the query string, or the `{campaign}` route parameter.
-
-### Daily driver commands
+## Testing & tooling
 
 ```bash
-# sync autoloaded classes after adding controllers, requests, or resources
+# install dependencies
+composer install
+
+# refresh autoloaded classes
 composer dump-autoload
 
-# inspect the namespaced API map
-php artisan route:list | grep "api/v1"
+# execute feature tests
+php artisan test
 
-# static lint for route definitions
-find routes/api -name '*.php' -print0 | xargs -0 -n1 php -l
+# list API routes
+php artisan route:list --path=api/v1
 ```
 
-### Happy-path smoke test
+## Changelog
 
-```bash
-# 1. Authenticate to obtain a Sanctum token
-curl -X POST /api/v1/auth/login -d '{"email":"me@example.com","password":"secret"}'
-
-# 2. List visible campaigns (no campaign context required)
-curl -H "Authorization: Bearer <token>" /api/v1/campaigns
-
-# 3. Create a campaign via the service layer
-curl -X POST -H "Authorization: Bearer <token>" -d '{"name":"Primary 2024","start_date":"2024-01-01","end_date":"2024-06-01","geographic_strategy":"city"}' /api/v1/campaigns
-
-# 4. Query scoped analytics (requires X-Campaign-ID or ?campaign_id)
-curl -H "Authorization: Bearer <token>" -H "X-Campaign-ID: <id>" /api/v1/dashboard-stats
-```
+Updates are tracked in [`CHANGELOG.md`](CHANGELOG.md); the current release documents the CAMP-REORG-API-ROUTES-002 consolidation and new role-aware middleware strategy.

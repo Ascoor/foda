@@ -5,11 +5,8 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AreaController;
 use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\CampaignController;
 use App\Http\Controllers\Api\V1\ExternalDataController;
-use App\Http\Controllers\Api\V1\HomeController;
 use App\Http\Controllers\Api\V1\ProfileController;
-use App\Http\Controllers\Api\V1\SettingController;
 
 Route::middleware('auth:sanctum')->group(function (): void {
     Route::get('/auth/me', [AuthController::class, 'me']);
@@ -20,21 +17,13 @@ Route::middleware('auth:sanctum')->group(function (): void {
     Route::post('/profile/avatar', [ProfileController::class, 'updateAvatar']);
     Route::patch('/profile/password', [ProfileController::class, 'updatePassword']);
 
-    Route::get('/home', [HomeController::class, 'index']);
-    Route::get('/dashboard', [HomeController::class, 'index']);
-    Route::get('/home/heatmap', [HomeController::class, 'heatmap']);
-
-    Route::apiResource('areas', AreaController::class);
+    Route::apiResource('areas', AreaController::class)
+        ->middleware('role:campaign_manager,area_coordinator,committee_supervisor,viewer');
 
     Route::prefix('integrations')->group(function (): void {
         Route::get('/geo-areas', [ExternalDataController::class, 'geoAreas']);
         Route::get('/elections/summary', [ExternalDataController::class, 'electionSummary']);
         Route::get('/elections/live-results', [ExternalDataController::class, 'liveResults']);
         Route::get('/maps/configuration', [ExternalDataController::class, 'mapConfiguration']);
-    });
-
-    Route::prefix('ec')->group(function (): void {
-        Route::apiResource('campaigns', CampaignController::class);
-        Route::apiResource('settings', SettingController::class);
     });
 });
