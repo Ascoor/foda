@@ -1,0 +1,296 @@
+openapi: 3.0.3
+info:
+  title: FODA Campaign API
+  version: 1.0.0
+  description: |
+    Consolidated campaign routes produced by CAMP-REORG-API-ROUTES-002. All endpoints require Sanctum authentication and the role guard noted in the `x-roles` extension.
+servers:
+  - url: https://api.example.com/api/v1
+paths:
+  /campaigns:
+    get:
+      summary: List campaigns
+      operationId: listCampaigns
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - committee_supervisor
+        - finance
+        - viewer
+      responses:
+        '200':
+          description: Paginated campaign collection.
+    post:
+      summary: Create campaign
+      operationId: createCampaign
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+      responses:
+        '201':
+          description: Campaign created.
+  /campaigns/{campaign}:
+    parameters:
+      - name: campaign
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Show campaign
+      operationId: showCampaign
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - committee_supervisor
+        - finance
+        - viewer
+      responses:
+        '200':
+          description: Campaign payload.
+    put:
+      summary: Update campaign
+      operationId: updateCampaign
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+      responses:
+        '200':
+          description: Updated campaign.
+    delete:
+      summary: Delete campaign
+      operationId: deleteCampaign
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+      responses:
+        '204':
+          description: Campaign deleted.
+  /campaigns/{campaign}/geographic-scopes:
+    get:
+      summary: List geographic scopes
+      operationId: listGeographicScopes
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - viewer
+      responses:
+        '200':
+          description: Paginated scope list.
+    post:
+      summary: Create geographic scope
+      operationId: createGeographicScope
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+      responses:
+        '201':
+          description: Scope created.
+  /campaigns/{campaign}/geographic-scopes/{geographic_scope}:
+    parameters:
+      - name: campaign
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: geographic_scope
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Show geographic scope
+      operationId: showGeographicScope
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - viewer
+      responses:
+        '200':
+          description: Scope payload.
+    put:
+      summary: Update geographic scope
+      operationId: updateGeographicScope
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+      responses:
+        '200':
+          description: Updated scope.
+    delete:
+      summary: Delete geographic scope
+      operationId: deleteGeographicScope
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+      responses:
+        '204':
+          description: Scope deleted.
+  /campaigns/{campaign}/committees:
+    get:
+      summary: List committees
+      operationId: listCommittees
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - committee_supervisor
+        - viewer
+      responses:
+        '200':
+          description: Paginated committees.
+    post:
+      summary: Create committee
+      operationId: createCommittee
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+      responses:
+        '201':
+          description: Committee created.
+  /campaigns/{campaign}/committees/{committee}:
+    parameters:
+      - name: campaign
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: committee
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Show committee
+      operationId: showCommittee
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - committee_supervisor
+        - viewer
+      responses:
+        '200':
+          description: Committee payload.
+    put:
+      summary: Update committee
+      operationId: updateCommittee
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+      responses:
+        '200':
+          description: Updated committee.
+    delete:
+      summary: Delete committee
+      operationId: deleteCommittee
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+      responses:
+        '204':
+          description: Committee deleted.
+  /campaigns/{campaign}/volunteers:
+    get:
+      summary: List volunteers
+      operationId: listVolunteers
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - committee_supervisor
+        - volunteer
+        - viewer
+      responses:
+        '200':
+          description: Volunteer collection.
+    post:
+      summary: Create volunteer
+      operationId: createVolunteer
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - area_coordinator
+        - committee_supervisor
+      responses:
+        '201':
+          description: Volunteer created.
+  /campaigns/{campaign}/donations:
+    get:
+      summary: List donations
+      operationId: listDonations
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - finance
+        - viewer
+      responses:
+        '200':
+          description: Donation list.
+    post:
+      summary: Record donation
+      operationId: createDonation
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - finance
+      responses:
+        '201':
+          description: Donation recorded.
+  /campaigns/{campaign}/expenses:
+    get:
+      summary: List expenses
+      operationId: listExpenses
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - finance
+        - viewer
+      responses:
+        '200':
+          description: Expense list.
+    post:
+      summary: Record expense
+      operationId: createExpense
+      security:
+        - sanctum: []
+      x-roles:
+        - campaign_manager
+        - finance
+      responses:
+        '201':
+          description: Expense recorded.
+components:
+  securitySchemes:
+    sanctum:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
