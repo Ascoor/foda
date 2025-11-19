@@ -41,9 +41,9 @@ class CampaignController extends ApiController
     {
         $this->authorize('view', $campaign);
 
-        return $this->resource(new CampaignResource(
-            $campaign->load(['geographicScopes' => fn ($query) => $query->with('children', 'committees')])
-        ));
+        $campaign = $this->service->loadDetails($campaign);
+
+        return $this->resource(new CampaignResource($campaign));
     }
 
     public function update(UpdateCampaignRequest $request, Campaign $campaign): JsonResponse
@@ -51,6 +51,15 @@ class CampaignController extends ApiController
         $this->authorize('update', $campaign);
 
         $campaign = $this->service->update($campaign, $request->validated());
+
+        return $this->resource(new CampaignResource($campaign));
+    }
+
+    public function send(Request $request, Campaign $campaign): JsonResponse
+    {
+        $this->authorize('update', $campaign);
+
+        $campaign = $this->service->send($campaign);
 
         return $this->resource(new CampaignResource($campaign));
     }

@@ -47,6 +47,11 @@ Route::middleware('auth:sanctum')->group(function (): void {
                         ->whereNumber('campaign')
                         ->name('destroy');
 
+                    Route::post('{campaign}/send', [CampaignController::class, 'send'])
+                        ->middleware('role:campaign_manager')
+                        ->whereNumber('campaign')
+                        ->name('send');
+
                     Route::prefix('{campaign}')
                         ->whereNumber('campaign')
                         ->group(function (): void {

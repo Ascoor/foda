@@ -23,7 +23,7 @@ The v1 API now aligns with the restructured campaign data model. Controllers wer
 | `/api/v1/campaigns/{campaign}/roles` | Removed | — | Legacy controller removed from codebase. |
 | `/api/v1/campaigns/{campaign}/roles/{role}` | Removed | — | Unused duplication eliminated. |
 | `/api/v1/campaigns/{campaign}/sms/settings` (GET/PUT) | Removed | — | No backing controller; functionality replaced by notifications. |
-| `/api/v1/ec/campaigns/*` | Removed | Use `/api/v1/campaigns/*` | Legacy namespace dropped. |
+| `/api/v1/ec/campaigns/*` | Removed (aliased) | Use `/api/v1/campaigns/*` | A compatibility layer now proxies the legacy namespace to the canonical controllers while clients migrate. |
 | `/api/v1/ec/settings/*` | Removed | Use `/api/v1/campaigns/{campaign}/settings/*` | Consolidated into campaign-aware settings. |
 | `/api/v1/analytics/*` | Updated | same paths + new `/api/v1/campaigns/{campaign}/analytics/*` | Both global and campaign-nested endpoints exist; all enforce role guards. |
 | `/api/v1/home`, `/api/v1/dashboard`, `/api/v1/home/heatmap` | Removed | Use `/api/v1/campaigns/{campaign}/home`, `/dashboard`, `/home/heatmap` | Prevents conflicting dashboard responses. |

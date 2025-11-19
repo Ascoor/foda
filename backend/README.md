@@ -127,6 +127,10 @@ Analytics responses can be fetched globally (via `X-Campaign-ID`) or through the
 
 See [`docs/api-route-refactor.md`](docs/api-route-refactor.md) for the detailed before/after map, removed legacy endpoints, and the migration notes for front-end engineers. The refactor removes the legacy `/api/v1/ec/*` namespaces, consolidates committee/volunteer/finance routes under the campaign prefix, and introduces dedicated controllers plus validation for geographic scopes and committees.
 
+### Legacy compatibility layer
+
+Some client builds in the monorepo still call the deprecated `/api/v1/ec/campaigns` endpoints. A lightweight alias now proxies those routes to the canonical `/api/v1/campaigns` controllers (including the new `POST /api/v1/campaigns/{campaign}/send` action) so legacy UI flows can function while the front-end migrates to the new namespace.
+
 ## Testing & tooling
 
 ```bash

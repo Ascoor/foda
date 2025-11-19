@@ -9,9 +9,11 @@ use App\Models\Committee;
 use App\Models\GeographicScope;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 
 class CampaignService
 {
@@ -22,6 +24,8 @@ class CampaignService
             ->withPivot(['role', 'status', 'permissions'])
             ->with(['geographicScopes' => fn ($scopes) => $scopes->with('children', 'committees')])
             ->orderByDesc('campaigns.start_date');
+
+        $this->applyMessageCountAggregates($query);
 
         if ($search) {
             $like = '%' . $search . '%';
@@ -55,10 +59,12 @@ class CampaignService
                 $this->rebuildGeographicScopes($campaign, $scopePayload);
             }
 
-            return $campaign->refresh()->load([
+            $campaign = $campaign->refresh()->load([
                 'geographicScopes' => fn ($query) => $query->with('children', 'committees'),
                 'committees',
             ]);
+
+            return $this->loadMessageCounts($campaign);
         });
     }
 
@@ -79,15 +85,58 @@ class CampaignService
             });
         }
 
-        return $campaign->refresh()->load([
+        $campaign = $campaign->refresh()->load([
             'geographicScopes' => fn ($query) => $query->with('children', 'committees'),
             'committees',
         ]);
+
+        return $this->loadMessageCounts($campaign);
     }
 
     public function delete(Campaign $campaign): void
     {
         $campaign->delete();
+    }
+
+    public function send(Campaign $campaign): Campaign
+    {
+        if ($campaign->status !== 'archived') {
+            $campaign->status = 'active';
+        }
+
+        $campaign->touch();
+
+        return $this->loadDetails($campaign->refresh());
+    }
+
+    public function loadDetails(Campaign $campaign): Campaign
+    {
+        $campaign->load([
+            'geographicScopes' => fn ($query) => $query->with('children', 'committees'),
+            'committees',
+        ]);
+
+        return $this->loadMessageCounts($campaign);
+    }
+
+    private function loadMessageCounts(Campaign $campaign): Campaign
+    {
+        $campaign->loadCount($this->messageCountRelationships());
+
+        return $campaign;
+    }
+
+    private function applyMessageCountAggregates(BelongsToMany|Builder $query): void
+    {
+        $query->withCount($this->messageCountRelationships());
+    }
+
+    private function messageCountRelationships(): array
+    {
+        return [
+            'smsMessages as sent_messages_count',
+            'smsMessages as delivered_messages_count' => fn ($messages) => $messages->where('status', 'sent'),
+        ];
     }
 
     /**
