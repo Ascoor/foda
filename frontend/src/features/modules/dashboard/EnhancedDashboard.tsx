@@ -12,6 +12,12 @@ import { safeArray, safeNumber } from "@/infrastructure/shared/lib/safeData";
 import { API_ENDPOINTS } from "@/infrastructure/shared/lib/endpoints";
 import { useCampaignContext } from "@/infrastructure/shared/contexts/CampaignContext";
 import { toast } from "@/infrastructure/shared/hooks/use-toast";
+import {
+  dataStateVariants,
+  type DataState,
+} from "@/infrastructure/config/motion.config";
+import { useMotionPreset } from "@/infrastructure/hooks/useMotionPreset";
+import { MotionCard } from "@/ui/components/motion/MotionCard";
 
 interface DashboardData {
   stats: Record<
@@ -60,6 +66,22 @@ const AnimatedCounter = ({
   return <span>{count.toLocaleString()}</span>;
 };
 
+const kpiContainerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const kpiItemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
+
 const KPICard = ({
   title,
   value,
@@ -83,10 +105,7 @@ const KPICard = ({
   };
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
-      className="glass-card group cursor-pointer relative overflow-hidden"
-    >
+    <MotionCard className="glass-card group cursor-pointer relative overflow-hidden">
       <div className="flex items-center justify-between mb-4">
         <div
           className={`
@@ -121,7 +140,7 @@ const KPICard = ({
 
       {/* Hover glow effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
-    </motion.div>
+    </MotionCard>
   );
 };
 
@@ -286,41 +305,62 @@ export const EnhancedDashboard: React.FC = () => {
     };
   };
 
+  const resolveDataState = (hasContent: boolean): DataState => {
+    if (dashboardLoading) return "loading";
+    if (dashboardError) return "error";
+    if (!hasContent) return "empty";
+    return "success";
+  };
+
+  const progressState = resolveDataState(progressData.some((item) => item.value > 0));
+  const activitiesState = resolveDataState(safeActivities.length > 0);
+
+  const heroTitlePreset = useMotionPreset("fadeDown");
+  const heroSubtitlePreset = useMotionPreset("fadeUp");
+  const sectionRevealPreset = useMotionPreset("fadeUp", {
+    directional: true,
+    directionalAxis: "y",
+    distance: 32,
+  });
+
   return (
     <div className="space-y-6">
       {/* Hero Welcome Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="glass-card bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10"
-      >
-        <div className="text-center py-8">
+      <MotionCard className="glass-card bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10">
+        <div className="py-8 text-center">
           <motion.h1
             className="text-4xl font-bold mb-2 neon-text bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 200 }}
+            initial={heroTitlePreset?.initial}
+            animate={heroTitlePreset?.animate}
+            variants={heroTitlePreset?.variants}
+            transition={{ type: "spring", stiffness: 200, ...(heroTitlePreset?.transition ?? {}) }}
           >
             {t("dashboard.welcome")}
           </motion.h1>
-          <p className="text-muted-foreground text-lg">
+          <motion.p
+            className="text-lg text-muted-foreground"
+            initial={heroSubtitlePreset?.initial}
+            animate={heroSubtitlePreset?.animate}
+            variants={heroSubtitlePreset?.variants}
+            transition={heroSubtitlePreset?.transition}
+          >
             {t("dashboard.subtitle")}
-          </p>
+          </motion.p>
         </div>
-      </motion.div>
+      </MotionCard>
 
       {/* KPI Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {statsConfig.map((stat, index) => {
+      <motion.div
+        className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4"
+        variants={kpiContainerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {statsConfig.map((stat) => {
           const details = getStatDetails(stat.key);
 
           return (
-            <motion.div
-              key={stat.key}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
+            <motion.div key={stat.key} variants={kpiItemVariants}>
               <KPICard
                 title={stat.title}
                 value={details.value}
@@ -332,69 +372,80 @@ export const EnhancedDashboard: React.FC = () => {
             </motion.div>
           );
         })}
-      </div>
+      </motion.div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Progress Chart */}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.4 }}
-          className="lg:col-span-2"
-        >
-          <SafeDataRenderer
-            data={progressData}
-            loading={dashboardLoading}
-            error={dashboardError}
-            onRetry={refetchDashboard}
-            loadingMessage={t("dashboard.loading_progress")}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <MotionCard className="lg:col-span-2 p-0">
+          <motion.section
+            className="p-4"
+            animate={progressState}
+            variants={dataStateVariants}
+            transition={{ duration: 0.25 }}
           >
-            {(data) => (
-              <ProgressChart
-                data={data}
-                overall={safeProgress.overall}
-                remaining={safeProgress.remaining}
-              />
-            )}
-          </SafeDataRenderer>
-        </motion.div>
+            <SafeDataRenderer
+              data={progressData}
+              loading={dashboardLoading}
+              error={dashboardError}
+              onRetry={refetchDashboard}
+              loadingMessage={t("dashboard.loading_progress")}
+            >
+              {(data) => (
+                <ProgressChart
+                  data={data}
+                  overall={safeProgress.overall}
+                  remaining={safeProgress.remaining}
+                />
+              )}
+            </SafeDataRenderer>
+          </motion.section>
+        </MotionCard>
 
-        {/* Activity Feed */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.5 }}
-        >
-          <SafeDataRenderer
-            data={safeActivities}
-            loading={dashboardLoading}
-            error={dashboardError}
-            onRetry={refetchDashboard}
-            loadingMessage={t("dashboard.loading_activities")}
+        <MotionCard className="p-0">
+          <motion.section
+            className="p-4"
+            animate={activitiesState}
+            variants={dataStateVariants}
+            transition={{ duration: 0.25 }}
           >
-            {(data) => <ActivityFeed activities={data} />}
-          </SafeDataRenderer>
-        </motion.div>
+            <SafeDataRenderer
+              data={safeActivities}
+              loading={dashboardLoading}
+              error={dashboardError}
+              onRetry={refetchDashboard}
+              loadingMessage={t("dashboard.loading_activities")}
+            >
+              {(data) => <ActivityFeed activities={data} />}
+            </SafeDataRenderer>
+          </motion.section>
+        </MotionCard>
       </div>
 
       {/* Live Map */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
-      >
-        <LiveOperationsMap />
-      </motion.div>
+      <MotionCard className="p-0">
+        <motion.section
+          className="p-4"
+          initial={sectionRevealPreset?.initial}
+          animate={sectionRevealPreset?.animate}
+          variants={sectionRevealPreset?.variants}
+          transition={sectionRevealPreset?.transition}
+        >
+          <LiveOperationsMap />
+        </motion.section>
+      </MotionCard>
 
       {/* Activity Timeline */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.7 }}
-      >
-        <ActivitiesTimeline />
-      </motion.div>
+      <MotionCard className="p-0">
+        <motion.section
+          className="p-4"
+          initial={sectionRevealPreset?.initial}
+          animate={sectionRevealPreset?.animate}
+          variants={sectionRevealPreset?.variants}
+          transition={sectionRevealPreset?.transition}
+        >
+          <ActivitiesTimeline />
+        </motion.section>
+      </MotionCard>
     </div>
   );
 };

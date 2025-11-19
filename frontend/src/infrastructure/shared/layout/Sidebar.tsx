@@ -10,6 +10,7 @@ import type { NavNode } from "@/routing/nav/nav.schema";
 import { useLanguage } from "@/infrastructure/shared/contexts/LanguageContext";
 import { useNotifications } from "@/infrastructure/shared/contexts/NotificationContext";
 import { cn } from "@/infrastructure/shared/lib/utils";
+import { useMotionPreset } from "@/infrastructure/hooks/useMotionPreset";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -22,6 +23,21 @@ const SPRING_TRANSITION = {
   stiffness: 220,
   damping: 30,
 } as const;
+
+const listVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.05,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { opacity: 1, y: 0 },
+};
 
 const useBadgeValue = () => {
   try {
@@ -54,6 +70,11 @@ export const Sidebar = ({
   const badgeValues = useBadgeValue();
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(true);
+  const sidebarPreset = useMotionPreset("slideInSidebar", {
+    directional: true,
+    directionalAxis: "x",
+    distance: isMobile ? 80 : 120,
+  });
 
   const activeMatch = useMemo(
     () => findRouteMatch(location.pathname, navContext),
@@ -162,7 +183,7 @@ export const Sidebar = ({
 
     if (hasChildren && !node.path) {
       return (
-        <div key={node.id} className="mb-3 last:mb-0">
+        <motion.div key={node.id} className="mb-3 last:mb-0" variants={itemVariants}>
           <button
             type="button"
             onClick={() => toggleSection(node.id)}
@@ -190,32 +211,33 @@ export const Sidebar = ({
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
       );
     }
 
     if (node.path) {
       return (
-        <NavLink
-          key={node.id}
-          to={node.path}
-          end={node.exact}
-          aria-label={!isOpen ? label : undefined}
-          onClick={() => notifyNavClick(node.id, node.path, navContext, "sidebar")}
-          className={() =>
-            cn(
-              "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition-all",
-              isNodeActive(node)
-                ? "bg-[hsla(var(--primary)/0.2)] text-[hsl(var(--primary))] shadow-sm"
-                : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
-              !isOpen && "justify-center px-0",
-            )
-          }
-        >
-          {Icon && <Icon className="h-5 w-5 shrink-0" />}
-          {isOpen ? <span className="truncate">{label}</span> : <span className="sr-only">{label}</span>}
-          {isOpen && getBadge(node)}
-        </NavLink>
+        <motion.div key={node.id} variants={itemVariants}>
+          <NavLink
+            to={node.path}
+            end={node.exact}
+            aria-label={!isOpen ? label : undefined}
+            onClick={() => notifyNavClick(node.id, node.path, navContext, "sidebar")}
+            className={() =>
+              cn(
+                "flex items-center gap-3 rounded-2xl px-3 py-2 text-sm font-medium transition-all",
+                isNodeActive(node)
+                  ? "bg-[hsla(var(--primary)/0.2)] text-[hsl(var(--primary))] shadow-sm"
+                  : "text-muted-foreground hover:bg-[hsla(var(--primary)/0.08)] hover:text-foreground",
+                !isOpen && "justify-center px-0",
+              )
+            }
+          >
+            {Icon && <Icon className="h-5 w-5 shrink-0" />}
+            {isOpen ? <span className="truncate">{label}</span> : <span className="sr-only">{label}</span>}
+            {isOpen && getBadge(node)}
+          </NavLink>
+        </motion.div>
       );
     }
 
@@ -235,52 +257,58 @@ export const Sidebar = ({
   const headerLabel = t("navigation.main", { defaultValue: "Navigation" });
 
   return (
-    <motion.aside
-      layout
-      initial={{ opacity: 0, x: direction === "rtl" ? 40 : -40 }}
-      animate={{
-        opacity: isVisible ? 1 : 0,
-        x: isVisible ? 0 : direction === "rtl" ? 100 : -100,
-        width: isMobile ? "min(20rem, 90vw)" : isOpen ? 280 : 88,
-      }}
-      transition={{ ...SPRING_TRANSITION, duration: 0.4 }}
-      className={containerClasses}
-      aria-label={t("navigation.main")}
-    >
-      <div className="flex items-center justify-between gap-2 pb-4">
-        <div className="flex items-center gap-2">
-          <div className="flex size-9 items-center justify-center rounded-2xl bg-[hsla(var(--primary)/0.15)] text-[hsl(var(--primary))]">
-            <span className="text-sm font-semibold">AE</span>
-          </div>
-          {isOpen && (
-            <div className="leading-tight">
-              <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
-                Aurora Election
-              </p>
-              <p className="text-sm font-semibold text-foreground">{headerLabel}</p>
+    <motion.div className="contents" {...(sidebarPreset ?? {})}>
+      <motion.aside
+        layout
+        animate={{
+          opacity: isVisible ? 1 : 0.6,
+          x: isVisible ? 0 : direction === "rtl" ? 100 : -100,
+          width: isMobile ? "min(20rem, 90vw)" : isOpen ? 280 : 88,
+        }}
+        transition={{ ...SPRING_TRANSITION, duration: 0.4 }}
+        className={containerClasses}
+        aria-label={t("navigation.main")}
+      >
+        <div className="flex items-center justify-between gap-2 pb-4">
+          <div className="flex items-center gap-2">
+            <div className="flex size-9 items-center justify-center rounded-2xl bg-[hsla(var(--primary)/0.15)] text-[hsl(var(--primary))]">
+              <span className="text-sm font-semibold">AE</span>
             </div>
+            {isOpen && (
+              <div className="leading-tight">
+                <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted-foreground">
+                  Aurora Election
+                </p>
+                <p className="text-sm font-semibold text-foreground">{headerLabel}</p>
+              </div>
+            )}
+          </div>
+
+          {!isMobile && onToggleCollapse && (
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              aria-label={toggleAriaLabel}
+              className="flex size-9 items-center justify-center rounded-2xl border border-border/40 bg-background/60 text-muted-foreground transition hover:text-foreground"
+            >
+              <ToggleIcon className="h-4 w-4" />
+            </button>
           )}
         </div>
 
-        {!isMobile && onToggleCollapse && (
-          <button
-            type="button"
-            onClick={onToggleCollapse}
-            aria-label={toggleAriaLabel}
-            className="flex size-9 items-center justify-center rounded-2xl border border-border/40 bg-background/60 text-muted-foreground transition hover:text-foreground"
-          >
-            <ToggleIcon className="h-4 w-4" />
-          </button>
-        )}
-      </div>
+        <motion.nav
+          className="flex-1 overflow-y-auto pr-1"
+          variants={listVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {sidebarTree.map((node) => renderNode(node))}
+        </motion.nav>
 
-      <nav className="flex-1 overflow-y-auto pr-1">
-        {sidebarTree.map((node) => renderNode(node))}
-      </nav>
-
-      <div className="pt-4 text-center text-xs text-muted-foreground/80">
-        {language === "ar" ? "© جميع الحقوق محفوظة" : "© All rights reserved"}
-      </div>
-    </motion.aside>
+        <div className="pt-4 text-center text-xs text-muted-foreground/80">
+          {language === "ar" ? "© جميع الحقوق محفوظة" : "© All rights reserved"}
+        </div>
+      </motion.aside>
+    </motion.div>
   );
 };
