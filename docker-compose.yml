@@ -1,3 +1,5 @@
+name: foda
+
 services:
   backend:
     build:
