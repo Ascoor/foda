@@ -18,6 +18,16 @@ use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\VolunteerController;
 
 Route::middleware('auth:sanctum')->group(function (): void {
+    Route::prefix('ec')->group(function (): void {
+        Route::get('campaigns', [CampaignController::class, 'index'])
+            ->middleware('role:campaign_manager,area_coordinator,committee_supervisor,finance,viewer')
+            ->name('campaigns.ec.index');
+
+        Route::post('campaigns', [CampaignController::class, 'store'])
+            ->middleware('role:campaign_manager')
+            ->name('campaigns.ec.store');
+    });
+
     Route::prefix('campaigns')
         ->as('campaigns.')
         ->group(function (): void {
