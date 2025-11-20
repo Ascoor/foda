@@ -27,7 +27,7 @@ export const API_ENDPOINTS = {
     agents: "/api/v1/ec/agents",
   },
   campaigns: {
-    campaigns: "/api/v1/ec/campaigns",
+    campaigns: "/api/v1/campaigns",
     activities: campaignScoped("/activities"),
   },
   field: {
