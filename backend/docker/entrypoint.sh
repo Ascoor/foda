@@ -3,31 +3,32 @@ set -e
 
 cd /var/www/html
 
-# تشغيل composer install لو محتاج
-if [ ! -d vendor ]; then
-    composer install --no-interaction --prefer-dist --optimize-autoloader
-fi
-
-DB_HOST=${DB_HOST:-db}
-DB_PORT=${DB_PORT:-3306}
-
-echo "⏳ Waiting for database at ${DB_HOST}:${DB_PORT}..."
-for i in {1..30}; do
-    if php -r "try { new PDO('mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT'), getenv('DB_USERNAME'), getenv('DB_PASSWORD')); exit(0); } catch (Exception \$e) { exit(1); }"; then
-        echo "✅ Database is reachable."
-        break
-    fi
-
-    echo "...still waiting (${i}/30)"
-    sleep 2
+echo "⏳ Waiting for database at db:3306..."
+# انتظار بسيط لحد ما الـ DB تكون جاهزة
+until php -r "
+    try {
+        new PDO('mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT') . ';dbname=' . getenv('DB_DATABASE'),
+                getenv('DB_USERNAME'),
+                getenv('DB_PASSWORD'));
+        exit(0);
+    } catch (Exception \$e) {
+        exit(1);
+    }
+"; do
+    echo "...still waiting"
+    sleep 3
 done
 
-# Final check to ensure DB is reachable before continuing
-php -r "new PDO('mysql:host=' . getenv('DB_HOST') . ';port=' . getenv('DB_PORT'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'));" \
-  || { echo "❌ Database is not reachable after waiting. Exiting."; exit 1; }
+echo "✅ Database is reachable."
 
-# شغّل التشيك على الداتا بيز
-php artisan db:ensure-seeded
+# 👇 هنا نعرض خطوات الميجريشن و السييد بوضوح
+echo ">>> Running migrations..."
+php artisan migrate --force || { echo '❌ Migration failed'; exit 1; }
 
-# شغّل php-fpm
+echo ">>> Running seeders..."
+php artisan db:seed --force || echo '⚠️ Seeding failed or no seeders.'
+
+echo "✅ Migrations & seeders finished."
+
+echo ">>> Starting php-fpm..."
 exec php-fpm
