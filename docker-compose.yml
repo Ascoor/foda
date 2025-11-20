@@ -42,10 +42,10 @@ services:
     command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "8080"]
     ports:
       - "8080:8080"
-
   db:
     image: mysql:8.0
     container_name: foda-db
+
     environment:
       MYSQL_DATABASE: foda
       MYSQL_USER: foda
