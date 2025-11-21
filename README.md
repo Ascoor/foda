@@ -111,6 +111,27 @@ foda/
    npm run dev -- --port=8080
    ```
 
+### Docker (local stack)
+
+The repository ships with a Docker Compose stack for running the full app (MySQL, Redis, Laravel API, Nginx, and Vite dev server).
+
+1. Seed environment variables for the backend (the container copies this file automatically):
+   ```bash
+   cp backend/docker/.env.example backend/.env.docker.local || true
+   ```
+   The defaults connect Laravel to the bundled MySQL container (`db`) with credentials `foda/secret` and expose the API at `http://localhost:8000` for the frontend at `http://localhost:8080`.
+
+2. Build and start the stack:
+   ```bash
+   docker compose up --build
+   ```
+
+3. Services will be available at:
+   - Frontend: http://localhost:8080
+   - API (via Nginx): http://localhost:8000
+   - MySQL: localhost:3306 (user `foda`, password `secret`)
+   - Redis: localhost:6379
+
 ### Environment Variables
 
 **Frontend (.env):**
