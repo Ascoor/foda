@@ -22,7 +22,7 @@ class GeographicScopeFactory extends Factory
 
         return [
             'campaign_id' => $campaignId,
-            'name' => $area->name_ar . ' نطاق',
+            'name' => $area->name . ' نطاق',
             'level' => $this->faker->randomElement(['governorate', 'center', 'city', 'district', 'custom']),
             'area_id' => $area->id,
             'bbox' => [

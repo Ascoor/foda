@@ -16,9 +16,10 @@ class AreasSeeder extends Seeder
         ];
 
         foreach ($govs as $gov => $districts) {
-            $g = Area::firstOrCreate(['name_ar'=>$gov, 'type'=>'governorate']);
+            $g = Area::firstOrCreate(['name' => $gov, 'type' => 'governorate']);
+
             foreach ($districts as $d) {
-                Area::firstOrCreate(['name_ar'=>$d, 'type'=>'city','parent_id'=>$g->id]);
+                Area::firstOrCreate(['name' => $d, 'type' => 'city', 'parent_id' => $g->id]);
             }
         }
     }

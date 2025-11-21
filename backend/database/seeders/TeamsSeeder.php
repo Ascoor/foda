@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use App\Models\{Team, Campaign, Area, User};
 
 class TeamsSeeder extends Seeder
@@ -35,26 +34,12 @@ class TeamsSeeder extends Seeder
 
         foreach ($teams as $data) {
             // جرّب تطابق داخل المجموعة المحمّلة
-            $area = $areas->first(function ($a) use ($data) {
-                $target = $data['area'];
-                return (($a->name_ar ?? null) === $target) || (($a->name_en ?? null) === $target);
-            });
+            $area = $areas->first(fn ($a) => ($a->name ?? null) === $data['area']);
 
-            // لو ما لقيناش، ابحث في DB بشرطية حسب الأعمدة المتاحة (بدون 'name')
             if (! $area) {
-                $q = Area::query();
-                $added = false;
-                if (Schema::hasColumn('areas', 'name_ar')) {
-                    $q->orWhere('name_ar', $data['area']); $added = true;
-                }
-                if (Schema::hasColumn('areas', 'name_en')) {
-                    $q->orWhere('name_en', $data['area']); $added = true;
-                }
-
-                $existing = $added ? $q->first() : null;
+                $existing = Area::where('name', $data['area'])->first();
 
                 if ($existing) {
-                    // اربطها بالحملة إن لم تكن مرتبطة
                     DB::table('campaign_area')->updateOrInsert(
                         ['campaign_id' => $campaign->id, 'area_id' => $existing->id],
                         ['created_at' => now(), 'updated_at' => now()]
@@ -62,10 +47,9 @@ class TeamsSeeder extends Seeder
                     $area = $existing;
                     $areas->push($existing);
                 } else {
-                    // أنشئ منطقة جديدة بالاسم العربي واربطها بالحملة
                     $created = Area::create([
-                        'name_ar' => $data['area'],
-                        'type'    => 'city',
+                        'name' => $data['area'],
+                        'type' => 'city',
                     ]);
                     DB::table('campaign_area')->insert([
                         'campaign_id' => $campaign->id,

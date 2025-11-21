@@ -13,8 +13,8 @@ class CampaignAreaSeeder extends Seeder
         $alex = Campaign::where('slug','alex-campaign')->first();
         if (!$cairo || !$alex) return;
 
-        $cairoAreas = Area::whereIn('name_ar',['القاهرة','مدينة نصر','المعادي'])->pluck('id')->toArray();
-        $alexAreas = Area::whereIn('name_ar',['الإسكندرية','سيدي جابر','العجمي'])->pluck('id')->toArray();
+        $cairoAreas = Area::whereIn('name', ['القاهرة', 'مدينة نصر', 'المعادي'])->pluck('id')->toArray();
+        $alexAreas = Area::whereIn('name', ['الإسكندرية', 'سيدي جابر', 'العجمي'])->pluck('id')->toArray();
 
         $cairo->areas()->syncWithoutDetaching(array_fill_keys($cairoAreas, ['alias'=>null,'local_code'=>null]));
         $alex->areas()->syncWithoutDetaching(array_fill_keys($alexAreas, ['alias'=>null,'local_code'=>null]));

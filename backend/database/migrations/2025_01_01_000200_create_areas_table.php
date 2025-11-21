@@ -9,13 +9,13 @@ return new class extends Migration {
     {
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->string('name_ar');
-            $table->string('name_en')->nullable();
-            $table->enum('type', ['governorate','center','city','district','custom'])->default('custom');
+            $table->string('name');
+            $table->text('description')->nullable();
+            $table->enum('type', ['governorate', 'center', 'city', 'district', 'custom'])->default('custom');
             $table->foreignId('parent_id')->nullable()->constrained('areas')->nullOnDelete();
             $table->string('code')->nullable()->index();
-            $table->decimal('lat', 10, 7)->nullable();
-            $table->decimal('lng', 10, 7)->nullable();
+            $table->decimal('x', 10, 7)->nullable();
+            $table->decimal('y', 10, 7)->nullable();
             $table->json('meta')->nullable();
             $table->timestamps();
         });
