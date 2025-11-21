@@ -1,6 +1,5 @@
 FROM php:8.2-fpm
 
-# حزم سيستم
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -18,13 +17,13 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
-# تثبيت composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# نسخ كود التطبيق
+COPY composer.json composer.lock ./
+RUN composer install --no-interaction --no-dev --prefer-dist --no-progress --no-scripts || true
+
 COPY . /var/www/html
 
-# نسخ الـ entrypoint
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 

@@ -3,6 +3,26 @@ set -e
 
 cd /var/www/html
 
+if [ ! -f .env ]; then
+    echo "ℹ️ No .env found, seeding from docker/.env.example"
+    cp docker/.env.example .env
+fi
+
+if [ ! -s .env ]; then
+    echo "❌ .env file is empty or missing"
+    exit 1
+fi
+
+if [ ! -d vendor ] || [ ! -f vendor/autoload.php ]; then
+    echo "📦 Installing composer dependencies..."
+    composer install --no-interaction --no-dev --prefer-dist --no-progress
+fi
+
+if ! grep -q "^APP_KEY=.*" .env || [ -z "$(grep '^APP_KEY=' .env | cut -d '=' -f2-)" ]; then
+    echo "🔑 Generating APP_KEY..."
+    php artisan key:generate --force
+fi
+
 echo "⏳ Waiting for database at ${DB_HOST:-db}:${DB_PORT:-3306}..."
 
 until php -r "
@@ -14,8 +34,8 @@ until php -r "
         );
         echo \"Database is ready.\n\";
         exit(0);
-    } catch (Exception \$e) {
-        fwrite(STDERR, 'Database not ready: ' . \$e->getMessage() . PHP_EOL);
+    } catch (Exception $e) {
+        fwrite(STDERR, 'Database not ready: ' . $e->getMessage() . PHP_EOL);
         exit(1);
     }
 "; do
