@@ -30,6 +30,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_started
     env_file:
       - ./backend/docker/.env.example
     volumes:
@@ -59,5 +61,16 @@ services:
     ports:
       - "8080:8080"
 
+  redis:
+    image: redis:7-alpine
+    container_name: foda-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+
 volumes:
   db-data:
+  redis-data:
