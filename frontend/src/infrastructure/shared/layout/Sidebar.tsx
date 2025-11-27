@@ -245,13 +245,13 @@ export const Sidebar = ({
   };
 
   const containerClasses = cn(
-    "group/sidebar relative z-30 flex shrink-0 flex-col overflow-hidden rounded-[28px] border border-border/40 bg-[hsla(var(--card)/0.88)] p-4 shadow-[0_18px_48px_rgba(15,23,42,0.12)] backdrop-blur-xl transition-all",
+    "group/sidebar relative z-30 flex shrink-0 flex-col overflow-hidden rounded-[28px] border border-border/40 bg-[hsla(var(--card)/0.9)] p-4 shadow-[0_20px_52px_rgba(15,23,42,0.14)] backdrop-blur-xl transition-all",
     isMobile
       ? [
-          "fixed inset-y-24 max-h-[calc(100vh-8rem)] w-[min(20rem,90vw)] overflow-y-auto",
+          "fixed top-[calc(var(--header-height)+0.75rem)] bottom-6 max-h-[calc(100vh-5.5rem)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto",
           direction === "rtl" ? "right-4" : "left-4",
         ]
-      : "sticky top-28 max-h-[calc(100vh-12rem)] self-start",
+      : "sticky top-[calc(var(--header-height)+1rem)] max-h-[calc(100vh-9rem)] self-start",
   );
 
   const headerLabel = t("navigation.main", { defaultValue: "Navigation" });
@@ -263,7 +263,7 @@ export const Sidebar = ({
         animate={{
           opacity: isVisible ? 1 : 0.6,
           x: isVisible ? 0 : direction === "rtl" ? 100 : -100,
-          width: isMobile ? "min(20rem, 90vw)" : isOpen ? 280 : 88,
+          width: isMobile ? "min(22rem, calc(100vw - 2rem))" : isOpen ? 288 : 96,
         }}
         transition={{ ...SPRING_TRANSITION, duration: 0.4 }}
         className={containerClasses}

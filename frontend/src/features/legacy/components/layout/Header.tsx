@@ -177,8 +177,8 @@ export const Header = ({ onToggleSidebar, variant = "dashboard" }: HeaderProps) 
       transition={{ duration: 0.7, ease: "easeOut" }}
       dir={direction}
       className={cn(
-        "relative mx-auto mt-8 w-[94%] max-w-6xl",
-        "glass rounded-3xl px-3 py-2 sm:px-6 sm:py-4",
+        "relative mx-auto mt-8 w-full max-w-screen-2xl",
+        "glass rounded-3xl px-4 py-2 sm:px-6 sm:py-4 lg:px-8",
         "shadow-[0_22px_70px_var(--shadow-layer-1)] dark:shadow-[0_26px_80px_var(--shadow-layer-1-dark)]",
       )}
     >
