@@ -7,7 +7,8 @@
 @import './infrastructure/theme/theme.css';
 /* Design System Styles */
 @import './ui/styles/animations.css';
- 
+@import './ui/styles/components.css';
+
 @import './ui/styles/utilities.css';
 /* Tailwind Directives */
 @tailwind base;
